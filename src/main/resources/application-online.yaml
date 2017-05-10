@@ -1,0 +1,23 @@
+
+server: 
+  context-path: /im
+  port: 7777
+
+datasource: 
+  type: com.alibaba.druid.pool.DruidDataSource  
+  url: jdbc:mysql://10.8.232.205:3306/power?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf-8
+  username: root
+  password: Qiao19810817
+  driver-class-name: com.mysql.jdbc.Driver
+  minIdle: 1  
+  maxActive: 2  
+  initialSize: 1  
+  timeBetweenEvictionRunsMillis: 3000  
+  minEvictableIdleTimeMillis: 300000  
+  validationQuery: SELECT 'ZTM' FROM DUAL  
+  testWhileIdle: true  
+  testOnBorrow: false  
+  testOnReturn: false    
+  
+
+

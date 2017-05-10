@@ -1,0 +1,175 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.bobycloud</groupId>
+  <artifactId>interfaceManager</artifactId>
+  <version>1.0</version>
+  
+  <properties>
+  	<json-lib-version>20160810</json-lib-version>
+  	<ezmorph-version>1.0.6</ezmorph-version>
+  	<mysql-driver-version>5.1.39</mysql-driver-version>
+  </properties>
+   
+    <build>
+	<plugins> 
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId> 
+			<executions>
+                <execution>
+                    <id>default-testCompile</id>
+                    <phase>test-compile</phase>
+                    <goals>
+                        <goal>testCompile</goal>
+                    </goals>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
+                </execution>
+            </executions>
+			<configuration>
+				<source>1.7</source>
+				<target>1.7</target>
+			</configuration>
+		</plugin>
+		
+		<!-- 此插件是为了能够让springboot替我们生成可执行的jar文件，此时必须引入 -->
+		<plugin>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-maven-plugin</artifactId>
+			<!-- 在配置spring-boot-devtools时，必须指定下面fork这个选项 -->
+			<configuration>
+				<fork>true</fork>
+			</configuration>
+		</plugin>
+	</plugins>
+  </build>
+  
+  <profiles>
+	<profile>
+	    <id>dev</id>
+	    <properties>
+	        <activatedProperties>dev</activatedProperties>
+	    </properties>
+	    <activation>
+	        <activeByDefault>true</activeByDefault>
+	    </activation>
+	</profile>
+	<profile>
+	    <id>online</id>
+	    <properties>
+	        <activatedProperties>online</activatedProperties>
+	    </properties>
+	</profile>
+  </profiles>
+  
+  <parent>
+	<groupId>org.springframework.boot</groupId>
+   	<artifactId>spring-boot-starter-parent</artifactId>
+   	<version>1.5.2.RELEASE</version>
+  </parent>
+  
+    <dependencies>
+	<dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    
+	<dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-tomcat</artifactId>
+        <scope>provided</scope>
+    </dependency>
+    
+    <!-- optional=true,依赖不会传递，该项目依赖devtools；之后依赖myboot项目的项目如果想要使用devtools，需要重新引入 -->
+    <dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-devtools</artifactId>
+		<optional>true</optional>
+	</dependency>
+	
+	<!-- 第一步、整合mybatis http://www.cnblogs.com/java-zhao/p/5350021.html-->
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-jdbc</artifactId> 
+	</dependency>
+    
+    <dependency>
+	    <groupId>mysql</groupId>
+	    <artifactId>mysql-connector-java</artifactId>
+	</dependency>
+
+  	<dependency>
+	    <groupId>com.alibaba</groupId>
+	    <artifactId>druid</artifactId>
+	    <version>1.0.26</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>org.mybatis</groupId>
+	    <artifactId>mybatis</artifactId>
+	    <version>3.4.2</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.mybatis</groupId>
+		<artifactId>mybatis-spring</artifactId>
+		<version>1.3.0</version>
+	</dependency>   
+	
+	<!-- 数据处理 
+ 	<dependency>
+  		<groupId>org.json</groupId>
+  		<artifactId>json</artifactId>
+  	</dependency>
+  	
+	<dependency>
+	    <groupId>net.sf.ezmorph</groupId>
+	    <artifactId>ezmorph</artifactId>
+	    <version>${ezmorph-version}</version>
+	</dependency>
+	 -->
+	<dependency>
+	    <groupId>commons-beanutils</groupId>
+	    <artifactId>commons-beanutils</artifactId>
+	</dependency>  
+	 
+	<!-- 用于base64加密 -->
+ 	<dependency> 
+	    <groupId>commons-codec</groupId>
+	    <artifactId>commons-codec</artifactId>
+	</dependency>
+	
+	<dependency>
+	    <groupId>com.alibaba</groupId>
+	    <artifactId>fastjson</artifactId>
+	    <version>1.2.31</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>org.springframework.data</groupId>
+	    <artifactId>spring-data-commons</artifactId>
+	</dependency>
+	
+	<dependency>
+		<groupId>com.google.code.gson</groupId>
+		<artifactId>gson</artifactId>
+		<version>1.7.1</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>org.springframework.boot</groupId>
+	    <artifactId>spring-boot-starter-redis</artifactId>
+	    <version>1.4.6.RELEASE</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>net.spy</groupId>
+	    <artifactId>spymemcached</artifactId>
+	    <version>2.12.3</version>
+	</dependency>
+	
+	
+  </dependencies>
+  
+</project>
