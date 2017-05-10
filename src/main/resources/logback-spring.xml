@@ -33,4 +33,16 @@
 			<appender-ref ref="ONLINE_FILE" /> 
 		</root> 
     </springProfile>  
+    
+    <!-- 本地测试 -->  
+    <springProfile name="local">  
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">  
+            <encoder>  
+                <pattern>${PATTERN}</pattern>  
+            </encoder>  
+        </appender> 
+        <root level="info">  
+            <appender-ref ref="CONSOLE" />  
+        </root>  
+    </springProfile>  
 </configuration>  
