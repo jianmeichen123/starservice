@@ -2,9 +2,12 @@ package com.galaxy.im.common;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.beanutils.BeanUtils;
 
@@ -336,6 +339,19 @@ public class CUtils {
 			}
 		}
 		return list;
+	}
+	
+	public void outputJson(ServletResponse response,Object object){
+		try{
+			response.reset();
+			PrintWriter out = response.getWriter();
+			out.print(object2JSONString(object));
+			out.flush();
+			out.close();
+			out = null;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	/**

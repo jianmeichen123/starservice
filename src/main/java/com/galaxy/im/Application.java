@@ -11,6 +11,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import com.galaxy.im.common.StaticConst;
+
 @EnableAutoConfiguration
 @ServletComponentScan
 @Configuration
@@ -24,6 +26,7 @@ public class Application extends SpringBootServletInitializer{
 
     public static void main(String[] args) throws Exception {
     	ApplicationContext ctx = SpringApplication.run(Application.class, args);
+    	StaticConst.ctx = ctx;
         
         String[] activeProfiles = ctx.getEnvironment().getActiveProfiles();  
         for (String profile : activeProfiles) {  

@@ -31,6 +31,8 @@ public class ExampleController {
 //			
 //			service.saveTest(testBean);
 			
+			//{"type":2,"name":'乔乔添加的拜访',"projectType":1,"projectId":1,"startTime":"2017-05-10 14:41:50","endTime":"2017-05-10 23:41:50","isAllday":0,"wakeupId":1,"remark":"乔乔添加的备注","significance":1}
+			
 			DepartBeanVO vo = new DepartBeanVO();
 			vo.setId(2L);
 			

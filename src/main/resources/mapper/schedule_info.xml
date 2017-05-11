@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.bean.schedule.ScheduleInfo">
+	
+	<insert id="insert" parameterType="com.galaxy.im.bean.schedule.ScheduleInfo">
+		insert into schedule_info(
+			type,
+		    name,
+		    project_type,
+		    project_id,
+		    start_time,
+		    end_time,
+		    is_allday,
+		    wakeup_id,
+		    remark,
+		    significance
+		)values(
+			#{type},
+		    #{name},
+		    #{projectType},
+		    #{projectId},
+		    #{startTime},
+		    #{endTime},
+		    #{isAllday},
+		    #{wakeupId},
+		    #{remark},
+		    #{significance});
+		    <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+				SELECT LAST_INSERT_ID() AS id
+			</selectKey>
+	</insert>
+	
+	
+	<resultMap type="com.galaxy.im.bean.schedule.ScheduleInfo" id="departResult">
+		<id column="id" property="id"/>
+		<result column="parent_id" property="parentId"/>
+		<result column="type" property="type"/>
+		<result column="name_id" property="nameId"/>
+		<result column="name" property="name"/>
+		<result column="project_type" property="projectType"/>
+		<result column="project_id" property="projectId"/>
+		<result column="start_time" property="startTime"/>
+		<result column="end_time" property="endTime"/>
+		<result column="is_allday" property="isAllday"/>
+		<result column="wakeup_id" property="wakeupId"/>
+		<result column="remark" property="remark"/>
+		<result column="created_id" property="createdId"/>
+		<result column="updated_id" property="updatedId"/>
+		<result column="created_time" property="createdTime"/>
+		<result column="updated_time" property="updatedTime"/>
+		<result column="significance" property="significance"/>
+	</resultMap>
+</mapper>
