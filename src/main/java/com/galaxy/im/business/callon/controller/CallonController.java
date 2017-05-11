@@ -1,4 +1,4 @@
-package com.galaxy.im.business.callon;
+package com.galaxy.im.business.callon.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
