@@ -6,8 +6,8 @@ server:
 datasource: 
   type: com.alibaba.druid.pool.DruidDataSource  
   url: jdbc:mysql://10.9.11.232:3306/fx_db?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf-8
-  username: appupload_db
-  password: Appupl@ad
+  username: fxuser
+  password: fxdb_Fp9EPkG2
   driver-class-name: com.mysql.jdbc.Driver
   minIdle: 1  
   maxActive: 2  
@@ -23,10 +23,10 @@ datasource:
 # REDIS (RedisProperties)
 spring: 
   redis: 
-    database: 1
-    host: 10.8.232.205
-    port: 6379
-    password: tdjgamtam
+    database: 0
+    host: 10.9.210.22
+    port: 16379
+    password: xhhl-redis
   pool: 
     max-active: 8
     max-wait: -1
