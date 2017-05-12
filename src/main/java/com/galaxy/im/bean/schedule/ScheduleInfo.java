@@ -4,23 +4,26 @@ import com.galaxy.im.common.db.BaseEntity;
 
 public class ScheduleInfo extends BaseEntity{
 	private static final long serialVersionUID = -6443062953917242468L;
-	private long parentId;
+	private Long parentId;
 	private int type;
-	private long nameId;
+	private Long nameId;
 	private String name;
 	private int projectType;
-	private int projectId;
+	private Long projectId;
 	private String startTime;
 	private String endTime;
 	private String isAllday;
 	private long wakeupId;
 	private String remark;
 	private int significance;
+	private Long createdId;
+	private Long updatedId;
+	private String callonAddress;
 	
-	public long getParentId() {
+	public Long getParentId() {
 		return parentId;
 	}
-	public void setParentId(long parentId) {
+	public void setParentId(Long parentId) {
 		this.parentId = parentId;
 	}
 	public int getType() {
@@ -29,10 +32,10 @@ public class ScheduleInfo extends BaseEntity{
 	public void setType(int type) {
 		this.type = type;
 	}
-	public long getNameId() {
+	public Long getNameId() {
 		return nameId;
 	}
-	public void setNameId(long nameId) {
+	public void setNameId(Long nameId) {
 		this.nameId = nameId;
 	}
 	public String getName() {
@@ -47,10 +50,10 @@ public class ScheduleInfo extends BaseEntity{
 	public void setProjectType(int projectType) {
 		this.projectType = projectType;
 	}
-	public int getProjectId() {
+	public Long getProjectId() {
 		return projectId;
 	}
-	public void setProjectId(int projectId) {
+	public void setProjectId(Long projectId) {
 		this.projectId = projectId;
 	}
 	public String getStartTime() {
@@ -88,5 +91,23 @@ public class ScheduleInfo extends BaseEntity{
 	}
 	public void setSignificance(int significance) {
 		this.significance = significance;
-	}   
+	}
+	public Long getCreatedId() {
+		return createdId;
+	}
+	public void setCreatedId(Long createdId) {
+		this.createdId = createdId;
+	}
+	public Long getUpdatedId() {
+		return updatedId;
+	}
+	public void setUpdatedId(Long updatedId) {
+		this.updatedId = updatedId;
+	}
+	public String getCallonAddress() {
+		return callonAddress;
+	}
+	public void setCallonAddress(String callonAddress) {
+		this.callonAddress = callonAddress;
+	}
 }

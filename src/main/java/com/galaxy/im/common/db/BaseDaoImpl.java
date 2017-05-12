@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.galaxy.im.common.BeanUtils;
+import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.exception.DaoException;
 
 public abstract class BaseDaoImpl<T extends PrimaryKeyObject<ID>, ID extends Serializable> implements IBaseDao<T, ID> {
@@ -443,6 +444,14 @@ public abstract class BaseDaoImpl<T extends PrimaryKeyObject<ID>, ID extends Ser
 	
 	protected void setLogger(Logger log){
 		this.log = log;
+	}
+	
+	protected Map<String,Object> getPageMap(Map<String,Object> paramMap){
+		int pageNum = CUtils.get().object2Integer(paramMap.get("pageNum"), 0);
+		int pageSize = CUtils.get().object2Integer(paramMap.get("pageSize"), 0);
+		paramMap.put("offset", pageNum*pageSize);
+		paramMap.put("limit", pageSize);
+		return paramMap;
 	}
 	
 }

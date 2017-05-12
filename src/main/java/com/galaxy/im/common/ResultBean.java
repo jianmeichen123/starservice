@@ -9,6 +9,7 @@ public class ResultBean<T> {
 	private String message;
 	private T entity;
 	private List<T> entityList;
+	private Object flag;
 	
 	public ResultBean(){
 		this.status = "ERROR";
@@ -61,4 +62,11 @@ public class ResultBean<T> {
 	public void setMapList(List<Map<String, Object>> mapList) {
 		this.mapList = mapList;
 	}
+	public Object getFlag() {
+		return flag;
+	}
+	public void setFlag(Object flag) {
+		this.flag = flag;
+	}
+	
 }
