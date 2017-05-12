@@ -20,8 +20,4 @@ public class IdGenerator {
 			return -1L;
 		}
 	}
-
-	public static void main(String[] args) {
-		System.out.println(IdGenerator.generateId(IdGenerator.class));
-	}
 }

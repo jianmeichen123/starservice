@@ -70,21 +70,4 @@ public class TMap<K,V> extends HashMap<K, V>{
 		
 	}
 	
-	
-	public static void main(String[] args){
-		TMap<Object,Object> mm = new TMap<Object,Object>();
-		mm.put("tdj", 988);
-		mm.put(99, "乔");
-		mm.put("tam", "wofjof");
-		
-		TT t = new TT();
-		t.setId("001");
-		t.setName("tdjgamtam");
-		mm.put("bean", t);
-		
-		
-		System.out.println(mm.getInteger("tdj")+11);
-		System.out.println(mm.getFloat("tam",-888F));
-		
-	}
 }

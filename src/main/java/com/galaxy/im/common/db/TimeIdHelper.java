@@ -150,31 +150,4 @@ public class TimeIdHelper {
 		return uuid;
 	}
 
-	public static void main(String[] args) {
-		// long id = 3374709054121351l;
-		// long id = 3379782484330149l;
-		// long id = 3363475030378149l; //10.1 3363475030378149
-		// long id = 3374709054211749l; //11.1 3374709054211749
-		// long id = 3100365840449541l;
-		// System.out.println(getTimeFromId(id) * 1000);
-		// System.out.println(new Date(UuidHelper.getTimeFromId(id) * 1000));
-		// SimpleDateFormat format = new SimpleDateFormat("yyMMdd");
-		// System.out.println(format.format(UuidHelper.getTimeFromId(id) *
-		// 1000));
-
-		AtomicLong sid = new AtomicLong(0);
-		List<Long> ids = new ArrayList<Long>();
-		for (int i = 0; i < 100; i++) {
-			long id = getIdByDate(new Date(), sid, 0);
-			ids.add(id);
-			// System.out.println(getDateFromId(id));
-		}
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd 'T' HH:mm:ss");
-		for (Long id : ids) {
-			Date date = getDateFromId(id);
-			long idSeq = getSeqFromId(id);
-			long idc = getIdcIdFromId(id);
-			System.out.println("id " + id + " " + dateFormat.format(date) + " idc: " + idc + " idSeq: " + idSeq);
-		}
-	}
 }
