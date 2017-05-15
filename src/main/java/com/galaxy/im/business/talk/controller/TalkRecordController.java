@@ -1,6 +1,8 @@
 package com.galaxy.im.business.talk.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +20,11 @@ import com.galaxy.im.bean.schedule.ScheduleDetailBean;
 import com.galaxy.im.bean.talk.TalkRecordBean;
 import com.galaxy.im.bean.talk.TalkRecordBeanVo;
 import com.galaxy.im.bean.talk.TalkRecordDetailBean;
+import com.galaxy.im.bean.talk.sopFileBean;
 import com.galaxy.im.business.callon.service.ICallonDetailService;
 import com.galaxy.im.business.talk.service.ITalkRecordDetailService;
 import com.galaxy.im.business.talk.service.ITalkRecordService;
+import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.db.Page;
 import com.galaxy.im.common.db.PageRequest;
@@ -126,18 +130,41 @@ public class TalkRecordController {
 		try{
 			int updateCount = 0;
 			Long id = 0L;
-			if(talkBean!=null && talkBean.getId()!=null && talkBean.getId()!=0){
-				//更新
-				//talkBean.setUpdatedTime(DateUtil.getMillis(new Date()));
-				updateCount = service.updateById(talkBean);
-			}else{
-				//保存
-				id = service.insert(talkBean);
+			if(talkBean!=null){
+				//时间转换
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+				Date date = dateFormat.parse(talkBean.getViewDateStr());
+				talkBean.setViewDate(date);
+				//访谈记录存在，进行更新操作，否则保存
+				if(talkBean.getId()!=null && talkBean.getId()!=0){
+					//保存sop_file
+					if(!"".equals(talkBean.getFileKey()) && talkBean.getFileKey()!=null){
+						sopFileBean sopFileBean =new sopFileBean();
+						sopFileBean.setFileKey(talkBean.getFileKey());
+						sopFileBean.setFileLength(talkBean.getFileLength());
+						sopFileBean.setBucketName(talkBean.getBucketName());
+						sopFileBean.setFileName(talkBean.getFileName());
+						
+						long sopId =service.saveSopFile(sopFileBean);
+						//获取sopfile 主键
+						if(sopId!=0){
+							talkBean.setFileId(sopId);
+						}
+					}
+					
+					//更新
+					talkBean.setUpdatedTime(DateUtil.getMillis(new Date()));
+					updateCount = service.updateById(talkBean);
+				}else{
+					//保存
+					id = service.insert(talkBean);
+				}
 			}
+			
 			if(updateCount!=0 || id!=0L){
-				resultBean.setFlag(1);
+				resultBean.setStatus("OK");
 			}
-			resultBean.setStatus("OK");
+			
 		}catch(Exception e){
 			log.error(TalkRecordController.class.getName() + "：addTalkRecord",e);
 		}

@@ -7,7 +7,7 @@
 	<!-- 访谈记录list -->
 	<select id="select" resultType="com.galaxy.im.bean.talk.TalkRecordBean" parameterType="java.util.Map" resultMap="talkMap">
 		SELECT id,
-		date_format(view_date,'%Y/%m/%d %H:%i') viewDate,
+		date_format(view_date,'%Y/%m/%d %H:%i') viewDateStr,
 		view_target viewTarget 
 		FROM sop_interview_record WHERE 1=1
 		<choose>
@@ -25,7 +25,7 @@
 	</select>
 	<resultMap type="com.galaxy.im.bean.talk.TalkRecordBean" id="talkMap">
 		<result column="id" property="id"/>
-		<result column="viewDate" property="viewDate"/>
+		<result column="viewDateStr" property="viewDateStr"/>
 		<result column="viewTarget" property="viewTarget"/>
 	</resultMap>
 	
@@ -58,8 +58,8 @@
 	<update id="updateById" parameterType="com.galaxy.im.bean.talk.TalkRecordBean">
 		update sop_interview_record
 		<set>
-		  <if test="projectId != null" > project_id = #{projectId}, </if>
-		  <if test="fileId != null" > file_id = #{fileId}, </if>
+		  <if test="projectId != 0" > project_id = #{projectId}, </if>
+		  <if test="fileId != 0" > file_id = #{fileId}, </if>
 	      <if test="viewDate != null" > view_date = #{viewDate}, </if>
 	      <if test="viewTarget != null" > view_target = #{viewTarget}, </if>
 	      <if test="viewNotes != null" > view_notes = #{viewNotes}, </if>
@@ -69,4 +69,20 @@
 		where id=#{id};
 	</update>
 
+	<!-- 添加sop_file -->
+	<insert id="saveSopFile" useGeneratedKeys="true" keyProperty="id"  keyColumn="id" parameterType="com.galaxy.im.bean.talk.sopFileBean" >
+		insert into sop_file (project_id, belong_uid, file_valid, project_progress,
+	 		file_worktype, career_line, file_source,
+	 		file_type, remark, voucher_id, file_status,
+	 		file_uid, fil_uri, updated_time,
+	 		created_time, file_length, file_key,
+	 		bucket_name,file_name,file_suffix,record_type,meeting_id)
+ 		values (#{projectId}, #{belongUid}, #{fileValid},#{projectProgress},
+	 		#{fileWorkType}, #{careerLine}, #{fileSource},#{fileType}, #{remark},#{voucherId},
+	 		#{fileStatus},#{fileUid}, #{filUri}, #{createdTime},#{createdTime}, #{fileLength},
+	 		#{fileKey},#{bucketName},#{fileName},#{fileSuffix},#{recordType},#{meetingId})
+    	<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+    </insert>
 </mapper>

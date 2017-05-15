@@ -12,11 +12,10 @@ public class TalkRecordBean extends PagableEntity{
 	private static final long serialVersionUID = 7937887405956613675L;
 	
 	private String projectName;		//项目名称
-	
 	private long projectId;			//关联项目id
     private long fileId;			//关联附件id
-	private String viewDate;		//记录时间
-	
+	private Date viewDate;			//记录时间
+	private String viewDateStr;		//记录时间
 	private String viewTarget;      //访谈对象
     private String viewNotes;		//访谈纪要
     private String viewNotesText;	//访谈纪要文本值
@@ -24,7 +23,44 @@ public class TalkRecordBean extends PagableEntity{
     private long createTime;		//创建时间
     private long scheduleId;		//拜访id
     
-    public TalkRecordBean(){
+    private String fileKey;				//档案阿里云存储Key
+	private long fileLength;			//档案大小
+	private String bucketName;			//档案bucketName
+	private String fileName;			//档案名称
+    
+    public String getFileKey() {
+		return fileKey;
+	}
+
+	public void setFileKey(String fileKey) {
+		this.fileKey = fileKey;
+	}
+
+	public long getFileLength() {
+		return fileLength;
+	}
+
+	public void setFileLength(long fileLength) {
+		this.fileLength = fileLength;
+	}
+
+	public String getBucketName() {
+		return bucketName;
+	}
+
+	public void setBucketName(String bucketName) {
+		this.bucketName = bucketName;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public TalkRecordBean(){
 		this.setCreateTime(DateUtil.getMillis(new Date()));
 	}
     
@@ -88,35 +124,21 @@ public class TalkRecordBean extends PagableEntity{
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
 	}
-	
-	public static String dateStrformat(String dateStr){  //2016-05-27 16:00:00   19
-		int len = dateStr.length();
-		if( dateStr.indexOf("/") != -1){
-			dateStr = dateStr.replaceAll("/", "-");
-		}
-		switch (len) {
-		case 10:
-			dateStr = dateStr + " 00:00:00";
-			break;
-		case 13:
-			dateStr = dateStr + ":00:00";
-			break;
-		case 16:
-			dateStr = dateStr + ":00";
-			break;
-		default:
-			break;
-		}
-		return dateStr;
+
+	public String getViewDateStr() {
+		return viewDateStr;
 	}
 
-	public String getViewDate() {
+	public void setViewDateStr(String viewDateStr) {
+		this.viewDateStr = viewDateStr;
+	}
+
+	public Date getViewDate() {
 		return viewDate;
 	}
 
-	public void setViewDate(String viewDate) {
+	public void setViewDate(Date viewDate) {
 		this.viewDate = viewDate;
 	}
-
 
 }
