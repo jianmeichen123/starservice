@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
- <!-- 文件输出格式 -->  
+	<!-- 文件输出格式 -->  
     <property name="PATTERN" value="%-12(%d{yyyy-MM-dd HH:mm:ss.SSS}) |-%-5level [%thread] %c [%L] -| %msg%n" />  
+    
     <!-- 线上环境日志文件路径 -->  
     <property name="ONLINE_FILE_PATH" value="/Users/liyanqiao/temp/log"></property>
+    
+    <!-- dev环境下的日志路 -->
+    <property name="DEV_FILE_PATH" value="/opt/project/starservice/log"></property>
   
     <!-- 开发环境 -->  
     <springProfile name="dev">  
-        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">  
-            <encoder>  
-                <pattern>${PATTERN}</pattern>  
-            </encoder>  
-        </appender> 
-        <root level="info">  
-            <appender-ref ref="CONSOLE" />  
-        </root>  
+        <appender name="DEV_FILE_PATH" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> 
+				<fileNamePattern>${ONLINE_FILE_PATH}/logFile.%d{yyyy-MM-dd}.log</fileNamePattern> 
+				<maxHistory>30</maxHistory> 
+			</rollingPolicy> 
+			<encoder> 
+				<pattern>${PATTERN}</pattern> 
+			</encoder> 
+		</appender> 
+
+		<root level="INFO"> 
+			<appender-ref ref="ONLINE_FILE" /> 
+		</root> 
     </springProfile>  
   
     <!-- 线上环境 -->  
