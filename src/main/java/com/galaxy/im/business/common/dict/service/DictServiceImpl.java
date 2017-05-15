@@ -43,6 +43,12 @@ public class DictServiceImpl extends BaseServiceImpl<Dict> implements IDictServi
 				for(Map<String,Object> map : dataList){
 					if("significance".equals(CUtils.get().object2String(map.get("parentCode")))){
 						map.remove("parentCode");
+						//设置默认值
+						if(1==CUtils.get().object2Integer(map.get("dictValue"),0)){
+							map.put("defValue", 1);
+						}else{
+							map.put("defValue", 0);
+						}
 						significanceList.add(map);
 					}else if("callonProgress".equals(CUtils.get().object2String(map.get("parentCode")))){
 						map.remove("parentCode");
