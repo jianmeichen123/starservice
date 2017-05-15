@@ -83,7 +83,8 @@
 		left join schedule_contacts con on spp.contacts_id=con.id
 		left join dict dct1 on dct1.parent_code='significance' and dct1.dict_value=info.significance
 		left join sop_project project on info.project_type=1 and info.project_id=project.id
-		left join sop_interview_record sir on sir.schedule_id=info.id and sir.project_id=0) t
+		left join sop_interview_record sir on sir.schedule_id=info.id and sir.project_id=0
+		where info.type=2) t
 	</sql>
 	
 	<sql id="info_column_list">
