@@ -28,7 +28,7 @@ public class CallonDaoImpl extends BaseDaoImpl<ScheduleInfo, Long> implements IC
 			int total = 0;
 			if(paramMap!=null){
 				contentList = sqlSessionTemplate.selectList(getSqlName("selectCallonList"),getPageMap(paramMap));
-				CUtils.get().object2Integer(sqlSessionTemplate.selectOne(getSqlName("countCallonList"),getPageMap(paramMap)));
+				total = CUtils.get().object2Integer(sqlSessionTemplate.selectOne(getSqlName("countCallonList"),getPageMap(paramMap)));
 			}
 			
 			return new QPage(contentList,total);
