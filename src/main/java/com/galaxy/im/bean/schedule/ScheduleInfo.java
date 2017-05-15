@@ -19,6 +19,7 @@ public class ScheduleInfo extends BaseEntity{
 	private Long createdId;
 	private Long updatedId;
 	private String callonAddress;
+	private Long callonPerson;
 	
 	public Long getParentId() {
 		return parentId;
@@ -109,5 +110,11 @@ public class ScheduleInfo extends BaseEntity{
 	}
 	public void setCallonAddress(String callonAddress) {
 		this.callonAddress = callonAddress;
+	}
+	public Long getCallonPerson() {
+		return callonPerson;
+	}
+	public void setCallonPerson(Long callonPerson) {
+		this.callonPerson = callonPerson;
 	}
 }

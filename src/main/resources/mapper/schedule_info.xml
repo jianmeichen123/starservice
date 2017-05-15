@@ -35,6 +35,7 @@
 			end_time = #{endTime}, 
 			is_allday = #{isAllday},
 			wakeup_id = #{wakeupId},
+			callon_person = #{callonPerson},
 			remark = #{remark},
 			updated_id = #{updatedId},
 			updated_time = #{updatedTime},
@@ -131,6 +132,7 @@
 		    end_time,
 		    is_allday,
 		    wakeup_id,
+		    callonPerson,
 		    remark,
 		    significance,
 		    callon_address
@@ -143,6 +145,7 @@
 		    #{endTime},
 		    #{isAllday},
 		    #{wakeupId},
+		    #{callonPerson},
 		    #{remark},
 		    #{significance},
 		    #{callonAddress});
