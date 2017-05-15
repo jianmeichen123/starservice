@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
@@ -24,7 +26,7 @@ import com.galaxy.im.common.db.PageRequest;
 @Controller
 @RequestMapping("/project")
 public class projectController {
-	
+	private Logger log = LoggerFactory.getLogger(projectController.class);
 	@Autowired
 	IProjectService service;
 	
@@ -72,7 +74,7 @@ public class projectController {
 			}
 			//页面
 			Map<String,Object> map = new HashMap<String,Object>();
-			map.put("pageNo", pageProject.getPageable().getPageNumber());
+			map.put("pageNum", pageProject.getPageable().getPageNumber());
 			map.put("pageSize", pageProject.getPageable().getPageSize());
 			map.put("total", pageProject.getTotal());
 			
@@ -80,7 +82,7 @@ public class projectController {
 			resultBean.setEntityList(projectList);
 			resultBean.setMap(map);
 		}catch(Exception e){
-			e.printStackTrace();
+			log.error(projectController.class.getName() + "：getProjectList",e);
 		}
 		return resultBean;
 	}

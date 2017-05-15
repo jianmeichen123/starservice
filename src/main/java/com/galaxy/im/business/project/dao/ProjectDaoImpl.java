@@ -10,7 +10,6 @@ import com.galaxy.im.common.db.BaseDaoImpl;
 @Repository
 public class ProjectDaoImpl extends BaseDaoImpl<ProjectBean,Long> implements IProjectDao{
 	private Logger log = LoggerFactory.getLogger(ProjectDaoImpl.class);
-	//private String className = ProjectDaoImpl.class.getName();
 	
 	public ProjectDaoImpl(){
 		super.setLogger(log);

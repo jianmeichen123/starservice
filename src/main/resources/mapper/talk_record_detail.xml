@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.bean.talk.TalkRecordDetailBean">
+
+	<!-- 访谈记录的详情 -->
+	<select id="selectById" resultType="com.galaxy.im.bean.talk.TalkRecordDetailBean" parameterType="java.lang.Long" resultMap="detailMap">
+		SELECT  r.id,
+				date_format(r.view_date,'%Y/%m/%d %H:%i') viewDate,
+				r.view_target viewTarget,
+				sf.file_key fileKey,
+				sf.file_length fileLength,
+				sf.bucket_name bucketName,
+				sf.file_name fileName,
+				r.view_notes viewNotes,
+				con.name scheduleName,
+				dct.name projectType 
+		FROM sop_interview_record r 
+		left join schedule_person_plan spp on spp.schedule_id=r.schedule_id
+		left join schedule_contacts con on spp.contacts_id=con.id
+		left join schedule_info info on spp.schedule_id=info.id
+		left join sop_project project on info.project_type=2 and info.project_id=project.id
+		left join dict dct on dct.parent_code='industryOwn' and dct.dict_value=project.industry_own
+		left join sop_file sf on sf.id=r.file_id
+		WHERE r.id=#{id};
+	</select>
+	<resultMap type="com.galaxy.im.bean.talk.TalkRecordDetailBean" id="detailMap">
+		<result column="id" property="id"/>
+		<result column="viewDate" property="viewDate"/>
+		<result column="viewTarget" property="viewTarget"/>
+		<result column="fileKey" property="fileKey"/>
+		<result column="fileLength" property="fileLength"/>
+		<result column="bucketName" property="bucketName"/>
+		<result column="fileName" property="fileName"/>
+		<result column="viewNotes" property="viewNotes"/>
+		<result column="scheduleName" property="scheduleName"/>
+		<result column="projectType" property="projectType"/>
+	</resultMap>
+
+</mapper>

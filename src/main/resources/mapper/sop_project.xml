@@ -3,7 +3,6 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
 <mapper namespace="com.galaxy.im.bean.project.ProjectBean">
-
 	
 	<!-- 获取项目list -->
 	<select id="select" resultType="com.galaxy.im.bean.project.ProjectBean" parameterType="java.util.Map" resultMap="projectMap">
@@ -23,8 +22,6 @@
 			limit #{offset}, #{limit};
 		</if>
 	</select>
-	
-	
 	<resultMap type="com.galaxy.im.bean.project.ProjectBean" id="projectMap">
 		<result column="id" property="id"/>
 		<result column="project_name" property="projectName"/>

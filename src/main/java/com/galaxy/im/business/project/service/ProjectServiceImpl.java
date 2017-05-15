@@ -10,8 +10,6 @@ import com.galaxy.im.common.db.service.BaseServiceImpl;
 
 @Service
 public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements IProjectService{
-	//private Logger log = LoggerFactory.getLogger(ProjectServiceImpl.class);
-	//private String className = ProjectServiceImpl.class.getName();
 	
 	@Autowired
 	private IProjectDao dao;
