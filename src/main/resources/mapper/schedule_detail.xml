@@ -41,16 +41,18 @@
 	    	project.project_name projectName,
 	    	dct1.name industryOwnName,
 			dct2.name financeStatusName,
+			info.significance significanceId,
 			dct3.name significanceName,
+			info.wakeup_id wakeupId,
 			sd.name wakeupTime	
 		from schedule_info info
 		left join schedule_contacts con on info.callon_person=con.id
 		left join sop_project project on info.project_type=2 and info.project_id=project.id
 		left join dict dct1 on dct1.parent_code='industryOwn' and dct1.dict_value=project.industry_own
-		left join dict dct2 on dct2.parent_code='financeStatus' and dct1.dict_value=project.finance_status
-		left join dict dct3 on dct3.parent_code='significance' and dct1.dict_value=info.significance
+		left join dict dct2 on dct2.parent_code='financeStatus' and dct2.dict_value=project.finance_status
+		left join dict dct3 on dct3.parent_code='significance' and dct3.dict_value=info.significance
 		left join schedule_dict sd on sd.id = info.wakeup_id
-		where info.id=#{id,jdbcType=BIGINT};
+		where info.id=#{id};
 	</select>
 	
 	<!-- 项目的拜访历史记录个数 -->
