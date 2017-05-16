@@ -80,8 +80,7 @@
 		    case !isnull(sir.id) when 1 then 2 else 1 end isInterview,
 		    info.is_del isDel
 		from schedule_info info
-		left join schedule_person_plan spp on spp.schedule_id=info.id
-		left join schedule_contacts con on spp.contacts_id=con.id
+		left join schedule_contacts con on info.callon_person=con.id
 		left join dict dct1 on dct1.parent_code='significance' and dct1.dict_value=info.significance
 		left join sop_project project on info.project_type=1 and info.project_id=project.id
 		left join sop_interview_record sir on sir.schedule_id=info.id and sir.project_id=0
@@ -110,8 +109,6 @@
 		<where>
 			t.isDel=0
 			<trim prefixOverrides="and">
-				<if test="contactName != null">t.contactName like #{contactName}</if>
-				<if test="projectName != null">t.projectName like #{projectName}</if>
 				<if test="startTimeUnix != null">t.currentTimeUnix>#{startTimeUnix}</if>
 				<if test="endTimeUnix != null">t.currentTimeUnix&lt;#{endTimeUnix}</if>
 				<if test="callonProgress == 1">t.currentTimeUnix&lt;=t.startTimeUnix</if>
@@ -119,6 +116,11 @@
 				<if test="significance != null">t.significance=#{significance}</if>
 				<if test="isInterview == 0">t.isInterview=#{isInterview}</if>
 			</trim>
+			<if test="selectKey != null">
+				and t.contactName like #{selectKey}
+				or t.projectName like #{selectKey}
+			</if>
+			
 		</where>
 	</sql>
 	

@@ -120,6 +120,14 @@ private Logger log = LoggerFactory.getLogger(CallonController.class);
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		try{
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);	
+			
+			if(paramMap!=null && paramMap.containsKey("selectKey")){
+				String likeString = CUtils.get().object2String(paramMap.get("selectKey"), "");
+				if(CUtils.get().stringIsNotEmpty(likeString)){
+					paramMap.put("selectKey", "%" + likeString + "%");
+				}
+			}
+			
 			QPage page = callonService.selectCallonList(paramMap);
 			resultBean.setStatus("OK");
 			resultBean.setEntity(page);
