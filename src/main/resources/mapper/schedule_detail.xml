@@ -49,7 +49,7 @@
 			sd.name wakeupTime	
 		from schedule_info info
 		left join schedule_contacts con on info.callon_person=con.id
-		left join sop_project project on info.project_type=2 and info.project_id=project.id
+		left join sop_project project on info.project_type=1 and info.project_id=project.id
 		left join dict dct1 on dct1.parent_code='industryOwn' and dct1.dict_value=project.industry_own
 		left join dict dct2 on dct2.parent_code='financeStatus' and dct2.dict_value=project.finance_status
 		left join dict dct3 on dct3.parent_code='significance' and dct3.dict_value=info.significance
