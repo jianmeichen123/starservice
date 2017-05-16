@@ -24,6 +24,11 @@
 		<result column="significanceName" property="significanceName"/>
 		<result column="wakeupId" property="wakeupId"/>
 		<result column="wakeupTime" property="wakeupTime"/>
+		<result column="fileKey" property="fileKey"/>
+		<result column="fileLength" property="fileLength"/>
+		<result column="bucketName" property="bucketName"/>
+		<result column="fileName" property="fileName"/>
+		<result column="viewNotes" property="viewNotes"/>
 	</resultMap>
 	<!-- 拜访详情 -->
 	<select id="selectById" resultType="com.galaxy.im.bean.schedule.ScheduleDetailBean" parameterType="java.lang.Long" resultMap="detailMap">
@@ -46,7 +51,12 @@
 			info.significance significanceId,
 			dct3.name significanceName,
 			info.wakeup_id wakeupId,
-			sd.name wakeupTime	
+			sd.name wakeupTime,
+			sf.file_key fileKey,
+			sf.file_length fileLength,
+			sf.bucket_name bucketName,
+			sf.file_name fileName,
+			inre.view_notes viewNotes	
 		from schedule_info info
 		left join schedule_contacts con on info.callon_person=con.id
 		left join sop_project project on info.project_type=1 and info.project_id=project.id
@@ -54,6 +64,8 @@
 		left join dict dct2 on dct2.parent_code='financeStatus' and dct2.dict_value=project.finance_status
 		left join dict dct3 on dct3.parent_code='significance' and dct3.dict_value=info.significance
 		left join schedule_dict sd on sd.id = info.wakeup_id
+		left join sop_interview_record inre on inre.schedule_id=info.id
+		left join sop_file sf on sf.id=inre.file_id
 		where info.id=#{id};
 	</select>
 	

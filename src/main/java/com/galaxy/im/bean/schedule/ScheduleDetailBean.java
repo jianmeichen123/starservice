@@ -32,6 +32,52 @@ public class ScheduleDetailBean extends BaseEntity{
 	
 	private int interviewFalg;				//访谈标识，1：已访谈，0：未访谈
 	private String interviewContent;		//已访谈，未访谈
+	
+	private String fileKey;					//档案阿里云存储Key
+	private long fileLength;				//档案大小
+	private String bucketName;				//档案bucketName
+	private String fileName;				//档案名称
+	private String viewNotes;				//访谈纪要
+
+	public String getFileKey() {
+		return fileKey;
+	}
+
+	public void setFileKey(String fileKey) {
+		this.fileKey = fileKey;
+	}
+
+	public long getFileLength() {
+		return fileLength;
+	}
+
+	public void setFileLength(long fileLength) {
+		this.fileLength = fileLength;
+	}
+
+	public String getBucketName() {
+		return bucketName;
+	}
+
+	public void setBucketName(String bucketName) {
+		this.bucketName = bucketName;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getViewNotes() {
+		return viewNotes;
+	}
+
+	public void setViewNotes(String viewNotes) {
+		this.viewNotes = viewNotes;
+	}
 
 	public String getStartTime() {
 		return startTime;
