@@ -135,7 +135,8 @@
 		    callon_person,
 		    remark,
 		    significance,
-		    callon_address
+		    callon_address,
+		    created_id
 		)values(
 			#{type},
 		    #{name},
@@ -148,7 +149,8 @@
 		    #{callonPerson},
 		    #{remark},
 		    #{significance},
-		    #{callonAddress});
+		    #{callonAddress},
+		    #{createdId});
 		    <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
 				SELECT LAST_INSERT_ID() AS id
 			</selectKey>
