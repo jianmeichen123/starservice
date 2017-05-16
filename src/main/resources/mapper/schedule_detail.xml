@@ -44,8 +44,7 @@
 			dct3.name significanceName,
 			sd.name wakeupTime	
 		from schedule_info info
-		left join schedule_person_plan spp on spp.schedule_id=info.id
-		left join schedule_contacts con on spp.contacts_id=con.id
+		left join schedule_contacts con on info.callon_person=con.id
 		left join sop_project project on info.project_type=2 and info.project_id=project.id
 		left join dict dct1 on dct1.parent_code='industryOwn' and dct1.dict_value=project.industry_own
 		left join dict dct2 on dct2.parent_code='financeStatus' and dct1.dict_value=project.finance_status
@@ -62,7 +61,7 @@
 				and schedule_id=#{callonId} and project_id=#{proId};
 			</when>
 			<when test="conId!=0">
-				and schedule_id in ( SELECT schedule_id FROM schedule_person_plan WHERE contacts_id=#{conId});
+				and schedule_id in (SELECT id FROM schedule_info WHERE callon_person=#{conId});
 			</when>
 		</choose>
 	</select>
