@@ -173,9 +173,8 @@ private Logger log = LoggerFactory.getLogger(CallonController.class);
 	            }
 			}
 			//重要性和提醒通知
-			Map<String,Object> map =detailService.getDictInfo();
-			
-			resultBean.setMap(map);
+			//Map<String,Object> map =detailService.getDictInfo();
+			//resultBean.setMap(map);
 			resultBean.setStatus("ok");
 			resultBean.setEntity(bean);
 		}catch(Exception e){

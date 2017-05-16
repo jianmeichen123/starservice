@@ -1,6 +1,5 @@
 package com.galaxy.im.bean.talk;
 
-import java.beans.Transient;
 import java.util.Date;
 
 import com.galaxy.im.common.DateUtil;
@@ -116,7 +115,6 @@ public class TalkRecordBean extends PagableEntity{
 		this.createTime = createTime;
 	}
 
-	@Transient
 	public String getProjectName() {
 		return projectName;
 	}
