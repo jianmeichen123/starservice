@@ -23,7 +23,9 @@ public class ScheduleDetailBean extends BaseEntity{
 	private String industryOwnName;			//项目行业
 	private String financeStatusName;		//融资阶段
 	
+	private long significanceId;			//重要性id
 	private String significanceName;		//重要性
+	private long wakeupId;					//提醒通知id
 	private String wakeupTime;				//提醒通知
 	
 	private long interviewCount;			//历史访谈记录个数
@@ -181,6 +183,22 @@ public class ScheduleDetailBean extends BaseEntity{
 
 	public void setProjectId(long projectId) {
 		this.projectId = projectId;
+	}
+
+	public long getSignificanceId() {
+		return significanceId;
+	}
+
+	public void setSignificanceId(long significanceId) {
+		this.significanceId = significanceId;
+	}
+
+	public long getWakeupId() {
+		return wakeupId;
+	}
+
+	public void setWakeupId(long wakeupId) {
+		this.wakeupId = wakeupId;
 	}
 
 	
