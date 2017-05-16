@@ -77,7 +77,7 @@
 		    dct1.dict_value significance,
 		    project.id projectId,
 		    project.project_name projectName,
-		    case !isnull(sir.id) when 1 then 0 else 1 end isInterview,
+		    case !isnull(sir.id) when 1 then 2 else 1 end isInterview,
 		    info.is_del isDel
 		from schedule_info info
 		left join schedule_person_plan spp on spp.schedule_id=info.id
