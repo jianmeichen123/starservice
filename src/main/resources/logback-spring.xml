@@ -10,8 +10,8 @@
     <property name="DEV_FILE_PATH" value="/data/apps/startservice_dev/log"></property>
   
     <!-- 开发环境 -->
-    <springProfile name="dev">  
-        <appender name="DEV_FILE_PATH" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
+    <springProfile name="dev">
+        <appender name="DEV_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
 			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> 
 				<fileNamePattern>${DEV_FILE_PATH}/logFile.%d{yyyy-MM-dd}.log</fileNamePattern> 
 				<maxHistory>30</maxHistory> 
@@ -24,7 +24,7 @@
 		<root level="INFO"> 
 			<appender-ref ref="ONLINE_FILE" /> 
 		</root> 
-    </springProfile>
+    </springProfile>  
   
     <!-- 线上环境 -->  
     <springProfile name="online">
