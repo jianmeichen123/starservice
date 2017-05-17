@@ -4,15 +4,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.beanutils.BeanUtils;
 
-import com.galaxy.im.common.db.DBUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.galaxy.im.bean.common.SessionBean;
+import com.galaxy.im.common.db.DBUtils;
 
 public class CUtils {
 	private static CUtils utils = null;
@@ -352,6 +355,26 @@ public class CUtils {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+	
+	public SessionBean getBeanBySession(HttpServletRequest request){
+		SessionBean sessionBean = new SessionBean();
+		if(request!=null){
+			Enumeration<String> keys = request.getHeaderNames();
+			String key = null;
+			
+			while(keys.hasMoreElements()){
+				key = keys.nextElement();
+				if(("sessionid").indexOf(key)>-1){
+					sessionBean.setSessionid(request.getHeader("sessionid"));
+				}else if(("gt").indexOf(key)>-1){
+					sessionBean.setGt(request.getHeader("gt"));
+				}else if(("guserid").indexOf(key)>-1){
+					sessionBean.setGuserid(object2Long(request.getHeader("guserid")));
+				}
+			}
+		}
+		return sessionBean;
 	}
 	
 	/**

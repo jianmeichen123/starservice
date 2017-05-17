@@ -70,7 +70,7 @@
 	</update>
 
 	<!-- 添加sop_file -->
-	<insert id="saveSopFile" useGeneratedKeys="true" keyProperty="id"  keyColumn="id" parameterType="com.galaxy.im.bean.talk.sopFileBean" >
+	<insert id="saveSopFile" useGeneratedKeys="true" keyProperty="id"  keyColumn="id" parameterType="com.galaxy.im.bean.talk.SopFileBean" >
 		insert into sop_file (project_id, belong_uid, file_valid, project_progress,
 	 		file_worktype, career_line, file_source,
 	 		file_type, remark, voucher_id, file_status,

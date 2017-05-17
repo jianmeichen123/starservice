@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
+import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.contracts.ContractsBean;
 import com.galaxy.im.bean.schedule.ScheduleDetailBean;
 import com.galaxy.im.bean.schedule.ScheduleDetailBeanVo;
@@ -62,9 +63,15 @@ public class CallonController {
 		try{
 			int updateCount = 0;
 			Long id = 0L;
+			SessionBean bean = CUtils.get().getBeanBySession(request);
 			if(infoBean!=null && infoBean.getId()!=null && infoBean.getId()!=0){
+				//保存用户ID
+				infoBean.setUpdatedId(bean.getGuserid());
 				updateCount = callonService.updateById(infoBean);
 			}else{
+				
+				//保存用户ID
+				infoBean.setCreatedId(bean.getGuserid());
 				id = callonService.insert(infoBean);
 				
 				//调用客户端
@@ -108,6 +115,7 @@ public class CallonController {
 			resultBean.setStatus("OK");
 			
 		}catch(Exception e){
+			e.printStackTrace();
 		}
 		return resultBean;
 	}
