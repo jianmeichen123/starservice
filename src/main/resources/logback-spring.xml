@@ -22,7 +22,7 @@
 		</appender> 
 
 		<root level="INFO"> 
-			<appender-ref ref="ONLINE_FILE" /> 
+			<appender-ref ref="DEV_FILE" /> 
 		</root> 
     </springProfile>  
   
