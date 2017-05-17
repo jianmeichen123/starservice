@@ -124,8 +124,8 @@
 			<if test="isInterview == 0">and t.isInterview=#{isInterview}</if>
 			<if test="createdId != null">and t.createdId=#{createdId}</if>
 			<if test="selectKey != null">
-				and t.contactName like #{selectKey}
-				or t.projectName like #{selectKey}
+				and (t.contactName like #{selectKey}
+				or t.projectName like #{selectKey})
 			</if>
 			
 		</where>
