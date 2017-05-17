@@ -44,7 +44,7 @@
     </springProfile>  
     
     <!-- 本地测试 -->  
-    <springProfile name="local,dev">  
+    <springProfile name="local">  
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">  
             <encoder>  
                 <pattern>${PATTERN}</pattern>  
