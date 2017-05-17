@@ -1,6 +1,6 @@
 
 server: 
-  context-path: /im
+  context-path: /starservice
   port: 7777
 
 datasource: 
@@ -12,7 +12,7 @@ datasource:
   minIdle: 1  
   maxActive: 2  
   initialSize: 1  
-  timeBetweenEvictionRunsMillis: 3000  
+  timeBetweenEvictionRunsMillis: 3000
   minEvictableIdleTimeMillis: 300000  
   validationQuery: SELECT 'ZTM' FROM DUAL  
   testWhileIdle: true  
@@ -34,6 +34,7 @@ spring:
     min-idle: 0
     timeout: 0
    
-
+stars:
+  server: devvvvvv
 
 
