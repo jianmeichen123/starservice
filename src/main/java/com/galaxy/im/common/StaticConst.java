@@ -15,6 +15,10 @@ public class StaticConst {
 	
 	
 	public static final String pushAddSchedule = "galaxy/scheduleInfo/pushAddSchedule";
+	public static final String pushUpdateSchedule = "galaxy/scheduleInfo/pushUpdateSchedule";
+	public static final String pushDeleteSchedule = "galaxy/scheduleInfo/pushDeleteSchedule";
+	
+	
 	
 	public static final String getShareUserList = "user/getShareUserList"; //power外部接口：获取共享列表
 }

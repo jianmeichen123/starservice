@@ -71,46 +71,12 @@ public class CallonController {
 				//保存用户ID
 				infoBean.setUpdatedId(bean.getGuserid());
 				updateCount = callonService.updateById(infoBean);
+				pushUpdateCallon(request,infoBean);
 			}else{
-				
 				//保存用户ID
 				infoBean.setCreatedId(bean.getGuserid());
 				id = callonService.insert(infoBean);
-				
-				//调用客户端
-				Map<String,Object> headerMap = QHtmlClient.get().getHeaderMap(request);
-				String url = env.getProperty("stars.server") + StaticConst.pushAddSchedule;
-				Map<String,Object> qMap = new HashMap<String,Object>();
-				qMap.put("messageType", "1.4.1");
-				qMap.put("id", id);
-				qMap.put("startTime", infoBean.getStartTime());
-				qMap.put("isAllday", 0);
-				qMap.put("wakeupId", infoBean.getWakeupId());
-				
-				//此处需要查询数据库，取得联系人的名称再保存
-				ContractsBean contractsBean = contractsService.queryById(infoBean.getCallonPerson());
-				if(contractsBean!=null){
-					qMap.put("schedulePerson", contractsBean.getName());
-				}else{
-					qMap.put("schedulePerson", "没有找到对应的联系人");
-				}
-				
-				String result = QHtmlClient.get().post(url, headerMap, qMap);
-				if("error".equals(result)){
-					log.error(CallonController.class.getName() + "_save：添加拜访记录-推送消息时出错","此时服务器返回状态码非200");
-				}else{
-					boolean flag = true;
-					JSONObject resultJson = JSONObject.parseObject(result);
-					if(resultJson!=null && resultJson.containsKey("result")){
-						JSONObject statusJson = resultJson.getJSONObject("result");
-						if(statusJson!=null && statusJson.containsKey("status") && "OK".equals(statusJson.getString("status"))){
-							flag = false;
-						}
-					}
-					if(flag){
-						log.error(CallonController.class.getName() + "_save：添加拜访记录-推送消息时出错","服务器返回正常，但是对方添加数据失败");
-					}
-				}
+				pusAddCallon(request,id,infoBean);
 			}
 			if(updateCount!=0 || id!=0L){
 				resultBean.setFlag(1);
@@ -141,6 +107,12 @@ public class CallonController {
 				SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 				map.put("updatedId", sessionBean.getGuserid());
 				boolean flag = callonService.delCallonById(map);
+				
+				Long id = CUtils.get().object2Long(map.get("id"), 0L);
+				if(id!=0){
+					pushDeleteCallon(request, id);
+				}
+				
 				if(flag){
 					resultBean.setFlag(1);
 				}
@@ -305,6 +277,109 @@ public class CallonController {
 			log.error(CallonController.class.getName() + "_getShareUserList",e);
 		}
 		return resultBean;
+	}
+	
+	//------------------------------- 私有方法，用于新增、更新、删除拜访计划的消息推送的调用操作 --------------------------------//
+	private void pusAddCallon(HttpServletRequest request,Long callonId,ScheduleInfo infoBean){
+		//调用客户端
+		Map<String,Object> headerMap = QHtmlClient.get().getHeaderMap(request);
+		String url = env.getProperty("stars.server") + StaticConst.pushAddSchedule;
+		Map<String,Object> qMap = new HashMap<String,Object>();
+		qMap.put("messageType", "1.4.1");
+		qMap.put("id", callonId);
+		qMap.put("startTime", infoBean.getStartTime());
+		qMap.put("isAllday", 0);
+		qMap.put("wakeupId", infoBean.getWakeupId());
+		
+		//此处需要查询数据库，取得联系人的名称再保存
+		ContractsBean contractsBean = contractsService.queryById(infoBean.getCallonPerson());
+		if(contractsBean!=null){
+			qMap.put("schedulePerson", contractsBean.getName());
+		}else{
+			qMap.put("schedulePerson", "没有找到对应的联系人");
+		}
+		
+		String result = QHtmlClient.get().post(url, headerMap, qMap);
+		if("error".equals(result)){
+			log.error(CallonController.class.getName() + "_save：添加拜访记录-推送消息时出错","此时服务器返回状态码非200");
+		}else{
+			boolean flag = true;
+			JSONObject resultJson = JSONObject.parseObject(result);
+			if(resultJson!=null && resultJson.containsKey("result")){
+				JSONObject statusJson = resultJson.getJSONObject("result");
+				if(statusJson!=null && statusJson.containsKey("status") && "OK".equals(statusJson.getString("status"))){
+					flag = false;
+				}
+			}
+			if(flag){
+				log.error(CallonController.class.getName() + "_save：添加拜访记录-推送消息时出错","服务器返回正常，但是对方添加数据失败");
+			}
+		}
+	}
+	
+	private void pushUpdateCallon(HttpServletRequest request,ScheduleInfo infoBean){
+		//调用客户端
+		Map<String,Object> headerMap = QHtmlClient.get().getHeaderMap(request);
+		String url = env.getProperty("stars.server") + StaticConst.pushUpdateSchedule;
+		Map<String,Object> qMap = new HashMap<String,Object>();
+		qMap.put("messageType", "1.4.2");
+		qMap.put("id", infoBean.getId());
+		qMap.put("startTime", infoBean.getStartTime());
+		qMap.put("isAllday", 0);
+		qMap.put("wakeupId", infoBean.getWakeupId());
+		qMap.put("visitType", "1.4");
+		
+		//此处需要查询数据库，取得联系人的名称再保存
+		ContractsBean contractsBean = contractsService.queryById(infoBean.getCallonPerson());
+		if(contractsBean!=null){
+			qMap.put("schedulePerson", contractsBean.getName());
+		}else{
+			qMap.put("schedulePerson", "没有找到对应的联系人");
+		}
+		
+		String result = QHtmlClient.get().post(url, headerMap, qMap);
+		if("error".equals(result)){
+			log.error(CallonController.class.getName() + "_save：修改拜访记录-推送消息时出错","此时服务器返回状态码非200");
+		}else{
+			boolean flag = true;
+			JSONObject resultJson = JSONObject.parseObject(result);
+			if(resultJson!=null && resultJson.containsKey("result")){
+				JSONObject statusJson = resultJson.getJSONObject("result");
+				if(statusJson!=null && statusJson.containsKey("status") && "OK".equals(statusJson.getString("status"))){
+					flag = false;
+				}
+			}
+			if(flag){
+				log.error(CallonController.class.getName() + "_save：修改拜访记录-推送消息时出错","服务器返回正常，但是对方添加数据失败");
+			}
+		}
+	}
+	
+	private void pushDeleteCallon(HttpServletRequest request,Long callonId){
+		//调用客户端
+		Map<String,Object> headerMap = QHtmlClient.get().getHeaderMap(request);
+		String url = env.getProperty("stars.server") + StaticConst.pushDeleteSchedule;
+		Map<String,Object> qMap = new HashMap<String,Object>();
+		qMap.put("messageType", "1.4.3");
+		qMap.put("id", callonId);
+		qMap.put("visitType", "1.4");
+		
+		String result = QHtmlClient.get().post(url, headerMap, qMap);
+		if("error".equals(result)){
+			log.error(CallonController.class.getName() + "_save：删除拜访记录-推送消息时出错","此时服务器返回状态码非200");
+		}else{
+			boolean flag = true;
+			JSONObject resultJson = JSONObject.parseObject(result);
+			if(resultJson!=null && resultJson.containsKey("result")){
+				JSONObject statusJson = resultJson.getJSONObject("result");
+				if(statusJson!=null && statusJson.containsKey("status") && "OK".equals(statusJson.getString("status"))){
+					flag = false;
+				}
+			}
+			if(flag){
+				log.error(CallonController.class.getName() + "_save：删除拜访记录-推送消息时出错","服务器返回正常，但是对方添加数据失败");
+			}
+		}
 	}
 
 }
