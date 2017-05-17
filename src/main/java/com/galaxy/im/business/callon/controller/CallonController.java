@@ -381,5 +381,27 @@ public class CallonController {
 			}
 		}
 	}
+	
+	/**
+	 * 获取历史访谈记录个数
+	 * @param detail
+	 * @return
+	 */
+	@RequestMapping("getTalkHistoryCounts")
+	@ResponseBody
+	public Object getTalkHistoryCounts(@RequestBody ScheduleDetailBeanVo detail){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		resultBean.setStatus("error");
+		try{
+			long count = detailService.getTalkHistoryCounts(detail);
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("interviewCount", count);
+			resultBean.setStatus("ok");
+			resultBean.setMap(map);
+		}catch(Exception e){
+			log.error(CallonController.class.getName() + "_getTalkHistoryCounts",e);
+		}
+		return resultBean;
+	}
 
 }

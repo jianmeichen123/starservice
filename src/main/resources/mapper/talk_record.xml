@@ -12,7 +12,7 @@
 		FROM sop_interview_record WHERE 1=1
 		<choose>
 			<when test="proId!=0">
-				and schedule_id=#{callonId} and project_id=#{proId}
+				and project_id=#{proId}
 			</when>
 			<when test="conId!=0">
 				and schedule_id in (SELECT id FROM schedule_info WHERE callon_person=#{conId})
@@ -35,7 +35,7 @@
 		SELECT COUNT(1) FROM sop_interview_record WHERE 1=1
 		<choose>
 			<when test="proId!=0">
-				and schedule_id=#{callonId} and project_id=#{proId};
+				and project_id=#{proId};
 			</when>
 			<when test="conId!=0">
 				and schedule_id in (SELECT id FROM schedule_info WHERE callon_person=#{conId});

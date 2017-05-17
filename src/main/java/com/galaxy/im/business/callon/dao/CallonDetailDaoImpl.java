@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.galaxy.im.bean.schedule.ScheduleDetailBean;
+import com.galaxy.im.bean.schedule.ScheduleDetailBeanVo;
+import com.galaxy.im.common.BeanUtils;
 import com.galaxy.im.common.db.BaseDaoImpl;
 import com.galaxy.im.common.exception.DaoException;
 
@@ -42,6 +44,20 @@ private Logger log = LoggerFactory.getLogger(CallonDaoImpl.class);
 			return sqlSessionTemplate.selectList(getSqlName("getScheduleDictList"));
 		} catch (Exception e) {
 			log.error(String.format("查询对象总数出错！语句：%s", getSqlName("getScheduleDictList")), e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 获取历史访谈记录个数
+	 */
+	@Override
+	public long getTalkHistoryCounts(ScheduleDetailBeanVo detail) {
+		try {
+			Map<String, Object> params = BeanUtils.toMap(detail);
+			return sqlSessionTemplate.selectOne(getSqlName("getTalkHistoryCounts"), params);
+		} catch (Exception e) {
+			log.error(String.format("查询对象总数出错！语句：%s", getSqlName("getTalkHistoryCounts")), e);
 			throw new DaoException(e);
 		}
 	}

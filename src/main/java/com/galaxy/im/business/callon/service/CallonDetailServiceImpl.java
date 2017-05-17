@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.galaxy.im.bean.schedule.ScheduleDetailBean;
+import com.galaxy.im.bean.schedule.ScheduleDetailBeanVo;
 import com.galaxy.im.business.callon.dao.ICallonDetailDao;
 import com.galaxy.im.common.db.IBaseDao;
 import com.galaxy.im.common.db.service.BaseServiceImpl;
@@ -48,6 +49,20 @@ public class CallonDetailServiceImpl extends BaseServiceImpl<ScheduleDetailBean>
 			log.error(CallonDetailServiceImpl.class.getName() + ":getDictInfo",e);
 			throw new ServiceException(e);
 		}
+	}
+
+	/**
+	 * 获取历史访谈记录个数
+	 */
+	@Override
+	public long getTalkHistoryCounts(ScheduleDetailBeanVo detail) {
+		try{
+			return dao.getTalkHistoryCounts(detail);
+		}catch(Exception e){
+			log.error(CallonDetailServiceImpl.class.getName() + "_getTalkHistoryCounts",e);
+			throw new ServiceException(e);
+		}
+		
 	}
 
 }

@@ -74,7 +74,7 @@
 		SELECT COUNT(1) FROM sop_interview_record WHERE 1=1
 		<choose>
 			<when test="proId!=0">
-				and schedule_id=#{callonId} and project_id=#{proId};
+				and project_id=#{proId};
 			</when>
 			<when test="conId!=0">
 				and schedule_id in (SELECT id FROM schedule_info WHERE callon_person=#{conId});
@@ -95,6 +95,12 @@
 	<!-- 提醒通知list -->
 	<select id="getScheduleDictList" resultType="hashmap">
 		SELECT id,type,name FROM schedule_dict; 
+	</select>
+	
+	<!-- 历史访谈记录个数 -->
+	<select id="getTalkHistoryCounts" resultType="java.lang.Long" parameterType="java.util.Map">
+		SELECT COUNT(1) FROM sop_interview_record WHERE 
+		<if test="conId!=0" >schedule_id in (SELECT id FROM schedule_info WHERE callon_person=#{conId});</if>
 	</select>
 
 </mapper>
