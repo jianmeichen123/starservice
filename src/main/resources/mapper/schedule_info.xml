@@ -83,7 +83,8 @@
 		    project.project_name projectName,
 		    case !isnull(sir.id) when 1 then 2 else 1 end isInterview,
 		    info.is_del isDel,
-		    info.created_time createdTime
+		    info.created_time createdTime,
+		    info.created_id createdId
 		from schedule_info info
 		left join schedule_contacts con on info.callon_person=con.id
 		left join dict dct1 on dct1.parent_code='significance' and dct1.dict_value=info.significance
@@ -108,7 +109,8 @@
 	    projectId,
 	    projectName,
 	    isInterview,
-	    createdTime
+	    createdTime,
+	    createdId
 	</sql>
 	
 	<sql id="info_where_list">
@@ -120,6 +122,7 @@
 			<if test="callonProgress == 2">and t.currentTimeUnix>t.startTimeUnix</if>
 			<if test="significance != null">and t.significance=#{significance}</if>
 			<if test="isInterview == 0">and t.isInterview=#{isInterview}</if>
+			<if test="createdId != null">and t.createdId=#{createdId}</if>
 			<if test="selectKey != null">
 				and t.contactName like #{selectKey}
 				or t.projectName like #{selectKey}
