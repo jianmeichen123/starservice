@@ -138,8 +138,8 @@ public class CallonController {
 			//long planId = CUtils.get().object2Long(map.get("id"), 0L);
 			if(map!=null){
 				map.put("updatedTime", DateUtil.getMillis(new Date()));
-				map.put("updatedId", CUtils.get().getBeanBySession(request).getGuserid());
-				
+				SessionBean sessionBean = CUtils.get().getBeanBySession(request);
+				map.put("updatedId", sessionBean.getGuserid());
 				boolean flag = callonService.delCallonById(map);
 				if(flag){
 					resultBean.setFlag(1);
