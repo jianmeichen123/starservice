@@ -70,6 +70,28 @@ public class BaseEntity extends PrimaryKeyObject<Long>{
 	public void setUpdatedTime(Long updatedTime) {
 		this.updatedTime = updatedTime;
 	}
+	
+	
+
+	@Override
+	public Long getCreatedId() {
+		return createdId;
+	}
+
+	@Override
+	public void setCreatedId(Long createdId) {
+		this.createdId = createdId;
+	}
+
+	@Override
+	public Long getUpdatedId() {
+		return updatedId;
+	}
+
+	@Override
+	public void setUpdatedId(Long updatedId) {
+		this.updatedId = updatedId;
+	}
 
 	@Override
 	public Long getId() {

@@ -78,7 +78,8 @@
 		    project.id projectId,
 		    project.project_name projectName,
 		    case !isnull(sir.id) when 1 then 2 else 1 end isInterview,
-		    info.is_del isDel
+		    info.is_del isDel,
+		    info.created_time createdTime
 		from schedule_info info
 		left join schedule_contacts con on info.callon_person=con.id
 		left join dict dct1 on dct1.parent_code='significance' and dct1.dict_value=info.significance
@@ -102,7 +103,8 @@
 	    significance,
 	    projectId,
 	    projectName,
-	    isInterview
+	    isInterview,
+	    createdTime
 	</sql>
 	
 	<sql id="info_where_list">
@@ -136,7 +138,8 @@
 		    remark,
 		    significance,
 		    callon_address,
-		    created_id
+		    created_id,
+		    created_time
 		)values(
 			#{type},
 		    #{name},
@@ -150,7 +153,9 @@
 		    #{remark},
 		    #{significance},
 		    #{callonAddress},
-		    #{createdId});
+		    #{createdId},
+		    #{createdTime}
+		    );
 		    <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
 				SELECT LAST_INSERT_ID() AS id
 			</selectKey>

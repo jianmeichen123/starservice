@@ -22,6 +22,11 @@ public abstract class PrimaryKeyObject<PK extends Serializable> implements Seria
 	 * 更新时间
 	 */
 	protected Long updatedTime;
+	
+	
+	protected Long createdId;
+	
+	protected Long updatedId;
 
 	public abstract Long getCreatedTime();
 
@@ -30,5 +35,11 @@ public abstract class PrimaryKeyObject<PK extends Serializable> implements Seria
 	public abstract Long getUpdatedTime();
 
 	public abstract void setUpdatedTime(Long updatedTime);
+	
+	public abstract Long getCreatedId();
+	public abstract void setCreatedId(Long createdId);
+	public abstract Long getUpdatedId();
+	public abstract void setUpdatedId(Long updatedId);
+	
 
 }
