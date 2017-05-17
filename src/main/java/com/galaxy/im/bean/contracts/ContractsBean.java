@@ -12,8 +12,6 @@ public class ContractsBean extends BaseEntity{
 	private String post;
 	private String company;
 	private String address;
-	private Long createdId;
-	private Long updatedId;
 	private String firstpinyin;
 	private int isDel;
 	
@@ -64,18 +62,6 @@ public class ContractsBean extends BaseEntity{
 	}
 	public void setAddress(String address) {
 		this.address = address;
-	}
-	public Long getCreatedId() {
-		return createdId;
-	}
-	public void setCreatedId(Long createdId) {
-		this.createdId = createdId;
-	}
-	public Long getUpdatedId() {
-		return updatedId;
-	}
-	public void setUpdatedId(Long updatedId) {
-		this.updatedId = updatedId;
 	}
 	public String getFirstpinyin() {
 		return firstpinyin;

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.galaxy.im.bean.talk.TalkRecordBean;
-import com.galaxy.im.bean.talk.sopFileBean;
+import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.talk.dao.ITalkRecordDao;
 import com.galaxy.im.common.db.IBaseDao;
 import com.galaxy.im.common.db.service.BaseServiceImpl;
@@ -25,7 +25,7 @@ public class TalkRecordServiceImpl extends BaseServiceImpl<TalkRecordBean> imple
 	 * 保存sopfile文件信息
 	 */
 	@Override
-	public long saveSopFile(sopFileBean sopFileBean) {
+	public long saveSopFile(SopFileBean sopFileBean) {
 		
 		return dao.saveSopFile(sopFileBean);
 	}

@@ -20,7 +20,7 @@ import com.galaxy.im.bean.schedule.ScheduleDetailBean;
 import com.galaxy.im.bean.talk.TalkRecordBean;
 import com.galaxy.im.bean.talk.TalkRecordBeanVo;
 import com.galaxy.im.bean.talk.TalkRecordDetailBean;
-import com.galaxy.im.bean.talk.sopFileBean;
+import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.callon.service.ICallonDetailService;
 import com.galaxy.im.business.talk.service.ITalkRecordDetailService;
 import com.galaxy.im.business.talk.service.ITalkRecordService;
@@ -143,7 +143,7 @@ public class TalkRecordController {
 				if(talkBean.getId()!=null && talkBean.getId()!=0){
 					//保存sop_file
 					if(!"".equals(talkBean.getFileKey()) && talkBean.getFileKey()!=null){
-						sopFileBean sopFileBean =new sopFileBean();
+						SopFileBean sopFileBean =new SopFileBean();
 						sopFileBean.setFileKey(talkBean.getFileKey());
 						sopFileBean.setFileLength(talkBean.getFileLength());
 						sopFileBean.setBucketName(talkBean.getBucketName());

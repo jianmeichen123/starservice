@@ -16,8 +16,6 @@ public class ScheduleInfo extends BaseEntity{
 	private long wakeupId;
 	private String remark;
 	private int significance;
-	private Long createdId;
-	private Long updatedId;
 	private String callonAddress;
 	private Long callonPerson;
 	
@@ -92,18 +90,6 @@ public class ScheduleInfo extends BaseEntity{
 	}
 	public void setSignificance(int significance) {
 		this.significance = significance;
-	}
-	public Long getCreatedId() {
-		return createdId;
-	}
-	public void setCreatedId(Long createdId) {
-		this.createdId = createdId;
-	}
-	public Long getUpdatedId() {
-		return updatedId;
-	}
-	public void setUpdatedId(Long updatedId) {
-		this.updatedId = updatedId;
 	}
 	public String getCallonAddress() {
 		return callonAddress;

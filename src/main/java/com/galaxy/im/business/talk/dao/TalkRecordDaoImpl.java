@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.galaxy.im.bean.talk.TalkRecordBean;
-import com.galaxy.im.bean.talk.sopFileBean;
+import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.common.db.BaseDaoImpl;
 import com.galaxy.im.common.exception.DaoException;
 
@@ -22,7 +22,7 @@ private Logger log = LoggerFactory.getLogger(TalkRecordDaoImpl.class);
 	 * 保存sopfile信息
 	 */
 	@Override
-	public long saveSopFile(sopFileBean sopFileBean) {
+	public long saveSopFile(SopFileBean sopFileBean) {
 		try {
 			sqlSessionTemplate.insert(getSqlName("saveSopFile"), sopFileBean);
 			return sopFileBean.getId();
