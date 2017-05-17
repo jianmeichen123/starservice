@@ -27,6 +27,7 @@ import com.galaxy.im.business.callon.service.ICallonDetailService;
 import com.galaxy.im.business.callon.service.ICallonService;
 import com.galaxy.im.business.contracts.service.IContractsService;
 import com.galaxy.im.common.CUtils;
+import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
 import com.galaxy.im.common.db.QPage;
@@ -127,14 +128,17 @@ public class CallonController {
 	 */
 	@RequestMapping("delCallonPlan")
 	@ResponseBody
-	public Object deletePlan(@RequestBody String paramString){
+	public Object deletePlan(HttpServletRequest request,@RequestBody String paramString){
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		try{
 			Map<String,Object> map = CUtils.get().jsonString2map(paramString);
-			long planId = CUtils.get().object2Long(map.get("id"), 0L);
-			if(planId!=0){
-				boolean flag = callonService.delCallonById(planId);
+			//long planId = CUtils.get().object2Long(map.get("id"), 0L);
+			if(map!=null){
+				map.put("updatedTime", DateUtil.getMillis(new Date()));
+				map.put("updatedId", CUtils.get().getBeanBySession(request).getGuserid());
+				
+				boolean flag = callonService.delCallonById(map);
 				if(flag){
 					resultBean.setFlag(1);
 				}

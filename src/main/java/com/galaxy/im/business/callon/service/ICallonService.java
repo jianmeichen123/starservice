@@ -8,6 +8,6 @@ import com.galaxy.im.common.db.service.IBaseService;
 
 public interface ICallonService extends IBaseService<ScheduleInfo>{
 	QPage selectCallonList(Map<String, Object> paramMap);
-	boolean delCallonById(Long id);
+	boolean delCallonById(Map<String,Object> paramMap);
 	boolean callonEnableEditOrDel(Long id);
 }

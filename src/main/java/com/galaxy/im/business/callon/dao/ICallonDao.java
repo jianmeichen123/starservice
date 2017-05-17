@@ -8,6 +8,6 @@ import com.galaxy.im.common.db.QPage;
 
 public interface ICallonDao extends IBaseDao<ScheduleInfo, Long>{
 	QPage selectCallonList(Map<String, Object> paramMap);
-	int delCallonById(Long id);
+	int delCallonById(Map<String,Object> paramMap);
 	int callonEnableEditOrDel(Long id);
 }

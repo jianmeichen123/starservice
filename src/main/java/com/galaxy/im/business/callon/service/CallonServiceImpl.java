@@ -37,9 +37,9 @@ public class CallonServiceImpl extends BaseServiceImpl<ScheduleInfo> implements 
 	}
 
 	@Override
-	public boolean delCallonById(Long id) {
+	public boolean delCallonById(Map<String,Object> paramMap) {
 		try{
-			return (callonDao.delCallonById(id)>0);
+			return (callonDao.delCallonById(paramMap)>0);
 		}catch(Exception e){
 			log.error(CallonServiceImpl.class.getName() + "_",e);
 			throw new ServiceException(e);

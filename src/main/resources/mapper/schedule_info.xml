@@ -45,8 +45,12 @@
 	</update>
 	
 	<!-- 删除拜访计划 -->
-	<update id="delCallonById" parameterType="long">
-		update schedule_info set is_del=1 where id=#{id};
+	<update id="delCallonById" parameterType="hashmap">
+		update schedule_info set 
+			is_del=1,
+			updated_time=#{updatedTime},
+			updated_id=#{updatedId}
+			where id=#{id};
 	</update>
 	
 	<!-- 判断拜访计划是否允许删除或修改 -->

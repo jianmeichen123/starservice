@@ -39,9 +39,9 @@ public class CallonDaoImpl extends BaseDaoImpl<ScheduleInfo, Long> implements IC
 	}
 
 	@Override
-	public int delCallonById(Long id) {
+	public int delCallonById(Map<String,Object> paramMap) {
 		try{
-			return sqlSessionTemplate.update(getSqlName("delCallonById"),id);
+			return sqlSessionTemplate.update(getSqlName("delCallonById"),paramMap);
 		}catch(Exception e){
 			log.error(getSqlName("delCallonById"),e);
 			throw new DaoException(e);
