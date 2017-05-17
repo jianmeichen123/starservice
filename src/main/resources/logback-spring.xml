@@ -9,7 +9,7 @@
     <!-- dev环境下的日志路 -->
     <property name="DEV_FILE_PATH" value="/data/apps/startservice_dev/log"></property>
   
-    <!-- 开发环境 -->
+    <!-- 开发环境 
     <springProfile name="dev">  
         <appender name="DEV_FILE_PATH" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
 			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> 
@@ -24,7 +24,7 @@
 		<root level="INFO"> 
 			<appender-ref ref="ONLINE_FILE" /> 
 		</root> 
-    </springProfile>
+    </springProfile>-->
   
     <!-- 线上环境 -->  
     <springProfile name="online">
@@ -44,7 +44,7 @@
     </springProfile>  
     
     <!-- 本地测试 -->  
-    <springProfile name="local">  
+    <springProfile name="local,dev">  
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">  
             <encoder>  
                 <pattern>${PATTERN}</pattern>  
