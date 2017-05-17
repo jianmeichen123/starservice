@@ -17,9 +17,8 @@
 				con.name scheduleName,
 				dct.name projectType 
 		FROM sop_interview_record r 
-		left join schedule_person_plan spp on spp.schedule_id=r.schedule_id
-		left join schedule_contacts con on spp.contacts_id=con.id
-		left join schedule_info info on spp.schedule_id=info.id
+		left join schedule_info info on r.schedule_id=info.id
+		left join schedule_contacts con on info.callon_person=con.id
 		left join sop_project project on info.project_type=2 and info.project_id=project.id
 		left join dict dct on dct.parent_code='industryOwn' and dct.dict_value=project.industry_own
 		left join sop_file sf on sf.id=r.file_id

@@ -23,13 +23,61 @@ public class ScheduleDetailBean extends BaseEntity{
 	private String industryOwnName;			//项目行业
 	private String financeStatusName;		//融资阶段
 	
+	private long significanceId;			//重要性id
 	private String significanceName;		//重要性
+	private long wakeupId;					//提醒通知id
 	private String wakeupTime;				//提醒通知
 	
 	private long interviewCount;			//历史访谈记录个数
 	
 	private int interviewFalg;				//访谈标识，1：已访谈，0：未访谈
 	private String interviewContent;		//已访谈，未访谈
+	
+	private String fileKey;					//档案阿里云存储Key
+	private long fileLength;				//档案大小
+	private String bucketName;				//档案bucketName
+	private String fileName;				//档案名称
+	private String viewNotes;				//访谈纪要
+
+	public String getFileKey() {
+		return fileKey;
+	}
+
+	public void setFileKey(String fileKey) {
+		this.fileKey = fileKey;
+	}
+
+	public long getFileLength() {
+		return fileLength;
+	}
+
+	public void setFileLength(long fileLength) {
+		this.fileLength = fileLength;
+	}
+
+	public String getBucketName() {
+		return bucketName;
+	}
+
+	public void setBucketName(String bucketName) {
+		this.bucketName = bucketName;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getViewNotes() {
+		return viewNotes;
+	}
+
+	public void setViewNotes(String viewNotes) {
+		this.viewNotes = viewNotes;
+	}
 
 	public String getStartTime() {
 		return startTime;
@@ -181,6 +229,22 @@ public class ScheduleDetailBean extends BaseEntity{
 
 	public void setProjectId(long projectId) {
 		this.projectId = projectId;
+	}
+
+	public long getSignificanceId() {
+		return significanceId;
+	}
+
+	public void setSignificanceId(long significanceId) {
+		this.significanceId = significanceId;
+	}
+
+	public long getWakeupId() {
+		return wakeupId;
+	}
+
+	public void setWakeupId(long wakeupId) {
+		this.wakeupId = wakeupId;
 	}
 
 	

@@ -73,7 +73,11 @@ public class TalkRecordController {
 			//查询结果放在List
 			List<TalkRecordBean> list = new ArrayList<TalkRecordBean>();
 			for(TalkRecordBean p : page.getContent()){
-				p.setProjectName(bean.getProjectName());
+				if(bean.getProjectName()!=null){
+					p.setProjectName(bean.getProjectName());
+				}else{
+					p.setProjectName("");
+				}
 				list.add(p);
 			}
 			//页面

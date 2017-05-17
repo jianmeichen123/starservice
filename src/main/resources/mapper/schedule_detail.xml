@@ -20,8 +20,15 @@
 		<result column="projectName" property="projectName"/>
 		<result column="industryOwnName" property="industryOwnName"/>
 		<result column="financeStatusName" property="financeStatusName"/>
+		<result column="significanceId" property="significanceId"/>
 		<result column="significanceName" property="significanceName"/>
+		<result column="wakeupId" property="wakeupId"/>
 		<result column="wakeupTime" property="wakeupTime"/>
+		<result column="fileKey" property="fileKey"/>
+		<result column="fileLength" property="fileLength"/>
+		<result column="bucketName" property="bucketName"/>
+		<result column="fileName" property="fileName"/>
+		<result column="viewNotes" property="viewNotes"/>
 	</resultMap>
 	<!-- 拜访详情 -->
 	<select id="selectById" resultType="com.galaxy.im.bean.schedule.ScheduleDetailBean" parameterType="java.lang.Long" resultMap="detailMap">
@@ -41,17 +48,25 @@
 	    	project.project_name projectName,
 	    	dct1.name industryOwnName,
 			dct2.name financeStatusName,
+			info.significance significanceId,
 			dct3.name significanceName,
-			sd.name wakeupTime	
+			info.wakeup_id wakeupId,
+			sd.name wakeupTime,
+			sf.file_key fileKey,
+			sf.file_length fileLength,
+			sf.bucket_name bucketName,
+			sf.file_name fileName,
+			inre.view_notes viewNotes	
 		from schedule_info info
-		left join schedule_person_plan spp on spp.schedule_id=info.id
-		left join schedule_contacts con on spp.contacts_id=con.id
-		left join sop_project project on info.project_type=2 and info.project_id=project.id
+		left join schedule_contacts con on info.callon_person=con.id
+		left join sop_project project on info.project_type=1 and info.project_id=project.id
 		left join dict dct1 on dct1.parent_code='industryOwn' and dct1.dict_value=project.industry_own
-		left join dict dct2 on dct2.parent_code='financeStatus' and dct1.dict_value=project.finance_status
-		left join dict dct3 on dct3.parent_code='significance' and dct1.dict_value=info.significance
+		left join dict dct2 on dct2.parent_code='financeStatus' and dct2.dict_value=project.finance_status
+		left join dict dct3 on dct3.parent_code='significance' and dct3.dict_value=info.significance
 		left join schedule_dict sd on sd.id = info.wakeup_id
-		where info.id=#{id,jdbcType=BIGINT};
+		left join sop_interview_record inre on inre.schedule_id=info.id
+		left join sop_file sf on sf.id=inre.file_id
+		where info.id=#{id};
 	</select>
 	
 	<!-- 项目的拜访历史记录个数 -->
@@ -62,7 +77,7 @@
 				and schedule_id=#{callonId} and project_id=#{proId};
 			</when>
 			<when test="conId!=0">
-				and schedule_id in ( SELECT schedule_id FROM schedule_person_plan WHERE contacts_id=#{conId});
+				and schedule_id in (SELECT id FROM schedule_info WHERE callon_person=#{conId});
 			</when>
 		</choose>
 	</select>
