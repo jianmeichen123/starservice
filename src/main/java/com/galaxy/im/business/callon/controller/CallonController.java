@@ -3,6 +3,7 @@ package com.galaxy.im.business.callon.controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.contracts.ContractsBean;
@@ -251,6 +253,56 @@ public class CallonController {
 			resultBean.setEntity(bean);
 		}catch(Exception e){
 			log.error(CallonController.class.getName() + "：getCallonDetails",e);
+		}
+		return resultBean;
+	}
+	
+	
+	/**
+	 * 拜访列表
+	 * @param paramString
+	 * @return
+	 */
+	@RequestMapping("getShareUserList")
+	@ResponseBody
+	public Object getShareUserList(HttpServletRequest request,HttpServletResponse response,@RequestBody String paramString){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		resultBean.setFlag(0);
+		String userId = "";
+		try{
+			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);	
+			if(paramMap!=null && paramMap.containsKey("userId")){
+				userId = CUtils.get().object2String(paramMap.get("userId"));
+			}
+			
+			//调用客户端
+			Map<String,Object> headerMap = QHtmlClient.get().getHeaderMap(request);
+			String url = env.getProperty("power.server") + StaticConst.getShareUserList;
+			Map<String,Object> qMap = new HashMap<String,Object>();
+			qMap.put("userId", userId);
+			JSONArray valueJson=null;
+			List<Map<String, Object>> list = null;
+			String result = QHtmlClient.get().post(url, headerMap, qMap);
+			if("error".equals(result)){
+				log.error(CallonController.class.getName() + "_getShareUserList：获取拜访共享列表时出错","此时服务器返回状态码非200");
+			}else{
+				boolean flag = true;
+				JSONObject resultJson = JSONObject.parseObject(result);
+				if(resultJson!=null && resultJson.containsKey("value")){
+					valueJson = resultJson.getJSONArray("value");
+					if(resultJson.containsKey("success") && "true".equals(resultJson.getString("success"))){
+						flag = false;
+					}
+					list=CUtils.get().jsonString2list(valueJson);
+				}
+				if(flag){
+					log.error(CallonController.class.getName() + "_getShareUserList：获取拜访共享列表时出错","服务器返回正常，但是对方添加数据失败");
+				}
+			}
+			resultBean.setMapList(list);
+			resultBean.setStatus("OK");
+		}catch(Exception e){
+			log.error(CallonController.class.getName() + "_getShareUserList",e);
 		}
 		return resultBean;
 	}
