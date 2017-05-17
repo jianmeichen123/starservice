@@ -58,6 +58,7 @@
 	<update id="updateById" parameterType="com.galaxy.im.bean.talk.TalkRecordBean">
 		update sop_interview_record
 		<set>
+		 <if test="createdId != 0" > created_id = #{createdId}, </if>
 		  <if test="projectId != 0" > project_id = #{projectId}, </if>
 		  <if test="fileId != 0" > file_id = #{fileId}, </if>
 	      <if test="viewDate != null" > view_date = #{viewDate}, </if>

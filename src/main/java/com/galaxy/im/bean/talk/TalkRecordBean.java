@@ -2,7 +2,6 @@ package com.galaxy.im.bean.talk;
 
 import java.util.Date;
 
-import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.db.PagableEntity;
 
 public class TalkRecordBean extends PagableEntity{
