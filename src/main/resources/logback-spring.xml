@@ -7,7 +7,7 @@
     <property name="ONLINE_FILE_PATH" value="/Users/liyanqiao/temp/log"></property>
     
     <!-- dev环境下的日志路 -->
-    <property name="DEV_FILE_PATH" value="/data/apps/startservice_dev/log"></property>
+    <property name="DEV_FILE_PATH" value="/data/apps/startservice_dev"></property>
   
     <!-- 开发环境 -->
     <springProfile name="dev">
