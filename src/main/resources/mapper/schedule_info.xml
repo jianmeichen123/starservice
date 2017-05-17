@@ -108,14 +108,12 @@
 	<sql id="info_where_list">
 		<where>
 			t.isDel=0
-			<trim prefixOverrides="and">
-				<if test="startTimeUnix != null">t.currentTimeUnix>#{startTimeUnix}</if>
-				<if test="endTimeUnix != null">t.currentTimeUnix&lt;#{endTimeUnix}</if>
-				<if test="callonProgress == 1">t.currentTimeUnix&lt;=t.startTimeUnix</if>
-				<if test="callonProgress == 2">t.currentTimeUnix>t.startTimeUnix</if>
-				<if test="significance != null">t.significance=#{significance}</if>
-				<if test="isInterview == 0">t.isInterview=#{isInterview}</if>
-			</trim>
+			<if test="startTimeUnix != null">and t.currentTimeUnix>#{startTimeUnix}</if>
+			<if test="endTimeUnix != null">and t.currentTimeUnix&lt;#{endTimeUnix}</if>
+			<if test="callonProgress == 1">and t.currentTimeUnix&lt;=t.startTimeUnix</if>
+			<if test="callonProgress == 2">and t.currentTimeUnix>t.startTimeUnix</if>
+			<if test="significance != null">and t.significance=#{significance}</if>
+			<if test="isInterview == 0">and t.isInterview=#{isInterview}</if>
 			<if test="selectKey != null">
 				and t.contactName like #{selectKey}
 				or t.projectName like #{selectKey}

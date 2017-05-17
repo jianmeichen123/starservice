@@ -357,7 +357,7 @@ public class CUtils {
 	/**
 	 * ------------- 私有方法 --------------------
 	 */
-	private String object2JSONString(Object object){
+	public String object2JSONString(Object object){
 		String jsonString = null;
 		try{
 			jsonString = stringIsNotEmpty(object)?

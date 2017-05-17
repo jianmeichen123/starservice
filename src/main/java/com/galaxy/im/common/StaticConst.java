@@ -11,4 +11,8 @@ public class StaticConst {
 	
 	
 	public static final String transfer_projects_key = "transfer_projects_key";		//项目移交key
+	
+	
+	
+	public static final String pushAddSchedule = "galaxy/scheduleInfo/pushAddSchedule";
 }

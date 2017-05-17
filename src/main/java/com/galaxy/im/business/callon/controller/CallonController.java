@@ -2,29 +2,46 @@ package com.galaxy.im.business.callon.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONObject;
+import com.galaxy.im.bean.contracts.ContractsBean;
 import com.galaxy.im.bean.schedule.ScheduleDetailBean;
 import com.galaxy.im.bean.schedule.ScheduleDetailBeanVo;
 import com.galaxy.im.bean.schedule.ScheduleInfo;
 import com.galaxy.im.business.callon.service.ICallonDetailService;
 import com.galaxy.im.business.callon.service.ICallonService;
+import com.galaxy.im.business.contracts.service.IContractsService;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
+import com.galaxy.im.common.StaticConst;
 import com.galaxy.im.common.db.QPage;
+import com.galaxy.im.common.html.QHtmlClient;
 
 @Controller
 @RequestMapping("/callon")
 public class CallonController {
-private Logger log = LoggerFactory.getLogger(CallonController.class);
+	private Logger log = LoggerFactory.getLogger(CallonController.class);
+	
+	@Autowired
+	private Environment env;
+	
+	@Autowired
+	private IContractsService contractsService;
+	
 	
 	@Autowired
 	private ICallonDetailService detailService;
@@ -39,7 +56,7 @@ private Logger log = LoggerFactory.getLogger(CallonController.class);
 	 */
 	@RequestMapping("saveCallonPlan")
 	@ResponseBody
-	public Object save(@RequestBody ScheduleInfo infoBean){
+	public Object save(HttpServletRequest request,HttpServletResponse response,@RequestBody ScheduleInfo infoBean){
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		try{
@@ -49,6 +66,41 @@ private Logger log = LoggerFactory.getLogger(CallonController.class);
 				updateCount = callonService.updateById(infoBean);
 			}else{
 				id = callonService.insert(infoBean);
+				
+				//调用客户端
+				Map<String,Object> headerMap = QHtmlClient.get().getHeaderMap(request);
+				String url = env.getProperty("stars.server") + StaticConst.pushAddSchedule;
+				Map<String,Object> qMap = new HashMap<String,Object>();
+				qMap.put("messageType", "1.4.1");
+				qMap.put("id", id);
+				qMap.put("startTime", infoBean.getStartTime());
+				qMap.put("isAllday", 0);
+				qMap.put("wakeupId", infoBean.getWakeupId());
+				
+				//此处需要查询数据库，取得联系人的名称再保存
+				ContractsBean contractsBean = contractsService.queryById(infoBean.getCallonPerson());
+				if(contractsBean!=null){
+					qMap.put("schedulePerson", contractsBean.getName());
+				}else{
+					qMap.put("schedulePerson", "没有找到对应的联系人");
+				}
+				
+				String result = QHtmlClient.get().post(url, headerMap, qMap);
+				if("error".equals(result)){
+					log.error(CallonController.class.getName() + "_save：添加拜访记录-推送消息时出错","此时服务器返回状态码非200");
+				}else{
+					boolean flag = true;
+					JSONObject resultJson = JSONObject.parseObject(result);
+					if(resultJson!=null && resultJson.containsKey("result")){
+						JSONObject statusJson = resultJson.getJSONObject("result");
+						if(statusJson!=null && statusJson.containsKey("status") && "OK".equals(statusJson.getString("status"))){
+							flag = false;
+						}
+					}
+					if(flag){
+						log.error(CallonController.class.getName() + "_save：添加拜访记录-推送消息时出错","服务器返回正常，但是对方添加数据失败");
+					}
+				}
 			}
 			if(updateCount!=0 || id!=0L){
 				resultBean.setFlag(1);
