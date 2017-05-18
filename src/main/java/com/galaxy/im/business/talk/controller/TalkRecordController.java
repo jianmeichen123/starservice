@@ -32,7 +32,6 @@ import com.galaxy.im.business.callon.service.ICallonDetailService;
 import com.galaxy.im.business.talk.service.ITalkRecordDetailService;
 import com.galaxy.im.business.talk.service.ITalkRecordService;
 import com.galaxy.im.common.CUtils;
-import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
 import com.galaxy.im.common.db.Page;
@@ -222,8 +221,6 @@ public class TalkRecordController {
 					}
 					
 					//更新
-					talkBean.setCreatedId(bean.getGuserid());
-					talkBean.setUpdatedTime(DateUtil.getMillis(new Date()));
 					updateCount = service.updateById(talkBean);
 				}else{
 					//保存

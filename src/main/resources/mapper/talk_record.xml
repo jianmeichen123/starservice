@@ -6,19 +6,20 @@
 	
 	<!-- 访谈记录list -->
 	<select id="select" resultType="com.galaxy.im.bean.talk.TalkRecordBean" parameterType="java.util.Map" resultMap="talkMap">
-		SELECT id,
-		date_format(view_date,'%Y/%m/%d %H:%i') viewDateStr,
-		view_target viewTarget 
-		FROM sop_interview_record WHERE 1=1
+		SELECT r.id,
+			   date_format(r.view_date,'%Y/%m/%d %H:%i') viewDateStr,
+			   con.name viewTarget 
+		FROM sop_interview_record r
+		LEFT JOIN schedule_contacts con on r.view_target=con.id WHERE 1=1
 		<choose>
 			<when test="proId!=0">
-				and project_id=#{proId}
+				and r.project_id=#{proId}
 			</when>
 			<when test="conId!=0">
-				and schedule_id in (SELECT id FROM schedule_info WHERE callon_person=#{conId})
+				and r.schedule_id in (SELECT id FROM schedule_info WHERE callon_person=#{conId})
 			</when>
 		</choose>
-		GROUP BY view_date desc
+		GROUP BY r.view_date desc
 		<if test="offset != null and limit != null">
 			limit #{offset}, #{limit};
 		</if>
@@ -58,10 +59,7 @@
 	<update id="updateById" parameterType="com.galaxy.im.bean.talk.TalkRecordBean">
 		update sop_interview_record
 		<set>
-		 <if test="createdId != 0" > created_id = #{createdId}, </if>
-		  <if test="projectId != 0" > project_id = #{projectId}, </if>
 		  <if test="fileId != 0" > file_id = #{fileId}, </if>
-	      <if test="viewDate != null" > view_date = #{viewDate}, </if>
 	      <if test="viewTarget != null" > view_target = #{viewTarget}, </if>
 	      <if test="viewNotes != null" > view_notes = #{viewNotes}, </if>
 	      <if test="viewNotesText != null" > view_notes_text = #{viewNotesText}, </if>
