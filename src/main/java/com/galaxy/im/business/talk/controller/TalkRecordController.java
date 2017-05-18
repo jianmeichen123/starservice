@@ -234,6 +234,9 @@ public class TalkRecordController {
 			
 			if(updateCount!=0 || id!=0L){
 				resultBean.setStatus("OK");
+				Map<String,Object> map = new HashMap<String,Object>();
+				map.put("talkRecordId", id);
+				resultBean.setMap(map);
 			}
 			
 		}catch(Exception e){
