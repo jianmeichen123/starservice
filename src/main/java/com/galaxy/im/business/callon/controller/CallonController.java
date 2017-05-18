@@ -231,7 +231,7 @@ public class CallonController {
 	
 	
 	/**
-	 * 拜访列表
+	 * 拜访共享列表
 	 * @param paramString
 	 * @return
 	 */

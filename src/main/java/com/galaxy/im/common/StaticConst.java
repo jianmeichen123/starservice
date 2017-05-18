@@ -21,4 +21,5 @@ public class StaticConst {
 	
 	
 	public static final String getShareUserList = "user/getShareUserList"; //power外部接口：获取共享列表
+	public static final String getCreadIdInfo = "user/getCreadIdInfo";   //power外部接口：获取用户名和部门名称
 }

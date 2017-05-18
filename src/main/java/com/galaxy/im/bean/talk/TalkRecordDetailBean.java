@@ -5,7 +5,7 @@ import com.galaxy.im.common.db.BaseEntity;
 public class TalkRecordDetailBean extends BaseEntity{
 
 	private static final long serialVersionUID = -1515654189271517276L;
-
+	
 	private String viewDate;			//开始时间
 	private String callonName;			//拜访人：拜访人姓名（项目归属）
 	private String viewTarget;			//访谈对象
@@ -17,8 +17,6 @@ public class TalkRecordDetailBean extends BaseEntity{
 	private String fileName;			//档案名称
 	
 	private String viewNotes;			//访谈纪要
-	private String scheduleName;		//拜访人姓名
-	private String projectType;			//拜访项目归属
 	
 	public String getFileKey() {
 		return fileKey;
@@ -68,18 +66,6 @@ public class TalkRecordDetailBean extends BaseEntity{
 	}
 	public void setViewNotes(String viewNotes) {
 		this.viewNotes = viewNotes;
-	}
-	public String getScheduleName() {
-		return scheduleName;
-	}
-	public void setScheduleName(String scheduleName) {
-		this.scheduleName = scheduleName;
-	}
-	public String getProjectType() {
-		return projectType;
-	}
-	public void setProjectType(String projectType) {
-		this.projectType = projectType;
 	}
 	public long getFileLength() {
 		return fileLength;
