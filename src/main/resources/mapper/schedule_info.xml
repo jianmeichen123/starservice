@@ -81,7 +81,7 @@
 		    dct1.dict_value significance,
 		    project.id projectId,
 		    project.project_name projectName,
-		    case !isnull(sir.id) when 1 then 2 else 1 end isInterview,
+		    case isnull(sir.id) when 1 then 1 else 2 end isInterview,
 		    info.is_del isDel,
 		    info.created_time createdTime,
 		    info.created_id createdId
@@ -90,7 +90,8 @@
 		left join dict dct1 on dct1.parent_code='significance' and dct1.dict_value=info.significance
 		left join sop_project project on info.project_type=1 and info.project_id=project.id
 		left join sop_interview_record sir on sir.schedule_id=info.id and sir.project_id=0
-		where info.type=2) t
+		where info.type=2
+		group by info.id) t
 	</sql>
 	
 	<sql id="info_column_list">
