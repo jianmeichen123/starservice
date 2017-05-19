@@ -122,7 +122,7 @@
 			<if test="callonProgress == 1">and t.currentTimeUnix&lt;=t.startTimeUnix</if>
 			<if test="callonProgress == 2">and t.currentTimeUnix>t.startTimeUnix</if>
 			<if test="significance != null">and t.significance=#{significance}</if>
-			<if test="isInterview == 0">and t.isInterview=#{isInterview}</if>
+			<if test="isInterview != null">and t.isInterview=#{isInterview}</if>
 			<if test="createdId != null">and t.createdId=#{createdId}</if>
 			<if test="selectKey != null">
 				and (t.contactName like #{selectKey}
