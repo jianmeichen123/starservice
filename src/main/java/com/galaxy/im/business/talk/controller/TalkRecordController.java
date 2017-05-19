@@ -88,7 +88,9 @@ public class TalkRecordController {
 				resultBean.setEntityList(list);
 				resultBean.setMap(map);
 			}else if(record.getCallonId()!=0){//拜访详情的历史访谈记录
-				ScheduleDetailBean bean = dService.queryById(record.getCallonId());
+				//ScheduleDetailBean bean = dService.queryById(record.getCallonId());
+				List<ScheduleDetailBean> listBean = dService.getQueryById(record.getCallonId());
+				ScheduleDetailBean bean = listBean.get(0);
 				if(bean!=null){
 					//关联项目不为空，取项目的历史访谈记录
 					if(!"".equals(bean.getProjectName()) && bean.getProjectName()!=null){

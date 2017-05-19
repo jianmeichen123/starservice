@@ -6,7 +6,35 @@
 	
 	<!-- 访谈记录list -->
 	<select id="select" resultType="com.galaxy.im.bean.talk.TalkRecordBean" parameterType="java.util.Map" resultMap="talkMap">
-		SELECT r.id,
+		SELECT 	tt.id,
+				date_format(tt.view_date,'%Y/%m/%d %H:%i') viewDateStr,
+				case tt.schedule_id
+				WHEN 0 THEN tt.view_target
+				else tt.name
+				end viewTarget
+		FROM(
+			SELECT 	 r.id,
+					 r.view_date,
+					 con.name,
+					 r.view_target,
+					 r.schedule_id
+				FROM sop_interview_record r
+				LEFT JOIN schedule_contacts con on r.view_target=con.id WHERE 1=1
+			<choose>
+				<when test="proId!=0">
+					and r.project_id=#{proId}
+				</when>
+				<when test="conId!=0">
+					and r.schedule_id in (SELECT id FROM schedule_info WHERE callon_person=#{conId})
+				</when>
+			</choose>
+			ORDER BY r.view_date desc
+			<if test="offset != null and limit != null">
+				limit #{offset}, #{limit}
+			</if> 
+		) tt;
+		
+		<!-- SELECT r.id,
 			   date_format(r.view_date,'%Y/%m/%d %H:%i') viewDateStr,
 			   con.name viewTarget 
 		FROM sop_interview_record r
@@ -22,7 +50,7 @@
 		ORDER BY r.view_date desc
 		<if test="offset != null and limit != null">
 			limit #{offset}, #{limit};
-		</if>
+		</if> -->
 	</select>
 	<resultMap type="com.galaxy.im.bean.talk.TalkRecordBean" id="talkMap">
 		<result column="id" property="id"/>
