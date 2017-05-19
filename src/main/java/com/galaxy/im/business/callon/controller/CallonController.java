@@ -186,7 +186,9 @@ public class CallonController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setStatus("error");
 		try{
-			ScheduleDetailBean bean = detailService.queryById(detail.getCallonId());
+			List<ScheduleDetailBean> listBean = detailService.getQueryById(detail.getCallonId());
+			ScheduleDetailBean bean = listBean.get(0);
+			//detailService.queryById(detail.getCallonId());
 			if(bean!=null){
 				//关联项目不为空，取项目的历史访谈记录
 				if(!"".equals(bean.getProjectName()) && bean.getProjectName()!=null){

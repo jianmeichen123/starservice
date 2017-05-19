@@ -1,5 +1,6 @@
 package com.galaxy.im.business.callon.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.galaxy.im.bean.schedule.ScheduleDetailBean;
@@ -12,5 +13,7 @@ public interface ICallonDetailService extends IBaseService<ScheduleDetailBean>{
 	Map<String, Object> getDictInfo();
 	//获取历史访谈记录个数
 	long getTalkHistoryCounts(ScheduleDetailBeanVo detail);
+	//拜访详情
+	List<ScheduleDetailBean> getQueryById(long callonId);
 
 }

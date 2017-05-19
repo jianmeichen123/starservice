@@ -11,6 +11,7 @@ import com.galaxy.im.bean.schedule.ScheduleDetailBean;
 import com.galaxy.im.bean.schedule.ScheduleDetailBeanVo;
 import com.galaxy.im.common.BeanUtils;
 import com.galaxy.im.common.db.BaseDaoImpl;
+import com.galaxy.im.common.db.SqlId;
 import com.galaxy.im.common.exception.DaoException;
 
 @Repository
@@ -58,6 +59,19 @@ private Logger log = LoggerFactory.getLogger(CallonDaoImpl.class);
 			return sqlSessionTemplate.selectOne(getSqlName("getTalkHistoryCounts"), params);
 		} catch (Exception e) {
 			log.error(String.format("查询对象总数出错！语句：%s", getSqlName("getTalkHistoryCounts")), e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 拜访详情
+	 */
+	@Override
+	public List<ScheduleDetailBean> getQueryById(long id) {
+		try {
+			return sqlSessionTemplate.selectList(getSqlName(SqlId.SQL_SELECT_BY_ID), id);
+		} catch (Exception e) {
+			log.error(String.format("根据ID查询对象出错！语句：%s", getSqlName(SqlId.SQL_SELECT_BY_ID)), e);
 			throw new DaoException(e);
 		}
 	}

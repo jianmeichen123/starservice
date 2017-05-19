@@ -68,7 +68,7 @@
 		left join schedule_dict sd on sd.id = info.wakeup_id
 		left join sop_interview_record inre on inre.schedule_id=info.id
 		left join sop_file sf on sf.id=inre.file_id
-		where info.id=#{id};
+		where info.id=#{id} ORDER BY inre.created_time desc;
 	</select>
 	
 	<!-- 项目的拜访历史记录个数 -->

@@ -221,6 +221,7 @@ public class TalkRecordController {
 					}
 					
 					//更新
+					id=talkBean.getId();
 					updateCount = service.updateById(talkBean);
 				}else{
 					//保存

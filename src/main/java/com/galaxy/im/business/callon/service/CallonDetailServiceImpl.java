@@ -65,4 +65,17 @@ public class CallonDetailServiceImpl extends BaseServiceImpl<ScheduleDetailBean>
 		
 	}
 
+	/**
+	 * 拜访详情
+	 */
+	@Override
+	public List<ScheduleDetailBean> getQueryById(long callonId) {
+		try{
+			return dao.getQueryById(callonId);
+		}catch(Exception e){
+			log.error(CallonDetailServiceImpl.class.getName() + "_getQueryById",e);
+			throw new ServiceException(e);
+		}
+	}
+
 }
