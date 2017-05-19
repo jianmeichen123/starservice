@@ -186,7 +186,9 @@ public class CallonController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setStatus("error");
 		try{
-			ScheduleDetailBean bean = detailService.queryById(detail.getCallonId());
+			List<ScheduleDetailBean> listBean = detailService.getQueryById(detail.getCallonId());
+			ScheduleDetailBean bean = listBean.get(0);
+			//detailService.queryById(detail.getCallonId());
 			if(bean!=null){
 				//关联项目不为空，取项目的历史访谈记录
 				if(!"".equals(bean.getProjectName()) && bean.getProjectName()!=null){
@@ -231,7 +233,7 @@ public class CallonController {
 	
 	
 	/**
-	 * 拜访列表
+	 * 拜访共享列表
 	 * @param paramString
 	 * @return
 	 */
@@ -380,6 +382,28 @@ public class CallonController {
 				log.error(CallonController.class.getName() + "_save：删除拜访记录-推送消息时出错","服务器返回正常，但是对方添加数据失败");
 			}
 		}
+	}
+	
+	/**
+	 * 获取历史访谈记录个数
+	 * @param detail
+	 * @return
+	 */
+	@RequestMapping("getTalkHistoryCounts")
+	@ResponseBody
+	public Object getTalkHistoryCounts(@RequestBody ScheduleDetailBeanVo detail){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		resultBean.setStatus("error");
+		try{
+			long count = detailService.getTalkHistoryCounts(detail);
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("interviewCount", count);
+			resultBean.setStatus("ok");
+			resultBean.setMap(map);
+		}catch(Exception e){
+			log.error(CallonController.class.getName() + "_getTalkHistoryCounts",e);
+		}
+		return resultBean;
 	}
 
 }

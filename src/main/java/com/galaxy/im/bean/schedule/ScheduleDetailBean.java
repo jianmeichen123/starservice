@@ -38,6 +38,7 @@ public class ScheduleDetailBean extends BaseEntity{
 	private String bucketName;				//档案bucketName
 	private String fileName;				//档案名称
 	private String viewNotes;				//访谈纪要
+	private long talkRecordId;				//访谈记录id
 
 	public String getFileKey() {
 		return fileKey;
@@ -247,5 +248,12 @@ public class ScheduleDetailBean extends BaseEntity{
 		this.wakeupId = wakeupId;
 	}
 
-	
+	public long getTalkRecordId() {
+		return talkRecordId;
+	}
+
+	public void setTalkRecordId(long talkRecordId) {
+		this.talkRecordId = talkRecordId;
+	}
+
 }
