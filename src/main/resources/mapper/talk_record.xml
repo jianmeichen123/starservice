@@ -19,7 +19,7 @@
 				and r.schedule_id in (SELECT id FROM schedule_info WHERE callon_person=#{conId})
 			</when>
 		</choose>
-		GROUP BY r.view_date desc
+		ORDER BY r.view_date desc
 		<if test="offset != null and limit != null">
 			limit #{offset}, #{limit};
 		</if>
