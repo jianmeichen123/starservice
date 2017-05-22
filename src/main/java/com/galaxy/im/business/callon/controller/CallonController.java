@@ -1,6 +1,7 @@
 package com.galaxy.im.business.callon.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +33,7 @@ import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
+import com.galaxy.im.common.cache.redis.IRedisCache;
 import com.galaxy.im.common.db.QPage;
 import com.galaxy.im.common.html.QHtmlClient;
 
@@ -39,6 +41,9 @@ import com.galaxy.im.common.html.QHtmlClient;
 @RequestMapping("/callon")
 public class CallonController {
 	private Logger log = LoggerFactory.getLogger(CallonController.class);
+	
+	@Autowired
+	private IRedisCache<String,Object> cache;
 	
 	@Autowired
 	private Environment env;
@@ -185,17 +190,40 @@ public class CallonController {
 	public Object getCallonDetails(@RequestBody ScheduleDetailBeanVo detail){
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setStatus("error");
+		List<String> list = null;
 		try{
+			//获取缓存里项目移交
+			boolean res = cache.hasKey(StaticConst.transfer_projects_key);
+			if(res){
+				//获取项目移交id
+				String transferId =cache.get(StaticConst.transfer_projects_key).toString();
+				//将获取到的项目id存到list里
+				transferId = transferId.replace(" ", "");
+				if(transferId.startsWith("[")){
+					transferId = transferId.substring(1);
+				}
+				if(transferId.endsWith("]")){
+					transferId = transferId.substring(0,transferId.length()-1);
+				}
+				String[] array = transferId.split(",");
+				if(array!=null && array.length>0){
+					list=Arrays.asList(array);
+				}
+			}
+			//拜访详情
 			List<ScheduleDetailBean> listBean = detailService.getQueryById(detail.getCallonId());
 			ScheduleDetailBean bean = listBean.get(0);
-			//detailService.queryById(detail.getCallonId());
 			if(bean!=null){
 				//关联项目不为空，取项目的历史访谈记录
 				if(!"".equals(bean.getProjectName()) && bean.getProjectName()!=null){
 					detail.setProId(bean.getProjectId());
+					//访谈记录个数
 					long count = detailService.queryCount(detail);
 					bean.setInterviewCount(count);
-					
+					//判断项目是否移交
+					if(list!=null && list.size()>0 && list.contains(String.valueOf(bean.getProjectId()))){
+						bean.setTransferFlag(1);
+					}
 				}
 				//访谈对象不为空，取访谈对象的历史访谈记录
 				else if(!"".equals(bean.getContactName()) && bean.getContactName()!=null){
@@ -219,10 +247,9 @@ public class CallonController {
 	            	bean.setInterviewFalg(1);
 	                bean.setInterviewContent("已访谈");
 	            }
+				
+				
 			}
-			//重要性和提醒通知
-			//Map<String,Object> map =detailService.getDictInfo();
-			//resultBean.setMap(map);
 			resultBean.setStatus("ok");
 			resultBean.setEntity(bean);
 		}catch(Exception e){
@@ -230,7 +257,6 @@ public class CallonController {
 		}
 		return resultBean;
 	}
-	
 	
 	/**
 	 * 拜访共享列表

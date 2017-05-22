@@ -39,6 +39,8 @@ public class ScheduleDetailBean extends BaseEntity{
 	private String fileName;				//档案名称
 	private String viewNotes;				//访谈纪要
 	private long talkRecordId;				//访谈记录id
+	
+	private long transferFlag;				//项目是否移交
 
 	public String getFileKey() {
 		return fileKey;
@@ -254,6 +256,14 @@ public class ScheduleDetailBean extends BaseEntity{
 
 	public void setTalkRecordId(long talkRecordId) {
 		this.talkRecordId = talkRecordId;
+	}
+
+	public long getTransferFlag() {
+		return transferFlag;
+	}
+
+	public void setTransferFlag(long transferFlag) {
+		this.transferFlag = transferFlag;
 	}
 
 }
