@@ -81,7 +81,7 @@
 		    dct1.dict_value significance,
 		    project.id projectId,
 		    project.project_name projectName,
-		    case isnull(sir.id) when 1 then 1 else 2 end isInterview,
+		    case (isnull(sir.id) &amp;&amp; current_timestamp()>UNIX_TIMESTAMP(info.start_time)) when 1 then 1 else 2 end isInterview,
 		    info.is_del isDel,
 		    info.created_time createdTime,
 		    info.created_id createdId
@@ -123,7 +123,7 @@
 			<if test="callonProgress == 2">and t.currentTimeUnix>t.startTimeUnix</if>
 			<if test="significance != null">and t.significance=#{significance}</if>
 			<if test="isInterview != null">
-				and t.isInterview=#{isInterview} and t.currentTimeUnix>t.startTimeUnix
+				and t.isInterview=#{isInterview}
 			</if>
 			<if test="createdId != null">and t.createdId=#{createdId}</if>
 			<if test="selectKey != null">
