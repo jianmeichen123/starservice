@@ -117,8 +117,8 @@
 	<sql id="info_where_list">
 		<where>
 			t.isDel=0
-			<if test="startTimeUnix != null">and t.currentTimeUnix>#{startTimeUnix}</if>
-			<if test="endTimeUnix != null">and t.currentTimeUnix&lt;#{endTimeUnix}</if>
+			<if test="startTimeUnix != null">and t.startTimeUnix>#{startTimeUnix}</if>
+			<if test="endTimeUnix != null">and t.endTimeUnix&lt;#{endTimeUnix}</if>
 			<if test="callonProgress == 1">and t.currentTimeUnix&lt;=t.startTimeUnix</if>
 			<if test="callonProgress == 2">and t.currentTimeUnix>t.startTimeUnix</if>
 			<if test="significance != null">and t.significance=#{significance}</if>
