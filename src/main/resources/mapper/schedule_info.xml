@@ -117,13 +117,13 @@
 	<sql id="info_where_list">
 		<where>
 			t.isDel=0
-			<if test="startTimeUnix != null">and t.startTime>#{startTimeUnix}</if>
-			<if test="endTimeUnix != null">and t.endTime&lt;#{endTimeUnix}</if>
-			<if test="callonProgress == 1">and t.currentTime&lt;=t.startTime</if>
-			<if test="callonProgress == 2">and t.currentTime>t.startTime</if>
+			<if test="startTimeUnix != null">and t.startTimeUnix>#{startTimeUnix}</if>
+			<if test="endTimeUnix != null">and t.startTimeUnix&lt;#{endTimeUnix}</if>
+			<if test="callonProgress == 1">and t.currentTimeUnix&lt;=t.startTimeUnix</if>
+			<if test="callonProgress == 2">and t.currentTimeUnix>t.startTimeUnix</if>
 			<if test="significance != null">and t.significance=#{significance}</if>
 			<if test="isInterview != null">
-				and (t.isInterview=#{isInterview} and t.currentTime>t.startTime)
+				and t.isInterview=#{isInterview} and t.currentTimeUnix>t.startTimeUnix
 			</if>
 			<if test="createdId != null">and t.createdId=#{createdId}</if>
 			<if test="selectKey != null">
