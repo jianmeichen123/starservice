@@ -190,4 +190,18 @@
 		<result column="significance" property="significance"/>
 		<result column="callon_address" property="callonAddress"/>
 	</resultMap>
+	
+	<!-- 判断时间是否冲突 或 时间冲突数 -->
+	<select id="getCTSchedule" parameterType="hashmap" resultType="hashmap">
+		select tt.id,tt.name from
+			(select id,name,
+			date_format(start_time,'%Y/%m/%d %H:%i') startTime,
+			date_format(end_time,'%Y/%m/%d %H:%i') endTime 
+			from schedule_info where type=2 or type=3 and created_id=#{userId} and is_del=0) tt
+		where 
+		<if test="startTime != null">
+			<![CDATA[tt.startTime<=#{startTime}]]> 
+			<![CDATA[and tt.endTime>=#{startTime}]]>;
+		</if>
+	</select>
 </mapper>
