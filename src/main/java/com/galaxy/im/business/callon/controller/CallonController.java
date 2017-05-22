@@ -206,7 +206,9 @@ public class CallonController {
 					transferId = transferId.substring(0,transferId.length()-1);
 				}
 				String[] array = transferId.split(",");
-				list=Arrays.asList(array);
+				if(array!=null && array.length>0){
+					list=Arrays.asList(array);
+				}
 			}
 			//拜访详情
 			List<ScheduleDetailBean> listBean = detailService.getQueryById(detail.getCallonId());
@@ -219,7 +221,7 @@ public class CallonController {
 					long count = detailService.queryCount(detail);
 					bean.setInterviewCount(count);
 					//判断项目是否移交
-					if(list.contains(String.valueOf(bean.getProjectId()))){
+					if(list!=null && list.size()>0 && list.contains(String.valueOf(bean.getProjectId()))){
 						bean.setTransferFlag(1);
 					}
 				}
