@@ -109,7 +109,7 @@
 	    significance,
 	    projectId,
 	    projectName,
-	    isInterview,
+	    case (isInterview=1 && currentTimeUnix>startTimeUnix) when 1 then 1 else 2 end isInterview,
 	    createdTime,
 	    createdId
 	</sql>
