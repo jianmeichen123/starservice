@@ -123,7 +123,7 @@
 			<if test="callonProgress == 2">and t.currentTime>t.startTime</if>
 			<if test="significance != null">and t.significance=#{significance}</if>
 			<if test="isInterview != null">
-				and (t.isInterview=#{isInterview} and t.currentTime&lt;=t.startTime)
+				and (t.isInterview=#{isInterview} and t.currentTime>t.startTime)
 			</if>
 			<if test="createdId != null">and t.createdId=#{createdId}</if>
 			<if test="selectKey != null">
