@@ -72,9 +72,9 @@
 		    con.post contactPost,
 		    info.name schedultMatter,
 		    date_format(info.start_time,'%Y/%m/%d %H:%i') startTime,
-		    info.start_time startTimeUnix,
+		    UNIX_TIMESTAMP(info.start_time) startTimeUnix,
 		    date_format(info.end_time,'%Y/%m/%d %H:%i') endTime,
-		    info.end_time endTimeUnix,
+		    UNIX_TIMESTAMP(info.end_time) endTimeUnix,
 		    date_format(now(),'%Y/%m/%d %H:%i') currentTime,
 		    UNIX_TIMESTAMP(current_timestamp()) currentTimeUnix,
 		    dct1.name significanceText,
@@ -122,11 +122,12 @@
 			<if test="callonProgress == 1">and t.currentTime&lt;=t.startTime</if>
 			<if test="callonProgress == 2">and t.currentTime>t.startTime</if>
 			<if test="significance != null">and t.significance=#{significance}</if>
-			<if test="isInterview != null">and t.isInterview=#{isInterview}</if>
+			<if test="isInterview != null">
+				and (t.isInterview=#{isInterview} and t.currentTime&lt;=t.startTime)
+			</if>
 			<if test="createdId != null">and t.createdId=#{createdId}</if>
 			<if test="selectKey != null">
-				and (t.contactName like #{selectKey}
-				or t.projectName like #{selectKey})
+				and (t.contactName like #{selectKey} or t.projectName like #{selectKey})
 			</if>
 			
 		</where>
