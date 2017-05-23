@@ -7,7 +7,7 @@
 	<!-- 获取项目list -->
 	<select id="select" resultType="com.galaxy.im.bean.project.ProjectBean" parameterType="java.util.Map" resultMap="projectMap">
 		SELECT id,project_name projectName FROM sop_project 
-		WHERE project_status = 'projectStatus:0' 
+		WHERE create_uid=#{createdId} and project_status = 'projectStatus:0' 
 		and project_progress='projectProgress:1'
 		<if test="pName !=null and pName !='null' and pName !=''">
 			and project_name like concat(concat('%','${pName}'),'%')
@@ -31,7 +31,7 @@
 	<select id="selectCount" resultType="java.lang.Long"
 		parameterType="java.util.Map">
 		select count(id) from sop_project
-		WHERE project_status = 'projectStatus:0' 
+		WHERE create_uid=#{createdId} and project_status = 'projectStatus:0' 
 		and project_progress='projectProgress:1'
 		<if test="pName !=null and pName !='null' and pName !=''">
 			and project_name like concat(concat('%','${pName}'),'%')

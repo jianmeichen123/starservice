@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.ProjectBeanVo;
 import com.galaxy.im.business.project.service.IProjectService;
+import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
 import com.galaxy.im.common.cache.redis.IRedisCache;
@@ -35,10 +40,12 @@ public class projectController {
 	
 	@RequestMapping("getProjectList")
 	@ResponseBody
-	public Object getProjectList(@RequestBody ProjectBeanVo project){
+	public Object getProjectList(HttpServletRequest request,HttpServletResponse response,@RequestBody ProjectBeanVo project){
 		ResultBean<ProjectBean> resultBean = new ResultBean<ProjectBean>();
 		resultBean.setStatus("error");
 		try{
+			SessionBean bean = CUtils.get().getBeanBySession(request);
+			project.setCreatedId(bean.getGuserid());
 			//判断缓存里面是有存在项目移交key
 			boolean res = cache.hasKey(StaticConst.transfer_projects_key);
 			if(res){
