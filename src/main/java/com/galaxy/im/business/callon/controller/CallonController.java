@@ -218,6 +218,8 @@ public class CallonController {
 			}
 			
 			if(bean!=null){
+				//访谈纪要id
+				detail.setTalkId(bean.getTalkRecordId());
 				//关联项目不为空，取项目的历史访谈记录
 				if(!"".equals(bean.getProjectName()) && bean.getProjectName()!=null){
 					detail.setProId(bean.getProjectId());

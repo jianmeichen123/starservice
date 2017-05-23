@@ -10,6 +10,9 @@ public class ScheduleDetailBeanVo extends ScheduleDetailBean{
 	private long conId;
 	//关系项目id
 	private long proId;
+	
+	//访谈纪要id
+	private long talkId;
 
 
 	public long getConId() {
@@ -34,6 +37,14 @@ public class ScheduleDetailBeanVo extends ScheduleDetailBean{
 
 	public void setCallonId(long callonId) {
 		this.callonId = callonId;
+	}
+
+	public long getTalkId() {
+		return talkId;
+	}
+
+	public void setTalkId(long talkId) {
+		this.talkId = talkId;
 	}
 
 }
