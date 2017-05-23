@@ -1,0 +1,42 @@
+
+server: 
+  context-path: /starservice
+  port: 7777
+
+datasource: 
+  type: com.alibaba.druid.pool.DruidDataSource  
+  url: jdbc:mysql://10.9.11.234:3306/fx_db?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf-8
+  username: fxuser
+  password: fxdb_Fp9EPkG2
+  driver-class-name: com.mysql.jdbc.Driver
+  minIdle: 1  
+  maxActive: 2  
+  initialSize: 1  
+  timeBetweenEvictionRunsMillis: 3000  
+  minEvictableIdleTimeMillis: 300000  
+  validationQuery: SELECT 'ZTM' FROM DUAL  
+  testWhileIdle: true  
+  testOnBorrow: false  
+  testOnReturn: false    
+  
+  
+# REDIS (RedisProperties)
+spring: 
+  redis: 
+    database: 0
+    host: 10.9.210.22
+    port: 26379
+    password: xhhl-redis
+  pool: 
+    max-active: 8
+    max-wait: -1
+    max-idle: 8
+    min-idle: 0
+    timeout: 0
+    
+stars:
+  server: http://fxmob.dev.galaxyinternet.com/mobileSop/
+  
+power:
+  server: http://fx.dev.galaxyinternet.com/authority_service/
+    

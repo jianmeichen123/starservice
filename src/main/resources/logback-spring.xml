@@ -9,11 +9,27 @@
     <!-- dev环境下的日志路 -->
     <property name="DEV_FILE_PATH" value="/data/apps/startservice_dev"></property>
   
+  	<!-- qa环境 -->
+    <springProfile name="qa">
+        <appender name="DEV_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> 
+				<fileNamePattern>${DEV_FILE_PATH}/logFile_qa.%d{yyyy-MM-dd}.log</fileNamePattern> 
+				<maxHistory>30</maxHistory> 
+			</rollingPolicy> 
+			<encoder> 
+				<pattern>${PATTERN}</pattern> 
+			</encoder> 
+		</appender> 
+		<root level="INFO"> 
+			<appender-ref ref="DEV_FILE" /> 
+		</root> 
+    </springProfile> 
+    
     <!-- 开发环境 -->
     <springProfile name="dev">
         <appender name="DEV_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
 			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> 
-				<fileNamePattern>${DEV_FILE_PATH}/logFile.%d{yyyy-MM-dd}.log</fileNamePattern> 
+				<fileNamePattern>${DEV_FILE_PATH}/logFile_dev.%d{yyyy-MM-dd}.log</fileNamePattern> 
 				<maxHistory>30</maxHistory> 
 			</rollingPolicy> 
 			<encoder> 
