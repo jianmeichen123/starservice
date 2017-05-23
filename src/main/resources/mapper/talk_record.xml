@@ -28,6 +28,9 @@
 					and r.schedule_id in (SELECT id FROM schedule_info WHERE callon_person=#{conId})
 				</when>
 			</choose>
+			<if test="talkRecordId != null">
+				<![CDATA[ and r.id<>#{talkRecordId}]]>
+			</if>
 			ORDER BY r.view_date desc
 			<if test="offset != null and limit != null">
 				limit #{offset}, #{limit}
@@ -64,12 +67,15 @@
 		SELECT COUNT(1) FROM sop_interview_record WHERE 1=1
 		<choose>
 			<when test="proId!=0">
-				and project_id=#{proId};
+				and project_id=#{proId}
 			</when>
 			<when test="conId!=0">
-				and schedule_id in (SELECT id FROM schedule_info WHERE callon_person=#{conId});
+				and schedule_id in (SELECT id FROM schedule_info WHERE callon_person=#{conId})
 			</when>
 		</choose>
+		<if test="talkRecordId != null">
+			<![CDATA[ and id<>#{talkRecordId}]]>;
+		</if>
 	</select>
 	
 	<!-- 添加访谈记录 -->
