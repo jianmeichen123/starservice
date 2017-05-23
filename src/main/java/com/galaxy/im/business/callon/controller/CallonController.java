@@ -191,6 +191,7 @@ public class CallonController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setStatus("error");
 		List<String> list = null;
+		ScheduleDetailBean bean = null;
 		try{
 			//获取缓存里项目移交
 			boolean res = cache.hasKey(StaticConst.transfer_projects_key);
@@ -212,7 +213,10 @@ public class CallonController {
 			}
 			//拜访详情
 			List<ScheduleDetailBean> listBean = detailService.getQueryById(detail.getCallonId());
-			ScheduleDetailBean bean = listBean.get(0);
+			if(listBean.size()>0 && listBean!=null){
+				bean = listBean.get(0);
+			}
+			
 			if(bean!=null){
 				//关联项目不为空，取项目的历史访谈记录
 				if(!"".equals(bean.getProjectName()) && bean.getProjectName()!=null){

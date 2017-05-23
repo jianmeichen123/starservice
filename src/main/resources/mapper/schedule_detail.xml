@@ -30,6 +30,7 @@
 		<result column="fileName" property="fileName"/>
 		<result column="viewNotes" property="viewNotes"/>
 		<result column="talkRecordId" property="talkRecordId"/>
+		<result column="createdId" property="createdId"/>
 	</resultMap>
 	<!-- 拜访详情 -->
 	<select id="selectById" resultType="com.galaxy.im.bean.schedule.ScheduleDetailBean" parameterType="java.lang.Long" resultMap="detailMap">
@@ -40,6 +41,7 @@
 			info.remark remark,
 			info.name schedultMatter,
 			info.callon_address callonAddress,
+			info.created_id createdId,
 			con.id contactId,
 			con.name contactName,
 	    	con.post contactPost,
