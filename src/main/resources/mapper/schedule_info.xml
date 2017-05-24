@@ -198,10 +198,11 @@
 			(select id,name,
 			date_format(start_time,'%Y/%m/%d %H:%i') startTime,
 			date_format(end_time,'%Y/%m/%d %H:%i') endTime 
-			from schedule_info where type=2 or type=3 and created_id=#{userId} and is_del=0) tt
+			from schedule_info where created_id=#{userId} and is_del=0) tt
 		where 
+		<if test="id != null"> id != #{id}</if>
 		<if test="startTime != null">
-			<![CDATA[tt.startTime<=#{startTime}]]> 
+			<![CDATA[and tt.startTime<=#{startTime}]]> 
 			<![CDATA[and tt.endTime>=#{startTime}]]>;
 		</if>
 	</select>
