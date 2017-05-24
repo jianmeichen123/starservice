@@ -35,7 +35,7 @@ spring:
     timeout: 0
     
 stars:
-  server: http://fxmob.dev.galaxyinternet.com/mobileSop/
+  server: http://fxmob.qa.galaxyinternet.com/mobileSop/
   
 power:
   server: http://fx.dev.galaxyinternet.com/authority_service/
