@@ -110,6 +110,7 @@
 	    projectId,
 	    projectName,
 	    isInterview,
+	    case (currentTimeUnix>startTimeUnix) when 1 then 2 else 1 end callonProgress,
 	    createdTime,
 	    createdId
 	</sql>
