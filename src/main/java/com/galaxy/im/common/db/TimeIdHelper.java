@@ -1,10 +1,6 @@
 package com.galaxy.im.common.db;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class TimeIdHelper {
