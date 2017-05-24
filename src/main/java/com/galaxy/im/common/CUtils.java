@@ -12,13 +12,18 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.common.db.DBUtils;
+import com.galaxy.im.common.exception.UtilsException;
 
 public class CUtils {
 	private static CUtils utils = null;
+	private Logger log = LoggerFactory.getLogger(CUtils.class);
 	
 	public static synchronized CUtils get(){
 		if(utils==null){
@@ -34,16 +39,16 @@ public class CUtils {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T map2Bean(Map<Object,Object> map,Class<T> tClass){
-		T t = null;
 		ObjectMapper mapper = new ObjectMapper();
 		try{
 			Class<?> classes = DBUtils.get().getSuperClassGenericType(tClass, 0);
 			String mapString = map2String(map);
 			Object obj = mapper.readValue(mapString, classes);
-			t = (T)obj;
+			return (T)obj;
 		}catch(Exception e){
+			log.error(CUtils.class.getName() + "_map2Bean",e);
+			throw new UtilsException(e);
 		}
-		return t;
 	}
 	
 	/**
@@ -65,9 +70,11 @@ public class CUtils {
 		int resInteger = arrayIsNotEmpty(defValue)?defValue[0]:0;
 		try{
 			resInteger = Integer.valueOf(object2String(obj));
+			return resInteger;
 		}catch(Exception e){
+			log.error(CUtils.class.getName() + "_object2Integer",e);
+			throw new UtilsException(e);
 		}
-		return resInteger;
 	}
 	
 	/**
@@ -80,9 +87,11 @@ public class CUtils {
 		Double resVal = arrayIsNotEmpty(defVal)?defVal[0]:0;
 		try{
 			resVal = Double.valueOf(object2String(obj));
+			return resVal;
 		}catch(Exception e){
+			log.error(CUtils.class.getName() + "_object2Double",e);
+			throw new UtilsException(e);
 		}
-		return resVal;
 	}
 	
 	/**
@@ -95,9 +104,11 @@ public class CUtils {
 		Boolean resVal = arrayIsNotEmpty(defVal)?defVal[0]:false;
 		try{
 			resVal = Boolean.valueOf(object2String(obj));
+			return resVal;
 		}catch(Exception e){
+			log.error(CUtils.class.getName() + "_object2Boolean",e);
+			throw new UtilsException(e);
 		}
-		return resVal;
 	}
 	
 	/**
@@ -110,9 +121,11 @@ public class CUtils {
 		Date resVal = arrayIsNotEmpty(defVal)?defVal[0]:new Date();
 		try{
 			resVal = (Date)obj;
+			return resVal;
 		}catch(Exception e){
+			log.error(CUtils.class.getName() + "_object2Date",e);
+			throw new UtilsException(e);
 		}
-		return resVal;
 	}
 	
 	/**
@@ -125,9 +138,11 @@ public class CUtils {
 		Short resVal = arrayIsNotEmpty(defVal)?defVal[0]:0;
 		try{
 			resVal = Short.valueOf(object2String(obj));
+			return resVal;
 		}catch(Exception e){
+			log.error(CUtils.class.getName() + "_object2Short",e);
+			throw new UtilsException(e);
 		}
-		return resVal;
 	}
 	
 	/**
@@ -140,9 +155,12 @@ public class CUtils {
 		Long resVal = arrayIsNotEmpty(defVal)?defVal[0]:0L;
 		try{
 			resVal = Long.valueOf(object2String(obj));
+			return resVal;
 		}catch(Exception e){
+			log.error(CUtils.class.getName() + "_object2Long",e);
+			throw new UtilsException(e);
 		}
-		return resVal;
+		
 	}
 	
 	/**
@@ -155,9 +173,11 @@ public class CUtils {
 		Float resVal = arrayIsNotEmpty(defVal)?defVal[0]:0;
 		try{
 			resVal = Float.valueOf(object2String(obj));
+			return resVal;
 		}catch(Exception e){
+			log.error(CUtils.class.getName() + "_object2Float",e);
+			throw new UtilsException(e);
 		}
-		return resVal;
 	}
 	
 	/**
@@ -189,9 +209,12 @@ public class CUtils {
 			if(mapIsNotEmpty(map) && map.containsKey("class")){
 				map.remove("class");
 			}
+			return map;
 		}catch(Exception e){
+			log.error(CUtils.class.getName() + "_bean2Map",e);
+			throw new UtilsException(e);
 		}
-		return map;
+		
 	}
 	
 	/**
@@ -255,9 +278,11 @@ public class CUtils {
 		String str = arrayIsNotEmpty(defValues)?defValues[0]:null;
 		try{
 			str = object!=null ? str = object.toString():null;
+			return str;
 		}catch(Exception e){
+			log.error(CUtils.class.getName() + "_object2String",e);
+			throw new UtilsException(e);
 		}
-		return str;
 	}
 	
 	/**
@@ -290,7 +315,6 @@ public class CUtils {
 	 * @throws IOException
 	 */
 	public String getRequestBody(HttpServletRequest request){
-		String paramStrng = "";
 		try{
 			BufferedReader reader = request.getReader();
 			String input = null;
@@ -300,11 +324,12 @@ public class CUtils {
 			}
 			reader.close();
 			reader = null;
-			paramStrng = requestBody.toString();
+			return requestBody.toString();
 		}catch(Exception e){
-			paramStrng = "";
+			log.error(CUtils.class.getName() + "_getRequestBody",e);
+			throw new UtilsException(e);
 		}
-		return paramStrng;
+		
 	}
 	
 	public String List2JSONString(List<Map<String,Object>> list){
@@ -323,6 +348,8 @@ public class CUtils {
 			try{
 				map = mapper.readValue(object2String(obj), Map.class);
 			}catch(Exception e){
+				log.error(CUtils.class.getName() + "_jsonString2map",e);
+				throw new UtilsException(e);
 			}
 		}
 		return map;
@@ -339,6 +366,8 @@ public class CUtils {
 			try{
 				list = mapper.readValue(this.object2String(obj), List.class);
 			}catch(Exception e){
+				log.error(CUtils.class.getName() + "_jsonString2list",e);
+				throw new UtilsException(e);
 			}
 		}
 		return list;
@@ -353,7 +382,8 @@ public class CUtils {
 			out.close();
 			out = null;
 		}catch(Exception e){
-			e.printStackTrace();
+			log.error(CUtils.class.getName() + "_outputJson",e);
+			throw new UtilsException(e);
 		}
 	}
 	
@@ -377,17 +407,26 @@ public class CUtils {
 		return sessionBean;
 	}
 	
+	public JSONObject object2JSONObject(Object jsonString){
+		try{
+			return JSONObject.parseObject(CUtils.get().object2String(jsonString));
+		}catch(Exception e){
+			log.error(CUtils.class.getName() + "_object2JSONObject",e);
+			throw new UtilsException(e);
+		}
+	}
+	
 	/**
 	 * ------------- 私有方法 --------------------
 	 */
 	public String object2JSONString(Object object){
-		String jsonString = null;
 		try{
-			jsonString = stringIsNotEmpty(object)?
+			return stringIsNotEmpty(object)?
 					new ObjectMapper().writeValueAsString(object):null;
 		}catch(Exception e){
+			log.error(CUtils.class.getName() + "_object2JSONString",e);
+			throw new UtilsException(e);
 		}
-		return jsonString;
 	}
 	
 }
