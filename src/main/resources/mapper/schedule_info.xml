@@ -199,11 +199,15 @@
 			date_format(start_time,'%Y/%m/%d %H:%i') startTime,
 			date_format(end_time,'%Y/%m/%d %H:%i') endTime 
 			from schedule_info where created_id=#{userId} and is_del=0) tt
-		where 
-		<if test="id != null"> id != #{id}</if>
-		<if test="startTime != null">
-			<![CDATA[and tt.startTime<=#{startTime}]]> 
-			<![CDATA[and tt.endTime>=#{startTime}]]>;
-		</if>
+		<where>
+			<trim prefixOverrides="and">
+				<if test="id != null">and id != #{id}</if>
+				<if test="startTime != null">
+					<![CDATA[and tt.startTime<=#{startTime}]]> 
+					<![CDATA[and tt.endTime>=#{startTime}]]>;
+				</if>
+			</trim>
+		</where>
+		
 	</select>
 </mapper>
