@@ -254,10 +254,11 @@ public class CallonController {
 	                bean.setInterviewContent("已访谈");
 	            }
 				
-				
+				resultBean.setStatus("ok");
+				resultBean.setEntity(bean);
+			}else{
+				resultBean.setMessage("已删除");
 			}
-			resultBean.setStatus("ok");
-			resultBean.setEntity(bean);
 		}catch(Exception e){
 			log.error(CallonController.class.getName() + "：getCallonDetails",e);
 		}
