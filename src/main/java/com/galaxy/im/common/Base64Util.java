@@ -14,6 +14,10 @@ public class Base64Util {
 		byte[] b = Base64.encodeBase64(data.getBytes(ENCODING));
 		return new String(b, ENCODING);
 	}
+	
+	public static String encodeBase64(byte[] input){
+		return Base64.encodeBase64String(input);
+	}
 
 	// 加密,遵循RFC标准
 	public static String encodedSafe(String data) {

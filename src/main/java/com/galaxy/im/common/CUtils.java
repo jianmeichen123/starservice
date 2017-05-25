@@ -375,6 +375,7 @@ public class CUtils {
 	
 	public void outputJson(ServletResponse response,Object object){
 		try{
+			response.setContentType("text/html;charset=GBK");
 			response.reset();
 			PrintWriter out = response.getWriter();
 			out.print(object2JSONString(object));
