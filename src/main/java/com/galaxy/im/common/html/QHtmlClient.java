@@ -52,9 +52,11 @@ public class QHtmlClient {
 		
 		StringEntity se = null;
 		try{
-			String temp = CUtils.get().object2JSONString(paramMap); 
-			se = new StringEntity(temp,"utf-8");
-			se.setContentType(CONTENT_TYPE_TEXT_JSON);
+			if(paramMap!=null && !paramMap.isEmpty()){
+				String temp = CUtils.get().object2JSONString(paramMap); 
+				se = new StringEntity(temp,"utf-8");
+				se.setContentType(CONTENT_TYPE_TEXT_JSON);
+			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}

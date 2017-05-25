@@ -20,9 +20,10 @@ public class StaticConst {
 	
 	
 	
-	public static final String getShareUserList = "user/getShareUserList"; 	//power外部接口：获取共享列表
-	public static final String getCreadIdInfo = "user/getCreadIdInfo";   	//power外部接口：获取用户名和部门名称
-	public static final String login = "login/userLoginForApp";				//登录
+	public static final String getShareUserList = "user/getShareUserList"; 		//power外部接口：获取共享列表
+	public static final String getCreadIdInfo = "user/getCreadIdInfo";   		//power外部接口：获取用户名和部门名称
+	public static final String login = "login/userLoginForApp";					//登录
+	public static final String getCareerLineList = "depart/getCareerLineList";	//获得事业线
 	
 	//过滤器白名单
 	public static final String FILTER_WHITE_LOGIN = "userlogin/login";		//用户登录白名单
@@ -31,6 +32,5 @@ public class StaticConst {
 	
 	public final static Long TOKEN_IN_REDIS_TIMEOUT_SECONDS = 60 * 60L;		//Token（防止重复提交）	的Redis过期时间
 	public final static String TOKEN_REMOVE_KEY = "token_remove";
-	
 	
 }

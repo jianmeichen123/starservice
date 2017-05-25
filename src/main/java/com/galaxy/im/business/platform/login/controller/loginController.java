@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
@@ -19,7 +20,6 @@ import com.galaxy.im.common.StaticConst;
 import com.galaxy.im.common.TokenGenerator;
 import com.galaxy.im.common.cache.redis.IRedisCache;
 import com.galaxy.im.common.html.QHtmlClient;
-import com.galaxy.im.common.webconfig.interceptor.token.Token;
 
 @Controller
 @RequestMapping("/userlogin")
@@ -100,6 +100,21 @@ public class loginController {
 		return result;
 	}
 	
-	
+	/**
+	 * 获得事业线
+	 */
+	@RequestMapping("departmentList")
+	@ResponseBody
+	public Object departmentList(){
+		ResultBean<Object> result = new ResultBean<Object>();
+		String url = env.getProperty("power.server") + StaticConst.getCareerLineList;
+		String htmlString = QHtmlClient.get().post(url, null, null);
+		if(CUtils.get().stringIsNotEmpty(htmlString) && !"error".equals(htmlString)){
+			JSONArray array = CUtils.get().object2JSONArray(htmlString);
+			result.setStatus("OK");
+			result.setEntity(array);
+		}
+		return result;
+	}
 
 }

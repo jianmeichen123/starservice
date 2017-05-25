@@ -15,6 +15,8 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.galaxy.im.bean.common.SessionBean;
@@ -413,6 +415,15 @@ public class CUtils {
 			return JSONObject.parseObject(CUtils.get().object2String(jsonString));
 		}catch(Exception e){
 			log.error(CUtils.class.getName() + "_object2JSONObject",e);
+			throw new UtilsException(e);
+		}
+	}
+	
+	public JSONArray object2JSONArray(Object jsonString){
+		try{
+			return JSONArray.parseArray(CUtils.get().object2String(jsonString));
+		}catch(Exception e){
+			log.error(CUtils.class.getName() + "_object2JSONArray",e);
 			throw new UtilsException(e);
 		}
 	}
