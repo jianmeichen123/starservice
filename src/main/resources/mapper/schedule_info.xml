@@ -194,20 +194,16 @@
 	
 	<!-- 判断时间是否冲突 或 时间冲突数 -->
 	<select id="getCTSchedule" parameterType="hashmap" resultType="hashmap">
-		select tt.id,tt.name from
-			(select id,name,
-			date_format(start_time,'%Y/%m/%d %H:%i') startTime,
-			date_format(end_time,'%Y/%m/%d %H:%i') endTime 
-			from schedule_info where created_id=#{userId} and is_del=0) tt
+		select id, name
+		from schedule_info
 		<where>
 			<trim prefixOverrides="and">
-				<if test="id != null">and id != #{id}</if>
-				<if test="startTime != null">
-					<![CDATA[and tt.startTime<=#{endTime}]]> 
-					<![CDATA[and tt.endTime>=#{startTime}]]>;
-				</if>
+				<if test="id != null"> and id != #{id} </if>
+				<if test="createdId != 0" > and created_id = #{userId} </if>
+				and is_del = #{isDel}
+			    and (start_time &lt;= #{bqEndTime} and end_time >= #{eqStartTime} and is_allday = 0 
+				or (start_time >= #{sbTimeForAllday} and start_time &lt;= #{seTimeForAllday} and is_allday = 1))
 			</trim>
 		</where>
-		
 	</select>
 </mapper>
