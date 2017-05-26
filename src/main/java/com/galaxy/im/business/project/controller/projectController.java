@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.ResponseWrapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.ProjectBeanVo;
+import com.galaxy.im.bean.project.ProjectDetailsBean;
 import com.galaxy.im.business.project.service.IProjectService;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
@@ -27,6 +29,8 @@ import com.galaxy.im.common.StaticConst;
 import com.galaxy.im.common.cache.redis.IRedisCache;
 import com.galaxy.im.common.db.Page;
 import com.galaxy.im.common.db.PageRequest;
+
+import ch.qos.logback.core.net.SyslogOutputStream;
 
 @Controller
 @RequestMapping("/project")
@@ -93,5 +97,21 @@ public class projectController {
 		}
 		return resultBean;
 	}
+	
+	@RequestMapping("getBaseProjectInfo")
+	@ResponseBody
+	public Object getBaseProjectInfo(@RequestBody String id){
+		ResultBean<Object> result = new ResultBean<Object>();
+		ProjectDetailsBean bean = service.getBaseProjectInfo(3L);
+		System.out.println(bean==null);
+		result.setEntity(bean);
+		
+		
+		return result;
+	}
+	
+	
+	
+	
 
 }

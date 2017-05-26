@@ -44,5 +44,37 @@
 		</if>
 	</select>
 	
+	<!-- 项目详情 基础信息、融资计划、实际投资-->
+	<select id="getBaseProjectInfo" resultType="com.galaxy.im.bean.project.ProjectDetailsBean">
+		select 
+			p.id,
+			p.project_code projectCode,
+		    p.project_name projectName,
+		    d1.name projectTypeName,
+		    d1.dict_code projectTypeCode,
+		    p.created_time createdTimeUnix,
+		    date_format(from_unixtime(p.created_time/1000),'%Y/%m/%d') currentTime,
+		    d2.dict_code financeStatusCode,				
+		    d2.name financeStatusName,					
+		    p.create_uid createUid,
+		    u.user_name userName,
+		    p.fa_flag faFlag,							
+		    case p.fa_flag=1 when 1 then p.fa_name else null end faName,	
+		    
+		    p.project_contribution projectContribution,	
+		    p.project_valuations projectValuations,		
+		    p.project_share_ratio projectShareRatio,	
+		    
+		    p.final_contribution finalContribution,		
+		    p.final_valuations finalValuations,			
+		    p.final_share_ratio finalShare_ratio,		
+		    p.service_charge serviceSharge			
+		from sop_project p
+		left join dict d1 on d1.dict_code=p.project_type
+		left join dict d2 on d2.dict_code=p.finance_status
+		left join v_user u on u.id=p.create_uid
+		where p.id=#{id};
+	</select>
+	
 
 </mapper>
