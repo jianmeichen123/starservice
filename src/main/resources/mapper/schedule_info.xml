@@ -203,7 +203,7 @@
 			<trim prefixOverrides="and">
 				<if test="id != null">and id != #{id}</if>
 				<if test="startTime != null">
-					<![CDATA[and tt.startTime<=#{startTime}]]> 
+					<![CDATA[and tt.startTime<=#{endTime}]]> 
 					<![CDATA[and tt.endTime>=#{startTime}]]>;
 				</if>
 			</trim>
