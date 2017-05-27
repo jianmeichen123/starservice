@@ -23,9 +23,9 @@ datasource:
 # REDIS (RedisProperties)
 spring: 
   redis: 
-    database: 3
+    database: 0
     host: 10.9.210.22
-    port: 6384
+    port: 26379
     password: xhhl-redis
   pool: 
     max-active: 8
