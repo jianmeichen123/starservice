@@ -97,22 +97,24 @@
 		</if>
 	</select>
 	
+
 	<!-- 判断用户画像等是否为空 -->
-	<select id="getProjectInoIsNull" parameterType="long" resultMap="hashmap">
+	<select id="getProjectInoIsNull" parameterType="long" resultType="hashmap">
 		select 
-			case (isnull(p.project_describe_financing) &amp;&amp; isnull(p.project_describe)) when 1 then 0 else 1 end projectDescribe,	<!-- 项工描述 -->
-			case isnull(p.company_location) when 1 then 0 else 1 end companyLocation,				<!-- 公司定位 -->
-		    case isnull(p.user_portrait) when 1 then 0 else 1 end userPortrait,						<!-- 用户画像 -->
-		    case isnull(p.project_business_model) when 1 then 0 else 1 end projectBusinessModel,	<!-- 产品服务 -->
-		    case isnull(p.operational_data) when 1 then 0 else 1 end operationalData,				<!-- 运营数据 -->
-		    case isnull(p.industry_analysis) when 1 then 0 else 1 end industryAnalysis,				<!-- 行业分析 -->
-		    case isnull(p.prospect_analysis) when 1 then 0 else 1 end prospectAnalysis,				<!-- 竞争分析 -->
-		    case isnull(p.next_financing_source) when 1 then 0 else 1 end nextFinancingSource		<!-- 下一轮融资路径 -->
+			case (isnull(p.project_describe_financing) &amp;&amp; isnull(p.project_describe)) when 1 then 0 else 1 end projectDescribe,
+			case isnull(p.company_location) when 1 then 0 else 1 end companyLocation,				
+		    case isnull(p.user_portrait) when 1 then 0 else 1 end userPortrait,						
+		    case isnull(p.project_business_model) when 1 then 0 else 1 end projectBusinessModel,	
+		    case isnull(p.operational_data) when 1 then 0 else 1 end operationalData,			
+		    case isnull(p.industry_analysis) when 1 then 0 else 1 end industryAnalysis,				
+		    case isnull(p.prospect_analysis) when 1 then 0 else 1 end prospectAnalysis,				
+		    case isnull(p.next_financing_source) when 1 then 0 else 1 end nextFinancingSource,		
+		    case count(f.id)&lt;=0 when 1 then 0 else 1 end businessPlanFile						
 		from sop_project p
-		where p.id=#{projectId};
-	
+		left join sop_file f on f.project_id=p.id and f.file_worktype='fileWorktype:12'
+		where p.id=#{projectId}
+		group by p.id;
 	</select>
-	
 	
 	
 	

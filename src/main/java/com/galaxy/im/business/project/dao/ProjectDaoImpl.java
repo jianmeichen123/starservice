@@ -40,6 +40,19 @@ public class ProjectDaoImpl extends BaseDaoImpl<ProjectBean,Long> implements IPr
 			throw new DaoException(e);
 		}
 	}
+
+	@Override
+	public Map<String, Object> getProjectInoIsNull(Long id) {
+		try{
+			return sqlSessionTemplate.selectOne(getSqlName("getProjectInoIsNull"),id);
+			
+		}catch(Exception e){
+			log.error(ProjectDaoImpl.class.getName() + "_getProjectInoIsNull",e);
+			throw new DaoException(e);
+		}
+	}
+	
+	
 	
 	
 	
