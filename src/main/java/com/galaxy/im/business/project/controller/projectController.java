@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.ws.ResponseWrapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.ProjectBeanVo;
-import com.galaxy.im.bean.project.ProjectDetailsBean;
 import com.galaxy.im.business.project.service.IProjectService;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
@@ -29,8 +27,6 @@ import com.galaxy.im.common.StaticConst;
 import com.galaxy.im.common.cache.redis.IRedisCache;
 import com.galaxy.im.common.db.Page;
 import com.galaxy.im.common.db.PageRequest;
-
-import ch.qos.logback.core.net.SyslogOutputStream;
 
 @Controller
 @RequestMapping("/project")
@@ -98,14 +94,33 @@ public class projectController {
 		return resultBean;
 	}
 	
+	/**
+	 * 获取项目基础信息接口
+	 * @param id
+	 * @return
+	 * @author liyanqiao
+	 */
 	@RequestMapping("getBaseProjectInfo")
 	@ResponseBody
-	public Object getBaseProjectInfo(@RequestBody String id){
+	public Object getBaseProjectInfo(@RequestBody String paramString){
 		ResultBean<Object> result = new ResultBean<Object>();
-		ProjectDetailsBean bean = service.getBaseProjectInfo(3L);
-		System.out.println(bean==null);
-		result.setEntity(bean);
+
+		Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 		
+		Map<String,Object> resultMap = new HashMap<String,Object>();
+		
+		Map<String,Object> infoMap = service.getBaseProjectInfo(CUtils.get().object2Long(paramMap.get("projectId")));
+		if(infoMap!=null && !infoMap.isEmpty()){
+			resultMap.put("infoMap", infoMap);
+		}
+		
+		
+		List<Map<String,Object>> historyMap = service.getFinanceHistory(paramMap);
+		if(historyMap!=null && historyMap.size()>0){
+			resultMap.put("historyMap", historyMap.get(0));
+		}
+		
+		result.setEntity(resultMap);
 		
 		return result;
 	}

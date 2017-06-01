@@ -11,7 +11,7 @@
 		where d.is_del=0
 		and d.is_outtage=0
 		and d.is_del=0
-		and d.id=#{id}
+		and d.id=#{id};
 	</select>
 	
 	<select id="selectList" parameterType="com.galaxy.im.bean.DepartBeanVO" resultType="com.galaxy.im.bean.DepartBean">
@@ -25,18 +25,12 @@
 		and t.is_outtage=0
 		and t.is_show=0
 		and t.company_id=#{companyId};
-	
 	</select>
-	
-	
 	
 	<resultMap type="com.galaxy.im.bean.DepartBean" id="departResult">
 		<id column="id" property="id"/>
 		<result column="dep_name" property="depName"/>
 	</resultMap>
-	
-	
-	
 	
 
 </mapper>
