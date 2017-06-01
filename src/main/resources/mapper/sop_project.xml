@@ -45,7 +45,7 @@
 	</select>
 	
 	<!-- 项目详情 基础信息、融资计划、实际投资-->
-	<select id="getBaseProjectInfo" resultType="com.galaxy.im.bean.project.ProjectDetailsBean">
+	<select id="getBaseProjectInfo" resultType="hashmap" parameterType="long">
 		select 
 			p.id,
 			p.project_code projectCode,
@@ -53,28 +53,73 @@
 		    d1.name projectTypeName,
 		    d1.dict_code projectTypeCode,
 		    p.created_time createdTimeUnix,
-		    date_format(from_unixtime(p.created_time/1000),'%Y/%m/%d') currentTime,
-		    d2.dict_code financeStatusCode,				
-		    d2.name financeStatusName,					
+		    date_format(from_unixtime(p.created_time/1000),'%Y-%m-%d') createdTime,
+		    d2.dict_code financeStatusCode,				<!-- 融资状态Code -->
+		    d2.name financeStatusName,					<!-- 融资状态名称 -->
 		    p.create_uid createUid,
 		    u.user_name userName,
 		    p.fa_flag faFlag,							
 		    case p.fa_flag=1 when 1 then p.fa_name else null end faName,	
 		    
-		    p.project_contribution projectContribution,	
-		    p.project_valuations projectValuations,		
-		    p.project_share_ratio projectShareRatio,	
+		    p.project_contribution projectContribution,	<!-- 计划-融资金额 -->
+		    p.project_valuations projectValuations,		<!-- 计划-项目估值 -->
+		    p.project_share_ratio projectShareRatio,	<!-- 计划-出让股份 -->
 		    
-		    p.final_contribution finalContribution,		
-		    p.final_valuations finalValuations,			
-		    p.final_share_ratio finalShare_ratio,		
-		    p.service_charge serviceSharge			
+		    p.final_contribution finalContribution,		<!-- 实际-投资金额 -->
+		    p.final_valuations finalValuations,			<!-- 实际-项目估值 -->
+		    p.final_share_ratio finalShare_ratio,		<!-- 实际-股权占比 -->
+		    p.service_charge serviceSharge				<!-- 加速服务费占比 -->
 		from sop_project p
 		left join dict d1 on d1.dict_code=p.project_type
 		left join dict d2 on d2.dict_code=p.finance_status
 		left join v_user u on u.id=p.create_uid
-		where p.id=#{id};
+		where p.id=#{projectId};
 	</select>
+	
+	<!-- 融资历史 -->
+	<select id="getFinanceHistory" parameterType="hashmap" resultType="hashmap">
+		select 
+			h.id,
+		    from_unixtime(h.finance_date) financeDateUnix,
+		    date_format(finance_date,'%Y.%m') createdTime,
+		    h.finance_amount financeAmount,
+			h.finance_unit financeUnit,
+		    d2.name financeUnitName,
+		    h.finance_proportion financeProportion,
+		    d1.name financeStatus
+		from finance_history h
+		left join dict d1 on h.finance_status=d1.dict_code
+		left join dict d2 on h.finance_unit=d2.dict_value and d2.parent_code='currency'
+		where h.project_id=#{projectId} 
+		order by finance_date desc
+		<if test="isOne != null">
+			limit 0,1
+		</if>
+	</select>
+	
+	<!-- 判断用户画像等是否为空 -->
+	<select id="getProjectInoIsNull" parameterType="long" resultMap="hashmap">
+		select 
+			case (isnull(p.project_describe_financing) &amp;&amp; isnull(p.project_describe)) when 1 then 0 else 1 end projectDescribe,	<!-- 项工描述 -->
+			case isnull(p.company_location) when 1 then 0 else 1 end companyLocation,				<!-- 公司定位 -->
+		    case isnull(p.user_portrait) when 1 then 0 else 1 end userPortrait,						<!-- 用户画像 -->
+		    case isnull(p.project_business_model) when 1 then 0 else 1 end projectBusinessModel,	<!-- 产品服务 -->
+		    case isnull(p.operational_data) when 1 then 0 else 1 end operationalData,				<!-- 运营数据 -->
+		    case isnull(p.industry_analysis) when 1 then 0 else 1 end industryAnalysis,				<!-- 行业分析 -->
+		    case isnull(p.prospect_analysis) when 1 then 0 else 1 end prospectAnalysis,				<!-- 竞争分析 -->
+		    case isnull(p.next_financing_source) when 1 then 0 else 1 end nextFinancingSource		<!-- 下一轮融资路径 -->
+		from sop_project p
+		where p.id=#{projectId};
+	
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
 	
 
 </mapper>

@@ -1,11 +1,13 @@
 package com.galaxy.im.business.project.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.galaxy.im.bean.project.ProjectBean;
-import com.galaxy.im.bean.project.ProjectDetailsBean;
 import com.galaxy.im.common.db.BaseDaoImpl;
 import com.galaxy.im.common.exception.DaoException;
 
@@ -18,13 +20,28 @@ public class ProjectDaoImpl extends BaseDaoImpl<ProjectBean,Long> implements IPr
 	}
 
 	@Override
-	public ProjectDetailsBean getBaseProjectInfo(Long id) {
+	public Map<String,Object> getBaseProjectInfo(Long id) {
 		try{
-			ProjectDetailsBean bean = sqlSessionTemplate.selectOne(getSqlName("getBaseProjectInfo"),id);
+			Map<String,Object> bean = sqlSessionTemplate.selectOne(getSqlName("getBaseProjectInfo"),id);
 			return bean;
 		}catch(Exception e){
 			log.error(ProjectDaoImpl.class.getName() + "_getBaseProjectInfo",e);
 			throw new DaoException(e);
 		}
 	}
+
+	@Override
+	public List<Map<String, Object>> getFinanceHistory(Map<String, Object> paramMap) {
+		try{
+			return sqlSessionTemplate.selectList(getSqlName("getFinanceHistory"),paramMap);
+			
+		}catch(Exception e){
+			log.error(ProjectDaoImpl.class.getName() + "_getFinanceHistory",e);
+			throw new DaoException(e);
+		}
+	}
+	
+	
+	
+	
 }
