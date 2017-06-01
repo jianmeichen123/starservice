@@ -51,9 +51,15 @@
 	    <properties>
 	        <activatedProperties>local</activatedProperties>
 	    </properties>
+	</profile>
+	<profile>
+	    <id>rc</id>
+	    <properties>
+	        <activatedProperties>rc</activatedProperties>
+	    </properties>
 	    <activation>
 	        <activeByDefault>true</activeByDefault>
-	    </activation>
+	   	</activation>
 	</profile>
 	<profile>
 	    <id>qa</id>

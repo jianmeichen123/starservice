@@ -8,7 +8,25 @@
     
     <!-- dev环境下的日志路 -->
     <property name="DEV_FILE_PATH" value="/data/apps/startservice_dev"></property>
+    <!-- rc环境下的日志路 -->
+    <property name="RC_FILE_PATH" value="/data/apps/starservice_rc"></property>
   
+  	<!-- rc环境 -->
+    <springProfile name="rc">
+        <appender name="RC_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> 
+				<fileNamePattern>${RC_FILE_PATH}/logFile.%d{yyyy-MM-dd}.log</fileNamePattern> 
+				<maxHistory>30</maxHistory> 
+			</rollingPolicy> 
+			<encoder> 
+				<pattern>${PATTERN}</pattern> 
+			</encoder> 
+		</appender> 
+		<root level="INFO"> 
+			<appender-ref ref="RC_FILE" /> 
+		</root> 
+    </springProfile> 
+    
   	<!-- qa环境 -->
     <springProfile name="qa">
         <appender name="DEV_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
