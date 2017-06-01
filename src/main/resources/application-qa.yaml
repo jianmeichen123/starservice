@@ -25,7 +25,7 @@ spring:
   redis: 
     database: 0
     host: 10.9.210.22
-    port: 26379
+    port: 36379
     password: xhhl-redis
   pool: 
     max-active: 8
