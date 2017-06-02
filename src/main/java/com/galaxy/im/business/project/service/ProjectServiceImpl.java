@@ -1,6 +1,5 @@
 package com.galaxy.im.business.project.service;
 
-import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -37,14 +36,15 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 	}
 
 	@Override
-	public List<Map<String, Object>> getFinanceHistory(Map<String, Object> paramMap) {
+	public Map<String, Object> getProjectInoIsNull(Long id) {
 		try{
-			return dao.getFinanceHistory(paramMap);
+			return dao.getProjectInoIsNull(id);
 		}catch(Exception e){
-			log.error(ProjectServiceImpl.class.getName() + "_getFinanceHistory",e);
+			log.error(ProjectServiceImpl.class.getName() + "_ProjectServiceImpl",e);
 			throw new ServiceException(e);
 		}
 	}
 
+	
 	
 }

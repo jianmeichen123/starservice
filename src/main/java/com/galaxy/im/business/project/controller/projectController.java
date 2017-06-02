@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.ProjectBeanVo;
+import com.galaxy.im.business.project.service.IFinanceHistoryService;
 import com.galaxy.im.business.project.service.IProjectService;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
@@ -34,6 +35,9 @@ public class projectController {
 	private Logger log = LoggerFactory.getLogger(projectController.class);
 	@Autowired
 	IProjectService service;
+	
+	@Autowired
+	IFinanceHistoryService fsService;
 	
 	@Autowired
 	private IRedisCache<String,Object> cache;
@@ -104,28 +108,39 @@ public class projectController {
 	@ResponseBody
 	public Object getBaseProjectInfo(@RequestBody String paramString){
 		ResultBean<Object> result = new ResultBean<Object>();
-
-		Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
-		
-		Map<String,Object> resultMap = new HashMap<String,Object>();
-		
-		Map<String,Object> infoMap = service.getBaseProjectInfo(CUtils.get().object2Long(paramMap.get("projectId")));
-		if(infoMap!=null && !infoMap.isEmpty()){
-			resultMap.put("infoMap", infoMap);
+		try{
+			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
+			Map<String,Object> resultMap = new HashMap<String,Object>();
+			Long projectId = CUtils.get().object2Long(paramMap.get("projectId"));
+			
+			//基础信息
+			Map<String,Object> infoMap = service.getBaseProjectInfo(projectId);
+			if(infoMap!=null && !infoMap.isEmpty()){
+				resultMap.put("infoMap", infoMap);
+			}
+			
+			//融资历史-最新一条
+			paramMap.put("isOne", "true");
+			List<Map<String,Object>> historyMap = fsService.getFinanceHistory(paramMap);
+			if(historyMap!=null && historyMap.size()>0){
+				resultMap.put("historyMap", historyMap.get(0));
+			}
+			
+			//用户画像等理否为空
+			Map<String,Object> nullMap = service.getProjectInoIsNull(projectId);
+			if(nullMap!=null && !nullMap.isEmpty()){
+				resultMap.put("nullMap", nullMap);
+			}
+			
+			result.setEntity(resultMap);
+			result.setStatus("OK");
+			
+		}catch(Exception e){
 		}
-		
-		
-		List<Map<String,Object>> historyMap = service.getFinanceHistory(paramMap);
-		if(historyMap!=null && historyMap.size()>0){
-			resultMap.put("historyMap", historyMap.get(0));
-		}
-		
-		result.setEntity(resultMap);
-		
 		return result;
 	}
 	
-	
+
 	
 	
 

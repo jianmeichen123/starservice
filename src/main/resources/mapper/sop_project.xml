@@ -54,8 +54,8 @@
 		    d1.dict_code projectTypeCode,
 		    p.created_time createdTimeUnix,
 		    date_format(from_unixtime(p.created_time/1000),'%Y-%m-%d') createdTime,
-		    d2.dict_code financeStatusCode,				<!-- 融资状态Code -->
-		    d2.name financeStatusName,					<!-- 融资状态名称 -->
+		    d2.dict_code financeStatus,					<!-- 融资状态Code -->
+		    d2.name financeStatusDs,					<!-- 融资状态名称 -->
 		    p.create_uid createUid,
 		    u.user_name userName,
 		    p.fa_flag faFlag,							
@@ -81,7 +81,8 @@
 		select 
 			h.id,
 		    from_unixtime(h.finance_date) financeDateUnix,
-		    date_format(finance_date,'%Y.%m') createdTime,
+		    date_format(finance_date,'%Y.%m') financeDateP,
+		    date_format(finance_date,'%Y-%m-%d') financeDateX,
 		    h.finance_amount financeAmount,
 			h.finance_unit financeUnit,
 		    d2.name financeUnitName,
@@ -96,27 +97,63 @@
 			limit 0,1
 		</if>
 	</select>
-	
 
 	<!-- 判断用户画像等是否为空 -->
 	<select id="getProjectInoIsNull" parameterType="long" resultType="hashmap">
 		select 
-			case (isnull(p.project_describe_financing) &amp;&amp; isnull(p.project_describe)) when 1 then 0 else 1 end projectDescribe,
-			case isnull(p.company_location) when 1 then 0 else 1 end companyLocation,				
-		    case isnull(p.user_portrait) when 1 then 0 else 1 end userPortrait,						
-		    case isnull(p.project_business_model) when 1 then 0 else 1 end projectBusinessModel,	
-		    case isnull(p.operational_data) when 1 then 0 else 1 end operationalData,			
-		    case isnull(p.industry_analysis) when 1 then 0 else 1 end industryAnalysis,				
-		    case isnull(p.prospect_analysis) when 1 then 0 else 1 end prospectAnalysis,				
-		    case isnull(p.next_financing_source) when 1 then 0 else 1 end nextFinancingSource,		
-		    case count(f.id)&lt;=0 when 1 then 0 else 1 end businessPlanFile						
+			case (isnull(p.project_describe_financing) &amp;&amp; isnull(p.project_describe)) when 1 then 0 else 1 end projectDescribe,	<!-- 项目描述 -->
+			case isnull(p.company_location) when 1 then 0 else 1 end companyLocation,				<!-- 公司定位 -->	
+		    case isnull(p.user_portrait) when 1 then 0 else 1 end userPortrait,						<!-- 用户画像 -->		
+		    case isnull(p.project_business_model) when 1 then 0 else 1 end projectBusinessModel,	<!-- 产品服务 -->
+		    case isnull(p.operational_data) when 1 then 0 else 1 end operationalData,				<!-- 运营数据 -->
+		    case isnull(p.industry_analysis) when 1 then 0 else 1 end industryAnalysis,				<!-- 行业分析 -->
+		    case isnull(p.prospect_analysis) when 1 then 0 else 1 end prospectAnalysis,				<!-- 竞争分析 -->
+		    case isnull(p.next_financing_source) when 1 then 0 else 1 end nextFinancingSource,		<!-- 下一轮融资路径 -->
+		    case count(f.id)&lt;=0 when 1 then 0 else 1 end businessPlanFile,						<!-- 商业计划书 -->
+		    case count(l.id)&lt;=0 when 1 then 0 else 1 end projectPerson,							<!-- 团队成员 -->
+		    case count(f2.id)&lt;=0 when 1 then 0 else 1 end projectFile,							<!-- 项目文档 -->
+		    case count(s.id)&lt;=0 when 1 then 0 else 1 end projectShares,							<!-- 股权结构 -->
+		    case count(d.id)&lt;=0 when 1 then 0 else 1 end projectDelivery							<!-- 交割前事项 -->
+		    <!-- 运营分析 -->
 		from sop_project p
 		left join sop_file f on f.project_id=p.id and f.file_worktype='fileWorktype:12'
+		left join sop_project_person l on p.id=l.project_id
+		left join sop_file f2 on p.id=f2.project_id and f2.file_worktype in (
+			'fileWorktype:1','fileWorktype:2','fileWorktype:3','fileWorktype:4','fileWorktype:5',
+			'fileWorktype:6','fileWorktype:7','fileWorktype:8','fileWorktype:9') and f2.file_key is not null
+		left join sop_project_shares s on s.project_id=p.id
+		left join sop_delivery d on p.id=d.project_id
 		where p.id=#{projectId}
 		group by p.id;
 	</select>
 	
-	
+	<!-- 新增融资历史 -->
+	<insert id="addFinanceHistory">
+		INSERT INTO finance_history(
+			project_id,
+			finance_date,
+			finance_from,
+			finance_amount,
+			finance_unit,
+			finance_proportion,
+			finance_status,
+			create_uid,
+			create_time
+		)VALUES(
+			#{project_id},
+			#{finance_date},
+			#{finance_from},
+			#{finance_amount},
+			#{finance_unit},
+			#{finance_proportion},
+			#{finance_status},
+			#{create_uid},
+			#{create_time}
+		);
+		<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+	</insert>
 	
 	
 	

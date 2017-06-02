@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.bean.project.FinanceHistoryBean">
+	
+	<!-- 融资历史 -->
+	<select id="getFinanceHistory" parameterType="hashmap" resultType="hashmap">
+		select 
+			h.id,
+		    from_unixtime(h.finance_date) financeDateUnix,
+		    date_format(finance_date,'%Y.%m') financeDateP,
+		    date_format(finance_date,'%Y-%m-%d') financeDateX,
+		    h.finance_amount financeAmount,
+			h.finance_unit financeUnit,
+		    d2.name financeUnitName,
+		    h.finance_proportion financeProportion,
+		    d1.name financeStatus
+		from finance_history h
+		left join dict d1 on h.finance_status=d1.dict_code
+		left join dict d2 on h.finance_unit=d2.dict_value and d2.parent_code='currency'
+		where h.project_id=#{projectId} 
+		order by finance_date desc
+		<if test="isOne != null">
+			limit 0,1
+		</if>
+	</select>
+	
+	<!-- 新增融资历史 -->
+	<insert id="insert" parameterType="com.galaxy.im.bean.project.FinanceHistoryBean">
+		INSERT INTO finance_history(
+			project_id,
+			finance_date,
+			finance_from,
+			finance_amount,
+			finance_unit,
+			finance_proportion,
+			finance_status,
+			create_uid,
+			create_time
+		)VALUES(
+			#{projectId},
+			#{financeDate},
+			#{financeFrom},
+			#{financeAmount},
+			#{financeUnit},
+			#{financeProportion},
+			#{financeStatus},
+			#{createUid},
+			#{createTime}
+		);
+		<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+	</insert>
+	
+	<update id="updateById" parameterType="com.galaxy.im.bean.project.FinanceHistoryBean">
+		UPDATE finance_history
+			SET
+				project_id = #{projectId},
+				finance_date = #{financeDate},
+				finance_from = #{financeFrom},
+				finance_amount = #{financeAmount},
+				finance_unit = #{financeUnit},
+				finance_proportion = #{financeProportion},
+				finance_status = #{financeStatus},
+				updated_uid = #{updatedUid},
+				updated_time = #{updatedTime}
+			WHERE id = #{id};
+	</update>
+	
+	<delete id="deleteById" parameterType="long">
+		delete from finance_history where id=#{id};
+	</delete>
+	
+	
+	
+	
+	
+
+</mapper>

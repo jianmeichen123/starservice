@@ -1,6 +1,5 @@
 package com.galaxy.im.business.project.dao;
 
-import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -31,30 +30,14 @@ public class ProjectDaoImpl extends BaseDaoImpl<ProjectBean,Long> implements IPr
 	}
 
 	@Override
-	public List<Map<String, Object>> getFinanceHistory(Map<String, Object> paramMap) {
-		try{
-			return sqlSessionTemplate.selectList(getSqlName("getFinanceHistory"),paramMap);
-			
-		}catch(Exception e){
-			log.error(ProjectDaoImpl.class.getName() + "_getFinanceHistory",e);
-			throw new DaoException(e);
-		}
-	}
-
-	@Override
 	public Map<String, Object> getProjectInoIsNull(Long id) {
 		try{
 			return sqlSessionTemplate.selectOne(getSqlName("getProjectInoIsNull"),id);
-			
 		}catch(Exception e){
 			log.error(ProjectDaoImpl.class.getName() + "_getProjectInoIsNull",e);
 			throw new DaoException(e);
 		}
 	}
-	
-	
-	
-	
-	
+
 	
 }
