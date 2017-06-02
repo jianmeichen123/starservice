@@ -225,7 +225,7 @@ public class TalkRecordController {
 					updateCount = service.updateById(talkBean);
 				}else{
 					//保存
-					talkBean.setViewDate(DateUtil.convertStringtoD(talkBean.getViewDateStr()+":00"));
+					talkBean.setViewDate(DateUtil.convertStringtoD(talkBean.getViewDateStr()));
 					talkBean.setCreatedId(bean.getGuserid());
 					id = service.insert(talkBean);
 				}
