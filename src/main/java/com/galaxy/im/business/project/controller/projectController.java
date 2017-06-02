@@ -111,11 +111,12 @@ public class projectController {
 		try{
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			Map<String,Object> resultMap = new HashMap<String,Object>();
-			Long projectId = CUtils.get().object2Long(paramMap.get("projectId"));
+			Long projectId = CUtils.get().object2Long(paramMap.get("id"));
 			
 			//基础信息
 			Map<String,Object> infoMap = service.getBaseProjectInfo(projectId);
 			if(infoMap!=null && !infoMap.isEmpty()){
+				infoMap.put("projectYjz", service.projectIsYJZ(projectId));
 				resultMap.put("infoMap", infoMap);
 			}
 			

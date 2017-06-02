@@ -8,4 +8,5 @@ import com.galaxy.im.common.db.service.IBaseService;
 public interface IProjectService extends IBaseService<ProjectBean>{
 	Map<String,Object> getBaseProjectInfo(Long id);
 	Map<String,Object> getProjectInoIsNull(Long id);
+	Integer projectIsYJZ(Long projectId);
 }

@@ -39,5 +39,17 @@ public class ProjectDaoImpl extends BaseDaoImpl<ProjectBean,Long> implements IPr
 		}
 	}
 
+	@Override
+	public Integer projectIsYJZ(Long projectId) {
+		try{
+			return sqlSessionTemplate.selectOne(getSqlName("projectIsYJZ"),projectId);
+		}catch(Exception e){
+			log.error(ProjectDaoImpl.class.getName() + "_projectIsYJZ",e);
+			throw new DaoException(e);
+		}
+	}
+	
+	
+
 	
 }

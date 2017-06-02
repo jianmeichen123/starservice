@@ -8,14 +8,17 @@
 	<select id="getFinanceHistory" parameterType="hashmap" resultType="hashmap">
 		select 
 			h.id,
+            h.finance_from financeFrom,
+            h.project_id projectId,
 		    from_unixtime(h.finance_date) financeDateUnix,
 		    date_format(finance_date,'%Y.%m') financeDateP,
-		    date_format(finance_date,'%Y-%m-%d') financeDateX,
+		    date_format(finance_date,'%Y-%m-%d') financeDateStr,
 		    h.finance_amount financeAmount,
 			h.finance_unit financeUnit,
-		    d2.name financeUnitName,
+		    d2.name financeUnitDs,
 		    h.finance_proportion financeProportion,
-		    d1.name financeStatus
+		    d1.name financeStatusDs,
+            h.finance_status financeStatus
 		from finance_history h
 		left join dict d1 on h.finance_status=d1.dict_code
 		left join dict d2 on h.finance_unit=d2.dict_value and d2.parent_code='currency'

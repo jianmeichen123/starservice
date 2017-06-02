@@ -53,11 +53,11 @@
 		    d1.name projectTypeName,
 		    d1.dict_code projectTypeCode,
 		    p.created_time createdTimeUnix,
-		    date_format(from_unixtime(p.created_time/1000),'%Y-%m-%d') createdTime,
+		    date_format(from_unixtime(p.created_time/1000),'%Y-%m-%d') createdTimeDs,
 		    d2.dict_code financeStatus,					<!-- 融资状态Code -->
 		    d2.name financeStatusDs,					<!-- 融资状态名称 -->
 		    p.create_uid createUid,
-		    u.user_name userName,
+		    u.user_name createUname,
 		    p.fa_flag faFlag,							
 		    case p.fa_flag=1 when 1 then p.fa_name else null end faName,	
 		    
@@ -67,12 +67,19 @@
 		    
 		    p.final_contribution finalContribution,		<!-- 实际-投资金额 -->
 		    p.final_valuations finalValuations,			<!-- 实际-项目估值 -->
-		    p.final_share_ratio finalShare_ratio,		<!-- 实际-股权占比 -->
-		    p.service_charge serviceSharge				<!-- 加速服务费占比 -->
+		    p.final_share_ratio finalShareRatio,		<!-- 实际-股权占比 -->
+		    p.service_charge serviceSharge,				<!-- 加速服务费占比 -->
+		    
+		    p.project_status projectStatus,
+            d3.name projectStatusDs,
+            p.project_departId projectDepartId,
+            t.name projectDepartName
 		from sop_project p
 		left join dict d1 on d1.dict_code=p.project_type
 		left join dict d2 on d2.dict_code=p.finance_status
+		left join dict d3 on d3.dict_code=p.project_status
 		left join v_user u on u.id=p.create_uid
+		left join v_department t on p.project_departId=t.id
 		where p.id=#{projectId};
 	</select>
 	
@@ -155,7 +162,13 @@
 		</selectKey>
 	</insert>
 	
-	
+	<select id="projectIsYJZ" parameterType="long" resultType="int">
+		select 
+			case count(1)>0 when 1 then 1 else 0 end projectYjz
+		from sop_transfer_record 
+		where project_id = #{projectId} 
+		and record_status is null
+	</select>
 	
 	
 	
