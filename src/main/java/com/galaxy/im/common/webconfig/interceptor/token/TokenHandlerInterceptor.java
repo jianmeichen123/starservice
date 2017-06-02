@@ -88,7 +88,7 @@ public class TokenHandlerInterceptor extends HandlerInterceptorAdapter {
 		if (null == token) {
 			return null;
 		} else {
-			return String.valueOf(token);
+			return CUtils.get().object2String(token);
 		}
 	}
 	

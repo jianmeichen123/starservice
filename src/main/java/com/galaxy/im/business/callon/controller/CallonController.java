@@ -1,6 +1,5 @@
 package com.galaxy.im.business.callon.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -197,7 +196,7 @@ public class CallonController {
 			boolean res = cache.hasKey(StaticConst.transfer_projects_key);
 			if(res){
 				//获取项目移交id
-				String transferId =cache.get(StaticConst.transfer_projects_key).toString();
+				String transferId =CUtils.get().object2String(cache.get(StaticConst.transfer_projects_key));
 				//将获取到的项目id存到list里
 				transferId = transferId.replace(" ", "");
 				if(transferId.startsWith("[")){
@@ -227,7 +226,7 @@ public class CallonController {
 					long count = detailService.queryCount(detail);
 					bean.setInterviewCount(count);
 					//判断项目是否移交
-					if(list!=null && list.size()>0 && list.contains(String.valueOf(bean.getProjectId()))){
+					if(list!=null && list.size()>0 && list.contains(CUtils.get().object2String(bean.getProjectId()))){
 						bean.setTransferFlag(1);
 					}
 				}
@@ -242,15 +241,9 @@ public class CallonController {
 					bean.setInterviewCount(0);
 				}
 				//拜访标识
-				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-				String nowDate = dateFormat.format(new Date());
-				Date systime = dateFormat.parse(nowDate);
-				Date startTime = dateFormat.parse(bean.getStartTime());
-				if (startTime.getTime() > systime.getTime()) {
-	                bean.setInterviewFalg(0);
+				if (bean.getInterviewFalg()==0) {
 	                bean.setInterviewContent("未访谈");
-	            } else if (startTime.getTime() < systime.getTime()) {
-	            	bean.setInterviewFalg(1);
+	            } else if (bean.getInterviewFalg()==1) {
 	                bean.setInterviewContent("已访谈");
 	            }
 				
@@ -260,7 +253,7 @@ public class CallonController {
 				resultBean.setMessage("已删除");
 			}
 		}catch(Exception e){
-			log.error(CallonController.class.getName() + "：getCallonDetails",e);
+			log.error(CallonController.class.getName() + "_getCallonDetails",e);
 		}
 		return resultBean;
 	}

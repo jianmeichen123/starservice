@@ -54,7 +54,7 @@ public class projectController {
 			boolean res = cache.hasKey(StaticConst.transfer_projects_key);
 			if(res){
 				//获取项目移交id
-				String transferId =cache.get(StaticConst.transfer_projects_key).toString();
+				String transferId =CUtils.get().object2String(cache.get(StaticConst.transfer_projects_key));
 				//将获取到的项目id存到list里
 				transferId = transferId.replace(" ", "");
 				if(transferId.startsWith("[")){
@@ -67,7 +67,7 @@ public class projectController {
 				List<Long> list = new ArrayList<Long>();
 				
 				for(int i=0;i<array.length;i++){
-					list.add(Long.valueOf(array[i]));
+					list.add(CUtils.get().object2Long(array[i]));
 				}
 				//list放到查询字段里
 				project.setProjectIdList(list);
@@ -93,7 +93,7 @@ public class projectController {
 			resultBean.setEntityList(projectList);
 			resultBean.setMap(map);
 		}catch(Exception e){
-			log.error(projectController.class.getName() + "：getProjectList",e);
+			log.error(projectController.class.getName() + "_getProjectList",e);
 		}
 		return resultBean;
 	}

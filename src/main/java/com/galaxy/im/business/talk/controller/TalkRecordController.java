@@ -1,8 +1,6 @@
 package com.galaxy.im.business.talk.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +30,7 @@ import com.galaxy.im.business.callon.service.ICallonDetailService;
 import com.galaxy.im.business.talk.service.ITalkRecordDetailService;
 import com.galaxy.im.business.talk.service.ITalkRecordService;
 import com.galaxy.im.common.CUtils;
+import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
 import com.galaxy.im.common.db.Page;
@@ -88,7 +87,6 @@ public class TalkRecordController {
 				resultBean.setEntityList(list);
 				resultBean.setMap(map);
 			}else if(record.getCallonId()!=0){//拜访详情的历史访谈记录
-				//ScheduleDetailBean bean = dService.queryById(record.getCallonId());
 				List<ScheduleDetailBean> listBean = dService.getQueryById(record.getCallonId());
 				ScheduleDetailBean bean = listBean.get(0);
 				if(bean!=null){
@@ -128,7 +126,7 @@ public class TalkRecordController {
 				resultBean.setMap(map);
 			}
 		} catch (Exception e) {
-			log.error(TalkRecordController.class.getName() + "：getTalkHistoryList",e);
+			log.error(TalkRecordController.class.getName() + "_getTalkHistoryList",e);
 		}
 		return resultBean;
 	}
@@ -185,7 +183,7 @@ public class TalkRecordController {
 			resultBean.setStatus("ok");
 			resultBean.setEntity(bean);
 		}catch(Exception e){
-			log.error(TalkRecordController.class.getName() + "：getTalkDetails",e);
+			log.error(TalkRecordController.class.getName() + "_getTalkDetails",e);
 		}
 		return resultBean;
 	}
@@ -227,9 +225,7 @@ public class TalkRecordController {
 					updateCount = service.updateById(talkBean);
 				}else{
 					//保存
-					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-					Date date = dateFormat.parse(talkBean.getViewDateStr());
-					talkBean.setViewDate(date);
+					talkBean.setViewDate(DateUtil.convertStringtoD(talkBean.getViewDateStr()));
 					talkBean.setCreatedId(bean.getGuserid());
 					id = service.insert(talkBean);
 				}
@@ -243,7 +239,7 @@ public class TalkRecordController {
 			}
 			
 		}catch(Exception e){
-			log.error(TalkRecordController.class.getName() + "：addTalkRecord",e);
+			log.error(TalkRecordController.class.getName() + "_addTalkRecord",e);
 		}
 		return resultBean;
 	}
