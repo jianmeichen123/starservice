@@ -63,6 +63,7 @@ public class TalkRecordController {
 	public Object getTalkHistoryList(@RequestBody TalkRecordBeanVo record){
 		ResultBean<TalkRecordBean> resultBean = new ResultBean<TalkRecordBean>();
 		resultBean.setStatus("error");
+		ScheduleDetailBean bean = null;
 		try {
 			//联系人的历史访谈记录
 			if(record.getConId()!=0){
@@ -88,7 +89,9 @@ public class TalkRecordController {
 				resultBean.setMap(map);
 			}else if(record.getCallonId()!=0){//拜访详情的历史访谈记录
 				List<ScheduleDetailBean> listBean = dService.getQueryById(record.getCallonId());
-				ScheduleDetailBean bean = listBean.get(0);
+				if(listBean!=null && listBean.size()>0){
+					bean = listBean.get(0);
+				}
 				if(bean!=null){
 					//关联项目不为空，取项目的历史访谈记录
 					if(!"".equals(bean.getProjectName()) && bean.getProjectName()!=null){
@@ -108,11 +111,6 @@ public class TalkRecordController {
 				//查询结果放在List
 				List<TalkRecordBean> list = new ArrayList<TalkRecordBean>();
 				for(TalkRecordBean p : page.getContent()){
-					if(bean.getProjectName()!=null){
-						p.setProjectName(bean.getProjectName());
-					}else{
-						p.setProjectName("");
-					}
 					list.add(p);
 				}
 				//页面

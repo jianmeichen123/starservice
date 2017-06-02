@@ -11,15 +11,21 @@
 				case tt.schedule_id
 				WHEN 0 THEN tt.view_target
 				else tt.name
-				end viewTarget
+				end viewTarget,
+				tt.project_id projectId,
+				tt.project_name projectName
 		FROM(
 			SELECT 	 r.id,
 					 r.view_date,
 					 con.name,
 					 r.view_target,
-					 r.schedule_id
+					 r.schedule_id,
+					 r.project_id,
+					 p.project_name
 				FROM sop_interview_record r
-				LEFT JOIN schedule_contacts con on r.view_target=con.id WHERE 1=1
+				LEFT JOIN schedule_contacts con on r.view_target=con.id 
+				LEFT JOIN sop_project p ON p.id = r.project_id
+				WHERE 1=1
 			<choose>
 				<when test="proId!=0">
 					and r.project_id=#{proId}
