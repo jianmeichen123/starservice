@@ -116,7 +116,7 @@ public class projectController {
 			//基础信息
 			Map<String,Object> infoMap = service.getBaseProjectInfo(projectId);
 			if(infoMap!=null && !infoMap.isEmpty()){
-				infoMap.put("projectYjz", service.projectIsYJZ(projectId));
+				infoMap.put("projectYjz", service.projectIsYJZ(projectId));		//判断该项目是否处于移交中
 				resultMap.put("infoMap", infoMap);
 			}
 			
