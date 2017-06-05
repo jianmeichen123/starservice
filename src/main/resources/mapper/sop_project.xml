@@ -6,9 +6,9 @@
 	
 	<!-- 获取项目list -->
 	<select id="select" resultType="com.galaxy.im.bean.project.ProjectBean" parameterType="java.util.Map" resultMap="projectMap">
-		SELECT DISTINCT(p.id),p.project_name projectName FROM sop_project p
-		LEFT JOIN sop_transfer_record tr ON p.id=tr.project_id and tr.record_status is not null
-		WHERE p.create_uid=#{createdId} and p.project_status = 'projectStatus:0' 
+		SELECT p.id,p.project_name projectName 
+		FROM sop_project p WHERE p.id not in(SELECT tr.project_id FROM sop_transfer_record tr WHERE tr.record_status is null)
+		and p.create_uid=#{createdId} and p.project_status = 'projectStatus:0' 
 		and p.project_progress='projectProgress:1'
 		<if test="pName !=null and pName !='null' and pName !=''">
 			and project_name like concat(concat('%','${pName}'),'%')
@@ -25,9 +25,9 @@
 	<!-- 项目list总数 -->
 	<select id="selectCount" resultType="java.lang.Long"
 		parameterType="java.util.Map">
-		select count(DISTINCT(p.id)) from sop_project p
-		LEFT JOIN sop_transfer_record tr ON p.id=tr.project_id and tr.record_status is not null
-		WHERE p.create_uid=#{createdId} and p.project_status = 'projectStatus:0' 
+		select count(p.id) 
+		FROM sop_project p WHERE p.id not in(SELECT tr.project_id FROM sop_transfer_record tr WHERE tr.record_status is null)
+		and p.create_uid=#{createdId} and p.project_status = 'projectStatus:0' 
 		and p.project_progress='projectProgress:1'
 		<if test="pName !=null and pName !='null' and pName !=''">
 			and project_name like concat(concat('%','${pName}'),'%')
