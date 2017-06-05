@@ -24,8 +24,6 @@ import com.galaxy.im.business.project.service.IFinanceHistoryService;
 import com.galaxy.im.business.project.service.IProjectService;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
-import com.galaxy.im.common.StaticConst;
-import com.galaxy.im.common.cache.redis.IRedisCache;
 import com.galaxy.im.common.db.Page;
 import com.galaxy.im.common.db.PageRequest;
 
@@ -39,9 +37,6 @@ public class projectController {
 	@Autowired
 	IFinanceHistoryService fsService;
 	
-	@Autowired
-	private IRedisCache<String,Object> cache;
-	
 	@RequestMapping("getProjectList")
 	@ResponseBody
 	public Object getProjectList(HttpServletRequest request,HttpServletResponse response,@RequestBody ProjectBeanVo project){
@@ -50,28 +45,7 @@ public class projectController {
 		try{
 			SessionBean bean = CUtils.get().getBeanBySession(request);
 			project.setCreatedId(bean.getGuserid());
-			//判断缓存里面是有存在项目移交key
-			boolean res = cache.hasKey(StaticConst.transfer_projects_key);
-			if(res){
-				//获取项目移交id
-				String transferId =CUtils.get().object2String(cache.get(StaticConst.transfer_projects_key));
-				//将获取到的项目id存到list里
-				transferId = transferId.replace(" ", "");
-				if(transferId.startsWith("[")){
-					transferId = transferId.substring(1);
-				}
-				if(transferId.endsWith("]")){
-					transferId = transferId.substring(0,transferId.length()-1);
-				}
-				String[] array = transferId.split(",");
-				List<Long> list = new ArrayList<Long>();
-				
-				for(int i=0;i<array.length;i++){
-					list.add(CUtils.get().object2Long(array[i]));
-				}
-				//list放到查询字段里
-				project.setProjectIdList(list);
-			}
+			
 			//分页查询
 			Page<ProjectBean> pageProject = service.queryPageList(project,
 					new PageRequest(project.getPageNum(),

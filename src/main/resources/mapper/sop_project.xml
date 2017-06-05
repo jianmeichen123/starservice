@@ -6,17 +6,12 @@
 	
 	<!-- 获取项目list -->
 	<select id="select" resultType="com.galaxy.im.bean.project.ProjectBean" parameterType="java.util.Map" resultMap="projectMap">
-		SELECT id,project_name projectName FROM sop_project 
-		WHERE create_uid=#{createdId} and project_status = 'projectStatus:0' 
-		and project_progress='projectProgress:1'
+		SELECT p.id,p.project_name projectName FROM sop_project p
+		LEFT JOIN sop_transfer_record tr ON p.id=tr.project_id and tr.record_status is not null
+		WHERE p.create_uid=#{createdId} and p.project_status = 'projectStatus:0' 
+		and p.project_progress='projectProgress:1'
 		<if test="pName !=null and pName !='null' and pName !=''">
 			and project_name like concat(concat('%','${pName}'),'%')
-		</if>
-		<if test="projectIdList != null">
-			and id not in 
-			<foreach collection="projectIdList" item="pid" index="index" open="(" close=")" separator=",">
-				#{pid}
-			</foreach>
 		</if>
 		<if test="offset != null and limit != null">
 			limit #{offset}, #{limit};
@@ -30,17 +25,12 @@
 	<!-- 项目list总数 -->
 	<select id="selectCount" resultType="java.lang.Long"
 		parameterType="java.util.Map">
-		select count(id) from sop_project
-		WHERE create_uid=#{createdId} and project_status = 'projectStatus:0' 
-		and project_progress='projectProgress:1'
+		select count(p.id) from sop_project p
+		LEFT JOIN sop_transfer_record tr ON p.id=tr.project_id and tr.record_status is not null
+		WHERE p.create_uid=#{createdId} and p.project_status = 'projectStatus:0' 
+		and p.project_progress='projectProgress:1'
 		<if test="pName !=null and pName !='null' and pName !=''">
 			and project_name like concat(concat('%','${pName}'),'%')
-		</if>
-		<if test="projectIdList != null">
-			and id not in 
-			<foreach collection="projectIdList" item="pid" index="index" open="(" close=");" separator=",">
-				#{pid}
-			</foreach>
 		</if>
 	</select>
 	

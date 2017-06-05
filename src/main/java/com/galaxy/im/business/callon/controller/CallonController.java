@@ -1,6 +1,5 @@
 package com.galaxy.im.business.callon.controller;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -28,11 +27,11 @@ import com.galaxy.im.bean.schedule.ScheduleInfo;
 import com.galaxy.im.business.callon.service.ICallonDetailService;
 import com.galaxy.im.business.callon.service.ICallonService;
 import com.galaxy.im.business.contracts.service.IContractsService;
+import com.galaxy.im.business.project.service.IProjectService;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
-import com.galaxy.im.common.cache.redis.IRedisCache;
 import com.galaxy.im.common.db.QPage;
 import com.galaxy.im.common.html.QHtmlClient;
 
@@ -40,9 +39,6 @@ import com.galaxy.im.common.html.QHtmlClient;
 @RequestMapping("/callon")
 public class CallonController {
 	private Logger log = LoggerFactory.getLogger(CallonController.class);
-	
-	@Autowired
-	private IRedisCache<String,Object> cache;
 	
 	@Autowired
 	private Environment env;
@@ -56,6 +52,9 @@ public class CallonController {
 	
 	@Autowired
 	private ICallonService callonService;
+	
+	@Autowired
+	IProjectService projectService;
 
 	/**
 	 * 保存/编辑拜访计划
@@ -189,33 +188,13 @@ public class CallonController {
 	public Object getCallonDetails(@RequestBody ScheduleDetailBeanVo detail){
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setStatus("error");
-		List<String> list = null;
 		ScheduleDetailBean bean = null;
 		try{
-			//获取缓存里项目移交
-			boolean res = cache.hasKey(StaticConst.transfer_projects_key);
-			if(res){
-				//获取项目移交id
-				String transferId =CUtils.get().object2String(cache.get(StaticConst.transfer_projects_key));
-				//将获取到的项目id存到list里
-				transferId = transferId.replace(" ", "");
-				if(transferId.startsWith("[")){
-					transferId = transferId.substring(1);
-				}
-				if(transferId.endsWith("]")){
-					transferId = transferId.substring(0,transferId.length()-1);
-				}
-				String[] array = transferId.split(",");
-				if(array!=null && array.length>0){
-					list=Arrays.asList(array);
-				}
-			}
 			//拜访详情
 			List<ScheduleDetailBean> listBean = detailService.getQueryById(detail.getCallonId());
 			if(listBean.size()>0 && listBean!=null){
 				bean = listBean.get(0);
 			}
-			
 			if(bean!=null){
 				//访谈纪要id
 				detail.setTalkId(bean.getTalkRecordId());
@@ -226,7 +205,7 @@ public class CallonController {
 					long count = detailService.queryCount(detail);
 					bean.setInterviewCount(count);
 					//判断项目是否移交
-					if(list!=null && list.size()>0 && list.contains(CUtils.get().object2String(bean.getProjectId()))){
+					if(projectService.projectIsYJZ(bean.getProjectId())==1){
 						bean.setTransferFlag(1);
 					}
 				}
