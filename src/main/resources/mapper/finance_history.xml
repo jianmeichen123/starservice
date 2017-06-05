@@ -22,7 +22,7 @@
 		from finance_history h
 		left join dict d1 on h.finance_status=d1.dict_code
 		left join dict d2 on h.finance_unit=d2.dict_value and d2.parent_code='currency'
-		where h.project_id=#{projectId} 
+		where h.project_id=#{id} 
 		order by finance_date desc
 		<if test="isOne != null">
 			limit 0,1

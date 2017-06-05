@@ -31,7 +31,8 @@ public class FinanceHistoryServiceImpl extends BaseServiceImpl<FinanceHistoryBea
 	@Override
 	public List<Map<String, Object>> getFinanceHistory(Map<String, Object> paramMap) {
 		try{
-			return dao.getFinanceHistory(paramMap);
+			List<Map<String, Object>> tt = dao.getFinanceHistory(paramMap);
+			return tt;
 		}catch(Exception e){
 			log.error(FinanceHistoryServiceImpl.class.getName() + "_getFinanceHistory",e);
 			throw new ServiceException(e);
