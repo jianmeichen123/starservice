@@ -4,7 +4,7 @@
     <property name="PATTERN" value="%-12(%d{yyyy-MM-dd HH:mm:ss.SSS}) |-%-5level [%thread] %c [%L] -| %msg%n" />  
     
     <!-- 线上环境日志文件路径 -->  
-    <property name="ONLINE_FILE_PATH" value="/Users/liyanqiao/temp/log"></property>
+    <property name="ONLINE_FILE_PATH" value="/data/apps/starservice/log"></property>
     
     <!-- dev环境下的日志路 -->
     <property name="DEV_FILE_PATH" value="/data/apps/startservice_dev"></property>
