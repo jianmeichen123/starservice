@@ -115,7 +115,24 @@ public class projectController {
 		return result;
 	}
 	
-
+	@RequestMapping("isYJZ")
+	@ResponseBody
+	public Object isYJZ(@RequestBody String paramString){
+		ResultBean<Object> result = new ResultBean<>();
+		try{
+			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
+			if(paramMap!=null && paramMap.containsKey("id")){
+				Long id = CUtils.get().object2Long(paramMap.get("id"), 0L);
+				if(id!=0){
+					int success = service.projectIsYJZ(id);
+					result.setEntity(success);
+					result.setStatus("OK");
+				}
+			}
+		}catch(Exception e){
+		}
+		return result;
+	}
 	
 	
 
