@@ -91,6 +91,8 @@
 		left join sop_project project on info.project_type=1 and info.project_id=project.id
 		left join sop_interview_record sir on sir.schedule_id=info.id
 		where info.type=2
+		and info.is_del=0
+		<if test="createdId != null">and info.created_id=#{createdId}</if>
 		group by info.id) t
 	</sql>
 	
@@ -126,7 +128,7 @@
 			<if test="isInterview != null">
 				and t.isInterview=#{isInterview}
 			</if>
-			<if test="createdId != null">and t.createdId=#{createdId}</if>
+			
 			<if test="selectKey != null">
 				and (t.contactName like #{selectKey} or t.projectName like #{selectKey})
 			</if>
@@ -169,7 +171,7 @@
 		    <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
 				SELECT LAST_INSERT_ID() AS id
 			</selectKey>
-	</insert>
+</insert>
 	
 	<resultMap type="com.galaxy.im.bean.schedule.ScheduleInfo" id="departResult">
 		<id column="id" property="id"/>
