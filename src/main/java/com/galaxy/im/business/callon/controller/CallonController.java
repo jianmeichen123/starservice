@@ -182,6 +182,7 @@ public class CallonController {
 	 * 拜访详情
 	 * @param detail
 	 * @return
+	 * @author liuli
 	 */
 	@RequestMapping("getCallonDetails")
 	@ResponseBody

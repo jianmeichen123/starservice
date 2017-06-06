@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.bean.meeting.MeetingRecordBean">
+
+	<!-- 会议记录列表 -->
+	<select id="getMeetingRecordList" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			r.id,
+			date_format(r.meeting_date,'%Y/%m/%d %H:%i') meetingDateStr,
+			dct1.name meetingResult,
+			r.result_reason resultReason,
+			r.meeting_notes meetingNodes
+		FROM sop_meeting_record  r
+		LEFT JOIN dict dct1 ON dct1.parent_code='meetingResult' and dct1.dict_code=r.meeting_result
+		WHERE r.project_id=#{projectId} and r.meeting_type=#{meetingType} 
+		ORDER BY r.meeting_date ${direction}
+		LIMIT #{offset},${limit};
+	</select>
+	
+	<!-- 会议记录个数 -->
+	<select id="countMeetingRecordList" parameterType="hashmap" resultType="integer">
+		SELECT count(1) 
+		FROM sop_meeting_record r
+		LEFT JOIN dict dct1 ON dct1.parent_code='meetingResult' and dct1.dict_code=r.meeting_result
+		WHERE r.project_id=#{projectId} and r.meeting_type=#{meetingType} ;
+	</select>
+	
+</mapper>
