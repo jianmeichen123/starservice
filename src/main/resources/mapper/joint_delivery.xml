@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+  <mapper namespace="com.galaxy.im.bean.invest.InvestBean">
+  <!-- 查询列表 -->
+  <select id="selectInvestList" parameterType="hashmap" resultType="hashmap" >
+  	select 
+  		invest.id,
+  		invest.delivery_name deliveryName,
+		invest.delivery_amount deliveryAmount,
+		invest.delivery_share_ratio deliveryShareRatio
+	from joint_delivery invest
+	order by ${property} ${direction}
+	limit #{offset},${limit};
+	
+  
+  </select>
+  <!-- 列表记录个数 -->
+	<select id="countInvestList" parameterType="hashmap" resultType="integer">
+		select count(1)
+		from joint_delivery invest
+	</select>
+  
+  <resultMap type="com.galaxy.im.bean.invest.InvestBean" id="investMap">
+		<result column="id" property="id"/>
+		<result column="delivery_name" property="deliveryName"/>
+		<result column="delivery_amount" property="deliveryAmount"/>
+		<result column="delivery_share_ratio" property="deliveryShareRatio"/>
+	</resultMap>
+	
+	<!-- 新增投资方 -->
+	<insert id="insert" parameterType="com.galaxy.im.bean.invest.InvestBean">
+		insert into joint_delivery(
+			delivery_type,
+			delivery_name,
+			delivery_amount,
+			delivery_share_ratio,
+			project_id,
+			create_uid,
+			create_time
+		)values(
+			#{deliveryType},
+			#{deliveryName},
+			#{deliveryAmount},
+			#{deliveryShareRatio},
+			#{projectId},
+			#{createdId},
+			#{createdTime}
+		);
+		<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+				SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+	
+	</insert>
+	<!-- 更新投资方 -->
+	<update id="updateById" parameterType="com.galaxy.im.bean.invest.InvestBean">
+		update joint_delivery set
+			delivery_type = #{deliveryType},
+			delivery_name = #{deliveryName},
+			delivery_amount = #{deliveryAmount},
+			delivery_share_ratio = #{deliveryShareRatio},
+			project_id = #{projectId},
+			create_uid = #{updatedId},
+			update_time = #{updatedTime}
+		where id = #{id};
+	
+	</update>
+	
+	<!-- 根据id删除投资方 -->
+	<delete id="deleteById" parameterType="com.galaxy.im.bean.invest.InvestBean">
+		delete from joint_delivery where id = #{id};
+	
+	
+	</delete>
+	
+	</mapper>
