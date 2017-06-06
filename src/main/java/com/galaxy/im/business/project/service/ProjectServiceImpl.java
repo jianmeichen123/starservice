@@ -55,6 +55,16 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 		}
 	}
 
+	@Override
+	public Integer projectIsShow(Long projectId) {
+		try{
+			return dao.projectIsShow(projectId);
+		}catch(Exception e){
+			log.error(ProjectServiceImpl.class.getName() + "_projectIsShow",e);
+			throw new ServiceException(e);
+		}
+	}
+
 	
 	
 }

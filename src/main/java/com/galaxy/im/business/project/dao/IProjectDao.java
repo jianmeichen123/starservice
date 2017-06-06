@@ -9,4 +9,6 @@ public interface IProjectDao extends IBaseDao<ProjectBean,Long>{
 	Map<String,Object> getBaseProjectInfo(Long id);
 	Map<String,Object> getProjectInoIsNull(Long id);
 	Integer projectIsYJZ(Long projectId);
+	Integer projectIsShow(Long projectId);
+	
 }

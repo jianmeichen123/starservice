@@ -115,7 +115,7 @@ public class projectController {
 		return result;
 	}
 	
-	@RequestMapping("isYJZ")
+	@RequestMapping("projectIsShow")
 	@ResponseBody
 	public Object isYJZ(@RequestBody String paramString){
 		ResultBean<Object> result = new ResultBean<>();
@@ -124,7 +124,7 @@ public class projectController {
 			if(paramMap!=null && paramMap.containsKey("id")){
 				Long id = CUtils.get().object2Long(paramMap.get("id"), 0L);
 				if(id!=0){
-					int success = service.projectIsYJZ(id);
+					int success = service.projectIsShow(id);
 					result.setEntity(success);
 					result.setStatus("OK");
 				}
