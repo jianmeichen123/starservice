@@ -13,7 +13,7 @@
 		where dict.parent_code in ('significance','callonProgress','recordMissing');
 	</select>
 
-	
+	<!-- 拜访相关 获取拜访进度、重要性、记录缺失 相关字典值 -->
 	<resultMap type="com.galaxy.im.bean.common.Dict" id="dictResult">
 		<id column="id" property="id"/>
 		<result column="parent_code" property="parentCode"/>

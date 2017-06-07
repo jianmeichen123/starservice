@@ -20,6 +20,10 @@ public class DictController {
 	@Autowired
 	private IDictService dictService;
 	
+	/**
+	 * 拜访相关 获取拜访进度、重要性、记录缺失 相关字典值
+	 * @return
+	 */
 	@RequestMapping("selectCallonFilter")
 	@ResponseBody
 	public Object selectCallonFilter(){
