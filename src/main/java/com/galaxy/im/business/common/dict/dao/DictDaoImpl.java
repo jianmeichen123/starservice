@@ -29,6 +29,26 @@ public class DictDaoImpl extends BaseDaoImpl<Dict, Long> implements IDictDao{
 		}
 		
 	}
+
+	@Override
+	public List<Map<String, Object>> selectResultFilter(Map<String, Object> paramMap) {
+		try {
+			return sqlSessionTemplate.selectList(getSqlName("selectResultFilter"),paramMap);	
+		} catch (Exception e) {
+			log.error(String.format("查询对象总数出错！语句：%s", getSqlName("selectResultFilter")), e);
+			throw new DaoException(e);
+		}
+	}
+
+	@Override
+	public List<Map<String, Object>> selectReasonFilter(Map<String, Object> paramMap) {
+		try {
+			return sqlSessionTemplate.selectList(getSqlName("selectReasonFilter"),paramMap);	
+		} catch (Exception e) {
+			log.error(String.format("查询对象总数出错！语句：%s", getSqlName("selectReasonFilter")), e);
+			throw new DaoException(e);
+		}
+	}
 	
 	
 

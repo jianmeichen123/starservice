@@ -1,6 +1,10 @@
 package com.galaxy.im.business.meeting.controller;
 
+import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,9 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.meeting.MeetingRecordBean;
+import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.meeting.service.IMeetingRecordService;
+import com.galaxy.im.business.talk.service.ITalkRecordService;
 import com.galaxy.im.common.CUtils;
+import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.db.QPage;
 
@@ -23,6 +31,8 @@ public class MeetingRecordController {
 
 	@Autowired
 	IMeetingRecordService service;
+	@Autowired
+	ITalkRecordService talkService;
 	
 	/**
 	 * 会议记录列表
@@ -53,13 +63,50 @@ public class MeetingRecordController {
 	 */
 	@RequestMapping("addMeetingRecord")
 	@ResponseBody
-	public Object addMeetingRecord(@RequestBody MeetingRecordBean bean){
-		try {
+	public Object addMeetingRecord(HttpServletRequest request,HttpServletResponse response,@RequestBody MeetingRecordBean bean){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		resultBean.setFlag(0);
+		try{
+			int updateCount = 0;
+			Long id = 0L;
+			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 			
-		} catch (Exception e) {
+			if(bean!=null){
+				//会议记录存在，进行更新操作，否则保存
+				if(bean.getId()!=null && bean.getId()!=0){
+					//保存sop_file
+					if(!"".equals(bean.getFileKey()) && bean.getFileKey()!=null){
+						SopFileBean sopFileBean =new SopFileBean();
+						sopFileBean.setFileKey(bean.getFileKey());
+						sopFileBean.setFileLength(bean.getFileLength());
+						sopFileBean.setBucketName(bean.getBucketName());
+						sopFileBean.setFileName(bean.getFileName());
+						long sopId =talkService.saveSopFile(sopFileBean);
+						//获取sopfile 主键
+						if(sopId!=0){
+							bean.setFileId(sopId);
+						}
+					}
+					id=bean.getId();
+					updateCount = service.updateById(bean);
+				}else{
+					//保存
+					bean.setMeetingDate(DateUtil.convertStringtoD(bean.getMeetingDateStr()));
+					bean.setCreatedId(sessionBean.getGuserid());
+					id = service.insert(bean);
+				}
+			}
+			
+			if(updateCount!=0 || id!=0L){
+				resultBean.setStatus("OK");
+				Map<String,Object> map = new HashMap<String,Object>();
+				map.put("meetingRecordId", id);
+				resultBean.setMap(map);
+			}
+		}catch(Exception e){
 			log.error(MeetingRecordController.class.getName() + "_addMeetingRecord",e);
 		}
-		return null;
+		return resultBean;
 	}
 	
 	/**

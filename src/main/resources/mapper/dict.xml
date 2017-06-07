@@ -24,4 +24,47 @@
 		<result column="text" property="text"/>
 		<result column="is_delete" property="isDelete"/>
 	</resultMap>
+	
+	<!-- 结论 -->
+	<select id="selectResultFilter" parameterType="hashmap" resultType="hashmap">
+		 SELECT 
+		 		tt.dict_code dictCode,
+			    tt.name,
+		        tt.dict_value dictValue
+		 FROM(
+			  SELECT 
+				case #{meetingType}
+				WHEN 'meetingType:3' THEN 'meeting3Result'
+				WHEN 'meetingType:5' THEN 'meeting5Result'
+				else 'meetingResult' 
+				end meetingType,
+				parent_code,
+				dict_code,
+				name,
+				dict_value
+			  FROM dict ) tt
+		 WHERE tt.parent_code=tt.meetingType
+	</select>
+	
+	<!-- 原因 -->
+	<select id="selectReasonFilter" parameterType="hashmap" resultType="hashmap">
+		 SELECT 
+			 tt.dict_code dictCode,
+			 tt.name,
+		     tt.dict_value dictValue
+		 FROM(
+			SELECT 
+				case 
+				WHEN #{meetingResult} in('meetingResult:3','meeting3Result:6','meeting5Result:2') THEN 'meetingVetoReason'
+				WHEN #{meetingResult} in('meetingResult:2') THEN 'meetingUndeterminedReason'
+				WHEN #{meetingResult} in('meeting5Result:1') THEN 'meetingFollowingReason'
+				else ''
+				end resultReason,
+			    parent_code,
+			    dict_code,
+			    name,
+			    dict_value
+			FROM dict) tt
+		WHERE tt.parent_code=tt.resultReason;
+	</select>
 </mapper>

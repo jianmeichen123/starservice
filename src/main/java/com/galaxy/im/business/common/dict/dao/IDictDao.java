@@ -8,4 +8,8 @@ import com.galaxy.im.common.db.IBaseDao;
 
 public interface IDictDao extends IBaseDao<Dict, Long>{
 	List<Map<String,Object>> selectCallonFilter();
+
+	List<Map<String, Object>> selectResultFilter(Map<String, Object> paramMap);
+
+	List<Map<String, Object>> selectReasonFilter(Map<String, Object> paramMap);
 }

@@ -70,6 +70,70 @@ public class DictServiceImpl extends BaseServiceImpl<Dict> implements IDictServi
 			throw new ServiceException(e);
 		}
 	}
+
+	/**
+	 * 结论
+	 */
+	@Override
+	public Map<String, Object> selectResultFilter(Map<String, Object> paramMap) {
+		Map<String,Object> resultMap = null;
+		try{
+			if(paramMap!=null && paramMap.containsKey("meetingType")){
+				List<Map<String,Object>> dataList = dictDao.selectResultFilter(paramMap);
+				
+				if(dataList!=null && dataList.size()>0){
+					List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+					for(Map<String,Object> map : dataList){
+						//设置默认值
+						if(1==CUtils.get().object2Integer(map.get("dictValue"),0)){
+							map.put("defValue", 1);
+						}else{
+							map.put("defValue", 0);
+						}
+						list.add(map);
+					}
+					resultMap = new HashMap<String,Object>();
+					resultMap.put("meetingResult", list);
+				}
+			}
+			return resultMap;
+		}catch(Exception e){
+			log.error(DictServiceImpl.class.getName() + "_selectResultFilter",e);
+			throw new ServiceException(e);
+		}
+	}
+	
+	/**
+	 * 原因
+	 */
+	@Override
+	public Map<String, Object> selectReasonFilter(Map<String, Object> paramMap) {
+		Map<String,Object> resultMap = null;
+		try{
+			if(paramMap!=null && paramMap.containsKey("meetingResult")){
+				List<Map<String,Object>> dataList = dictDao.selectReasonFilter(paramMap);
+				
+				if(dataList!=null && dataList.size()>0){
+					List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+					for(Map<String,Object> map : dataList){
+						//设置默认值
+						if(1==CUtils.get().object2Integer(map.get("dictValue"),0)){
+							map.put("defValue", 1);
+						}else{
+							map.put("defValue", 0);
+						}
+						list.add(map);
+					}
+					resultMap = new HashMap<String,Object>();
+					resultMap.put("resultReason", list);
+				}
+			}
+			return resultMap;
+		}catch(Exception e){
+			log.error(DictServiceImpl.class.getName() + "_selectReasonFilter",e);
+			throw new ServiceException(e);
+		}
+	}
 	
 	
 	

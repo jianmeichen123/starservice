@@ -38,7 +38,7 @@
 		LIMIT #{offset},${limit};
 	</select>
 	
-	<!-- 会议记录个数 -->
+	<!-- 会议记录列表个数 -->
 	<select id="countMeetingRecordList" parameterType="hashmap" resultType="integer">
 		SELECT count(1) 
 		FROM(
@@ -120,5 +120,34 @@
 		<result column="resultReasonId" property="resultReasonId"/>
 		<result column="resultReason" property="resultReason"/>
 	</resultMap>
+	
+	<!-- 添加会议记录 -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"  keyColumn="id" parameterType="com.galaxy.im.bean.meeting.MeetingRecordBean" >
+		insert into sop_meeting_record (id, project_id, file_id, meeting_date, meeting_type, meeting_result,
+			 meeting_notes, meeting_notes_text,created_time,record_type,participant, create_uid,meet_valid,
+			 meeting_name, update_time,result_reason,reason_other)
+	    values (#{id}, #{projectId}, #{fileId}, #{meetingDate}, #{meetingType}, #{meetingResult}, 
+		    #{meetingNotes}, #{meetingNotesText}, #{createdTime}, #{recordType},#{participant},#{createdId},
+		    #{meetValid},#{meetingName}, #{updatedTime},#{resultReason},#{reasonOther});
+    	<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+    </insert>
+    
+    <!-- 更新会议记录 -->
+	<update id="updateById" parameterType="com.galaxy.im.bean.meeting.MeetingRecordBean">
+		update sop_meeting_record
+		<set>
+		  <if test="fileId != 0" > file_id = #{fileId}, </if>
+	      <if test="meetingDate != null" > meeting_date = #{meetingDate}, </if>
+	      <if test="meetingNotes != null" > meeting_notes = #{meetingNotes}, </if>
+	      <if test="meetingNotesText != null" > meeting_notes_text = #{meetingNotesText}, </if>
+	      <if test="meetingResult != null" > meeting_result = #{meetingResult}, </if>
+	      <if test="resultReason != null" > result_reason = #{resultReason}, </if>
+	      <if test="reasonOther != null" > reason_other = #{reasonOther}, </if>
+	      <if test="updatedTime != null" > update_time = #{updatedTime} </if>
+		</set>
+		where id=#{id};
+	</update>
 	
 </mapper>
