@@ -71,15 +71,19 @@ public class MeetingRecordController {
 	@RequestMapping("meetingRecordDetails")
 	@ResponseBody
 	public Object meetingRecordDetails(@RequestBody String paramString){
-		try {/*
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		resultBean.setStatus("error");
+		try {
+			MeetingRecordBean bean = new MeetingRecordBean();
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);	
-			if(paramMap!=null && paramMap.containsKey(""))){
-				
+			if(paramMap!=null && paramMap.containsKey("meetingRecordId")){
+				bean =service.queryById(CUtils.get().object2Long(paramMap.get("meetingRecordId")));
 			}
-			MeetingRecordBean bean =service..queryById(detail.getTalkRecordId());
-		*/} catch (Exception e) {
+			resultBean.setStatus("ok");
+			resultBean.setEntity(bean);
+		} catch (Exception e) {
 			log.error(MeetingRecordController.class.getName() + "_meetingRecordDetails",e);
 		}
-		return null;
+		return resultBean;
 	}
 }

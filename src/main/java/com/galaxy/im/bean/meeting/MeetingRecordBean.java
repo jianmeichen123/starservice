@@ -13,6 +13,7 @@ public class MeetingRecordBean extends PagableEntity{
 	private Date meetingDate;			//会议时间
 	private String meetingDateStr;		//会议时间
 	private String meetingType;			//会议类型
+	private Long meetingResultId;		//会议结论id
 	private String meetingResult;		//会议结论
 	private String meetingNotes;		//会议纪要
 	private int recordType;				//是否为创意的标识
@@ -21,6 +22,7 @@ public class MeetingRecordBean extends PagableEntity{
     private int meetValid; 				//0表示有效，1表示无效
     private String meetingNotesText;	//会议记录的纯文本值
     private Long meetingName;			//会议名称
+    private Long resultReasonId;		//结论原因id
     private String resultReason;		//结论原因
     private String reasonOther;			//其他原因
 	
@@ -143,6 +145,18 @@ public class MeetingRecordBean extends PagableEntity{
 	}
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
+	}
+	public Long getMeetingResultId() {
+		return meetingResultId;
+	}
+	public void setMeetingResultId(Long meetingResultId) {
+		this.meetingResultId = meetingResultId;
+	}
+	public Long getResultReasonId() {
+		return resultReasonId;
+	}
+	public void setResultReasonId(Long resultReasonId) {
+		this.resultReasonId = resultReasonId;
 	}
 	
 }

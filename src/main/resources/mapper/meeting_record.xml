@@ -6,25 +6,119 @@
 
 	<!-- 会议记录列表 -->
 	<select id="getMeetingRecordList" parameterType="hashmap" resultType="hashmap">
-		SELECT 
-			r.id,
-			date_format(r.meeting_date,'%Y/%m/%d %H:%i') meetingDateStr,
-			dct1.name meetingResult,
-			r.result_reason resultReason,
-			r.meeting_notes meetingNodes
-		FROM sop_meeting_record  r
-		LEFT JOIN dict dct1 ON dct1.parent_code='meetingResult' and dct1.dict_code=r.meeting_result
-		WHERE r.project_id=#{projectId} and r.meeting_type=#{meetingType} 
-		ORDER BY r.meeting_date ${direction}
+		SELECT  tt.id,
+				date_format(tt.meeting_date,'%Y/%m/%d %H:%i') meetingDateStr,
+				tt.meeting_notes meetingNotes,
+				dct1.dict_value meetingResultId,
+				dct1.`name` meetingResult,
+				dct2.dict_value resultReasonId,
+				dct2.`name` resultReason
+		FROM(
+			SELECT  r.id,
+					case r.meeting_type
+					WHEN 'meetingType:3' THEN 'meeting3Result'
+					WHEN 'meetingType:5' THEN 'meeting5Result'
+					else 'meetingResult' 
+					end meetingType,
+					case 
+					WHEN locate('Veto',r.result_reason)>0 THEN 'meetingVetoReason'
+					WHEN locate('Undetermined',r.result_reason)>0 THEN 'meetingUndeterminedReason'
+					WHEN locate('Following',r.result_reason)>0 THEN 'meetingFollowingReason'
+					else ''
+					end resultReason,
+					r.meeting_result,
+					r.result_reason,
+					r.meeting_date,
+					r.meeting_notes
+				FROM sop_meeting_record r 
+				WHERE r.project_id=#{projectId} and r.meeting_type=#{meetingType} )tt 
+		LEFT JOIN dict dct1 ON dct1.parent_code=tt.meetingType and dct1.dict_code=tt.meeting_result
+		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason
+		ORDER BY tt.meeting_date ${direction}
 		LIMIT #{offset},${limit};
 	</select>
 	
 	<!-- 会议记录个数 -->
 	<select id="countMeetingRecordList" parameterType="hashmap" resultType="integer">
 		SELECT count(1) 
-		FROM sop_meeting_record r
-		LEFT JOIN dict dct1 ON dct1.parent_code='meetingResult' and dct1.dict_code=r.meeting_result
-		WHERE r.project_id=#{projectId} and r.meeting_type=#{meetingType} ;
+		FROM(
+			SELECT  r.id,
+					case r.meeting_type
+					WHEN 'meetingType:3' THEN 'meeting3Result'
+					WHEN 'meetingType:5' THEN 'meeting5Result'
+					else 'meetingResult' 
+					end meetingType,
+					case 
+					WHEN locate('Veto',r.result_reason)>0 THEN 'meetingVetoReason'
+					WHEN locate('Undetermined',r.result_reason)>0 THEN 'meetingUndeterminedReason'
+					WHEN locate('Following',r.result_reason)>0 THEN 'meetingFollowingReason'
+					else ''
+					end resultReason,
+					r.meeting_result,
+					r.result_reason,
+					r.meeting_date,
+					r.meeting_notes
+				FROM sop_meeting_record r 
+				WHERE r.project_id=#{projectId} and r.meeting_type=#{meetingType} )tt 
+		LEFT JOIN dict dct1 ON dct1.parent_code=tt.meetingType and dct1.dict_code=tt.meeting_result
+		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason;
 	</select>
+	
+	<!-- 访谈记录的详情 -->
+	<select id="selectById" resultType="com.galaxy.im.bean.meeting.MeetingRecordBean" parameterType="java.lang.Long" resultMap="detailMap">
+		SELECT  tt.id,
+				date_format(tt.meeting_date,'%Y/%m/%d %H:%i') meetingDateStr,
+				tt.meeting_notes meetingNotes,
+				tt.reason_other reasonOther,
+				tt.file_key fileKey,
+				tt.file_length fileLength,
+				tt.bucket_name bucketName,
+				tt.file_name fileName,
+				dct1.dict_value meetingResultId,
+				dct1.`name` meetingResult,
+				dct2.dict_value resultReasonId,
+				dct2.`name` resultReason
+		FROM(
+			SELECT  r.id,
+					case r.meeting_type
+					WHEN 'meetingType:3' THEN 'meeting3Result'
+					WHEN 'meetingType:5' THEN 'meeting5Result'
+					else 'meetingResult' 
+					end meetingType,
+					case 
+					WHEN locate('Veto',r.result_reason)>0 THEN 'meetingVetoReason'
+					WHEN locate('Undetermined',r.result_reason)>0 THEN 'meetingUndeterminedReason'
+					WHEN locate('Following',r.result_reason)>0 THEN 'meetingFollowingReason'
+					else ''
+					end resultReason,
+					r.meeting_result,
+					r.result_reason,
+					r.meeting_date,
+					r.meeting_notes,
+					r.reason_other,
+					sf.file_key,
+					sf.file_length,
+					sf.bucket_name,
+					sf.file_name
+				FROM sop_meeting_record r 
+				left join sop_file sf on sf.id=r.file_id
+				WHERE r.id=#{id} )tt 
+		LEFT JOIN dict dct1 ON dct1.parent_code=tt.meetingType and dct1.dict_code=tt.meeting_result
+		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason;
+	</select>
+	<resultMap type="com.galaxy.im.bean.meeting.MeetingRecordBean" id="detailMap">
+		<result column="id" property="id"/>
+		<result column="meetingDateStr" property="meetingDateStr"/>
+		<result column="meetingNotes" property="meetingNotes"/>
+		<result column="reasonOther" property="reasonOther"/>
+		<result column="fileKey" property="fileKey"/>
+		<result column="fileLength" property="fileLength"/>
+		<result column="bucketName" property="bucketName"/>
+		<result column="fileName" property="fileName"/>
+		<result column="meetingResultId" property="meetingResultId"/>
+		<result column="meetingResult" property="meetingResult"/>
+		<result column="resultReasonId" property="resultReasonId"/>
+		<result column="resultReason" property="resultReason"/>
+	</resultMap>
 	
 </mapper>
