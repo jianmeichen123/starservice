@@ -75,8 +75,10 @@
 				tt.bucket_name bucketName,
 				tt.file_name fileName,
 				dct1.dict_value meetingResultId,
+				dct1.dict_code meetingResultCode,
 				dct1.`name` meetingResult,
 				dct2.dict_value resultReasonId,
+				dct2.dict_code resultReasonCode,
 				dct2.`name` resultReason
 		FROM(
 			SELECT  r.id,
@@ -116,8 +118,10 @@
 		<result column="bucketName" property="bucketName"/>
 		<result column="fileName" property="fileName"/>
 		<result column="meetingResultId" property="meetingResultId"/>
+		<result column="meetingResultCode" property="meetingResultCode"/>
 		<result column="meetingResult" property="meetingResult"/>
 		<result column="resultReasonId" property="resultReasonId"/>
+		<result column="resultReasonCode" property="resultReasonCode"/>
 		<result column="resultReason" property="resultReason"/>
 	</resultMap>
 	
