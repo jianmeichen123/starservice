@@ -43,6 +43,8 @@
 		    d1.name projectTypeName,
 		    d1.dict_code projectTypeCode,
 		    p.created_time createdTimeUnix,
+		    p.finance_mode financeMode,
+            d5.name financeModeDs,
 		    date_format(from_unixtime(p.created_time/1000),'%Y-%m-%d') createdTimeDs,
 		    d2.dict_code financeStatus,					<!-- 融资状态Code -->
 		    d2.name financeStatusDs,					<!-- 融资状态名称 -->
@@ -77,6 +79,7 @@
 		left join dict d2 on d2.dict_code=p.finance_status
 		left join dict d3 on d3.dict_code=p.project_status
 		left join dict d4 on p.industry_own=d4.dict_code and d4.parent_code='industryOwn'
+		left join dict d5 on p.finance_mode=d5.dict_code
 		left join v_user u on u.id=p.create_uid
 		left join v_department t on p.project_departId=t.id
 		left join v_user u2 on t.dep_manager=u2.id
