@@ -60,7 +60,7 @@
 		    p.final_contribution finalContribution,		<!-- 实际-投资金额 -->
 		    p.final_valuations finalValuations,			<!-- 实际-项目估值 -->
 		    p.final_share_ratio finalShareRatio,		<!-- 实际-股权占比 -->
-		    p.service_charge serviceSharge,				<!-- 加速服务费占比 -->
+		    p.service_charge serviceCharge,				<!-- 加速服务费占比 -->
 		    
 		    p.project_status projectStatus,
             d3.name projectStatusDs,
