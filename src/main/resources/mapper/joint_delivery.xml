@@ -11,6 +11,7 @@
 		invest.delivery_amount deliveryAmount,
 		invest.delivery_share_ratio deliveryShareRatio
 	from joint_delivery invest
+	where project_id = #{projectId}
 	order by ${property} ${direction}
 	limit #{offset},${limit};
 	
@@ -56,12 +57,12 @@
 	<!-- 更新投资方 -->
 	<update id="updateById" parameterType="com.galaxy.im.bean.invest.InvestBean">
 		update joint_delivery set
-			delivery_type = #{deliveryType},
-			delivery_name = #{deliveryName},
-			delivery_amount = #{deliveryAmount},
-			delivery_share_ratio = #{deliveryShareRatio},
-			create_uid = #{updatedId},
-			update_time = #{updatedTime}
+			<if test="deliveryType != null" > delivery_type = #{deliveryType},</if>
+			<if test="deliveryName != null" > delivery_name = #{deliveryName},</if>
+			<if test="deliveryAmount != null" > delivery_amount = #{deliveryAmount},</if>
+			<if test="deliveryShareRatio != null" > delivery_share_ratio = #{deliveryShareRatio},</if>
+			<if test="updatedId != null" > create_uid = #{updatedId},</if>
+			<if test="updatedTime != null" >update_time = #{updatedTime}</if>
 		where id = #{id} and project_id = #{projectId};
 	
 	</update>
