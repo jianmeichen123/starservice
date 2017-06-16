@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.bean.project.ProjectBean">
+
+	<select id="projectStatus" parameterType="hashmap" resultType="hashmap">
+		select 
+			p.id,
+		    p.project_name projectName,
+		    d1.dict_code dictCode
+		from sop_project p
+		left join dict d1 on p.project_status=d1.dict_code
+		where p.id=#{projectId};
+	</select>
+	
+	
+	
+
+</mapper>
