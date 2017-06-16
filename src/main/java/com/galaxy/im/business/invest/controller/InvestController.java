@@ -45,7 +45,6 @@ public class InvestController {
 			
 				if (investBean!=null&&investBean.getId()!=null&&investBean.getId()!=0) {
 					//更新用户id
-					investBean.setUpdatedId(bean.getGuserid());
 					updateCount=investService.updateById(investBean);
 					
 				}else {
@@ -55,8 +54,8 @@ public class InvestController {
 				}
 				if(updateCount!=0 || id!=0L){
 					resultBean.setFlag(1);
+					resultBean.setStatus("OK");
 				}
-				resultBean.setStatus("OK");
 				
 			
 		} catch (Exception e) {
@@ -71,19 +70,16 @@ public class InvestController {
 	 */
 	@RequestMapping("delInvestCompany")
 	@ResponseBody
-	public Object delInvest(HttpServletRequest request,@RequestBody InvestBean investBean){
+	public Object delInvest(HttpServletRequest request,@RequestBody String paramString){
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		try{
-		
-			SessionBean bean = CUtils.get().getBeanBySession(request);
-			investBean.setUpdatedId(bean.getGuserid());
-			int count= investService.deleteById(investBean.getId());
+			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);	
+			int count= investService.deleteByIdAndPid(paramMap);
 			if(count!=0){
 				resultBean.setFlag(1);
-			
+				resultBean.setStatus("OK");
 		}
-		resultBean.setStatus("OK");
 	}catch(Exception e){
 		log.error(InvestController.class.getName() + "：delInvest",e);
 	}

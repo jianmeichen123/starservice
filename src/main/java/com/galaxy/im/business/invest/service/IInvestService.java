@@ -9,4 +9,6 @@ import com.galaxy.im.common.db.service.IBaseService;
 public interface IInvestService extends IBaseService<InvestBean>{
 
 	QPage selectInvestList(Map<String, Object> paramMap);
+
+	int deleteByIdAndPid(Map<String, Object> paramMap);
 }

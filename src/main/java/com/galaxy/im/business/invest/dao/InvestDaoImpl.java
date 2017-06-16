@@ -38,4 +38,20 @@ public class InvestDaoImpl extends BaseDaoImpl<InvestBean, Long>implements IInve
 			throw new DaoException(e);
 		}
 	}
+
+	@Override
+	public int deleteByIdAndPid(Map<String, Object> paramMap) {
+		try{
+			int count = 0;
+			if(paramMap!=null){
+				count = sqlSessionTemplate.delete(getSqlName("deleteByIdAndPid"), paramMap);
+			}    
+			return count;
+		}catch(Exception e){
+			log.error(getSqlName("deleteByIdAndPid"),e);
+			throw new DaoException(e);
+		}
+		
+		
+	}
 }

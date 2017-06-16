@@ -32,5 +32,16 @@ public class InvestServiceImpl extends BaseServiceImpl<InvestBean> implements II
 			throw new ServiceException(e);
 		}
 	}
+	
+	@Override
+	public int deleteByIdAndPid(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		try{
+		return dao.deleteByIdAndPid(paramMap);
+		}catch(Exception e){
+			log.error(InvestServiceImpl.class.getName() + "deleteByIdAndPid",e);
+			throw new ServiceException(e);
+		}
+	}
 
 }

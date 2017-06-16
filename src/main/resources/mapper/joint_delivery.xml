@@ -60,16 +60,15 @@
 			delivery_name = #{deliveryName},
 			delivery_amount = #{deliveryAmount},
 			delivery_share_ratio = #{deliveryShareRatio},
-			project_id = #{projectId},
 			create_uid = #{updatedId},
 			update_time = #{updatedTime}
-		where id = #{id};
+		where id = #{id} and project_id = #{projectId};
 	
 	</update>
 	
 	<!-- 根据id删除投资方 -->
-	<delete id="deleteById" parameterType="com.galaxy.im.bean.invest.InvestBean">
-		delete from joint_delivery where id = #{id};
+	<delete id="deleteByIdAndPid" parameterType="hashmap" >
+		delete from joint_delivery where id = #{id} and project_id = #{projectId};
 	
 	
 	</delete>

@@ -12,8 +12,8 @@ public class InvestBean extends BaseEntity {
 	private String deliveryName;					//合投机构名称
 	private Double deliveryAmount;					//投资金额
 	private Double deliveryShareRatio;			//股权占比
-	private int projectId;							//项目ID
-	private int createUid;							//创建人
+	private Long projectId;							//项目ID
+	private Long createUid;							//创建人
 	public int getDeliveryType() {
 		return deliveryType;
 	}
@@ -38,16 +38,17 @@ public class InvestBean extends BaseEntity {
 	public void setDeliveryShareRatio(Double deliveryShareRatio) {
 		this.deliveryShareRatio = deliveryShareRatio;
 	}
-	public int getProjectId() {
+	
+	public Long getProjectId() {
 		return projectId;
 	}
-	public void setProjectId(int projectId) {
+	public void setProjectId(Long projectId) {
 		this.projectId = projectId;
 	}
-	public int getCreateUid() {
+	public Long getCreateUid() {
 		return createUid;
 	}
-	public void setCreateUid(int createUid) {
+	public void setCreateUid(Long createUid) {
 		this.createUid = createUid;
 	}
 	public static long getSerialversionuid() {
