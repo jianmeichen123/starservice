@@ -2,8 +2,9 @@
 <!DOCTYPE mapper  
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
-<mapper namespace="com.galaxy.im.bean.project.ProjectBean">
+<mapper namespace="com.galaxy.im.business.flow.common.dao.IFlowCommonDao">
 
+	<!-- 获取项目状态 -->
 	<select id="projectStatus" parameterType="hashmap" resultType="hashmap">
 		select 
 			p.id,
@@ -14,7 +15,19 @@
 		where p.id=#{projectId};
 	</select>
 	
+	<!-- 否决项目 -->
+	<update id="vetoProject" parameterType="hashmap">
+		update sop_project p 
+			set p.project_status='projectStatus:2' 
+			where p.id=#{projectId};
+	</update>
 	
+	<!-- 进入到下一个流程阶段 -非绿色通道 -->
+	<update id="enterNextFlow" parameterType="hashmap">
+		update sop_project p
+			set p.project_progress=#{projectProgress}
+			where p.id=#{projectId};
+	</update>
 	
 
 </mapper>

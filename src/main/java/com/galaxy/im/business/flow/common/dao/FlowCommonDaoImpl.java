@@ -18,16 +18,48 @@ public class FlowCommonDaoImpl extends BaseDaoImpl<ProjectBean, Long> implements
 		super.setLogger(log);
 	}
 
+	/**
+	 * 取得当前项目进度
+	 */
 	@Override
 	public Map<String, Object> projectStatus(Map<String, Object> paramMap) {
+		String sqlName = "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.projectStatus";
 		try{
-			Map<String,Object> tt = sqlSessionTemplate.selectOne(getSqlName("projectStatus"));
-			return tt;
+			return sqlSessionTemplate.selectOne(sqlName,paramMap);
 		}catch(Exception e){
-			log.error(String.format("查询对象总数出错！语句：%s", "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.projectStatus"), e);
+			log.error(String.format("查询对象总数出错！语句：%s", sqlName), e);
 			throw new DaoException(e);
 		}
 	}
+
+	/**
+	 * 否决项目
+	 */
+	@Override
+	public Integer vetoProject(Map<String, Object> paramMap) {
+		String sqlName = "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.vetoProject";
+		try{
+			return sqlSessionTemplate.update(sqlName,paramMap);
+		}catch(Exception e){
+			log.error(String.format("查询对象总数出错！语句：%s", sqlName), e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 进入到下一阶段
+	 */
+	@Override
+	public Integer enterNextFlow(Map<String, Object> paramMap) {
+		String sqlName = "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.enterNextFlow";
+		try{
+			return sqlSessionTemplate.update(sqlName,paramMap);
+		}catch(Exception e){
+			log.error(String.format("查询对象总数出错！语句：%s", sqlName), e);
+			throw new DaoException(e);
+		}
+	}
+	
 	
 	
 }
