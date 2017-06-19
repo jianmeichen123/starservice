@@ -48,8 +48,8 @@ public class InterviewController {
 			Map<String,Object> m = service.hasPassInterview(paramMap);
 			if(CUtils.get().mapIsNotEmpty(m)){
 				result.setEntity(m);
-				result.setStatus("OK");
 			}
+			result.setStatus("OK");
 		}catch(Exception e){
 		}
 		return result;
@@ -76,7 +76,6 @@ public class InterviewController {
 				Map<String,Object> statusMap = fcService.projectStatus(paramMap);
 				if(CUtils.get().mapIsNotEmpty(statusMap)){
 					flag = CUtils.get().object2Integer(statusMap.get("flag"));
-					result.setStatus("OK");
 					if(flag==1){
 						//否决
 						if(fcService.vetoProject(paramMap)){
@@ -89,6 +88,7 @@ public class InterviewController {
 					}
 				}
 			}
+			result.setStatus("OK");
 			result.setEntity(rMap);
 			
 		}catch(Exception e){
@@ -105,14 +105,16 @@ public class InterviewController {
 	@ResponseBody
 	public Object startCeoReview(@RequestBody String paramString){
 		ResultBean<Object> resultBean = new ResultBean<Object>();
+		resultBean.setFlag(0);
 		try{
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
 				paramMap.put("projectProgress", "projectProgress:2");	//表示进入CEO评审阶段
 				if(fcService.enterNextFlow(paramMap)){
-					resultBean.setStatus("OK");
+					resultBean.setFlag(1);
 				}
 			}
+			resultBean.setStatus("OK");
 		}catch(Exception e){
 		}
 		return resultBean;
