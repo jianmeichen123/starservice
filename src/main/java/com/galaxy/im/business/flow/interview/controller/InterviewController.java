@@ -76,6 +76,7 @@ public class InterviewController {
 				Map<String,Object> statusMap = fcService.projectStatus(paramMap);
 				if(CUtils.get().mapIsNotEmpty(statusMap)){
 					flag = CUtils.get().object2Integer(statusMap.get("flag"));
+					result.setStatus("OK");
 					if(flag==1){
 						//否决
 						if(fcService.vetoProject(paramMap)){
