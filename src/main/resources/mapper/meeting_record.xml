@@ -31,7 +31,7 @@
 					r.meeting_date,
 					r.meeting_notes
 				FROM sop_meeting_record r 
-				WHERE r.project_id=#{projectId} and r.meeting_type=#{meetingType} )tt 
+				WHERE r.project_id=#{projectId} and r.meeting_type=#{meetingType} and r.record_type=0)tt 
 		LEFT JOIN dict dct1 ON dct1.parent_code=tt.meetingType and dct1.dict_code=tt.meeting_result
 		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason
 		ORDER BY tt.meeting_date ${direction}
@@ -59,7 +59,7 @@
 					r.meeting_date,
 					r.meeting_notes
 				FROM sop_meeting_record r 
-				WHERE r.project_id=#{projectId} and r.meeting_type=#{meetingType} )tt 
+				WHERE r.project_id=#{projectId} and r.meeting_type=#{meetingType} and r.record_type=0)tt 
 		LEFT JOIN dict dct1 ON dct1.parent_code=tt.meetingType and dct1.dict_code=tt.meeting_result
 		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason;
 	</select>
