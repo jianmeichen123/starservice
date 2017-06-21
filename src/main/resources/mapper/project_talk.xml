@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.bean.talk.ProjectTalkBean">
+
+	<!-- 项目访谈记录列表 -->
+	<select id="getProjectTalkList" parameterType="hashmap" resultType="hashmap">
+		SELECT 	tt.id,
+				date_format(tt.view_date,'%Y/%m/%d %H:%i') viewDateStr,
+				tt.view_target viewTarget,
+				tt.view_notes viewNotes,
+				dct1.dict_value interviewResultId,
+				dct1.`name` interviewResult,
+				dct2.dict_value resultReasonId,
+				dct2.`name` resultReason
+		FROM(SELECT r.id,
+					 r.view_date,
+					 r.view_target,
+					 r.interview_result,
+					case 
+					WHEN locate('Veto',r.result_reason)>0 THEN 'meetingVetoReason'
+					WHEN locate('Undetermined',r.result_reason)>0 THEN 'meetingUndeterminedReason'
+					WHEN locate('Following',r.result_reason)>0 THEN 'meetingFollowingReason'
+					else ''
+					end resultReason,
+					r.result_reason,
+					r.view_notes
+				FROM sop_interview_record r
+				WHERE r.project_id=#{projectId}
+			ORDER BY r.view_date desc) tt
+		LEFT JOIN dict dct1 ON dct1.parent_code='meetingResult' and dct1.dict_code=tt.interview_result
+		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason
+		ORDER BY tt.view_date ${direction}
+		LIMIT #{offset},${limit};
+	</select>
+	
+	<!-- 项目访谈记录列表个数 -->
+	<select id="countProjectTalkList" parameterType="hashmap" resultType="integer">
+		SELECT count(1) 
+		FROM(SELECT r.id,
+					 r.view_date,
+					 r.view_target,
+					 r.interview_result,
+					case 
+					WHEN locate('Veto',r.result_reason)>0 THEN 'meetingVetoReason'
+					WHEN locate('Undetermined',r.result_reason)>0 THEN 'meetingUndeterminedReason'
+					WHEN locate('Following',r.result_reason)>0 THEN 'meetingFollowingReason'
+					else ''
+					end resultReason,
+					r.result_reason,
+					r.view_notes
+				FROM sop_interview_record r
+				WHERE r.project_id=#{projectId}
+			ORDER BY r.view_date desc) tt
+		LEFT JOIN dict dct1 ON dct1.parent_code='meetingResult' and dct1.dict_code=tt.interview_result
+		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason;
+	</select>
+	
+	<!-- 访谈记录的详情 -->
+	<select id="selectById" resultType="com.galaxy.im.bean.talk.ProjectTalkBean" parameterType="java.lang.Long" resultMap="detailMap">
+		SELECT  tt.id,
+				date_format(tt.view_date,'%Y/%m/%d %H:%i') viewDateStr,
+				tt.view_target viewTarget,
+				tt.view_notes viewNotes,
+				tt.file_key fileKey,
+				tt.file_length fileLength,
+				tt.bucket_name bucketName,
+				tt.file_name fileName,
+				dct1.dict_value interviewResultId,
+				dct1.dict_code interviewResultCode,
+				dct1.`name` interviewResult,
+				dct2.dict_value resultReasonId,
+				dct2.dict_code resultReasonCode,
+				dct2.`name` resultReason,
+				tt.reason_other reasonOther
+		FROM(
+			SELECT  r.id,	
+					r.view_date,
+					r.view_target,
+					sf.file_key,
+					sf.file_length,
+					sf.bucket_name,
+					sf.file_name,
+					r.view_notes,
+					r.interview_result,
+					case 
+					WHEN locate('Veto',r.result_reason)>0 THEN 'meetingVetoReason'
+					WHEN locate('Undetermined',r.result_reason)>0 THEN 'meetingUndeterminedReason'
+					WHEN locate('Following',r.result_reason)>0 THEN 'meetingFollowingReason'
+					else ''
+					end resultReason,
+					r.result_reason,
+					r.reason_other
+				FROM sop_interview_record r 
+				left join sop_file sf on sf.id=r.file_id
+				WHERE r.id=#{talkRecordId} )tt
+		LEFT JOIN dict dct1 ON dct1.parent_code='meetingResult' and dct1.dict_code=tt.interview_result
+		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason;
+	</select>
+	<resultMap type="com.galaxy.im.bean.talk.ProjectTalkBean" id="detailMap">
+		<result column="id" property="id"/>
+		<result column="viewDateStr" property="viewDateStr"/>
+		<result column="viewTarget" property="viewTarget"/>
+		<result column="viewNotes" property="viewNotes"/>
+		<result column="fileKey" property="fileKey"/>
+		<result column="fileLength" property="fileLength"/>
+		<result column="bucketName" property="bucketName"/>
+		<result column="fileName" property="fileName"/>
+		<result column="meetingResultId" property="meetingResultId"/>
+		<result column="meetingResultCode" property="meetingResultCode"/>
+		<result column="meetingResult" property="meetingResult"/>
+		<result column="resultReasonId" property="resultReasonId"/>
+		<result column="resultReasonCode" property="resultReasonCode"/>
+		<result column="resultReason" property="resultReason"/>
+		<result column="reasonOther" property="reasonOther"/>
+	</resultMap>
+	
+	<!-- 添加项目访谈记录 -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"  keyColumn="id" parameterType="com.galaxy.im.bean.talk.ProjectTalkBean" >
+		insert into sop_interview_record (id, project_id, file_id, view_date, 
+		  	view_target, view_notes, view_notes_text, created_time, created_id, update_time,schedule_id,
+		  	interview_result,result_reason,reason_other)
+	    values (#{id}, #{projectId}, #{fileId}, #{viewDate}, #{viewTarget}, #{viewNotes}, 
+	    	#{viewNotesText}, #{createdTime},#{createdId},#{createdTime},#{scheduleId},
+	    	#{interviewResult},#{resultReason},#{reasonOther});
+    	<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+    </insert>
+    
+    <!-- 更新项目访谈记录 -->
+	<update id="updateById" parameterType="com.galaxy.im.bean.talk.ProjectTalkBean">
+		update sop_interview_record
+		<set>
+		  <if test="fileId != 0" > file_id = #{fileId}, </if>
+	      <if test="viewTarget != null" > view_target = #{viewTarget}, </if>
+	      <if test="viewNotes != null" > view_notes = #{viewNotes}, </if>
+	      <if test="viewNotesText != null" > view_notes_text = #{viewNotesText}, </if>
+	      <if test="interviewResult != null" > interview_result = #{interviewResult}, </if>
+	      <if test="resultReason != null" > result_reason = #{resultReason}, </if>
+	      <if test="reasonOther != null" > reason_other = #{reasonOther}, </if>
+	      <if test="updatedTime != null" > update_time = #{updatedTime} </if>
+		</set>
+		where id=#{id};
+	</update>
+
+</mapper>

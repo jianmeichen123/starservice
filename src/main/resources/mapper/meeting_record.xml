@@ -64,7 +64,7 @@
 		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason;
 	</select>
 	
-	<!-- 访谈记录的详情 -->
+	<!-- 会议记录的详情 -->
 	<select id="selectById" resultType="com.galaxy.im.bean.meeting.MeetingRecordBean" parameterType="java.lang.Long" resultMap="detailMap">
 		SELECT  tt.id,
 				date_format(tt.meeting_date,'%Y/%m/%d %H:%i') meetingDateStr,
