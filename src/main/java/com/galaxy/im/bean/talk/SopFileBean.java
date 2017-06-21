@@ -6,26 +6,26 @@ public class SopFileBean extends BaseEntity{
 
 	private static final long serialVersionUID = -1634715566251408151L;
 	
-	private long belongUid;
-	private long projectId;
-	private String projectProgress;
-	private String fileWorkType;
-	private long careerLine;
-	private String fileSource;
-	private String fileType;
-	private String remark;
-	private long voucherId;
-	private String fileStatus;
-	private long fileUid;
-	private String filUri;
-	private long fileLength;
-	private String fileKey;
-	private String bucketName;
-	private String fileName;
-	private String fileSuffix;
-	private long fileValid;
-	private int recordType;
-	private long meetingId;
+	private long belongUid;					//认领人id
+	private long projectId;					//关联项目id
+	private String projectProgress;			//项目进度
+	private String fileWorkType;			//业务分类
+	private long careerLine;				//所属事业线
+	private String fileSource;				//档案来源 1:内部 2:外部
+	private String fileType;				//存储类型 1:文档 2:图片 3:音视频
+	private String remark;					//档案摘要
+	private long voucherId;					//签署证明文件ID
+	private String fileStatus;				//档案状态 可用、已审核... 
+	private long fileUid;					//上传人/起草者 uid
+	private String filUri;					//存储地址
+	private long fileLength;				//档案大小
+	private String fileKey;					//档案阿里云存储Key
+	private String bucketName;				//档案bucketName
+	private String fileName;				//档案名称
+	private String fileSuffix;				//档案文件后缀
+	private long fileValid;					//文档是否有效，默认1表示有效，0表示无效
+	private int recordType;					//是否为创意的标识
+	private long meetingId;					//会议ID 关联sop_meeting_record
 	
 	public SopFileBean(){
 	}

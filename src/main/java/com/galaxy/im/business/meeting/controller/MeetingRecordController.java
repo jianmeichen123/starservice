@@ -76,11 +76,14 @@ public class MeetingRecordController {
 				if(bean.getId()!=null && bean.getId()!=0){
 					//保存sop_file
 					if(!"".equals(bean.getFileKey()) && bean.getFileKey()!=null){
+						Map<String,String> nameMap = transFileNames(bean.getFileName());
 						SopFileBean sopFileBean =new SopFileBean();
 						sopFileBean.setFileKey(bean.getFileKey());
 						sopFileBean.setFileLength(bean.getFileLength());
 						sopFileBean.setBucketName(bean.getBucketName());
-						sopFileBean.setFileName(bean.getFileName());
+						sopFileBean.setFileName(nameMap.get("fileName"));
+						sopFileBean.setFileSuffix(nameMap.get("fileSuffix"));
+						sopFileBean.setFileType("fileType:2");
 						long sopId =talkService.saveSopFile(sopFileBean);
 						//获取sopfile 主键
 						if(sopId!=0){
@@ -132,5 +135,18 @@ public class MeetingRecordController {
 			log.error(MeetingRecordController.class.getName() + "_meetingRecordDetails",e);
 		}
 		return resultBean;
+	}
+	
+	private Map<String, String> transFileNames(String fileName) {
+		Map<String, String> retMap = new HashMap<String, String>();
+		int dotPos = fileName.lastIndexOf(".");
+		if(dotPos == -1){
+			retMap.put("fileName", fileName);
+			retMap.put("fileSuffix", "");
+		}else{
+			retMap.put("fileName", fileName.substring(0, dotPos));
+			retMap.put("fileSuffix", fileName.substring(dotPos+1));
+		}
+		return retMap;
 	}
 }
