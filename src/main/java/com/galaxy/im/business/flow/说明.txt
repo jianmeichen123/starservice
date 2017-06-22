@@ -8,3 +8,5 @@
 	 investmentpolicy：投决协议
 	 stockequity：股权交割
 	 intervestoperate：投后运营
+	 businessnegotiation:商务谈判
+	 

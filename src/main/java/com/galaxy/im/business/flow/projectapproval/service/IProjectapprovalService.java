@@ -9,4 +9,8 @@ public interface IProjectapprovalService extends IBaseService<Test>{
 
 	Map<String, Object> approvalOperateStatus(Map<String, Object> paramMap);
 
+	boolean updateMeetingScheduling(Map<String, Object> paramMap);
+
+	int getMeetingCount(Map<String, Object> paramMap);
+
 }

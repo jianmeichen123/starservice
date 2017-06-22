@@ -10,4 +10,8 @@ public interface IProjectapprovalDao extends IBaseDao<Test, Long>{
 
 	List<Map<String, Object>> approvalOperateStatus(Map<String, Object> paramMap);
 
+	int updateMeetingScheduling(Map<String, Object> paramMap);
+
+	int getMeetingCount(Map<String, Object> paramMap);
+
 }

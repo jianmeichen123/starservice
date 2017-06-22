@@ -16,4 +16,23 @@
 		group by d1.dict_code;
 	</select>
 	
+	<!-- 更新立项会排期的会议结果和排期结果调整为已否决 -->
+	<update id="updateMeetingScheduling" parameterType="hashmap">
+		UPDATE sop_meeting_scheduling 
+		<set>
+	      <if test="status != null" > status = #{status}, </if>
+	      <if test="scheduleStatus != null" > schedule_status = #{scheduleStatus}, </if>
+	      <if test="meetingCount != null" > meeting_count = #{meetingCount}, </if>
+	      <if test="updateTime != null" > updated_time = #{updateTime} </if>
+		</set>
+		WHERE project_id=#{projectId} and meeting_type=#{meetingType};
+	</update>
+	
+	<!-- 获取项目会议个数 -->
+	<select id="getMeetingCount" parameterType="hashmap" resultType="integer">
+		SELECT COUNT(1) 
+		FROM sop_meeting_record 
+		WHERE project_id=#{projectId} and meeting_type=#{meetingType} ;
+	</select>
+	
 </mapper>

@@ -66,6 +66,33 @@ public class ProjectapprovalServiceImpl extends BaseServiceImpl<Test> implements
 		}
 	}
 	
+	/**
+	 * 更新立项会排期的会议结果和排期结果调整为已否决
+	 * @return 
+	 */
+	@Override
+	public boolean updateMeetingScheduling(Map<String, Object> paramMap) {
+		try{
+			return dao.updateMeetingScheduling(paramMap)>0;
+		}catch(Exception e){
+			log.error(ProjectapprovalServiceImpl.class.getName() + ":updateMeetingScheduling",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	/**
+	 * 获取会议个数
+	 */
+	@Override
+	public int getMeetingCount(Map<String, Object> paramMap) {
+		try{
+			return dao.getMeetingCount(paramMap);
+		}catch(Exception e){
+			log.error(ProjectapprovalServiceImpl.class.getName() + ":getMeetingCount",e);
+			throw new ServiceException(e);
+		}
+	}
+	
 	
 
 }
