@@ -1,5 +1,8 @@
 package com.galaxy.im.bean.invest;
 
+import java.text.DecimalFormat;
+
+import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.db.BaseEntity;
 
 public class InvestBean extends BaseEntity {
@@ -30,7 +33,8 @@ public class InvestBean extends BaseEntity {
 	
 	
 	public Double getDeliveryAmount() {
-		return deliveryAmount.doubleValue();
+		DecimalFormat df = new DecimalFormat("#.0000");  
+		return CUtils.get().object2Double(df.format(deliveryAmount));
 	}
 	public void setDeliveryAmount(Double deliveryAmount) {
 		this.deliveryAmount = deliveryAmount;
