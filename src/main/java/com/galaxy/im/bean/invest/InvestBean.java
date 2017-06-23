@@ -1,7 +1,5 @@
 package com.galaxy.im.bean.invest;
 
-import java.math.BigDecimal;
-
 import com.galaxy.im.common.db.BaseEntity;
 
 public class InvestBean extends BaseEntity {
@@ -12,8 +10,8 @@ public class InvestBean extends BaseEntity {
 	private static final long serialVersionUID = 2692500358849192889L;
 	private int deliveryType;						//0-独投;1-领投;2-合投
 	private String deliveryName;					//合投机构名称
-	private BigDecimal deliveryAmount;					//投资金额
-	private BigDecimal deliveryShareRatio;			//股权占比
+	private Double deliveryAmount;					//投资金额
+	private Double deliveryShareRatio;			//股权占比
 	private Long projectId;							//项目ID
 	private Long createUid;							//创建人
 	public int getDeliveryType() {
@@ -29,16 +27,16 @@ public class InvestBean extends BaseEntity {
 		this.deliveryName = deliveryName;
 	}
 
-	public BigDecimal getDeliveryAmount() {
+	public Double getDeliveryAmount() {
 		return deliveryAmount;
 	}
-	public void setDeliveryAmount(BigDecimal deliveryAmount) {
+	public void setDeliveryAmount(Double deliveryAmount) {
 		this.deliveryAmount = deliveryAmount;
 	}
-	public BigDecimal getDeliveryShareRatio() {
+	public Double getDeliveryShareRatio() {
 		return deliveryShareRatio;
 	}
-	public void setDeliveryShareRatio(BigDecimal deliveryShareRatio) {
+	public void setDeliveryShareRatio(Double deliveryShareRatio) {
 		this.deliveryShareRatio = deliveryShareRatio;
 	}
 	public Long getProjectId() {
