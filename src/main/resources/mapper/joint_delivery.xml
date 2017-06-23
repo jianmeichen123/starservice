@@ -20,7 +20,7 @@
   <!-- 列表记录个数 -->
 	<select id="countInvestList" parameterType="hashmap" resultType="integer">
 		select count(1)
-		from joint_delivery invest
+		from joint_delivery invest where project_id=#{projectId}
 	</select>
   
   <resultMap type="com.galaxy.im.bean.invest.InvestBean" id="investMap">
