@@ -16,9 +16,27 @@
 		group by d1.dict_code;
 	</select>
 	
-	
-	
-	
+	<!-- 项目访谈记录列表个数 -->
+	<select id="getInterviewCount" parameterType="hashmap" resultType="integer">
+		SELECT count(1) 
+		FROM(SELECT r.id,
+					 r.view_date,
+					 r.view_target,
+					 r.interview_result,
+					case 
+					WHEN locate('Veto',r.result_reason)>0 THEN 'meetingVetoReason'
+					WHEN locate('Undetermined',r.result_reason)>0 THEN 'meetingUndeterminedReason'
+					WHEN locate('Following',r.result_reason)>0 THEN 'meetingFollowingReason'
+					else ''
+					end resultReason,
+					r.result_reason,
+					r.view_notes
+				FROM sop_interview_record r
+				WHERE r.project_id=#{projectId}
+			ORDER BY r.view_date desc) tt
+		LEFT JOIN dict dct1 ON dct1.parent_code='meetingResult' and dct1.dict_code=tt.interview_result
+		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason;
+	</select>
 	
 
 </mapper>

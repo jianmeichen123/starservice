@@ -49,6 +49,10 @@ public class InterviewController {
 			if(CUtils.get().mapIsNotEmpty(m)){
 				result.setEntity(m);
 			}
+			Map<String,Object> map = service.getInterviewCount(paramMap);
+			if(CUtils.get().mapIsNotEmpty(map)){
+				result.setMap(map);
+			}
 			result.setStatus("OK");
 		}catch(Exception e){
 		}

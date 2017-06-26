@@ -8,4 +8,6 @@ import com.galaxy.im.common.db.IBaseDao;
 
 public interface IInterviewDao extends IBaseDao<Test, Long>{
 	List<Map<String,Object>> hasPassInterview(Map<String,Object> paramId);
+
+	int getInterviewCount(Map<String, Object> paramMap);
 }

@@ -63,6 +63,17 @@ public class InterviewServiceImpl extends BaseServiceImpl<Test> implements IInte
 		}
 	}
 
+	/**
+	 * 获取项目访谈记录个数
+	 */
+	@Override
+	public Map<String, Object> getInterviewCount(Map<String, Object> paramMap) {
+		int count = dao.getInterviewCount(paramMap);
+		Map<String, Object> map=new HashMap<String, Object>();
+		map.put("interviewCount", count);
+		return map;
+	}
+
 		
 
 }
