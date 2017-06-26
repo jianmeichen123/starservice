@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.galaxy.im.bean.Test;
+import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.db.BaseDaoImpl;
 import com.galaxy.im.common.exception.DaoException;
 
@@ -27,6 +28,21 @@ public class InterviewDaoImpl extends BaseDaoImpl<Test, Long> implements IInterv
 		String sqlName = "com.galaxy.im.business.flow.common.dao.IInterviewDao.hasPassInterview";
 		try{
 			return sqlSessionTemplate.selectList(sqlName,paramMap);
+		}catch(Exception e){
+			log.error(String.format("查询对象总数出错！语句：%s", sqlName), e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 获取项目访谈个数
+	 */
+	@Override
+	public int getInterviewCount(Map<String, Object> paramMap) {
+		String sqlName = "com.galaxy.im.business.flow.common.dao.IInterviewDao.getInterviewCount";
+		try{
+			int total = CUtils.get().object2Integer(sqlSessionTemplate.selectOne(sqlName,paramMap));
+			return total;
 		}catch(Exception e){
 			log.error(String.format("查询对象总数出错！语句：%s", sqlName), e);
 			throw new DaoException(e);
