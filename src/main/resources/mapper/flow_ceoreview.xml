@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.business.flow.ceoreview.dao.ICeoreviewDao">
+
+
+
+<!-- 申请立项会排期 -->
+	<insert id="insertRovalScheduling" parameterType="hashmap">
+		insert into sop_meeting_scheduling(
+			project_id,
+			meeting_type,
+			meeting_count,
+			status,
+			schedule_status,
+			apply_time,
+			created_time
+		)values(
+			#{projectId},
+			#{meetingType},
+			#{meetingCount},
+			#{status},
+			#{scheduleStatus},
+			#{applyTime},
+			#{createdTime}
+		);
+		<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+				SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+	
+	</insert>
+	
+	
+	<!-- 修改ceo评审排期状态 -->
+	<update id="updateCeoScheduling" parameterType="hashmap">
+		update sop_meeting_scheduling set
+			<if test="scheduleStatus != null" > schedule_status = #{scheduleStatus},</if>
+			<if test="updatedTime != null" >updated_time = #{updatedTime}</if>
+		where  project_id = #{projectId} and meeting_type='meetingType:2';
+	
+	</update>
+</mapper>

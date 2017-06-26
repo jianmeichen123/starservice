@@ -1,5 +1,7 @@
 package com.galaxy.im.business.flow.ceoreview.service;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,17 @@ public class CeoreviewServiceImpl extends BaseServiceImpl<Test> implements ICeor
 	@Override
 	protected IBaseDao<Test, Long> getBaseDao() {
 		return dao;
+	}
+
+	@Override
+	public  int saveRovalScheduling(Map<String, Object> paramMap) {
+		return dao.insertRovalScheduling(paramMap);
+		
+	}
+
+	@Override
+	public int updateCeoScheduling(Map<String, Object> paramMap) {
+		return dao.updateCeoScheduling(paramMap);
 	}
 
 	

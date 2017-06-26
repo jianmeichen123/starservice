@@ -101,7 +101,7 @@ public class InterviewController {
 	 * @param paramString
 	 * @return
 	 */
-	@RequestMapping("startCeoReview")
+	@RequestMapping("startInternalreview")
 	@ResponseBody
 	public Object startCeoReview(@RequestBody String paramString){
 		ResultBean<Object> resultBean = new ResultBean<Object>();
@@ -109,7 +109,7 @@ public class InterviewController {
 		try{
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
-				paramMap.put("projectProgress", "projectProgress:2");	//表示进入CEO评审阶段
+				paramMap.put("projectProgress", "projectProgress:2");	//表示进入内部评审阶段
 				if(fcService.enterNextFlow(paramMap)){
 					resultBean.setFlag(1);
 				}
