@@ -8,16 +8,17 @@ public class InvestBean extends BaseEntity {
 	 * 投资方
 	 */
 	private static final long serialVersionUID = 2692500358849192889L;
-	private int deliveryType;						//0-独投;1-领投;2-合投
+	private String deliveryType;						//0-独投;1-领投;2-合投
 	private String deliveryName;					//合投机构名称
 	private Double deliveryAmount;					//投资金额
 	private Double deliveryShareRatio;			//股权占比
 	private Long projectId;							//项目ID
 	private Long createUid;							//创建人
-	public int getDeliveryType() {
+	
+	public String getDeliveryType() {
 		return deliveryType;
 	}
-	public void setDeliveryType(int deliveryType) {
+	public void setDeliveryType(String deliveryType) {
 		this.deliveryType = deliveryType;
 	}
 	public String getDeliveryName() {
