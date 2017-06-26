@@ -11,7 +11,7 @@
 		invest.delivery_amount deliveryAmount,
 		invest.delivery_share_ratio deliveryShareRatio
 	from joint_delivery invest
-	where project_id = #{projectId}
+	where project_id = #{projectId} and delivery_type =  #{deliveryType}
 	order by ${property} ${direction}
 	limit #{offset},${limit};
 	

@@ -1,5 +1,6 @@
 package com.galaxy.im.business.flow.internalreview.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -43,5 +44,18 @@ public class InternalreviewDaoImpl extends BaseDaoImpl<Test, Long> implements II
 			throw new DaoException(e);
 		}
 	}
-	
+
+	/**
+	 * 获取通过/否决的项目的时间
+	 */
+	@Override
+	public Date selectTime(Map<String, Object> paramMap) {
+		String sqlName = "com.galaxy.im.business.flow.internalreview.dao.IInternalreviewDao.selectTime";
+		try{
+			return sqlSessionTemplate.selectOne(sqlName, paramMap);
+		}catch(Exception e){
+			log.error(String.format("查询对象出错！语句：%s", sqlName), e);
+			throw new DaoException(e);
+		}
+	}
 }

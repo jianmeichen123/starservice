@@ -35,6 +35,7 @@ public class InternalreviewServiceImpl extends BaseServiceImpl<Test> implements 
 			result.put("pass", false);
 			result.put("veto", false);
 			List<Map<String,Object>> dataList = dao.hasPassMeeting(paramMap);
+			
 			if(dataList!=null && dataList.size()>0){
 				String dictCode;
 				Integer pcount = 0;
@@ -45,10 +46,12 @@ public class InternalreviewServiceImpl extends BaseServiceImpl<Test> implements 
 					if("meetingResult:1".equals(dictCode)){
 						if(pcount>0){
 							result.put("pass", true);
+						
 						}
 					}else if("meetingResult:3".equals(dictCode)){
 						if(pcount>0){
 							result.put("veto", true);
+							
 						}
 					}
 				}
