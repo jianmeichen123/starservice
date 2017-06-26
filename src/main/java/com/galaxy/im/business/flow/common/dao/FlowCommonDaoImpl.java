@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.galaxy.im.bean.project.ProjectBean;
+import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.common.db.BaseDaoImpl;
 import com.galaxy.im.common.exception.DaoException;
 
@@ -54,6 +55,35 @@ public class FlowCommonDaoImpl extends BaseDaoImpl<ProjectBean, Long> implements
 		String sqlName = "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.enterNextFlow";
 		try{
 			return sqlSessionTemplate.update(sqlName,paramMap);
+		}catch(Exception e){
+			log.error(String.format("查询对象总数出错！语句：%s", sqlName), e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 创建代办任务
+	 */
+	@Override
+	public Long insertsopTask(SopTask bean) {
+		String sqlName = "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.insertsopTask";
+		try{
+			long id = sqlSessionTemplate.insert(sqlName,bean);
+			return id;
+		}catch(Exception e){
+			log.error(FlowCommonDaoImpl.class.getName() + ":insertsopTask",e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 获取最新会议记录信息
+	 */
+	@Override
+	public Map<String, Object> getLatestMeetingRecordInfo(Map<String, Object> paramMap) {
+		String sqlName = "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.getLatestMeetingRecordInfo";
+		try{
+			return sqlSessionTemplate.selectOne(sqlName,paramMap);
 		}catch(Exception e){
 			log.error(String.format("查询对象总数出错！语句：%s", sqlName), e);
 			throw new DaoException(e);

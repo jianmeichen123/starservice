@@ -51,6 +51,13 @@ public class ProjectapprovalController {
 			if(CUtils.get().mapIsNotEmpty(m)){
 				result.setEntity(m);
 			}
+			//会议最新信息
+			paramMap.put("meetingType", "meetingType:3");
+			Map<String,Object> map = fcService.getLatestMeetingRecordInfo(paramMap);
+			if(CUtils.get().mapIsNotEmpty(map)){
+				result.setMap(map);
+			}
+
 			result.setStatus("OK");
 		}catch(Exception e){
 		}

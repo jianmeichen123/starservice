@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.galaxy.im.bean.project.ProjectBean;
+import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.business.flow.common.dao.IFlowCommonDao;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.db.IBaseDao;
@@ -83,6 +84,28 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 			log.error(FlowCommonServiceImpl.class.getName() + ":enterNextFlow",e);
 			throw new ServiceException(e);
 		}
+	}
+
+	/**
+	 * 创建代办任务
+	 */
+	@Override
+	public Long insertsopTask(SopTask bean) {
+		try{
+			return dao.insertsopTask(bean);
+		}catch(Exception e){
+			log.error(FlowCommonServiceImpl.class.getName() + ":insertsopTask",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	/**
+	 * 获取最新会议
+	 */
+	@Override
+	public Map<String, Object> getLatestMeetingRecordInfo(Map<String, Object> paramMap) {
+		Map<String,Object> result = dao.getLatestMeetingRecordInfo(paramMap);
+		return result;
 	}
 
 	

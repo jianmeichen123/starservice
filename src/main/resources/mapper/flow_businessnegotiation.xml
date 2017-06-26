@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.business.flow.businessnegotiation.dao.IBusinessnegotiationDao">
+
+	<!-- 获取项目的所有会议的状态和个数 -->
+	<select id="businessOperateStatus" parameterType="hashmap" resultType="hashmap">
+		select 
+			case isnull(d1.dict_code) when 1 then 'no' else d1.dict_code end dictCode,
+			count(1) pcount
+		from sop_project p
+		left join sop_meeting_record r on p.id=r.project_id
+		left join dict d1 on r.meeting_result=d1.dict_code
+		where p.id=#{projectId}
+		group by d1.dict_code;
+	</select>
+	
+	<!-- 进入到下一个流程阶段 且修改绿色通道 -->
+	<update id="updateProjectStatus" parameterType="hashmap">
+		update sop_project p
+		<set>
+		  <if test="projectProgress != null" > p.project_progress = #{projectProgress}, </if>
+	      <if test="greanChannel != null" > p.grean_channel = #{greanChannel} </if>
+		</set>
+		where p.id=#{projectId};
+	</update>
+	
+</mapper>
