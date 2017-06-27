@@ -17,6 +17,7 @@ import com.galaxy.im.business.flow.internalreview.service.IInternalreviewService
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.ResultBean;
+import com.galaxy.im.common.StaticConst;
 
 /**
  * CEO评审
@@ -53,7 +54,7 @@ public class CeoreviewController {
 				result.setEntity(m);
 			}
 			//会议最新信息
-			paramMap.put("meetingType", "meetingType:2");
+			paramMap.put("meetingType", StaticConst.MEETING_TYPE_CEO);
 			Map<String,Object> map = fcService.getLatestMeetingRecordInfo(paramMap);
 			if(CUtils.get().mapIsNotEmpty(map)){
 				result.setMap(map);
@@ -119,11 +120,11 @@ public class CeoreviewController {
 		try{
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
-				paramMap.put("projectProgress", "projectProgress:4");	//表示进入立项会阶段
+				paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_4);	//表示进入立项会阶段
 				if(fcService.enterNextFlow(paramMap)){
-					paramMap.put("meetingType", "meetingType:3");
+					paramMap.put("meetingType", StaticConst.MEETING_TYPE_APPROVAL);
 					paramMap.put("meetingCount", 0);
-					paramMap.put("status", "meetingResult:2");
+					paramMap.put("status", StaticConst.MEETING_RESULT_2);
 					paramMap.put("scheduleStatus", 0);
 					paramMap.put("applyTime", new Timestamp(new Date().getTime()));
 					paramMap.put("createdTime", new Date().getTime());
