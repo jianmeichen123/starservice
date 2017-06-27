@@ -146,7 +146,7 @@ public class BusinessnegotiationController {
 					bean.setTaskName(StaticConst.TASK_NAME_TZXY);
 					bean.setTaskType(StaticConst.TASK_TYPE_XTBG);
 					bean.setTaskFlag(StaticConst.TASK_FLAG_TZXY);
-					bean.setTaskStatus(StaticConst.TASK_STATUS_DRL);
+					bean.setTaskStatus(StaticConst.TASK_STATUS_DWG);
 					bean.setTaskOrder(StaticConst.TASK_ORDER_NORMAL);
 					bean.setAssignUid(sessionBean.getGuserid());
 					bean.setDepartmentId(deptId);
@@ -187,7 +187,7 @@ public class BusinessnegotiationController {
 					bean.setTaskName(StaticConst.TASK_NAME_SCTZYXS);
 					bean.setTaskType(StaticConst.TASK_TYPE_XTBG);
 					bean.setTaskFlag(StaticConst.TASK_FLAG_SCTZYXS);
-					bean.setTaskStatus(StaticConst.TASK_STATUS_DRL);
+					bean.setTaskStatus(StaticConst.TASK_STATUS_DWG);
 					bean.setTaskOrder(StaticConst.TASK_ORDER_NORMAL);
 					bean.setAssignUid(sessionBean.getGuserid());
 					bean.setDepartmentId(deptId);
