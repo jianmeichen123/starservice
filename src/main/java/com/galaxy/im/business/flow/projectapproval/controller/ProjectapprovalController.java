@@ -15,6 +15,7 @@ import com.galaxy.im.business.flow.projectapproval.service.IProjectapprovalServi
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.ResultBean;
+import com.galaxy.im.common.StaticConst;
 
 /**
  * 立项会
@@ -52,7 +53,7 @@ public class ProjectapprovalController {
 				result.setEntity(m);
 			}
 			//会议最新信息
-			paramMap.put("meetingType", "meetingType:3");
+			paramMap.put("meetingType", StaticConst.MEETING_TYPE_APPROVAL);
 			Map<String,Object> map = fcService.getLatestMeetingRecordInfo(paramMap);
 			if(CUtils.get().mapIsNotEmpty(map)){
 				result.setMap(map);
@@ -91,9 +92,9 @@ public class ProjectapprovalController {
 							rMap.put("flag", 1);
 							rMap.put("message", "否决项目成功");
 							//将立项会排期的会议结果和排期结果调整为已否决
-							paramMap.put("status", "meetingResult:3");
+							paramMap.put("status", StaticConst.MEETING_RESULT_3);
 							paramMap.put("scheduleStatus", 3);
-							paramMap.put("meetingType", "meetingType:3");
+							paramMap.put("meetingType", StaticConst.MEETING_TYPE_APPROVAL);
 							paramMap.put("updateTime", DateUtil.getMillis(new Date()));
 							service.updateMeetingScheduling(paramMap);
 						}
@@ -124,14 +125,14 @@ public class ProjectapprovalController {
 		try{
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
-				paramMap.put("projectProgress", "projectProgress:11");	//表示进入会后商务谈判
+				paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_11);	//表示进入会后商务谈判
 				if(fcService.enterNextFlow(paramMap)){
 					resultBean.setFlag(1);
-					paramMap.put("meetingType", "meetingType:3");
+					//会议个数
+					paramMap.put("meetingType", StaticConst.MEETING_TYPE_APPROVAL);
 					int count = service.getMeetingCount(paramMap);
-					paramMap.put("status", "meetingResult:1");
+					paramMap.put("status", StaticConst.MEETING_RESULT_1);
 					paramMap.put("scheduleStatus", 2);
-					paramMap.put("meetingType", "meetingType:3");
 					paramMap.put("updateTime", DateUtil.getMillis(new Date()));
 					paramMap.put("meetingCount",count);
 					service.updateMeetingScheduling(paramMap);

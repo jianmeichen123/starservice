@@ -55,17 +55,43 @@ public class StaticConst {
 	public static final int TASK_FLAG_ZJBF = 8;
 	public static final String TASK_NAME_GSBG = "上传工商转让凭证";
 	public static final int TASK_FLAG_GSBG = 9;
-	
+	//任务类型
 	public static final String TASK_TYPE_SPLC = "taskType:1";			//审批流程
 	public static final String TASK_TYPE_XTBG = "taskType:2";			//协同办公
-	
+	//任务状态
 	public static final String TASK_STATUS_DRL = "taskStatus:1";		//待认领
 	public static final String TASK_STATUS_DWG = "taskStatus:2";		//待完工
 	public static final String TASK_STATUS_YWG = "taskStatus:3";		//已完工
-	
+	//任务排序
 	public static final int TASK_ORDER_NORMAL = 0;						//正常
 	public static final int TASK_ORDER_JINJ = 1;						//紧急
 	public static final int TASK_ORDER_TEJ = 2;							//特急
+	//会议类型
+	public static final String MEETING_TYPE_INTERNAL = "meetingType:1";		//内部评审
+	public static final String MEETING_TYPE_CEO = "meetingType:2";			//CEO评审
+	public static final String MEETING_TYPE_APPROVAL = "meetingType:3";		//立项会
+	public static final String MEETING_TYPE_INVEST = "meetingType:4";		//投决会
+	public static final String MEETING_TYPE_BUSINESS = "meetingType:5";		//商务谈判
+	//流程阶段
+	public static final String PROJECT_PROGRESS_1 = "projectProgress:1";	//接触访谈
+	public static final String PROJECT_PROGRESS_2 = "projectProgress:2";	//内部评审
+	public static final String PROJECT_PROGRESS_3 = "projectProgress:3";	//CEO评审
+	public static final String PROJECT_PROGRESS_4 = "projectProgress:4";	//立项会
+	public static final String PROJECT_PROGRESS_5 = "projectProgress:5";	//投资意向书
+	public static final String PROJECT_PROGRESS_6 = "projectProgress:6";	//尽职调查
+	public static final String PROJECT_PROGRESS_7 = "projectProgress:7";	//投资决策会
+	public static final String PROJECT_PROGRESS_8 = "projectProgress:8";	//投资协议
+	public static final String PROJECT_PROGRESS_9 = "projectProgress:9";	//股权交割
+	public static final String PROJECT_PROGRESS_10 = "projectProgress:10";	//投后运营
+	public static final String PROJECT_PROGRESS_11 = "projectProgress:11";	//会后商务谈判
+	//会议结论
+	public static final String MEETING_RESULT_1 = "meetingResult:1";	//通过
+	public static final String MEETING_RESULT_2 = "meetingResult:2";	//待定
+	public static final String MEETING_RESULT_3 = "meetingResult:3";	//否决
+	
+	
+	
+	
 	
 	
 	
