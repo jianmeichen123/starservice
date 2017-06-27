@@ -33,4 +33,15 @@ public class MeetingRecordDaoImpl extends BaseDaoImpl<MeetingRecordBean, Long> i
 		}
 	}
 
+	@Override
+	public Map<String, Object> getSopProjectHealth(Map<String, Object> paramMap) {
+		try {
+			Map<String,Object> res = sqlSessionTemplate.selectOne(getSqlName("getSopProjectHealth"),paramMap);
+			return res;
+		} catch (Exception e) {
+			log.error(MeetingRecordDaoImpl.class.getName() + "_getSopProjectHealth",e);
+			throw new DaoException(e);
+		}
+	}
+
 }

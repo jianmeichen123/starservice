@@ -34,5 +34,10 @@ public class MeetingRecordServiceImpl extends BaseServiceImpl<MeetingRecordBean>
 			throw new ServiceException(e);
 		}
 	}
+
+	@Override
+	public Map<String, Object> getSopProjectHealth(Map<String, Object> paramMap) {
+		return dao.getSopProjectHealth(paramMap);
+	}
 	
 }

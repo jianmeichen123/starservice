@@ -49,6 +49,17 @@ public class DictDaoImpl extends BaseDaoImpl<Dict, Long> implements IDictDao{
 			throw new DaoException(e);
 		}
 	}
+
+	@Override
+	public List<Dict> selectByParentCode(String parentCode) {
+		//Assert.notNull(parentCode);
+		try {
+			return sqlSessionTemplate.selectList(getSqlName("selectByParentCode"), parentCode);
+		} catch (Exception e) {
+			log.error(String.format("查询对象总数出错！语句：%s", getSqlName("selectByParentCode")), e);
+			throw new DaoException(e);
+		}
+	}
 	
 	
 

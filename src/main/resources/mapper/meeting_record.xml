@@ -12,14 +12,16 @@
 				dct1.dict_value meetingResultId,
 				dct1.`name` meetingResult,
 				dct2.dict_value resultReasonId,
-				dct2.`name` resultReason
+				dct2.`name` resultReason,
+				dct3.dict_value meetingTypeId,
+				dct3.`name` meetingType
 		FROM(
 			SELECT  r.id,
 					case r.meeting_type
 					WHEN 'meetingType:3' THEN 'meeting3Result'
 					WHEN 'meetingType:5' THEN 'meeting5Result'
 					else 'meetingResult' 
-					end meetingType,
+					end meetingResult,
 					case 
 					WHEN locate('Veto',r.result_reason)>0 THEN 'meetingVetoReason'
 					WHEN locate('Undetermined',r.result_reason)>0 THEN 'meetingUndeterminedReason'
@@ -29,11 +31,25 @@
 					r.meeting_result,
 					r.result_reason,
 					r.meeting_date,
-					r.meeting_notes
+					r.meeting_notes,
+					case  
+					WHEN locate('pos',r.meeting_type)>0 THEN 'postMeetingType'
+					else 'meetingType'
+					end meetingType,
+					r.meeting_type
 				FROM sop_meeting_record r 
-				WHERE r.project_id=#{projectId} and r.meeting_type=#{meetingType} and r.record_type=0)tt 
-		LEFT JOIN dict dct1 ON dct1.parent_code=tt.meetingType and dct1.dict_code=tt.meeting_result
+				WHERE r.project_id=#{projectId} 
+				<if test="meetingTypeList != null">
+					and r.meeting_type in 
+					<foreach collection="meetingTypeList" item="meetingType" index="index" open="(" close=")" separator=",">
+						#{meetingType}
+					</foreach>
+				</if>
+				<!-- and r.meeting_type=#{meetingType}  -->
+				and r.record_type=#{recordType})tt 
+		LEFT JOIN dict dct1 ON dct1.parent_code=tt.meetingResult and dct1.dict_code=tt.meeting_result
 		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason
+		LEFT JOIN dict dct3 ON dct3.parent_code=tt.meetingType and dct3.dict_code=tt.meeting_type
 		ORDER BY tt.meeting_date ${direction}
 		LIMIT #{offset},${limit};
 	</select>
@@ -47,7 +63,7 @@
 					WHEN 'meetingType:3' THEN 'meeting3Result'
 					WHEN 'meetingType:5' THEN 'meeting5Result'
 					else 'meetingResult' 
-					end meetingType,
+					end meetingResult,
 					case 
 					WHEN locate('Veto',r.result_reason)>0 THEN 'meetingVetoReason'
 					WHEN locate('Undetermined',r.result_reason)>0 THEN 'meetingUndeterminedReason'
@@ -57,11 +73,25 @@
 					r.meeting_result,
 					r.result_reason,
 					r.meeting_date,
-					r.meeting_notes
-				FROM sop_meeting_record r 
-				WHERE r.project_id=#{projectId} and r.meeting_type=#{meetingType} and r.record_type=0)tt 
-		LEFT JOIN dict dct1 ON dct1.parent_code=tt.meetingType and dct1.dict_code=tt.meeting_result
-		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason;
+					r.meeting_notes,
+					case  
+					WHEN locate('pos',r.meeting_type)>0 THEN 'postMeetingType'
+					else 'meetingType'
+					end meetingType,
+					r.meeting_type
+				FROM sop_meeting_record r
+				WHERE r.project_id=#{projectId} 
+				<if test="meetingTypeList != null">
+					and r.meeting_type in 
+					<foreach collection="meetingTypeList" item="meetingType" index="index" open="(" close=")" separator=",">
+						#{meetingType}
+					</foreach>
+				</if>
+				<!-- and r.meeting_type=#{meetingType}  -->
+				and r.record_type=#{recordType})tt 
+		LEFT JOIN dict dct1 ON dct1.parent_code=tt.meetingResult and dct1.dict_code=tt.meeting_result
+		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason
+		LEFT JOIN dict dct3 ON dct3.parent_code=tt.meetingType and dct3.dict_code=tt.meeting_type;
 	</select>
 	
 	<!-- 会议记录的详情 -->
@@ -154,4 +184,11 @@
 		where id=#{id};
 	</update>
 	
+	<!-- 健康状况 -->
+	<select id="getSopProjectHealth" parameterType="hashmap" resultType="hashmap">
+		SELECT id, project_id projectId, health_state healthState, user_name userName
+		FROM sop_project_health 
+		WHERE project_id=#{projectId} 
+		ORDER BY created_time desc LIMIT 1;
+	</select>
 </mapper>

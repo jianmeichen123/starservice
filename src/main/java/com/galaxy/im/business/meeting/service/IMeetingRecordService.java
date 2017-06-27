@@ -10,5 +10,7 @@ public interface IMeetingRecordService extends IBaseService<MeetingRecordBean>{
 
 	QPage getMeetingRecordList(Map<String, Object> paramMap);
 
+	Map<String, Object> getSopProjectHealth(Map<String, Object> paramMap);
+
 
 }

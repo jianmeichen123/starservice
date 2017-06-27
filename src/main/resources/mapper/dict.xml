@@ -67,4 +67,29 @@
 			FROM dict) tt
 		WHERE tt.parent_code=tt.resultReason;
 	</select>
+	
+	<!-- 根据parentCode查询 根据排序字段正序排序 -->
+	<select id="selectByParentCode" resultMap="BaseResultMap" parameterType="string">
+		SELECT
+			id,name name,dict_value dictValue,dict_code dictCode,dict_sort dictSort,
+        	is_delete isDelete,parent_code parentCode,text text
+		FROM 
+			dict 
+		WHERE 
+			parent_code  = #{parentCode}  
+		AND
+			is_delete = 0	
+		ORDER BY  dict_sort ASC
+	</select>
+	<resultMap type="com.galaxy.im.bean.common.Dict" id="BaseResultMap">
+		<id column="id" property="id"/>
+		<result column="parent_code" property="parentCode"/>
+		<result column="name" property="name"/>
+		<result column="dict_value" property="dictValue"/>
+		<result column="dict_code" property="dictCode"/>
+		<result column="dict_sort" property="dictSort"/>
+		<result column="text" property="text"/>
+		<result column="is_delete" property="isDelete"/>
+	</resultMap>
+	
 </mapper>

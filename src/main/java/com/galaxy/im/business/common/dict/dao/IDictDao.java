@@ -12,4 +12,6 @@ public interface IDictDao extends IBaseDao<Dict, Long>{
 	List<Map<String, Object>> selectResultFilter(Map<String, Object> paramMap);
 
 	List<Map<String, Object>> selectReasonFilter(Map<String, Object> paramMap);
+
+	List<Dict> selectByParentCode(String parentCode);
 }

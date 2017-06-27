@@ -10,4 +10,6 @@ public interface IMeetingRecordDao extends IBaseDao<MeetingRecordBean, Long>{
 
 	QPage getMeetingRecordList(Map<String, Object> paramMap);
 
+	Map<String, Object> getSopProjectHealth(Map<String, Object> paramMap);
+
 }

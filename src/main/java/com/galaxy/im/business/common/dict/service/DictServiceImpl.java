@@ -134,6 +134,14 @@ public class DictServiceImpl extends BaseServiceImpl<Dict> implements IDictServi
 			throw new ServiceException(e);
 		}
 	}
+
+	/**
+	 * 通过parentcode获取dict信息
+	 */
+	@Override
+	public List<Dict> selectByParentCode(String parentCode) {
+		return dictDao.selectByParentCode(parentCode);
+	}
 	
 	
 	

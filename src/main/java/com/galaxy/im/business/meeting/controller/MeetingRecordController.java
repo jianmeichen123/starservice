@@ -1,6 +1,8 @@
 package com.galaxy.im.business.meeting.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.galaxy.im.bean.common.Dict;
 import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.meeting.MeetingRecordBean;
 import com.galaxy.im.bean.talk.SopFileBean;
+import com.galaxy.im.business.common.dict.service.IDictService;
 import com.galaxy.im.business.meeting.service.IMeetingRecordService;
 import com.galaxy.im.business.talk.service.ITalkRecordService;
 import com.galaxy.im.common.CUtils;
@@ -33,6 +37,8 @@ public class MeetingRecordController {
 	IMeetingRecordService service;
 	@Autowired
 	ITalkRecordService talkService;
+	@Autowired
+	IDictService dictService;
 	
 	/**
 	 * 会议记录列表
@@ -46,6 +52,29 @@ public class MeetingRecordController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		try{
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);	
+			if(paramMap!=null && paramMap.containsKey("meetingType")){
+				List<String> meetingTypeList = new ArrayList<String>();
+				
+				if(paramMap.get("meetingType").toString().contains("pos")){
+					//投后运营
+					List<Dict> dictList = dictService.selectByParentCode("postMeetingType");
+					for(Dict dict : dictList){
+						meetingTypeList.add(dict.getDictCode());
+					}
+					paramMap.put("meetingTypeList", meetingTypeList);
+					paramMap.put("recordType", 2);
+				}else{
+					//普通会议
+					meetingTypeList.add(paramMap.get("meetingType").toString());
+					paramMap.put("meetingTypeList",meetingTypeList);
+					paramMap.put("recordType", 0);
+				}
+			}
+			
+			//健康状况
+			Map<String,Object> m = service.getSopProjectHealth(paramMap);
+			resultBean.setMap(m);
+			
 			QPage page = service.getMeetingRecordList(paramMap);
 			resultBean.setStatus("OK");
 			resultBean.setEntity(page);
