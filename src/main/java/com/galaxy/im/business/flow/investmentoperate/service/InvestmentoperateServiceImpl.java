@@ -1,5 +1,8 @@
 package com.galaxy.im.business.flow.investmentoperate.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,14 @@ public class InvestmentoperateServiceImpl extends BaseServiceImpl<Test> implemen
 	@Override
 	protected IBaseDao<Test, Long> getBaseDao() {
 		return dao;
+	}
+
+	@Override
+	public Map<String, Object> getMeetingCount(Map<String, Object> paramMap) {
+		int count = dao.getMeetingCount(paramMap);
+		Map<String, Object> map=new HashMap<String, Object>();
+		map.put("meetingCount", count);
+		return map;
 	}
 	
 	
