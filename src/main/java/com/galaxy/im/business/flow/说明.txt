@@ -1,12 +1,12 @@
-	 interview：接触访谈
-	 internalreview：内部评审
-	 ceoreview：CEO评审
-	 projectapproval：立项会
-	 investmentintent：投资意向书
-	 duediligence：尽职调查
-	 investmentdeal：投决会
-	 investmentpolicy：投决协议
-	 stockequity：股权交割
-	 intervestoperate：投后运营
-	 businessnegotiation:商务谈判
+	 interview：接触访谈-------------qiao
+	 internalreview：内部评审--------xiaochuang
+	 ceoreview：CEO评审------------ xiaochuang
+	 projectapproval：立项会--------liuli
+	 investmentintent：投资意向书-----liuli
+	 duediligence：尽职调查----------liuli
+	 investmentdeal：投决会---------xiaochuang
+	 investmentpolicy：投决协议------xiaochuang
+	 stockequity：股权交割-----------xiaochuang
+	 intervestoperate：投后运营------liuli
+	 businessnegotiation:商务谈判---liuli
 	 

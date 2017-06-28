@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.business.flow.duediligence.dao.IDuediligenceDao">
+
+	<!-- 获取项目的所有上传文件的的状态和个数 -->
+	<select id="duediligenceOperateStatus" parameterType="hashmap" resultType="hashmap">
+		select 
+			case isnull(d1.dict_code) when 1 then 'no' else d1.dict_code end dictCode,
+			count(1) pcount
+		from sop_project p
+		left join sop_file f on p.id=f.project_id
+		left join dict d1 on f.file_worktype=d1.dict_code
+		where p.id=#{projectId}
+		group by d1.dict_code;
+	</select>
+</mapper>

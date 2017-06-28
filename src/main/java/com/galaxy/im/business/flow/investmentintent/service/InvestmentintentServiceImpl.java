@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.galaxy.im.bean.Test;
-import com.galaxy.im.business.flow.businessnegotiation.service.BusinessnegotiationServiceImpl;
 import com.galaxy.im.business.flow.investmentintent.dao.IInvestmentintentDao;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.db.IBaseDao;
@@ -54,7 +53,7 @@ public class InvestmentintentServiceImpl extends BaseServiceImpl<Test> implement
 			}
 			return result;
 		}catch(Exception e){
-			log.error(BusinessnegotiationServiceImpl.class.getName() + ":businessOperateStatus",e);
+			log.error(InvestmentintentServiceImpl.class.getName() + ":investmentOperateStatus",e);
 			throw new ServiceException(e);
 		}
 	}
