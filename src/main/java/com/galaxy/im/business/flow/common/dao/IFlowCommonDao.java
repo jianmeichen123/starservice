@@ -14,4 +14,6 @@ public interface IFlowCommonDao extends IBaseDao<ProjectBean, Long>{
 	Long insertsopTask(SopTask bean);
 	//获取最新会议信息
 	Map<String, Object> getLatestMeetingRecordInfo(Map<String, Object> paramMap);
+	//获取最新上传文件的信息
+	Map<String, Object> getLatestSopFileInfo(Map<String, Object> paramMap);
 }

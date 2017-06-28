@@ -2,23 +2,17 @@ package com.galaxy.im.business.flow.businessnegotiation.controller;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.business.flow.businessnegotiation.service.IBusinessnegotiationService;
@@ -26,7 +20,6 @@ import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
-import com.galaxy.im.common.html.QHtmlClient;
 
 /**
  * 商务谈判
@@ -36,10 +29,7 @@ import com.galaxy.im.common.html.QHtmlClient;
 @Controller
 @RequestMapping("/flow/businessnegotiation")
 public class BusinessnegotiationController {
-	private Logger log = LoggerFactory.getLogger(BusinessnegotiationController.class);
 	
-	@Autowired
-	private Environment env;
 	@Autowired
 	IBusinessnegotiationService service;
 	@Autowired
@@ -140,7 +130,7 @@ public class BusinessnegotiationController {
 					//生成投资协议代办任务
 					SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 					//获取用户所属部门id
-					long deptId = getDeptId(sessionBean.getGuserid(),request,response);
+					long deptId = fcService.getDeptId(sessionBean.getGuserid(),request,response);
 					SopTask bean = new SopTask();
 					bean.setProjectId(CUtils.get().object2Long(paramMap.get("projectId")));
 					bean.setTaskName(StaticConst.TASK_NAME_TZXY);
@@ -181,7 +171,7 @@ public class BusinessnegotiationController {
 					//生成投资意向书的代办任务
 					SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 					//获取用户所属部门id
-					long deptId = getDeptId(sessionBean.getGuserid(),request,response);
+					long deptId = fcService.getDeptId(sessionBean.getGuserid(),request,response);
 					SopTask bean = new SopTask();
 					bean.setProjectId(CUtils.get().object2Long(paramMap.get("projectId")));
 					bean.setTaskName(StaticConst.TASK_NAME_SCTZYXS);
@@ -202,45 +192,4 @@ public class BusinessnegotiationController {
 		return resultBean;
 	}
 	
-	/**
-	 * 权限---获取用户所在部门id
-	 * @param guserid
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	private long getDeptId(Long guserid, HttpServletRequest request, HttpServletResponse response) {
-		//调用客户端
-		Map<String,Object> headerMap = QHtmlClient.get().getHeaderMap(request);
-		String url = env.getProperty("power.server") + StaticConst.getCreadIdInfo;
-		Map<String,Object> qMap = new HashMap<String,Object>();
-		qMap.put("createdId",guserid);
-		JSONArray valueJson=null;
-		List<Map<String, Object>> list = null;
-		String result = QHtmlClient.get().post(url, headerMap, qMap);
-		if("error".equals(result)){
-			log.error(BusinessnegotiationController.class.getName() + "getDeptId：获取创建人信息时出错","此时服务器返回状态码非200");
-		}else{
-			boolean flag = true;
-			JSONObject resultJson = JSONObject.parseObject(result);
-			if(resultJson!=null && resultJson.containsKey("value")){
-				valueJson = resultJson.getJSONArray("value");
-				if(resultJson.containsKey("success") && "true".equals(resultJson.getString("success"))){
-					flag = false;
-				}
-				list=CUtils.get().jsonString2list(valueJson);
-			}
-			if(flag){
-				log.error(BusinessnegotiationController.class.getName() + "getDeptId：获取创建人信息时出错","服务器返回正常，获取数据失败");
-			}
-		}
-		if(list!=null){
-			for(Map<String, Object> vMap:list){
-				guserid= CUtils.get().object2Long( vMap.get("deptId"));
-			}
-		}else{
-			guserid=0l;
-		}
-		return guserid;
-	}
 }

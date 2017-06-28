@@ -77,4 +77,16 @@
 		ORDER BY r.created_time desc LIMIT 1;
 	</select>
 	
+	<!-- 获取项目的最新会议记录信息 -->
+	<select id="getLatestSopFileInfo" parameterType="hashmap" resultType="hashmap">
+		SELECT  id,
+				concat(file_name,'.',file_suffix) as fileName,
+				file_suffix fileSuffix,
+				file_key fileKey,
+				created_time fileTime
+		FROM sop_file 
+		WHERE project_id=#{projectId} and file_worktype=#{fileWorkType}
+		ORDER BY created_time DESC LIMIT 1;
+	</select>
+	
 </mapper>

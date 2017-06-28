@@ -1,20 +1,30 @@
 package com.galaxy.im.business.flow.common.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.soptask.SopTask;
+import com.galaxy.im.business.flow.businessnegotiation.controller.BusinessnegotiationController;
 import com.galaxy.im.business.flow.common.dao.IFlowCommonDao;
 import com.galaxy.im.common.CUtils;
+import com.galaxy.im.common.StaticConst;
 import com.galaxy.im.common.db.IBaseDao;
 import com.galaxy.im.common.db.service.BaseServiceImpl;
 import com.galaxy.im.common.exception.ServiceException;
+import com.galaxy.im.common.html.QHtmlClient;
 
 @Service
 public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implements IFlowCommonService{
@@ -23,6 +33,9 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 	@Autowired
 	private IFlowCommonDao dao;
 
+	@Autowired
+	private Environment env;
+	
 	@Override
 	protected IBaseDao<ProjectBean, Long> getBaseDao() {
 		return dao;
@@ -105,6 +118,58 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 	@Override
 	public Map<String, Object> getLatestMeetingRecordInfo(Map<String, Object> paramMap) {
 		Map<String,Object> result = dao.getLatestMeetingRecordInfo(paramMap);
+		return result;
+	}
+
+	/**
+	 * 权限---获取用户所在部门id
+	 * @param guserid
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@Override
+	public long getDeptId(Long guserid, HttpServletRequest request, HttpServletResponse response) {
+		//调用客户端
+		Map<String,Object> headerMap = QHtmlClient.get().getHeaderMap(request);
+		String url = env.getProperty("power.server") + StaticConst.getCreadIdInfo;
+		Map<String,Object> qMap = new HashMap<String,Object>();
+		qMap.put("createdId",guserid);
+		JSONArray valueJson=null;
+		List<Map<String, Object>> list = null;
+		String result = QHtmlClient.get().post(url, headerMap, qMap);
+		if("error".equals(result)){
+			log.error(BusinessnegotiationController.class.getName() + "getDeptId：获取创建人信息时出错","此时服务器返回状态码非200");
+		}else{
+			boolean flag = true;
+			JSONObject resultJson = JSONObject.parseObject(result);
+			if(resultJson!=null && resultJson.containsKey("value")){
+				valueJson = resultJson.getJSONArray("value");
+				if(resultJson.containsKey("success") && "true".equals(resultJson.getString("success"))){
+					flag = false;
+				}
+				list=CUtils.get().jsonString2list(valueJson);
+			}
+			if(flag){
+				log.error(BusinessnegotiationController.class.getName() + "getDeptId：获取创建人信息时出错","服务器返回正常，获取数据失败");
+			}
+		}
+		if(list!=null){
+			for(Map<String, Object> vMap:list){
+				guserid= CUtils.get().object2Long( vMap.get("deptId"));
+			}
+		}else{
+			guserid=0l;
+		}
+		return guserid;
+	}
+
+	/**
+	 * 获取最新上传文件的信息
+	 */
+	@Override
+	public Map<String, Object> getLatestSopFileInfo(Map<String, Object> paramMap) {
+		Map<String,Object> result = dao.getLatestSopFileInfo(paramMap);
 		return result;
 	}
 

@@ -88,6 +88,26 @@ public class StaticConst {
 	public static final String MEETING_RESULT_1 = "meetingResult:1";	//通过
 	public static final String MEETING_RESULT_2 = "meetingResult:2";	//待定
 	public static final String MEETING_RESULT_3 = "meetingResult:3";	//否决
+	//上传文件类型
+	public static final String FILE_WORKTYPE_1 = "fileWorktype:1";	    	//业务尽职调查报告
+	public static final String FILE_WORKTYPE_2 = "fileWorktype:2";	    	//人力资源尽职调查报告
+	public static final String FILE_WORKTYPE_3 = "fileWorktype:3";	    	//法务尽职调查报告
+	public static final String FILE_WORKTYPE_4 = "fileWorktype:4";	    	//财务尽职调查报告
+	public static final String FILE_WORKTYPE_5 = "fileWorktype:5";	    	//投资意向书
+	public static final String FILE_WORKTYPE_6 = "fileWorktype:6";	    	//投资协议
+	public static final String FILE_WORKTYPE_7 = "fileWorktype:7";	    	//股权转让协议
+	public static final String FILE_WORKTYPE_8 = "fileWorktype:8";	    	//工商转让凭证
+	public static final String FILE_WORKTYPE_9 = "fileWorktype:9";	    	//资金拨付凭证
+	public static final String FILE_WORKTYPE_10 = "fileWorktype:10";	    //公司资料
+	public static final String FILE_WORKTYPE_11 = "fileWorktype:11";	    //财务预测报告
+	public static final String FILE_WORKTYPE_12 = "fileWorktype:12";	    //商业计划书
+	public static final String FILE_WORKTYPE_13 = "fileWorktype:13";	    //业务尽职调查清单
+	public static final String FILE_WORKTYPE_14 = "fileWorktype:14";	    //人力资源尽职调查清单
+	public static final String FILE_WORKTYPE_15 = "fileWorktype:15";	    //法务尽职调查清单
+	public static final String FILE_WORKTYPE_16 = "fileWorktype:16";	    //财务尽职调查清单
+	public static final String FILE_WORKTYPE_17 = "fileWorktype:17";	    //立项报告
+	public static final String FILE_WORKTYPE_18 = "fileWorktype:18";	    //尽职调查启动会报告
+	public static final String FILE_WORKTYPE_19 = "fileWorktype:19";	    //尽职调查总结会报告
 	
 	
 	

@@ -89,6 +89,20 @@ public class FlowCommonDaoImpl extends BaseDaoImpl<ProjectBean, Long> implements
 			throw new DaoException(e);
 		}
 	}
+
+	/**
+	 * 获取最新上传文件信息
+	 */
+	@Override
+	public Map<String, Object> getLatestSopFileInfo(Map<String, Object> paramMap) {
+		String sqlName = "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.getLatestSopFileInfo";
+		try{
+			return sqlSessionTemplate.selectOne(sqlName,paramMap);
+		}catch(Exception e){
+			log.error(String.format("查询对象总数出错！语句：%s", sqlName), e);
+			throw new DaoException(e);
+		}
+	}
 	
 	
 }
