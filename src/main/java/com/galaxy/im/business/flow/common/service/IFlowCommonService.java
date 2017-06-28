@@ -21,5 +21,7 @@ public interface IFlowCommonService extends IBaseService<ProjectBean>{
 	long getDeptId(Long guserid, HttpServletRequest request, HttpServletResponse response);
 	//获取最新上传的文件信息
 	Map<String, Object> getLatestSopFileInfo(Map<String, Object> paramMap);
+	//获取部门id
+	int getDeptIdByDeptName(String name, HttpServletRequest request, HttpServletResponse response);
 
 }

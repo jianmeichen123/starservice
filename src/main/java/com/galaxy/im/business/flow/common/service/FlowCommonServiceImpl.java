@@ -17,7 +17,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.soptask.SopTask;
-import com.galaxy.im.business.flow.businessnegotiation.controller.BusinessnegotiationController;
 import com.galaxy.im.business.flow.common.dao.IFlowCommonDao;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.StaticConst;
@@ -139,7 +138,7 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 		List<Map<String, Object>> list = null;
 		String result = QHtmlClient.get().post(url, headerMap, qMap);
 		if("error".equals(result)){
-			log.error(BusinessnegotiationController.class.getName() + "getDeptId：获取创建人信息时出错","此时服务器返回状态码非200");
+			log.error(FlowCommonServiceImpl.class.getName() + "getDeptId：获取创建人信息时出错","此时服务器返回状态码非200");
 		}else{
 			boolean flag = true;
 			JSONObject resultJson = JSONObject.parseObject(result);
@@ -151,7 +150,7 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 				list=CUtils.get().jsonString2list(valueJson);
 			}
 			if(flag){
-				log.error(BusinessnegotiationController.class.getName() + "getDeptId：获取创建人信息时出错","服务器返回正常，获取数据失败");
+				log.error(FlowCommonServiceImpl.class.getName() + "getDeptId：获取创建人信息时出错","服务器返回正常，获取数据失败");
 			}
 		}
 		if(list!=null){
@@ -171,6 +170,47 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 	public Map<String, Object> getLatestSopFileInfo(Map<String, Object> paramMap) {
 		Map<String,Object> result = dao.getLatestSopFileInfo(paramMap);
 		return result;
+	}
+
+	/**
+	 * 获取部门id
+	 * 通过不能名称
+	 */
+	@Override
+	public int getDeptIdByDeptName(String name, HttpServletRequest request, HttpServletResponse response) {
+		//调用客户端
+		int deptId=0;
+		Map<String,Object> headerMap = QHtmlClient.get().getHeaderMap(request);
+		String url = env.getProperty("power.server") + StaticConst.getDeptIdByDeptName;
+		Map<String,Object> qMap = new HashMap<String,Object>();
+		qMap.put("deptName",name);
+		JSONArray valueJson=null;
+		List<Map<String, Object>> list = null;
+		String result = QHtmlClient.get().post(url, headerMap, qMap);
+		if("error".equals(result)){
+			log.error(FlowCommonServiceImpl.class.getName() + "getDeptIdByDeptName：获取信息时出错","此时服务器返回状态码非200");
+		}else{
+			boolean flag = true;
+			JSONObject resultJson = JSONObject.parseObject(result);
+			if(resultJson!=null && resultJson.containsKey("value")){
+				valueJson = resultJson.getJSONArray("value");
+				if(resultJson.containsKey("success") && "true".equals(resultJson.getString("success"))){
+					flag = false;
+				}
+				list=CUtils.get().jsonString2list(valueJson);
+			}
+			if(flag){
+				log.error(FlowCommonServiceImpl.class.getName() + "getDeptId：获取信息时出错","服务器返回正常，获取数据失败");
+			}
+		}
+		if(list!=null){
+			for(Map<String, Object> vMap:list){
+				deptId = CUtils.get().object2Integer(vMap.get("deptId"));
+			}
+		}else{
+			deptId=0;
+		}
+		return deptId;
 	}
 
 	

@@ -20,8 +20,9 @@ public class StaticConst {
 	
 	
 	
-	public static final String getShareUserList = "user/getShareUserList"; 		//power外部接口：获取共享列表
-	public static final String getCreadIdInfo = "user/getCreadIdInfo";   		//power外部接口：获取用户名和部门名称
+	public static final String getShareUserList = "user/getShareUserList"; 				//power外部接口：获取共享列表
+	public static final String getCreadIdInfo = "user/getCreadIdInfo";   				//power外部接口：获取用户名和部门名称
+	public static final String getDeptIdByDeptName = "depart/getDeptIdByDeptName";   	//power外部接口：获取部门名称
 	public static final String login = "login/userLoginForApp";					//登录
 	public static final String getCareerLineList = "depart/getCareerLineList";	//获得事业线
 	
@@ -108,6 +109,11 @@ public class StaticConst {
 	public static final String FILE_WORKTYPE_17 = "fileWorktype:17";	    //立项报告
 	public static final String FILE_WORKTYPE_18 = "fileWorktype:18";	    //尽职调查启动会报告
 	public static final String FILE_WORKTYPE_19 = "fileWorktype:19";	    //尽职调查总结会报告
+	//部门名称
+	public static final String DEPT_NAME_HR = "人力资源部";	    	//人力资源部
+	public static final String DEPT_NAME_LAW = "法务部";	    	//法务部
+	public static final String DEPT_NAME_FD = "财务部";	    	//财务部
+	
 	
 	
 	
