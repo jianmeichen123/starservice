@@ -88,4 +88,42 @@
 		WHERE project_id=#{projectId} and file_worktype=#{fileWorkType};
 	</select>
 	
+	<!-- 创建会议排期 -->
+	<insert id="insertMeetingScheduling" useGeneratedKeys="true" keyProperty="id" parameterType="com.galaxy.im.bean.project.MeetingScheduling" >
+		insert into sop_meeting_scheduling 
+		(
+			id,
+			project_id, 
+			meeting_type, 
+	        meeting_count, 
+	        meeting_date, 
+	        status, 
+	        remark, 
+	        schedule_status,
+    	    apply_time, 
+    	    reserve_time_start, 
+    	    reserve_time_end,
+    	    last_time, 
+    	    updated_time, 
+    	    created_time
+	    )
+	    values 
+	    (
+	      #{id}, 
+	      #{projectId}, 
+	      #{meetingType}, 
+	      #{meetingCount}, 
+	      #{meetingDate}, 
+	      #{status}, 
+	      #{remark}, 
+	      #{scheduleStatus}, 
+	      #{applyTime}, 
+	      #{reserveTimeStart}, 
+	      #{reserveTimeEnd},
+	      #{lastTime}, 
+	      #{updatedTime}, 
+	      #{createdTime}
+	    )
+    </insert>
+	
 </mapper>

@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.galaxy.im.bean.project.MeetingScheduling;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.common.db.BaseDaoImpl;
@@ -100,6 +101,21 @@ public class FlowCommonDaoImpl extends BaseDaoImpl<ProjectBean, Long> implements
 			return sqlSessionTemplate.selectOne(sqlName,paramMap);
 		}catch(Exception e){
 			log.error(String.format("查询对象总数出错！语句：%s", sqlName), e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 创建会议排期
+	 */
+	@Override
+	public Long insertMeetingScheduling(MeetingScheduling bean) {
+		String sqlName = "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.insertMeetingScheduling";
+		try{
+			long id = sqlSessionTemplate.insert(sqlName,bean);
+			return id;
+		}catch(Exception e){
+			log.error(FlowCommonDaoImpl.class.getName() + ":insertMeetingScheduling",e);
 			throw new DaoException(e);
 		}
 	}

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.business.flow.investmentdeal.dao.IInvestmentdealDao">
+
+<!-- 修改投决会排期状态 -->
+	<update id="updateInvestmentdeal" parameterType="hashmap">
+		update sop_meeting_scheduling set
+			<if test="scheduleStatus != null" > schedule_status = #{scheduleStatus},</if>
+			<if test="updatedTime != null" >updated_time = #{updatedTime}</if>
+		where  project_id = #{projectId} and meeting_type='meetingType:4';
+	
+	</update>
+	
+	<!-- 获取项目在“会后商务谈判”阶段的结论 -->
+	<select id="projectResult"  parameterType="hashmap" resultType="hashmap">
+		SELECT p.id, p.project_name projectName, sr.meeting_result results  FROM sop_project p 
+		LEFT JOIN sop_meeting_record sr on sr.project_id=p.id 
+		WHERE p.project_progress='projectProgress:11' and p.id=#{projectId} ;
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>
