@@ -55,6 +55,8 @@ public class InvestController {
 				if(updateCount!=0 || id!=0L){
 					resultBean.setFlag(1);
 					resultBean.setStatus("OK");
+				}else {
+					resultBean.setMessage("此条记录已被删除!");
 				}
 				
 			
