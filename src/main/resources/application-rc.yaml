@@ -38,5 +38,5 @@ stars:
   server: http://fxmob.qa.galaxyinternet.com/mobileSop/
   
 power:
-  server: http://fx.dev.galaxyinternet.com/authority_service/
+  server: http://fx.rc.galaxyinternet.com/authority_service/
     
