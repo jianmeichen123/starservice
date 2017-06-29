@@ -5,7 +5,7 @@
 	 investmentintent：投资意向书
 	 duediligence：尽职调查
 	 investmentdeal：投决会
-	 investmentpolicy：投决协议
+	 investmentpolicy：投资协议
 	 stockequity：股权交割
 	 intervestoperate：投后运营
 	 businessnegotiation:商务谈判
