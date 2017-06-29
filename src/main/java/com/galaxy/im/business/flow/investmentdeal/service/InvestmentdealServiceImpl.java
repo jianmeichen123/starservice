@@ -33,24 +33,17 @@ public class InvestmentdealServiceImpl extends BaseServiceImpl<Test> implements 
 		return dao.updateInvestmentdeal(paramMap);
 	}
 
-	/*@Override
-	public int businessnegotiation(Map<String, Object> paramMap) {
-		return dao.businessnegotiation(paramMap);
-	}*/
-
-
-	
 	@Override
 	public Map<String, Object> getInvestmentdealOperateStatus(Map<String, Object> paramMap) {
 		try{
-			Boolean res=false;
-			Boolean ress=false;
-			Boolean resss=false;
+			Boolean res=false;//是否有通过的会议
+			Boolean ress=false;//投资
+			Boolean resss=false;//闪投
 			Map<String,Object> result = new HashMap<String,Object>();
-			result.put("pass", false);
+			
 			result.put("veto", false);
 			result.put("inverstpass", false);
-			result.put("shotpass", false);
+			result.put("flashpass", false);
 			List<Map<String,Object>> dataList = dao.hasPassMeeting(paramMap);
 			List<Map<String,Object>> list = dao.projectResult(paramMap);
 			if(dataList!=null && dataList.size()>0){
@@ -60,40 +53,38 @@ public class InvestmentdealServiceImpl extends BaseServiceImpl<Test> implements 
 					dictCode = CUtils.get().object2String(map.get("dictCode"), "");
 					pcount = CUtils.get().object2Integer(map.get("pcount"), 0);
 					
-					if("meetingResult:1".equals(dictCode)){
+					if("meetingResult:1".equals(dictCode)){//通过的会议
 						if(pcount>0){
 							res=true;
-							result.put("pass", true);
 						}
-					}else if("meetingResult:3".equals(dictCode)){
+					}else if("meetingResult:3".equals(dictCode)){//否决的会议
 						if(pcount>0){
 							result.put("veto", true);
-							
 						}
 					}
 				}
 			}
 			
 			if (list!=null&&list.size()>0) {
-				String results;
+				String meetingResult;
 				for(Map<String,Object> map : list){
-					results=CUtils.get().object2String(map.get("results"), "");
+					meetingResult=CUtils.get().object2String(map.get("meetingResult"), "");
 					
-					if ("meeting5Result:4".equals(results)) {//投资
+					if ("meeting5Result:4".equals(meetingResult)) {//结果投资
 						ress=true;
-					}else if ("meeting5Result:3".equals(results)) {//闪投
+					}else if ("meeting5Result:3".equals(meetingResult)) {//结果闪投
 						resss=true;
 					}
 				}
 			}
 			
+			
 			if (res && ress) {//会议通过且投资
 				result.put("inverstpass", true);
 			}
 			if(res && resss){//会议通过且闪投
-				result.put("shotpass", true);
+				result.put("flashpass", true);
 			}
-			
 			return result;
 		}catch(Exception e){
 			log.error(InternalreviewServiceImpl.class.getName() + ":getInvestmentdealOperateStatus",e);
