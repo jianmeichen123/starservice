@@ -55,6 +55,9 @@ public class InvestmentdealDaoImpl extends BaseDaoImpl<Test, Long> implements II
 		}
 	}
 
+	/**
+	 * 获取项目在“会后商务谈判”阶段的结论
+	 */
 	@Override
 	public List<Map<String, Object>> projectResult(Map<String, Object> paramMap) {
 		String sqlName = "com.galaxy.im.business.flow.investmentdeal.dao.IInvestmentdealDao.projectResult";

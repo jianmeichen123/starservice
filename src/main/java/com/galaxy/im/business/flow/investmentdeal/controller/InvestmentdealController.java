@@ -40,15 +40,16 @@ public class InvestmentdealController {
 
 	/**
 	 * 判断项目操作按钮状态
-	 * 依据：1.需要一条结论为“通过”的会议记录；同时判定该项目在“会后商务谈判”阶段的结论是“闪投”；
-	 * 2,需要一条结论为“通过”的会议记录；同时判定该项目在“会后商务谈判”阶段的结论是“投资”；
-	 * 前端处理：满足条件1则"进入股权交割按"钮变亮;满足条件2则"签订投资协议"按钮变亮;
+	 * 依据：1.需要一条结论为“通过”的会议记录；同时判定该项目在“会后商务谈判”阶段的结论是“投资”；
+	 * 2,需要一条结论为“通过”的会议记录；同时判定该项目在“会后商务谈判”阶段的结论是“闪投”；
+	 * 3.需要一条结论为"否定"的会议记录
+	 * 前端处理：满足条件1则"签订投资协议"钮变亮;满足条件2则"进入股权交割"按钮变亮;满足条件3则"否决项目"按钮变亮;
 	 * 
 	 * @param
 	 * 	projectId   项目ID-使用JSON的方式传递
 	 * @return
-	 * 	entity ->  "flashpass": true 存在通过的会议且“会后商务谈判”阶段的结论是“闪投”
 	 *  entity ->  "inverstpass": true, 存在“会后商务谈判”阶段的结论是“投资”
+	 * 	entity ->  "flashpass": true 存在通过的会议且“会后商务谈判”阶段的结论是“闪投”
 	 *  entity ->  ""veto": true,"  不存在通过的会议
 	 */
 	
@@ -156,7 +157,6 @@ public class InvestmentdealController {
 						paramMap.put("scheduleStatus", 2);
 						paramMap.put("updatedTime", DateUtil.getMillis(new Date()));
 						iiService.updateInvestmentdeal(paramMap);  
-						
 					}
 				}
 		
@@ -180,8 +180,6 @@ public class InvestmentdealController {
 		try{
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
-				paramMap.put("meetingResult", "meeting5Result:3");//判定该项目在“会后商务谈判”阶段的结论是“闪投”
-			
 					paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_9);	//表示进入股权交割阶段
 					if(fcService.enterNextFlow(paramMap)){
 						resultBean.setFlag(1);
@@ -213,17 +211,12 @@ public class InvestmentdealController {
 						@SuppressWarnings("unused")
 						Long fd = fcService.insertsopTask(beanFd);
 						
-						
-						
 						//修改投决会排期状态为已通过
 						paramMap.put("scheduleStatus", 2);
 						paramMap.put("updatedTime", DateUtil.getMillis(new Date()));
 						iiService.updateInvestmentdeal(paramMap);  
-						
 					}
 				}
-				
-			
 			resultBean.setStatus("OK");
 		}catch(Exception e){
 		}

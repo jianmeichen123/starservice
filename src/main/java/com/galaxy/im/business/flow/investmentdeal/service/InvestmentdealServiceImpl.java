@@ -44,8 +44,8 @@ public class InvestmentdealServiceImpl extends BaseServiceImpl<Test> implements 
 			result.put("veto", false);
 			result.put("inverstpass", false);
 			result.put("flashpass", false);
-			List<Map<String,Object>> dataList = dao.hasPassMeeting(paramMap);
-			List<Map<String,Object>> list = dao.projectResult(paramMap);
+			List<Map<String,Object>> dataList = dao.hasPassMeeting(paramMap);//是否存在通过的会议
+			List<Map<String,Object>> list = dao.projectResult(paramMap);//获取项目在“会后商务谈判”阶段的结论
 			if(dataList!=null && dataList.size()>0){
 				String dictCode;
 				Integer pcount = 0;

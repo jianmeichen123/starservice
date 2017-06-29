@@ -2,7 +2,7 @@
 <!DOCTYPE mapper  
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
-<mapper namespace="com.galaxy.im.business.flow.investmentintent.dao.IInvestmentintentDao">
+<mapper namespace="com.galaxy.im.business.flow.investmentPolicy.dao.IInvestmentPolicyDao">
 
 	<!-- 获取项目的所有上传文件的的状态和个数 -->
 	<select id="investmentpolicy" parameterType="hashmap" resultType="hashmap">
