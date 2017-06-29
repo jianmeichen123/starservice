@@ -81,6 +81,8 @@ public class InvestController {
 			if(count!=0){
 				resultBean.setFlag(1);
 				resultBean.setStatus("OK");
+		}else {
+			resultBean.setMessage("此条记录已被删除!");
 		}
 	}catch(Exception e){
 		log.error(InvestController.class.getName() + "：delInvest",e);
