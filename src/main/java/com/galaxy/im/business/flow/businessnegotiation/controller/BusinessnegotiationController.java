@@ -120,13 +120,14 @@ public class BusinessnegotiationController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		try{
+			Map<String,Object> map =new HashMap<String,Object>();
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
 				paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_8);	//表示进入投资协议（闪投）
 				paramMap.put("greanChannel", 10);									//绿色通道修改为商务谈判
 				if(service.updateProjectStatus(paramMap)){
 					resultBean.setFlag(1);
-					
+					map.put("projectProgress", StaticConst.PROJECT_PROGRESS_8);
 					//生成投资协议代办任务
 					SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 					//获取用户所属部门id
@@ -145,6 +146,7 @@ public class BusinessnegotiationController {
 					Long id = fcService.insertsopTask(bean);
 				}
 			}
+			resultBean.setMap(map);
 			resultBean.setStatus("OK");
 		}catch(Exception e){
 		}
@@ -162,12 +164,13 @@ public class BusinessnegotiationController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		try{
+			Map<String,Object> map =new HashMap<String,Object>();
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
 				paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_5);	//表示进入投资意向书（投资）
 				if(service.updateProjectStatus(paramMap)){
 					resultBean.setFlag(1);
-					
+					map.put("projectProgress", StaticConst.PROJECT_PROGRESS_5);
 					//生成投资意向书的代办任务
 					SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 					//获取用户所属部门id
@@ -186,6 +189,7 @@ public class BusinessnegotiationController {
 					Long id = fcService.insertsopTask(bean);
 				}
 			}
+			resultBean.setMap(map);
 			resultBean.setStatus("OK");
 		}catch(Exception e){
 		}

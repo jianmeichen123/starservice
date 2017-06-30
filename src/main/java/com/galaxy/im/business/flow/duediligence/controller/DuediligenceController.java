@@ -118,11 +118,13 @@ public class DuediligenceController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		try{
+			Map<String,Object> map =new HashMap<String,Object>();
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
 				paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_7);	//表示进入投决会
 				if(fcService.enterNextFlow(paramMap)){
 					resultBean.setFlag(1);
+					map.put("projectProgress", StaticConst.PROJECT_PROGRESS_7);
 					//生成投决会排期记录
 					MeetingScheduling bean = new MeetingScheduling();
 					bean.setProjectId(CUtils.get().object2Long(paramMap.get("projectId")));
@@ -135,6 +137,7 @@ public class DuediligenceController {
 					Long id = fcService.insertMeetingScheduling(bean);
 				}
 			}
+			resultBean.setMap(map);
 			resultBean.setStatus("OK");
 		}catch(Exception e){
 		}

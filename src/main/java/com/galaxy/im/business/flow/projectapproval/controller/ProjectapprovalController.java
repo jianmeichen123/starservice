@@ -123,11 +123,13 @@ public class ProjectapprovalController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		try{
+			Map<String,Object> map =new HashMap<String,Object>();
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
 				paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_11);	//表示进入会后商务谈判
 				if(fcService.enterNextFlow(paramMap)){
 					resultBean.setFlag(1);
+					map.put("projectProgress", StaticConst.PROJECT_PROGRESS_11);
 					//会议个数
 					paramMap.put("meetingType", StaticConst.MEETING_TYPE_APPROVAL);
 					int count = service.getMeetingCount(paramMap);
@@ -138,6 +140,7 @@ public class ProjectapprovalController {
 					service.updateMeetingScheduling(paramMap);
 				}
 			}
+			resultBean.setMap(map);
 			resultBean.setStatus("OK");
 		}catch(Exception e){
 		}

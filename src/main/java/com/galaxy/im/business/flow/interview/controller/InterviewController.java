@@ -111,13 +111,16 @@ public class InterviewController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		try{
+			Map<String,Object> map =new HashMap<String,Object>();
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
 				paramMap.put("projectProgress", "projectProgress:2");	//表示进入内部评审阶段
 				if(fcService.enterNextFlow(paramMap)){
 					resultBean.setFlag(1);
+					map.put("projectProgress", "projectProgress:2");
 				}
 			}
+			resultBean.setMap(map);
 			resultBean.setStatus("OK");
 		}catch(Exception e){
 		}

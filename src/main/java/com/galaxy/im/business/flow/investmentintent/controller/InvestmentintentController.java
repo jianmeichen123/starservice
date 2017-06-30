@@ -1,6 +1,7 @@
 package com.galaxy.im.business.flow.investmentintent.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -78,12 +79,13 @@ public class InvestmentintentController{
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		try{
+			Map<String,Object> map =new HashMap<String,Object>();
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
 				paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_6);	//进入尽职调查
 				if(fcService.enterNextFlow(paramMap)){
 					resultBean.setFlag(1);
-					
+					map.put("projectProgress", StaticConst.PROJECT_PROGRESS_6);
 					SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 					
 					//给投资经理自己生成业务尽职调查待办任务
@@ -144,6 +146,7 @@ public class InvestmentintentController{
 					Long law = fcService.insertsopTask(beanLaw);
 				}
 			}
+			resultBean.setMap(map);
 			resultBean.setStatus("OK");
 		}catch(Exception e){
 		}
