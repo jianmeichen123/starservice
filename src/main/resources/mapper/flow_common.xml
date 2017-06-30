@@ -77,7 +77,7 @@
 		ORDER BY r.created_time desc LIMIT 1;
 	</select>
 	
-	<!-- 获取项目的最新会议记录信息 -->
+	<!-- 获取上传文件的最新记录-->
 	<select id="getLatestSopFileInfo" parameterType="hashmap" resultType="hashmap">
 		SELECT  id,
 				concat(file_name,'.',file_suffix) as fileName,
