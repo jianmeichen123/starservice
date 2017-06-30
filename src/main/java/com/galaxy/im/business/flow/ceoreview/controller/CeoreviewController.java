@@ -122,8 +122,9 @@ public class CeoreviewController {
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
 				paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_4);	//表示进入立项会阶段
-				map.put("projectProgress", StaticConst.PROJECT_PROGRESS_4);
 				if(fcService.enterNextFlow(paramMap)){
+					resultBean.setFlag(1);
+					map.put("projectProgress", StaticConst.PROJECT_PROGRESS_4);
 					paramMap.put("meetingType", StaticConst.MEETING_TYPE_APPROVAL);
 					paramMap.put("meetingCount", 0);
 					paramMap.put("status", StaticConst.MEETING_RESULT_2);
@@ -134,7 +135,6 @@ public class CeoreviewController {
 					paramMap.put("scheduleStatus", 2);
 					paramMap.put("updatedTime", DateUtil.getMillis(new Date()));
 					icService.updateCeoScheduling(paramMap);  //修改ceo评审排期状态为已通过
-					resultBean.setFlag(1);
 				}
 			}
 			resultBean.setStatus("OK");

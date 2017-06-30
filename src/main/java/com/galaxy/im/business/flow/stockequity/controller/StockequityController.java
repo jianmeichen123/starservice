@@ -82,10 +82,10 @@ public class StockequityController {
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
 				paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_10);	//表示进入投后运营阶段
-				map.put("projectProgress", StaticConst.PROJECT_PROGRESS_10);
 				paramMap.put("projectStatus", "projectStatus:1");//将项目状态调整为“投后运营”
 				if(isservice.enterNextFlow(paramMap)){
 					resultBean.setFlag(1);
+					map.put("projectProgress", StaticConst.PROJECT_PROGRESS_10);
 				}
 			}
 			resultBean.setStatus("OK");

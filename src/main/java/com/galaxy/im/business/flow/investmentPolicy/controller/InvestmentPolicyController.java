@@ -86,10 +86,10 @@ public class InvestmentPolicyController {
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
 					paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_6);	//表示进入尽职调查阶段
-					map.put("projectProgress", StaticConst.PROJECT_PROGRESS_6);
 					if(fcService.enterNextFlow(paramMap)){
 						
 						resultBean.setFlag(1);
+						map.put("projectProgress", StaticConst.PROJECT_PROGRESS_6);
 						/*生成“尽职调查”待办任务；
 						1）给投资经理自己生成业务尽职调查待办任务；
 						2）给人事生成人事尽职调查待办任务；
@@ -171,6 +171,7 @@ public class InvestmentPolicyController {
 	@ResponseBody
 	public Object startStockequity(HttpServletRequest request,HttpServletResponse response,@RequestBody String paramString){
 		ResultBean<Object> resultBean = new ResultBean<Object>();
+		Map<String, Object> map = new HashMap<>();
 		resultBean.setFlag(0);
 		try{
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
@@ -178,8 +179,8 @@ public class InvestmentPolicyController {
 				
 					paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_9);	//表示进入股权交割阶段
 					if(fcService.enterNextFlow(paramMap)){
-						
 						resultBean.setFlag(1);
+						map.put("projectProgress", StaticConst.PROJECT_PROGRESS_9);
 						//给法务生成“工商转让凭证”的待办任务
 						SopTask beanLaw = new SopTask();
 						int lawDeptId = fcService.getDeptIdByDeptName(StaticConst.DEPT_NAME_LAW,request,response);
@@ -209,6 +210,7 @@ public class InvestmentPolicyController {
 						Long fd = fcService.insertsopTask(beanFd); 
 					}
 				}
+			resultBean.setMap(map);
 			resultBean.setStatus("OK");
 		}catch(Exception e){
 		}

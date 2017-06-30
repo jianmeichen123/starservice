@@ -135,10 +135,10 @@ public class InvestmentdealController {
 				
 				
 					paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_8);	//表示进入投资协议阶段
-					map.put("projectProgress", StaticConst.PROJECT_PROGRESS_8);
 					if(fcService.enterNextFlow(paramMap)){
 						
 						resultBean.setFlag(1);
+						map.put("projectProgress", StaticConst.PROJECT_PROGRESS_8);
 						//生成投资协议代办任务
 						SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 						//获取用户所属部门id
@@ -178,6 +178,7 @@ public class InvestmentdealController {
 	@ResponseBody
 	public Object startStockequity(HttpServletRequest request,HttpServletResponse response,@RequestBody String paramString){
 		ResultBean<Object> resultBean = new ResultBean<Object>();
+		Map<String, Object> map = new HashMap<>();
 		resultBean.setFlag(0);
 		try{
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
@@ -185,6 +186,7 @@ public class InvestmentdealController {
 					paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_9);	//表示进入股权交割阶段
 					if(fcService.enterNextFlow(paramMap)){
 						resultBean.setFlag(1);
+						map.put("projectProgress", StaticConst.PROJECT_PROGRESS_9);
 						//给法务生成“工商转让凭证”的待办任务
 						SopTask beanLaw = new SopTask();
 						int lawDeptId = fcService.getDeptIdByDeptName(StaticConst.DEPT_NAME_LAW,request,response);
