@@ -221,6 +221,7 @@ public class InvestmentdealController {
 						iiService.updateInvestmentdeal(paramMap);  
 					}
 				}
+			resultBean.setMap(map);
 			resultBean.setStatus("OK");
 		}catch(Exception e){
 		}
