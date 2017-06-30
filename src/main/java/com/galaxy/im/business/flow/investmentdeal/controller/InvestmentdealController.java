@@ -127,6 +127,7 @@ public class InvestmentdealController {
 	@ResponseBody
 	public Object startInvestmentpolicy(HttpServletRequest request,HttpServletResponse response,@RequestBody String paramString){
 		ResultBean<Object> resultBean = new ResultBean<Object>();
+		Map<String, Object> map = new HashMap<>();
 		resultBean.setFlag(0);
 		try{
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
@@ -134,6 +135,7 @@ public class InvestmentdealController {
 				
 				
 					paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_8);	//表示进入投资协议阶段
+					map.put("projectProgress", StaticConst.PROJECT_PROGRESS_8);
 					if(fcService.enterNextFlow(paramMap)){
 						
 						resultBean.setFlag(1);
@@ -159,7 +161,7 @@ public class InvestmentdealController {
 						iiService.updateInvestmentdeal(paramMap);  
 					}
 				}
-		
+			resultBean.setMap(map);
 			resultBean.setStatus("OK");
 		}catch(Exception e){
 		}

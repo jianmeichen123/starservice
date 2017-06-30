@@ -1,6 +1,7 @@
 package com.galaxy.im.business.flow.investmentPolicy.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -79,11 +80,13 @@ public class InvestmentPolicyController {
 	@ResponseBody
 	public Object startDuediligence(HttpServletRequest request,HttpServletResponse response,@RequestBody String paramString){
 		ResultBean<Object> resultBean = new ResultBean<Object>();
+		Map<String, Object> map = new HashMap<>();
 		resultBean.setFlag(0);
 		try{
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
 					paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_6);	//表示进入尽职调查阶段
+					map.put("projectProgress", StaticConst.PROJECT_PROGRESS_6);
 					if(fcService.enterNextFlow(paramMap)){
 						
 						resultBean.setFlag(1);
@@ -152,6 +155,7 @@ public class InvestmentPolicyController {
 						Long law = fcService.insertsopTask(beanLaw);
 					}
 				}
+			resultBean.setMap(map);
 			resultBean.setStatus("OK");
 		}catch(Exception e){
 		}

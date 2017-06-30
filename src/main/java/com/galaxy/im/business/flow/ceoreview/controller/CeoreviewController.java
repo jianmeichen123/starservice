@@ -116,11 +116,13 @@ public class CeoreviewController {
 	@ResponseBody
 	public Object startRovalReview(@RequestBody String paramString){
 		ResultBean<Object> resultBean = new ResultBean<Object>();
+		Map<String, Object> map = new HashMap<>();
 		resultBean.setFlag(0);
 		try{
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
 				paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_4);	//表示进入立项会阶段
+				map.put("projectProgress", StaticConst.PROJECT_PROGRESS_4);
 				if(fcService.enterNextFlow(paramMap)){
 					paramMap.put("meetingType", StaticConst.MEETING_TYPE_APPROVAL);
 					paramMap.put("meetingCount", 0);
@@ -136,6 +138,7 @@ public class CeoreviewController {
 				}
 			}
 			resultBean.setStatus("OK");
+			resultBean.setMap(map);
 		}catch(Exception e){
 		}
 		return resultBean;
