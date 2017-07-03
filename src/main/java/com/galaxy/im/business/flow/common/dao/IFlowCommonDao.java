@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.galaxy.im.bean.project.MeetingScheduling;
 import com.galaxy.im.bean.project.ProjectBean;
+import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.common.db.IBaseDao;
@@ -28,4 +29,6 @@ public interface IFlowCommonDao extends IBaseDao<ProjectBean, Long>{
 	List<Map<String, Object>> getSopFileList(Map<String, Object> paramMap);
 	//更新上传文件
 	long updateSopFile(SopFileBean bean);
+	//获取项目基本信息
+	SopProjectBean getSopProjectInfo(Map<String, Object> paramMap);
 }

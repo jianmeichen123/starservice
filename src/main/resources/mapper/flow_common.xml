@@ -249,4 +249,28 @@
 		where id = #{id};
 	</update>
 	
+	<!-- 项目基本信息 -->
+	<select id="getSopProjectInfo" resultType="com.galaxy.im.bean.project.SopProjectBean" parameterType="hashmap" resultMap="infoMap">
+		SELECT  id,
+				project_name projectName,
+				project_type projectType,
+				project_progress projectProgress,
+				project_departId projectDepartId,
+				create_uid createUid,
+				progress_history progressHistory,
+				business_type_code businessTypeCode
+		FROM sop_project 
+		WHERE id=#{projectId};
+	</select>
+	<resultMap type="com.galaxy.im.bean.project.SopProjectBean" id="infoMap">
+		<result column="id" property="id"/>
+		<result column="projectName" property="projectName"/>
+		<result column="projectType" property="projectType"/>
+		<result column="projectProgress" property="projectProgress"/>
+		<result column="projectDepartId" property="projectDepartId"/>
+		<result column="createUid" property="createUid"/>
+		<result column="progressHistory" property="progressHistory"/>
+		<result column="businessTypeCode" property="businessTypeCode"/>
+	</resultMap>
+	
 </mapper>

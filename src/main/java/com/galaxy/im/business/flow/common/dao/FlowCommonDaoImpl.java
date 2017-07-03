@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.galaxy.im.bean.project.MeetingScheduling;
 import com.galaxy.im.bean.project.ProjectBean;
+import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.common.db.BaseDaoImpl;
@@ -163,6 +164,20 @@ public class FlowCommonDaoImpl extends BaseDaoImpl<ProjectBean, Long> implements
 			return bean.getId();
 		}catch(Exception e){
 			log.error(FlowCommonDaoImpl.class.getName() + ":updateSopFile",e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 获取项目基本信息
+	 */
+	@Override
+	public SopProjectBean getSopProjectInfo(Map<String, Object> paramMap) {
+		String sqlName = "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.getSopProjectInfo";
+		try{
+			return sqlSessionTemplate.selectOne(sqlName,paramMap);
+		}catch(Exception e){
+			log.error(FlowCommonDaoImpl.class.getName() + ":getSopProjectInfo",e);
 			throw new DaoException(e);
 		}
 	}

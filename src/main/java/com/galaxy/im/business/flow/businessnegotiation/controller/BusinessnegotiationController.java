@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.galaxy.im.bean.common.SessionBean;
+import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.business.flow.businessnegotiation.service.IBusinessnegotiationService;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
@@ -120,34 +121,50 @@ public class BusinessnegotiationController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		try{
+			String progressHistory="";
 			Map<String,Object> map =new HashMap<String,Object>();
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
-				paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_8);	//表示进入投资协议（闪投）
-				paramMap.put("greanChannel", 10);									//绿色通道修改为商务谈判
-				if(service.updateProjectStatus(paramMap)){
-					resultBean.setFlag(1);
-					map.put("projectProgress", StaticConst.PROJECT_PROGRESS_8);
-					//生成投资协议代办任务
-					SessionBean sessionBean = CUtils.get().getBeanBySession(request);
-					//获取用户所属部门id
-					long deptId = fcService.getDeptId(sessionBean.getGuserid(),request,response);
-					SopTask bean = new SopTask();
-					bean.setProjectId(CUtils.get().object2Long(paramMap.get("projectId")));
-					bean.setTaskName(StaticConst.TASK_NAME_TZXY);
-					bean.setTaskType(StaticConst.TASK_TYPE_XTBG);
-					bean.setTaskFlag(StaticConst.TASK_FLAG_TZXY);
-					bean.setTaskStatus(StaticConst.TASK_STATUS_DWG);
-					bean.setTaskOrder(StaticConst.TASK_ORDER_NORMAL);
-					bean.setAssignUid(sessionBean.getGuserid());
-					bean.setDepartmentId(deptId);
-					bean.setCreatedTime(new Date().getTime());
-					@SuppressWarnings("unused")
-					Long id = fcService.insertsopTask(bean);
+				SopProjectBean sopBean = fcService.getSopProjectInfo(paramMap);
+				if(sopBean!=null){
+					if(sopBean.getProjectProgress().equals(StaticConst.PROJECT_PROGRESS_11)){
+						//项目当前所处在商务谈判阶段,在流程历史记录拼接要进入的下个阶段
+						if(!"".equals(sopBean.getProgressHistory()) && sopBean.getProgressHistory()!=null){
+							progressHistory =sopBean.getProgressHistory()+","+StaticConst.PROJECT_PROGRESS_8;
+						}else{
+							progressHistory =StaticConst.PROJECT_PROGRESS_8;
+						}
+						paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_8);		//表示进入投资协议（闪投）
+						paramMap.put("businessTypeCode", "ST");									//闪投
+						paramMap.put("progressHistory", progressHistory);						//流程历史记录
+						//更新项目
+						if(service.updateProjectStatus(paramMap)){
+							resultBean.setFlag(1);
+							map.put("projectProgress", StaticConst.PROJECT_PROGRESS_8);
+							//生成投资协议代办任务
+							SessionBean sessionBean = CUtils.get().getBeanBySession(request);
+							//获取用户所属部门id
+							long deptId = fcService.getDeptId(sessionBean.getGuserid(),request,response);
+							SopTask bean = new SopTask();
+							bean.setProjectId(CUtils.get().object2Long(paramMap.get("projectId")));
+							bean.setTaskName(StaticConst.TASK_NAME_TZXY);
+							bean.setTaskType(StaticConst.TASK_TYPE_XTBG);
+							bean.setTaskFlag(StaticConst.TASK_FLAG_TZXY);
+							bean.setTaskStatus(StaticConst.TASK_STATUS_DWG);
+							bean.setTaskOrder(StaticConst.TASK_ORDER_NORMAL);
+							bean.setAssignUid(sessionBean.getGuserid());
+							bean.setDepartmentId(deptId);
+							bean.setCreatedTime(new Date().getTime());
+							@SuppressWarnings("unused")
+							Long id = fcService.insertsopTask(bean);
+						}
+						resultBean.setMap(map);
+						resultBean.setStatus("OK");
+					}else{
+						resultBean.setMessage("项目当前状态已被修改，无法进入投资协议");
+					}
 				}
 			}
-			resultBean.setMap(map);
-			resultBean.setStatus("OK");
 		}catch(Exception e){
 		}
 		return resultBean;
@@ -164,33 +181,50 @@ public class BusinessnegotiationController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		try{
+			String progressHistory="";
 			Map<String,Object> map =new HashMap<String,Object>();
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
-				paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_5);	//表示进入投资意向书（投资）
-				if(service.updateProjectStatus(paramMap)){
-					resultBean.setFlag(1);
-					map.put("projectProgress", StaticConst.PROJECT_PROGRESS_5);
-					//生成投资意向书的代办任务
-					SessionBean sessionBean = CUtils.get().getBeanBySession(request);
-					//获取用户所属部门id
-					long deptId = fcService.getDeptId(sessionBean.getGuserid(),request,response);
-					SopTask bean = new SopTask();
-					bean.setProjectId(CUtils.get().object2Long(paramMap.get("projectId")));
-					bean.setTaskName(StaticConst.TASK_NAME_SCTZYXS);
-					bean.setTaskType(StaticConst.TASK_TYPE_XTBG);
-					bean.setTaskFlag(StaticConst.TASK_FLAG_SCTZYXS);
-					bean.setTaskStatus(StaticConst.TASK_STATUS_DWG);
-					bean.setTaskOrder(StaticConst.TASK_ORDER_NORMAL);
-					bean.setAssignUid(sessionBean.getGuserid());
-					bean.setDepartmentId(deptId);
-					bean.setCreatedTime(new Date().getTime());
-					@SuppressWarnings("unused")
-					Long id = fcService.insertsopTask(bean);
+				SopProjectBean sopBean = fcService.getSopProjectInfo(paramMap);
+				if(sopBean!=null){
+					if(sopBean.getProjectProgress().equals(StaticConst.PROJECT_PROGRESS_11)){
+						//项目当前所处在商务谈判阶段,在流程历史记录拼接要进入的下个阶段
+						if(!"".equals(sopBean.getProgressHistory()) && sopBean.getProgressHistory()!=null){
+							progressHistory =sopBean.getProgressHistory()+","+StaticConst.PROJECT_PROGRESS_5;
+						}else{
+							progressHistory =StaticConst.PROJECT_PROGRESS_5;
+						}
+						paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_5);		//表示进入投资意向书（投资）
+						paramMap.put("businessTypeCode", "TZ");									//投资
+						paramMap.put("progressHistory", progressHistory);						//流程历史记录
+						//更新项目状态
+						if(service.updateProjectStatus(paramMap)){
+							resultBean.setFlag(1);
+							map.put("projectProgress", StaticConst.PROJECT_PROGRESS_5);
+							//生成投资意向书的代办任务
+							SessionBean sessionBean = CUtils.get().getBeanBySession(request);
+							//获取用户所属部门id
+							long deptId = fcService.getDeptId(sessionBean.getGuserid(),request,response);
+							SopTask bean = new SopTask();
+							bean.setProjectId(CUtils.get().object2Long(paramMap.get("projectId")));
+							bean.setTaskName(StaticConst.TASK_NAME_SCTZYXS);
+							bean.setTaskType(StaticConst.TASK_TYPE_XTBG);
+							bean.setTaskFlag(StaticConst.TASK_FLAG_SCTZYXS);
+							bean.setTaskStatus(StaticConst.TASK_STATUS_DWG);
+							bean.setTaskOrder(StaticConst.TASK_ORDER_NORMAL);
+							bean.setAssignUid(sessionBean.getGuserid());
+							bean.setDepartmentId(deptId);
+							bean.setCreatedTime(new Date().getTime());
+							@SuppressWarnings("unused")
+							Long id = fcService.insertsopTask(bean);
+						}
+						resultBean.setMap(map);
+						resultBean.setStatus("OK");
+					}else{
+						resultBean.setMessage("项目当前状态已被修改，无法进入投资意向书");	
+					}
 				}
 			}
-			resultBean.setMap(map);
-			resultBean.setStatus("OK");
 		}catch(Exception e){
 		}
 		return resultBean;

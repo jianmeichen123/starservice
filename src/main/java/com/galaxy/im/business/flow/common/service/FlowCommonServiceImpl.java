@@ -17,6 +17,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.galaxy.im.bean.project.MeetingScheduling;
 import com.galaxy.im.bean.project.ProjectBean;
+import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.flow.common.dao.IFlowCommonDao;
@@ -273,6 +274,19 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 			return dao.updateSopFile(bean);
 		}catch(Exception e){
 			log.error(FlowCommonServiceImpl.class.getName() + ":updateSopFile",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	/**
+	 * 获取项目基本信息
+	 */
+	@Override
+	public SopProjectBean getSopProjectInfo(Map<String, Object> paramMap) {
+		try{
+			return dao.getSopProjectInfo(paramMap);
+		}catch(Exception e){
+			log.error(FlowCommonServiceImpl.class.getName() + ":getSopProjectInfo",e);
 			throw new ServiceException(e);
 		}
 	}

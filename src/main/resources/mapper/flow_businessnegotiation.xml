@@ -21,7 +21,8 @@
 		update sop_project p
 		<set>
 		  <if test="projectProgress != null" > p.project_progress = #{projectProgress}, </if>
-	      <if test="greanChannel != null" > p.grean_channel = #{greanChannel} </if>
+	      <if test="progressHistory != null" > p.progress_history = #{progressHistory}, </if>
+	      <if test="businessTypeCode != null" > p.business_type_code = #{businessTypeCode} </if>
 		</set>
 		where p.id=#{projectId};
 	</update>
