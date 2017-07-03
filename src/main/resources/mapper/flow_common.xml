@@ -25,8 +25,11 @@
 	<!-- 进入到下一个流程阶段 -非绿色通道 -->
 	<update id="enterNextFlow" parameterType="hashmap">
 		update sop_project p
-			set p.project_progress=#{projectProgress}
-			where p.id=#{projectId};
+		<set>
+		  <if test="projectProgress != null" > p.project_progress = #{projectProgress}, </if>
+	      <if test="progressHistory != null" > p.progress_history = #{progressHistory} </if>
+		</set>
+		where p.id=#{projectId};
 	</update>
 	
 	<!-- 生成代办任务 -->

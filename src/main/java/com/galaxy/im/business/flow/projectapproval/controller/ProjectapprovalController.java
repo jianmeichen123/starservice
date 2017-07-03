@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.flow.projectapproval.service.IProjectapprovalService;
@@ -126,25 +127,40 @@ public class ProjectapprovalController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		try{
+			String progressHistory="";
 			Map<String,Object> map =new HashMap<String,Object>();
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
-				paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_11);	//表示进入会后商务谈判
-				if(fcService.enterNextFlow(paramMap)){
-					resultBean.setFlag(1);
-					map.put("projectProgress", StaticConst.PROJECT_PROGRESS_11);
-					//会议个数
-					paramMap.put("meetingType", StaticConst.MEETING_TYPE_APPROVAL);
-					int count = service.getMeetingCount(paramMap);
-					paramMap.put("status", StaticConst.MEETING_RESULT_1);
-					paramMap.put("scheduleStatus", 2);
-					paramMap.put("updateTime", DateUtil.getMillis(new Date()));
-					paramMap.put("meetingCount",count);
-					service.updateMeetingScheduling(paramMap);
+				SopProjectBean sopBean = fcService.getSopProjectInfo(paramMap);
+				if(sopBean!=null){
+					if(sopBean.getProjectProgress().equals(StaticConst.PROJECT_PROGRESS_4)){
+						//项目当前所处在商务谈判阶段,在流程历史记录拼接要进入的下个阶段
+						if(!"".equals(sopBean.getProgressHistory()) && sopBean.getProgressHistory()!=null){
+							progressHistory =sopBean.getProgressHistory()+","+StaticConst.PROJECT_PROGRESS_11;
+						}else{
+							progressHistory =StaticConst.PROJECT_PROGRESS_11;
+						}
+						paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_11);	//表示进入会后商务谈判
+						paramMap.put("progressHistory", progressHistory);					//流程历史记录
+						if(fcService.enterNextFlow(paramMap)){
+							resultBean.setFlag(1);
+							map.put("projectProgress", StaticConst.PROJECT_PROGRESS_11);
+							//会议个数
+							paramMap.put("meetingType", StaticConst.MEETING_TYPE_APPROVAL);
+							int count = service.getMeetingCount(paramMap);
+							paramMap.put("status", StaticConst.MEETING_RESULT_1);
+							paramMap.put("scheduleStatus", 2);
+							paramMap.put("updateTime", DateUtil.getMillis(new Date()));
+							paramMap.put("meetingCount",count);
+							service.updateMeetingScheduling(paramMap);
+						}
+						resultBean.setMap(map);
+						resultBean.setStatus("OK");
+					}else{
+						resultBean.setMessage("项目当前状态已被修改，无法进入会后商务谈判");	
+					}
 				}
 			}
-			resultBean.setMap(map);
-			resultBean.setStatus("OK");
 		}catch(Exception e){
 		}
 		return resultBean;
