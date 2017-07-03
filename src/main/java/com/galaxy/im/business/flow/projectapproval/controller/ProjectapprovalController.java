@@ -134,7 +134,7 @@ public class ProjectapprovalController {
 				SopProjectBean sopBean = fcService.getSopProjectInfo(paramMap);
 				if(sopBean!=null){
 					if(sopBean.getProjectProgress().equals(StaticConst.PROJECT_PROGRESS_4)){
-						//项目当前所处在商务谈判阶段,在流程历史记录拼接要进入的下个阶段
+						//项目当前所处在立项会阶段,在流程历史记录拼接要进入的下个阶段
 						if(!"".equals(sopBean.getProgressHistory()) && sopBean.getProgressHistory()!=null){
 							progressHistory =sopBean.getProgressHistory()+","+StaticConst.PROJECT_PROGRESS_11;
 						}else{

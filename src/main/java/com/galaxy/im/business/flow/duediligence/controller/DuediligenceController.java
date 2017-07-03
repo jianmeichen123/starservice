@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.galaxy.im.bean.project.MeetingScheduling;
+import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.flow.duediligence.service.IDuediligenceService;
 import com.galaxy.im.common.CUtils;
@@ -118,27 +119,43 @@ public class DuediligenceController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		try{
+			String progressHistory="";
 			Map<String,Object> map =new HashMap<String,Object>();
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
-				paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_7);	//表示进入投决会
-				if(fcService.enterNextFlow(paramMap)){
-					resultBean.setFlag(1);
-					map.put("projectProgress", StaticConst.PROJECT_PROGRESS_7);
-					//生成投决会排期记录
-					MeetingScheduling bean = new MeetingScheduling();
-					bean.setProjectId(CUtils.get().object2Long(paramMap.get("projectId")));
-					bean.setMeetingType(StaticConst.MEETING_TYPE_INVEST);
-					bean.setStatus(StaticConst.MEETING_RESULT_2);
-					bean.setScheduleStatus(0);
-					bean.setCreatedTime(DateUtil.getMillis(new Date()));
-					bean.setApplyTime(new Timestamp(new Date().getTime()));
-					@SuppressWarnings("unused")
-					Long id = fcService.insertMeetingScheduling(bean);
+				SopProjectBean sopBean = fcService.getSopProjectInfo(paramMap);
+				if(sopBean!=null){
+					if(sopBean.getProjectProgress().equals(StaticConst.PROJECT_PROGRESS_6)){
+						//项目当前所处在尽职调查阶段,在流程历史记录拼接要进入的下个阶段
+						if(!"".equals(sopBean.getProgressHistory()) && sopBean.getProgressHistory()!=null){
+							progressHistory =sopBean.getProgressHistory()+","+StaticConst.PROJECT_PROGRESS_7;
+						}else{
+							progressHistory =StaticConst.PROJECT_PROGRESS_7;
+						}
+						paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_7);	//表示进入投决会
+						paramMap.put("progressHistory", progressHistory);					//流程历史记录
+						
+						if(fcService.enterNextFlow(paramMap)){
+							resultBean.setFlag(1);
+							map.put("projectProgress", StaticConst.PROJECT_PROGRESS_7);
+							//生成投决会排期记录
+							MeetingScheduling bean = new MeetingScheduling();
+							bean.setProjectId(CUtils.get().object2Long(paramMap.get("projectId")));
+							bean.setMeetingType(StaticConst.MEETING_TYPE_INVEST);
+							bean.setStatus(StaticConst.MEETING_RESULT_2);
+							bean.setScheduleStatus(0);
+							bean.setCreatedTime(DateUtil.getMillis(new Date()));
+							bean.setApplyTime(new Timestamp(new Date().getTime()));
+							@SuppressWarnings("unused")
+							Long id = fcService.insertMeetingScheduling(bean);
+						}
+						resultBean.setMap(map);
+						resultBean.setStatus("OK");
+					}else{
+						resultBean.setMessage("项目当前状态已被修改，无法申请投决会排期");	
+					}
 				}
 			}
-			resultBean.setMap(map);
-			resultBean.setStatus("OK");
 		}catch(Exception e){
 		}
 		return resultBean;
