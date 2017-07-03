@@ -1,7 +1,9 @@
 package com.galaxy.im.business.flow.investmentPolicy.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -239,6 +241,32 @@ public class InvestmentPolicyController {
 				}
 			}
 		} catch (Exception e) {
+		}
+		return resultBean;
+	}
+	
+	/**
+	 * 投资协议信息
+	 * @param paramString
+	 * @return
+	 */
+	@RequestMapping("investmentPolicyList")
+	@ResponseBody
+	public Object investmentPolicyList(@RequestBody String paramString){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		resultBean.setFlag(0);
+		try{
+			List<String> fileWorkTypeList = new ArrayList<String>();
+			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
+			
+			fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_6);
+			fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_7);
+			
+			paramMap.put("fileWorkTypeList", fileWorkTypeList);
+			List<Map<String,Object>> list = fcService.getSopFileList(paramMap);
+			resultBean.setMapList(list);
+			resultBean.setStatus("ok");
+		}catch(Exception e){
 		}
 		return resultBean;
 	}

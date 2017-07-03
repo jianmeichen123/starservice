@@ -185,9 +185,9 @@ public class InvestmentintentController{
 		try{
 			List<String> fileWorkTypeList = new ArrayList<String>();
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
-			//if(paramMap!=null && paramMap.containsKey("fileWorkType")&&paramMap.get("fileWorkType").equals("投资意向书")){
-				fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_5);
-			//}
+			
+			fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_5);
+				
 			paramMap.put("fileWorkTypeList", fileWorkTypeList);
 			List<Map<String,Object>> list = fcService.getSopFileList(paramMap);
 			resultBean.setMapList(list);

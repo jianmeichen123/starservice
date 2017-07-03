@@ -1,6 +1,8 @@
 package com.galaxy.im.business.flow.stockequity.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,6 +111,32 @@ public class StockequityController {
 				}
 			}
 		} catch (Exception e) {
+		}
+		return resultBean;
+	}
+	
+	/**
+	 * 股权交割信息
+	 * @param paramString
+	 * @return
+	 */
+	@RequestMapping("stockequityList")
+	@ResponseBody
+	public Object stockequityList(@RequestBody String paramString){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		resultBean.setFlag(0);
+		try{
+			List<String> fileWorkTypeList = new ArrayList<String>();
+			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
+			
+			fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_8);
+			fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_9);
+			
+			paramMap.put("fileWorkTypeList", fileWorkTypeList);
+			List<Map<String,Object>> list = fcService.getSopFileList(paramMap);
+			resultBean.setMapList(list);
+			resultBean.setStatus("ok");
+		}catch(Exception e){
 		}
 		return resultBean;
 	}
