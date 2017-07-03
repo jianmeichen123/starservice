@@ -1,8 +1,10 @@
 package com.galaxy.im.business.flow.duediligence.controller;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -156,6 +158,36 @@ public class DuediligenceController {
 					}
 				}
 			}
+		}catch(Exception e){
+		}
+		return resultBean;
+	}
+	
+	/**
+	 * 尽职调查信息
+	 * @param paramString
+	 * @return
+	 */
+	@RequestMapping("duediligenceList")
+	@ResponseBody
+	public Object duediligenceList(@RequestBody String paramString){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		resultBean.setFlag(0);
+		try{
+			List<String> fileWorkTypeList = new ArrayList<String>();
+			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
+			if(paramMap!=null && paramMap.containsKey("fileWorkType")&&paramMap.get("fileWorkType").equals("尽职调查")){
+				fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_1);
+				fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_2);
+				fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_3);
+				fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_4);
+				fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_18);
+				fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_19);
+			}
+			paramMap.put("fileWorkTypeList", fileWorkTypeList);
+			List<Map<String,Object>> list = fcService.getSopFileList(paramMap);
+			resultBean.setMapList(list);
+			resultBean.setStatus("ok");
 		}catch(Exception e){
 		}
 		return resultBean;

@@ -1,7 +1,9 @@
 package com.galaxy.im.business.flow.investmentintent.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -165,6 +167,31 @@ public class InvestmentintentController{
 					}
 				}
 			}
+		}catch(Exception e){
+		}
+		return resultBean;
+	}
+	
+	/**
+	 * 投资意向书信息
+	 * @param paramString
+	 * @return
+	 */
+	@RequestMapping("investmentintentList")
+	@ResponseBody
+	public Object investmentintentList(@RequestBody String paramString){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		resultBean.setFlag(0);
+		try{
+			List<String> fileWorkTypeList = new ArrayList<String>();
+			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
+			if(paramMap!=null && paramMap.containsKey("fileWorkType")&&paramMap.get("fileWorkType").equals("投资意向书")){
+				fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_5);
+			}
+			paramMap.put("fileWorkTypeList", fileWorkTypeList);
+			List<Map<String,Object>> list = fcService.getSopFileList(paramMap);
+			resultBean.setMapList(list);
+			resultBean.setStatus("ok");
 		}catch(Exception e){
 		}
 		return resultBean;
