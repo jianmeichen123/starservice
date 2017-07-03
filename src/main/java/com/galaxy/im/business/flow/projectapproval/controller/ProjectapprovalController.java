@@ -225,9 +225,9 @@ public class ProjectapprovalController {
 		try{
 			List<String> fileWorkTypeList = new ArrayList<String>();
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
-			if(paramMap!=null && paramMap.containsKey("fileWorkType")&&paramMap.get("fileWorkType").equals("立项会")){
+			//if(paramMap!=null && paramMap.containsKey("fileWorkType")&&paramMap.get("fileWorkType").equals("立项会")){
 				fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_17);
-			}
+			//}
 			paramMap.put("fileWorkTypeList", fileWorkTypeList);
 			List<Map<String,Object>> list = fcService.getSopFileList(paramMap);
 			resultBean.setMapList(list);
