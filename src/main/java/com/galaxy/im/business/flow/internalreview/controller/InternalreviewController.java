@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.galaxy.im.bean.project.MeetingScheduling;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.flow.internalreview.service.IInternalreviewService;
 import com.galaxy.im.common.CUtils;
+import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
 
@@ -117,13 +119,15 @@ public class InternalreviewController {
 				if(fcService.enterNextFlow(paramMap)){
 					resultBean.setFlag(1);
 					map.put("projectProgress", StaticConst.PROJECT_PROGRESS_3);
-					paramMap.put("meetingType", StaticConst.MEETING_TYPE_CEO);
-					paramMap.put("meetingCount", 0);
-					paramMap.put("status", StaticConst.MEETING_RESULT_2);
-					paramMap.put("scheduleStatus", 0);
-					paramMap.put("applyTime", new Timestamp(new Date().getTime()));
-					paramMap.put("createdTime", new Date().getTime());
-					service.saveCeoScheduling(paramMap);  //ceo排期
+					MeetingScheduling bean = new MeetingScheduling();
+					bean.setProjectId(CUtils.get().object2Long(paramMap.get("projectId")));
+					bean.setMeetingType(StaticConst.MEETING_TYPE_CEO);
+					bean.setMeetingCount(0);
+					bean.setStatus(StaticConst.MEETING_RESULT_2);
+					bean.setScheduleStatus(0);
+					bean.setCreatedTime(DateUtil.getMillis(new Date()));
+					bean.setApplyTime(new Timestamp(new Date().getTime()));
+					fcService.insertMeetingScheduling(bean);//ceo排期
 				}
 			}
 			resultBean.setMap(map);

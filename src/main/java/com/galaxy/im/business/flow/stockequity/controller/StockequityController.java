@@ -34,7 +34,7 @@ public class StockequityController {
 	IStockequityService isservice;
 	/**
 	 * 判断项目操作按钮状态
-	 * 依据：需要上传完成工商转让凭证
+	 * 依据：需要上传完成工商转让凭证同时判断资金拨付代办任务的状态是"taskStatus:2":待完工或者"taskStatus:3":已完工
 	 * 前端处理：满足条件则"进入投后运营"按钮点亮;
 	 * 
 	 * @param

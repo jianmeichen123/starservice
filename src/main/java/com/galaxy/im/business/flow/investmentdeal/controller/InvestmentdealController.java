@@ -200,7 +200,6 @@ public class InvestmentdealController {
 						beanLaw.setCreatedTime(new Date().getTime());
 						@SuppressWarnings("unused")
 						Long law = fcService.insertsopTask(beanLaw);
-						
 						//给财务生成“资金拨付凭证”的待办任务
 						SopTask beanFd = new SopTask();
 						int fdDeptId = fcService.getDeptIdByDeptName(StaticConst.DEPT_NAME_FD,request,response);
@@ -214,7 +213,6 @@ public class InvestmentdealController {
 						beanFd.setCreatedTime(new Date().getTime());
 						@SuppressWarnings("unused")
 						Long fd = fcService.insertsopTask(beanFd);
-						
 						//修改投决会排期状态为已通过
 						paramMap.put("scheduleStatus", 2);
 						paramMap.put("updatedTime", DateUtil.getMillis(new Date()));
@@ -227,8 +225,5 @@ public class InvestmentdealController {
 		}
 		return resultBean;
 	}
-	
-	
 
-		
 }

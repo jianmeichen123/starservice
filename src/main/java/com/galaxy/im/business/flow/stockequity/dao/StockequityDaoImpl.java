@@ -43,7 +43,21 @@ public class StockequityDaoImpl extends BaseDaoImpl<Test, Long> implements IStoc
 		try{
 			return sqlSessionTemplate.update(sqlName,paramMap);
 		}catch(Exception e){
-			log.error(String.format("查询对象总数出错！语句：%s", sqlName), e);
+			log.error(String.format("更新对象出错！语句：%s", sqlName), e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 资金拨付代办任务的状态
+	 */
+	@Override
+	public List<Map<String, Object>> status(Map<String, Object> paramMap) {
+		String sqlName = "com.galaxy.im.business.flow.stockequity.dao.IStockequityDao.status";
+		try{
+			return sqlSessionTemplate.selectList(sqlName,paramMap);
+		}catch(Exception e){
+			log.error(String.format("查询对象出错！语句：%s", sqlName), e);
 			throw new DaoException(e);
 		}
 	}

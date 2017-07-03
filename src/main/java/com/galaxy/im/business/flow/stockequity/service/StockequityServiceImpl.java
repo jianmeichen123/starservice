@@ -29,13 +29,16 @@ public class StockequityServiceImpl extends BaseServiceImpl<Test> implements ISt
 	}
 	
 	/**
-	 * 是否上传完成工商转让凭证
+	 * 是否上传完成工商转让凭证同时判断资金拨付代办任务的状态是"taskStatus:2":待完工或者"taskStatus:3":已完工
 	 */
 	@Override
 	public Map<String, Object> operateStatus(Map<String, Object> paramMap) {
 		try{
+			boolean res=false;
+			boolean ress=false;
 			Map<String,Object> result = new HashMap<String,Object>();
-			result.put("pass", false);
+			//result.put("pass", false); 
+			result.put("pass", false); 
 			List<Map<String,Object>> dataList = dao.operateStatus(paramMap);
 			if(dataList!=null && dataList.size()>0){
 				String dictCode;
@@ -46,11 +49,27 @@ public class StockequityServiceImpl extends BaseServiceImpl<Test> implements ISt
 					//是否上传了"工商转让凭证"
 					if("fileWorktype:8".equals(dictCode)){
 						if(pcount>0){
-							result.put("pass", true);
+							res=true;
 						}
 					}
 				}
 			}
+			//资金拨付代办任务的状态
+			List<Map<String,Object>> list = dao.status(paramMap);
+			if (list!=null&&list.size()>0) {
+				String tstatus;
+				for(Map<String,Object> map : list){
+					tstatus=CUtils.get().object2String(map.get("tstatus"), "");
+					
+					if (!"taskStatus:1".equals(tstatus)) {//不等于待认领状态
+						ress=true;
+					}
+				}
+			}
+			if (res && ress) {//上传完成工商转让凭证同时判断资金拨付代办任务的状态是"taskStatus:2":待完工或者"taskStatus:3":已完工
+				result.put("pass", true);
+			}
+			
 			return result;
 		}catch(Exception e){
 			log.error(StockequityServiceImpl.class.getName() + ":operateStatus",e);

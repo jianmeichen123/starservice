@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.galaxy.im.bean.project.MeetingScheduling;
 import com.galaxy.im.business.flow.ceoreview.service.ICeoreviewService;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.flow.internalreview.service.IInternalreviewService;
@@ -125,13 +126,15 @@ public class CeoreviewController {
 				if(fcService.enterNextFlow(paramMap)){
 					resultBean.setFlag(1);
 					map.put("projectProgress", StaticConst.PROJECT_PROGRESS_4);
-					paramMap.put("meetingType", StaticConst.MEETING_TYPE_APPROVAL);
-					paramMap.put("meetingCount", 0);
-					paramMap.put("status", StaticConst.MEETING_RESULT_2);
-					paramMap.put("scheduleStatus", 0);
-					paramMap.put("applyTime", new Timestamp(new Date().getTime()));
-					paramMap.put("createdTime", new Date().getTime());
-					icService.saveRovalScheduling(paramMap);  //立项会排期
+					MeetingScheduling bean = new MeetingScheduling();
+					bean.setProjectId(CUtils.get().object2Long(paramMap.get("projectId")));
+					bean.setMeetingType(StaticConst.MEETING_TYPE_APPROVAL);
+					bean.setMeetingCount(0);
+					bean.setStatus(StaticConst.MEETING_RESULT_2);
+					bean.setScheduleStatus(0);
+					bean.setCreatedTime(DateUtil.getMillis(new Date()));
+					bean.setApplyTime(new Timestamp(new Date().getTime()));
+					fcService.insertMeetingScheduling(bean);//立项会排期
 					paramMap.put("scheduleStatus", 2);
 					paramMap.put("updatedTime", DateUtil.getMillis(new Date()));
 					icService.updateCeoScheduling(paramMap);  //修改ceo评审排期状态为已通过

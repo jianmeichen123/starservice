@@ -96,7 +96,6 @@ public class InvestmentPolicyController {
 						3）给财务生成财务尽职调查待办任务；
 						4）给法务生成法务尽职调查待办任务；*/
 						SessionBean sessionBean = CUtils.get().getBeanBySession(request);
-						
 						//给投资经理自己生成业务尽职调查待办任务
 						SopTask bean = new SopTask();
 						long userDeptId = fcService.getDeptId(sessionBean.getGuserid(),request,response);
@@ -111,7 +110,6 @@ public class InvestmentPolicyController {
 						bean.setCreatedTime(new Date().getTime());
 						@SuppressWarnings("unused")
 						Long id = fcService.insertsopTask(bean);
-						
 						//给人事生成人事尽职调查待办任务
 						SopTask beanHr = new SopTask();
 						int hrDeptId = fcService.getDeptIdByDeptName(StaticConst.DEPT_NAME_HR,request,response);
@@ -125,7 +123,6 @@ public class InvestmentPolicyController {
 						beanHr.setCreatedTime(new Date().getTime());
 						@SuppressWarnings("unused")
 						Long hr = fcService.insertsopTask(beanHr);
-						
 						//给财务生成财务尽职调查待办任务
 						SopTask beanFd = new SopTask();
 						int fdDeptId = fcService.getDeptIdByDeptName(StaticConst.DEPT_NAME_FD,request,response);
@@ -139,7 +136,6 @@ public class InvestmentPolicyController {
 						beanFd.setCreatedTime(new Date().getTime());
 						@SuppressWarnings("unused")
 						Long fd = fcService.insertsopTask(beanFd);
-						
 						//给法务生成法务尽职调查待办任务
 						SopTask beanLaw = new SopTask();
 						int lawDeptId = fcService.getDeptIdByDeptName(StaticConst.DEPT_NAME_LAW,request,response);
