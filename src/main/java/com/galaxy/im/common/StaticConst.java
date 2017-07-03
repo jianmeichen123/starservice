@@ -113,6 +113,15 @@ public class StaticConst {
 	public static final String DEPT_NAME_HR = "人力资源部";	    	//人力资源部
 	public static final String DEPT_NAME_LAW = "法务部";	    	//法务部
 	public static final String DEPT_NAME_FD = "财务部";	    	//财务部
+	//文件状态
+	public static final String FILE_STATUS_1 = "fileStatus:1";	    	//缺失
+	public static final String FILE_STATUS_2 = "fileStatus:2";	    	//已上传
+	public static final String FILE_STATUS_3 = "fileStatus:3";	    	//已签署
+	//文件类型
+	public static final String FILE_TYPE_1 = "fileType:1";	    	//文档
+	public static final String FILE_TYPE_2 = "fileType:2";	    	//音频文件
+	public static final String FILE_TYPE_3 = "fileType:3";	    	//视频文件
+	public static final String FILE_TYPE_4 = "fileType:4";	    	//图片
 	
 	
 	

@@ -15,7 +15,7 @@ public class SopFileBean extends BaseEntity{
 	private String fileType;				//存储类型 1:文档 2:图片 3:音视频
 	private String remark;					//档案摘要
 	private long voucherId;					//签署证明文件ID
-	private String fileStatus;				//档案状态 可用、已审核... 
+	private String fileStatus;				//档案状态 缺失，已上传，已审核... 
 	private long fileUid;					//上传人/起草者 uid
 	private String filUri;					//存储地址
 	private long fileLength;				//档案大小

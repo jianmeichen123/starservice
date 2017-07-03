@@ -291,5 +291,35 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 		}
 	}
 
+	/**
+	 * 根据文件名后缀，确定文档类型
+	 */
+	@Override
+	public String getFileType(String fileSuffix) {
+		if(fileSuffix.equals("pdf") || fileSuffix.equals("PDF")){
+			return StaticConst.FILE_TYPE_1;
+		}else if(fileSuffix.equals("jpeg") || fileSuffix.equals("jpg") ||fileSuffix.equals("png")){
+			return StaticConst.FILE_TYPE_4;
+		}else{
+			return "";
+		}
+	}
+	
+	/**
+	 * 拆分文件名称
+	 */
+	public Map<String, String> transFileNames(String fileName) {
+		Map<String, String> retMap = new HashMap<String, String>();
+		int dotPos = fileName.lastIndexOf(".");
+		if(dotPos == -1){
+			retMap.put("fileName", fileName);
+			retMap.put("fileSuffix", "");
+		}else{
+			retMap.put("fileName", fileName.substring(0, dotPos));
+			retMap.put("fileSuffix", fileName.substring(dotPos+1));
+		}
+		return retMap;
+	}
+
 	
 }

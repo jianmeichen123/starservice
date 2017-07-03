@@ -180,12 +180,26 @@ public class ProjectapprovalController {
 		long id=0L;
 		try{
 			if(bean!=null){
-				if(bean.getFileWorkType()!=null&&bean.getFileWorkType().equals("立项会")){
-					bean.setFileWorkType(StaticConst.FILE_WORKTYPE_17);
+				SopProjectBean sopBean = fcService.getSopProjectInfo(paramMap);
+				if(sopBean!=null){
+					//项目id，当前阶段，所属事业线
+					bean.setProjectId(sopBean.getId());
+					bean.setProjectProgress(sopBean.getProjectProgress());
+					bean.setCareerLine(sopBean.getProjectDepartId());
 				}
-				
+				//文件类型
+				String fileType =fcService.getFileType(bean.getFileSuffix());
+				bean.setFileType(fileType);
+				//文件名称拆分
+				Map<String,String> nameMap = fcService.transFileNames(bean.getFileName());
+				bean.setFileName(nameMap.get("fileName"));
+				//文件状态：已上传
+				bean.setFileStatus(StaticConst.FILE_STATUS_2);
+				bean.setFileValid(1);
+				//bean.setCreatedTime(0l);
+				//业务操作
 				if(bean.getId()!=null && bean.getId()!=0){
-					//更新
+					//更新：添加新的一条记录
 					id =fcService.addSopFile(bean);
 				}else{
 					//上传之前:查数据库中是否存在信息，存在更新，否则新增

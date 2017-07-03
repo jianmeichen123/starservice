@@ -37,5 +37,9 @@ public interface IFlowCommonService extends IBaseService<ProjectBean>{
 	long updateSopFile(SopFileBean bean);
 	//获取项目基本信息
 	SopProjectBean getSopProjectInfo(Map<String, Object> paramMap);
+	//根据文件名后缀，确定文档类型
+	String getFileType(String fileSuffix);
+	//拆分文件名称
+	Map<String, String> transFileNames(String fileName);
 
 }
