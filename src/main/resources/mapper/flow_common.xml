@@ -85,7 +85,8 @@
 				file_key fileKey,
 				updated_time fileTime
 		FROM sop_file 
-		WHERE project_id=#{projectId} and file_worktype=#{fileWorkType};
+		WHERE project_id=#{projectId} and file_worktype=#{fileWorkType}
+		ORDER BY updated_time DESC LIMIT 1;
 	</select>
 	
 	<!-- 创建会议排期 -->
@@ -125,5 +126,127 @@
 	      #{createdTime}
 	    )
     </insert>
+    
+    <!-- 添加sop_file -->
+	<insert id="addSopFile" useGeneratedKeys="true" keyProperty="id"  keyColumn="id" parameterType="com.galaxy.im.bean.talk.SopFileBean" >
+		insert into sop_file 
+		(
+			project_id, 
+			belong_uid, 
+			file_valid, 
+			project_progress,
+	 		file_worktype, 
+	 		career_line, 
+	 		file_source,
+	 		file_type, 
+	 		remark, 
+	 		voucher_id, 
+	 		file_status,
+	 		file_uid, 
+	 		fil_uri, 
+	 		updated_time,
+	 		created_time, 
+	 		file_length, 
+	 		file_key,
+	 		bucket_name,
+	 		file_name,
+	 		file_suffix,
+	 		record_type,
+	 		meeting_id
+	 	)
+ 		values 
+ 		(
+	 		#{projectId}, 
+	 		#{belongUid}, 
+	 		#{fileValid},
+	 		#{projectProgress},
+	 		#{fileWorkType}, 
+	 		#{careerLine}, 
+	 		#{fileSource},
+	 		#{fileType}, 
+	 		#{remark},
+	 		#{voucherId},
+	 		#{fileStatus},
+	 		#{fileUid}, 
+	 		#{filUri}, 
+	 		#{createdTime},
+	 		#{createdTime}, 
+	 		#{fileLength},
+	 		#{fileKey},
+	 		#{bucketName},
+	 		#{fileName},
+	 		#{fileSuffix},
+	 		#{recordType},
+	 		#{meetingId}
+	 	)
+    	<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+    </insert>
+    
+    <!-- 获取流程上传文件的信息-->
+	<select id="getSopFileList" parameterType="hashmap" resultType="hashmap">
+		SELECT  tt.id,
+				tt.fileName,
+				tt.fileSuffix,
+				tt.fileKey,
+				tt.fileValid,
+				tt.fileTime,
+				tt.fileDs,
+				tt.fileWorktype,
+				tt.fileWorktypeId 
+		FROM(
+				SELECT  f.id,
+						concat(f.file_name,'.',f.file_suffix) as fileName,
+						f.file_suffix fileSuffix,
+						f.file_key fileKey,
+						f.file_valid fileValid,
+						f.updated_time fileTime,
+						f.remark fileDs,
+						dct1.name fileWorktype,
+						dct1.dict_value fileWorktypeId
+				FROM sop_file f
+			  	LEFT JOIN dict dct1 ON dct1.parent_code='fileWorktype' and dct1.dict_code=f.file_worktype 
+				WHERE f.project_id=#{projectId}
+				<if test="fileWorkTypeList != null">
+					and f.file_worktype in 
+					<foreach collection="fileWorkTypeList" item="fileWorkType" index="index" open="(" close=")" separator=",">
+						#{fileWorkType}
+					</foreach>
+				</if>
+				ORDER BY f.updated_time DESC 
+			) tt 
+		GROUP BY tt.fileWorktype;
+	</select>
+	
+	<!-- 更新sop_file -->
+	<update id="updateSopFile" parameterType="com.galaxy.im.bean.talk.SopFileBean">
+		update sop_file
+		<set>
+			<if test="projectId != null"> project_id = #{projectId}, </if>
+			<if test="belongUid != null"> belong_uid = #{belongUid}, </if>
+			<if test="fileValid != null"> file_valid = #{fileValid}, </if>
+			<if test="projectProgress != null"> project_progress = #{projectProgress}, </if>
+			<if test="fileWorkType != null"> file_worktype = #{fileWorkType}, </if>
+			<if test="careerLine != null"> career_line = #{careerLine}, </if>
+			<if test="fileSource != null"> file_source = #{fileSource}, </if>
+			<if test="fileType != null"> file_type = #{fileType}, </if>
+			<if test="remark != null"> remark = #{remark}, </if>
+			<if test="voucherId != null"> voucher_id = #{voucherId}, </if>
+			<if test="fileStatus != null"> file_status = #{fileStatus}, </if>
+			<if test="fileUid != null"> file_uid = #{fileUid}, </if>
+			<if test="filUri != null"> fil_uri = #{filUri}, </if>
+			<if test="updatedTime != null"> updated_time = #{updatedTime}, </if>
+			<if test="createdTime != null"> created_time = #{createdTime}, </if>
+			<if test="fileLength != null"> file_length = #{fileLength}, </if>
+			<if test="fileKey != null"> file_key = #{fileKey}, </if>
+			<if test="bucketName != null"> bucket_name = #{bucketName}, </if>
+			<if test="fileName != null"> file_name = #{fileName}, </if>
+			<if test="fileSuffix != null"> file_suffix = #{fileSuffix}, </if>
+			<if test="recordType != null"> record_type = #{recordType},</if>
+			<if test="meetingId != null"> meeting_id = #{meetingId}, </if>
+		</set>
+		where id = #{id};
+	</update>
 	
 </mapper>

@@ -1,5 +1,6 @@
 package com.galaxy.im.business.flow.common.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.galaxy.im.bean.project.MeetingScheduling;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.soptask.SopTask;
+import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.common.db.BaseDaoImpl;
 import com.galaxy.im.common.exception.DaoException;
 
@@ -119,6 +121,50 @@ public class FlowCommonDaoImpl extends BaseDaoImpl<ProjectBean, Long> implements
 			throw new DaoException(e);
 		}
 	}
-	
+
+	/**
+	 * 上传文件保存
+	 */
+	@Override
+	public Long addSopFile(SopFileBean bean) {
+		String sqlName = "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.addSopFile";
+		try{
+			sqlSessionTemplate.insert(sqlName,bean);
+			return bean.getId();
+		}catch(Exception e){
+			log.error(FlowCommonDaoImpl.class.getName() + ":addSopFile",e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 获取上传文件信息
+	 */
+	@Override
+	public List<Map<String, Object>> getSopFileList(Map<String, Object> paramMap) {
+		try{
+			String sqlName = "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.getSopFileList";
+			List<Map<String, Object>> map =sqlSessionTemplate.selectList(sqlName,paramMap);
+			return map;
+		}catch(Exception e){
+			log.error(FlowCommonDaoImpl.class.getName() + "：getSopFileList",e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 更新上传文件
+	 */
+	@Override
+	public long updateSopFile(SopFileBean bean) {
+		String sqlName = "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.updateSopFile";
+		try{
+			sqlSessionTemplate.insert(sqlName,bean);
+			return bean.getId();
+		}catch(Exception e){
+			log.error(FlowCommonDaoImpl.class.getName() + ":updateSopFile",e);
+			throw new DaoException(e);
+		}
+	}
 	
 }

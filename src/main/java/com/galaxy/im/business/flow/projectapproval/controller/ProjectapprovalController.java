@@ -1,7 +1,9 @@
 package com.galaxy.im.business.flow.projectapproval.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.flow.projectapproval.service.IProjectapprovalService;
 import com.galaxy.im.common.CUtils;
@@ -142,6 +145,77 @@ public class ProjectapprovalController {
 			}
 			resultBean.setMap(map);
 			resultBean.setStatus("OK");
+		}catch(Exception e){
+		}
+		return resultBean;
+	}
+	
+	/**
+	 * 上传/更新项目立项报告
+	 * @param paramString
+	 * @return
+	 */
+	@RequestMapping("uploadApprovalReport")
+	@ResponseBody
+	public Object uploadApprovalReport(@RequestBody SopFileBean bean){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		resultBean.setFlag(0);
+		long id=0L;
+		try{
+			if(bean!=null){
+				if(bean.getFileWorkType()!=null&&bean.getFileWorkType().equals("立项会")){
+					bean.setFileWorkType(StaticConst.FILE_WORKTYPE_17);
+				}
+				
+				if(bean.getId()!=null && bean.getId()!=0){
+					//更新
+					id =fcService.addSopFile(bean);
+				}else{
+					//上传之前:查数据库中是否存在信息，存在更新，否则新增
+					paramMap.put("projectId", bean.getProjectId());
+					paramMap.put("fileWorkType", bean.getFileWorkType());
+					Map<String,Object> info = fcService.getLatestSopFileInfo(paramMap);
+					if(info!=null && info.get("id")!=null && CUtils.get().object2Long(info.get("id"))!=0){
+						bean.setId(CUtils.get().object2Long(info.get("id")));
+						id=fcService.updateSopFile(bean);
+					}else{
+						id =fcService.addSopFile(bean);
+					}
+				}
+				if(id>0){
+					paramMap.clear();
+					paramMap.put("fileId", id);
+					resultBean.setMap(paramMap);
+					resultBean.setStatus("ok");
+					resultBean.setFlag(1);
+				}
+			}
+		}catch(Exception e){
+		}
+		return resultBean;
+	}
+	
+	/**
+	 * 项目立项报告信息
+	 * @param paramString
+	 * @return
+	 */
+	@RequestMapping("approvalReportList")
+	@ResponseBody
+	public Object approvalReportList(@RequestBody String paramString){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		resultBean.setFlag(0);
+		try{
+			List<String> fileWorkTypeList = new ArrayList<String>();
+			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
+			if(paramMap!=null && paramMap.containsKey("fileWorkType")&&paramMap.get("fileWorkType").equals("立项会")){
+				fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_17);
+			}
+			paramMap.put("fileWorkTypeList", fileWorkTypeList);
+			List<Map<String,Object>> list = fcService.getSopFileList(paramMap);
+			resultBean.setMapList(list);
+			resultBean.setStatus("ok");
 		}catch(Exception e){
 		}
 		return resultBean;

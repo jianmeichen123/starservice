@@ -1,5 +1,6 @@
 package com.galaxy.im.business.flow.common.service;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.galaxy.im.bean.project.MeetingScheduling;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.soptask.SopTask;
+import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.common.db.service.IBaseService;
 
 public interface IFlowCommonService extends IBaseService<ProjectBean>{
@@ -26,5 +28,11 @@ public interface IFlowCommonService extends IBaseService<ProjectBean>{
 	int getDeptIdByDeptName(String name, HttpServletRequest request, HttpServletResponse response);
 	//创建会议排期
 	Long insertMeetingScheduling(MeetingScheduling bean);
+	//上传文件保存
+	Long addSopFile(SopFileBean bean);
+	//获取上传文件
+	List<Map<String, Object>> getSopFileList(Map<String, Object> paramMap);
+	//更新上传文件
+	long updateSopFile(SopFileBean bean);
 
 }

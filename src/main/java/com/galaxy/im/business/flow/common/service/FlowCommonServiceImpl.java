@@ -18,6 +18,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.galaxy.im.bean.project.MeetingScheduling;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.soptask.SopTask;
+import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.flow.common.dao.IFlowCommonDao;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.StaticConst;
@@ -235,6 +236,45 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 			deptId=0;
 		}
 		return deptId;
+	}
+
+	/**
+	 * 上传文件保存
+	 */
+	@Override
+	public Long addSopFile(SopFileBean bean) {
+		try{
+			return dao.addSopFile(bean);
+		}catch(Exception e){
+			log.error(FlowCommonServiceImpl.class.getName() + ":addSopFile",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	/**
+	 * 获取上传文件信息
+	 */
+	@Override
+	public List<Map<String, Object>> getSopFileList(Map<String, Object> paramMap) {
+		try{
+			return dao.getSopFileList(paramMap);
+		}catch(Exception e){
+			log.error(FlowCommonServiceImpl.class.getName() + ":getSopFileList",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	/**
+	 * 更新上传文件
+	 */
+	@Override
+	public long updateSopFile(SopFileBean bean) {
+		try{
+			return dao.updateSopFile(bean);
+		}catch(Exception e){
+			log.error(FlowCommonServiceImpl.class.getName() + ":updateSopFile",e);
+			throw new ServiceException(e);
+		}
 	}
 
 	
