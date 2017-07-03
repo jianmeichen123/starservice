@@ -77,8 +77,6 @@ public class InvestmentdealServiceImpl extends BaseServiceImpl<Test> implements 
 					}
 				}
 			}
-			
-			
 			if (res && ress) {//会议通过且投资
 				result.put("inverstpass", true);
 			}

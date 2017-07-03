@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.galaxy.im.bean.project.MeetingScheduling;
+import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.business.flow.ceoreview.service.ICeoreviewService;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.flow.internalreview.service.IInternalreviewService;
@@ -115,34 +116,49 @@ public class CeoreviewController {
 	 */
 	@RequestMapping("startRovalReview")
 	@ResponseBody
-	public Object startRovalReview(@RequestBody String paramString){
+	public Object startRovalReview(@RequestBody String paramString) {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		Map<String, Object> map = new HashMap<>();
 		resultBean.setFlag(0);
-		try{
-			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
-			if(CUtils.get().mapIsNotEmpty(paramMap)){
-				paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_4);	//表示进入立项会阶段
-				if(fcService.enterNextFlow(paramMap)){
-					resultBean.setFlag(1);
-					map.put("projectProgress", StaticConst.PROJECT_PROGRESS_4);
-					MeetingScheduling bean = new MeetingScheduling();
-					bean.setProjectId(CUtils.get().object2Long(paramMap.get("projectId")));
-					bean.setMeetingType(StaticConst.MEETING_TYPE_APPROVAL);
-					bean.setMeetingCount(0);
-					bean.setStatus(StaticConst.MEETING_RESULT_2);
-					bean.setScheduleStatus(0);
-					bean.setCreatedTime(DateUtil.getMillis(new Date()));
-					bean.setApplyTime(new Timestamp(new Date().getTime()));
-					fcService.insertMeetingScheduling(bean);//立项会排期
-					paramMap.put("scheduleStatus", 2);
-					paramMap.put("updatedTime", DateUtil.getMillis(new Date()));
-					icService.updateCeoScheduling(paramMap);  //修改ceo评审排期状态为已通过
+		try {
+			String progressHistory = "";
+			Map<String, Object> paramMap = CUtils.get().jsonString2map(paramString);
+			if (CUtils.get().mapIsNotEmpty(paramMap)) {
+				SopProjectBean sopBean = fcService.getSopProjectInfo(paramMap);
+				if (sopBean != null) {
+					if (sopBean.getProjectProgress().equals(StaticConst.PROJECT_PROGRESS_3)) {
+						//项目当前所处在ceo评审阶段,在流程历史记录拼接要进入的下个阶段
+						if (!"".equals(sopBean.getProgressHistory()) && sopBean.getProgressHistory() != null) {
+							progressHistory = sopBean.getProgressHistory() + "," + StaticConst.PROJECT_PROGRESS_4;
+						} else {
+							progressHistory = StaticConst.PROJECT_PROGRESS_4;
+						}
+						paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_4); // 表示进入立项会阶段
+						paramMap.put("progressHistory", progressHistory); // 流程历史记录
+						if (fcService.enterNextFlow(paramMap)) {
+							resultBean.setFlag(1);
+							map.put("projectProgress", StaticConst.PROJECT_PROGRESS_4);
+							MeetingScheduling bean = new MeetingScheduling();
+							bean.setProjectId(CUtils.get().object2Long(paramMap.get("projectId")));
+							bean.setMeetingType(StaticConst.MEETING_TYPE_APPROVAL);
+							bean.setMeetingCount(0);
+							bean.setStatus(StaticConst.MEETING_RESULT_2);
+							bean.setScheduleStatus(0);
+							bean.setCreatedTime(DateUtil.getMillis(new Date()));
+							bean.setApplyTime(new Timestamp(new Date().getTime()));
+							fcService.insertMeetingScheduling(bean);// 立项会排期
+							paramMap.put("scheduleStatus", 2);
+							paramMap.put("updatedTime", DateUtil.getMillis(new Date()));
+							icService.updateCeoScheduling(paramMap); // 修改ceo评审排期状态为已通过
+						}
+						resultBean.setMap(map);
+						resultBean.setStatus("OK");
+					} else {
+						resultBean.setMessage("项目当前状态已被修改，无法进入立项会阶段");
+					}
 				}
 			}
-			resultBean.setStatus("OK");
-			resultBean.setMap(map);
-		}catch(Exception e){
+		} catch (Exception e) {
 		}
 		return resultBean;
 	}

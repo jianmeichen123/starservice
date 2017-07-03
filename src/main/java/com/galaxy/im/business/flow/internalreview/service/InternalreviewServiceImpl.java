@@ -62,10 +62,15 @@ public class InternalreviewServiceImpl extends BaseServiceImpl<Test> implements 
 			throw new ServiceException(e);
 		}
 	}
-
 	@Override
 	public int saveCeoScheduling(Map<String, Object> paramMap) {
-		return dao.insertCeoScheduling(paramMap);
+		try {
+			return dao.insertCeoScheduling(paramMap);
+		} catch (Exception e) {
+			log.error(InternalreviewServiceImpl.class.getName() + ":saveCeoScheduling",e);
+			throw new ServiceException(e);
+		}
+		
 		
 	}
 
