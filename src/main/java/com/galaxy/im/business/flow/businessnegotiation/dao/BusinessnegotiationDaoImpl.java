@@ -35,7 +35,7 @@ public class BusinessnegotiationDaoImpl extends BaseDaoImpl<Test, Long> implemen
 	}
 
 	/**
-	 * 修改项目阶段和绿色通道
+	 * 修改项目阶段，流程历史记录和业务类型编码
 	 */
 	@Override
 	public int updateProjectStatus(Map<String, Object> paramMap) {

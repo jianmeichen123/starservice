@@ -74,7 +74,7 @@ public class BusinessnegotiationServiceImpl extends BaseServiceImpl<Test> implem
 	}
 
 	/**
-	 * 更新项目阶段状态和绿色通道
+	 * 修改项目阶段，流程历史记录和业务类型编码
 	 */
 	@Override
 	public boolean updateProjectStatus(Map<String, Object> paramMap) {

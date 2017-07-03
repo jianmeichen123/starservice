@@ -16,7 +16,7 @@
 		group by d1.dict_code;
 	</select>
 	
-	<!-- 进入到下一个流程阶段 且修改绿色通道 -->
+	<!-- 进入到下一个流程阶段 流程历史记录和业务类型编码 -->
 	<update id="updateProjectStatus" parameterType="hashmap">
 		update sop_project p
 		<set>
