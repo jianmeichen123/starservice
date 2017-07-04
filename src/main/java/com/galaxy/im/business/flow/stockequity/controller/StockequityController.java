@@ -1,6 +1,7 @@
 package com.galaxy.im.business.flow.stockequity.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.galaxy.im.bean.project.SopProjectBean;
+import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.flow.investmentintent.service.IInvestmentintentService;
 import com.galaxy.im.business.flow.stockequity.service.IStockequityService;
@@ -136,6 +138,69 @@ public class StockequityController {
 			List<Map<String,Object>> list = fcService.getSopFileList(paramMap);
 			resultBean.setMapList(list);
 			resultBean.setStatus("ok");
+		}catch(Exception e){
+		}
+		return resultBean;
+	}
+	
+	/**
+	 * 上传/更新工商转让凭证，资金拨付凭证
+	 * @param paramString
+	 * @return
+	 */
+	@RequestMapping("uploadStockequity")
+	@ResponseBody
+	public Object uploadStockequity(@RequestBody SopFileBean bean){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		resultBean.setFlag(0);
+		long id=0L;
+		try{
+			paramMap.put("projectId", bean.getProjectId());
+			paramMap.put("fileWorkType", bean.getFileWorkType());
+			
+			if(bean!=null){
+				SopProjectBean sopBean = fcService.getSopProjectInfo(paramMap);
+				if(sopBean!=null){
+					//项目id，当前阶段，所属事业线
+					bean.setProjectId(sopBean.getId());
+					bean.setProjectProgress(sopBean.getProjectProgress());
+					bean.setCareerLine(sopBean.getProjectDepartId());
+				}
+				//文件类型
+				String fileType =fcService.getFileType(bean.getFileSuffix());
+				bean.setFileType(fileType);
+				//文件名称拆分
+				Map<String,String> nameMap = fcService.transFileNames(bean.getFileName());
+				bean.setFileName(nameMap.get("fileName"));
+				//文件状态：已上传
+				bean.setFileStatus(StaticConst.FILE_STATUS_2);
+				bean.setFileValid(1);
+				bean.setCreatedTime(new Date().getTime());
+				
+				//业务操作
+				if(bean.getId()!=null && bean.getId()!=0){
+					//更新：添加新的一条记录
+					id =fcService.addSopFile(bean);
+				}else{
+					//上传之前:查数据库中是否存在信息，存在更新，否则新增
+					Map<String,Object> info = fcService.getLatestSopFileInfo(paramMap);
+					if(info!=null && info.get("id")!=null && CUtils.get().object2Long(info.get("id"))!=0){
+						bean.setId(CUtils.get().object2Long(info.get("id")));
+						bean.setUpdatedTime(new Date().getTime());
+						id=fcService.updateSopFile(bean);
+					}else{
+						id =fcService.addSopFile(bean);
+					}
+				}
+				if(id>0){
+					paramMap.clear();
+					paramMap.put("fileId", id);
+					resultBean.setMap(paramMap);
+					resultBean.setStatus("ok");
+					resultBean.setFlag(1);
+				}
+			}
 		}catch(Exception e){
 		}
 		return resultBean;
