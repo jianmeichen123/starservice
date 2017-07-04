@@ -321,5 +321,18 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 		return retMap;
 	}
 
+	/**
+	 * 更新代办任务
+	 */
+	@Override
+	public Long updateSopTask(SopTask bean) {
+		try{
+			return dao.updateSopTask(bean);
+		}catch(Exception e){
+			log.error(FlowCommonServiceImpl.class.getName() + ":updateSopTask",e);
+			throw new ServiceException(e);
+		}
+	}
+
 	
 }

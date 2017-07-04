@@ -31,4 +31,6 @@ public interface IFlowCommonDao extends IBaseDao<ProjectBean, Long>{
 	long updateSopFile(SopFileBean bean);
 	//获取项目基本信息
 	SopProjectBean getSopProjectInfo(Map<String, Object> paramMap);
+	//更新代办任务
+	Long updateSopTask(SopTask bean);
 }

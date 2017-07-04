@@ -41,5 +41,7 @@ public interface IFlowCommonService extends IBaseService<ProjectBean>{
 	String getFileType(String fileSuffix);
 	//拆分文件名称
 	Map<String, String> transFileNames(String fileName);
+	//更新代办任务
+	Long updateSopTask(SopTask bean);
 
 }

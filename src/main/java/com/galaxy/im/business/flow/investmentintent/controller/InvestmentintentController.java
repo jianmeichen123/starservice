@@ -249,6 +249,16 @@ public class InvestmentintentController{
 					}
 				}
 				if(id>0){
+					//更新代办任务
+					SopTask taskBean = new SopTask();
+					taskBean.setProjectId(bean.getProjectId());
+					taskBean.setTaskName(StaticConst.TASK_NAME_SCTZYXS);
+					taskBean.setTaskFlag(StaticConst.TASK_FLAG_SCTZYXS);
+					taskBean.setTaskStatus(StaticConst.TASK_STATUS_YWG);
+					taskBean.setUpdatedTime(new Date().getTime());
+					@SuppressWarnings("unused")
+					Long taskId = fcService.updateSopTask(taskBean);
+					//返回信息
 					paramMap.clear();
 					paramMap.put("fileId", id);
 					resultBean.setMap(paramMap);

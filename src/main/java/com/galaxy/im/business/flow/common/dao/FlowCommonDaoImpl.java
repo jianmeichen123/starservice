@@ -181,5 +181,20 @@ public class FlowCommonDaoImpl extends BaseDaoImpl<ProjectBean, Long> implements
 			throw new DaoException(e);
 		}
 	}
+
+	/**
+	 * 更新代办任务
+	 */
+	@Override
+	public Long updateSopTask(SopTask bean) {
+		String sqlName = "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.updateSopTask";
+		try{
+			long id = sqlSessionTemplate.update(sqlName,bean);
+			return id;
+		}catch(Exception e){
+			log.error(FlowCommonDaoImpl.class.getName() + ":updateSopTask",e);
+			throw new DaoException(e);
+		}
+	}
 	
 }

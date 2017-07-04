@@ -69,6 +69,16 @@
 		</selectKey>
 	</insert>
 	
+	<!-- 更新代办任务 -->
+	<update id="updateSopTask" parameterType="com.galaxy.im.bean.soptask.SopTask">
+		update sop_task 
+		<set>
+		  <if test="taskStatus != null" > task_status = #{taskStatus}, </if>
+	      <if test="updatedTime != null" > updated_time = #{updatedTime} </if>
+		</set>
+		where project_id=#{projectId} and task_flag=#{taskFlag};
+	</update>
+	
 	<!-- 获取项目的最新会议记录信息 -->
 	<select id="getLatestMeetingRecordInfo" parameterType="hashmap" resultType="hashmap">
 		SELECT r.id,
