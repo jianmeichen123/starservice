@@ -179,6 +179,9 @@ public class ProjectapprovalController {
 		resultBean.setFlag(0);
 		long id=0L;
 		try{
+			paramMap.put("projectId", bean.getProjectId());
+			paramMap.put("fileWorkType", bean.getFileWorkType());
+			
 			if(bean!=null){
 				SopProjectBean sopBean = fcService.getSopProjectInfo(paramMap);
 				if(sopBean!=null){
@@ -196,18 +199,18 @@ public class ProjectapprovalController {
 				//文件状态：已上传
 				bean.setFileStatus(StaticConst.FILE_STATUS_2);
 				bean.setFileValid(1);
-				//bean.setCreatedTime(0l);
+				bean.setCreatedTime(new Date().getTime());
+				
 				//业务操作
 				if(bean.getId()!=null && bean.getId()!=0){
 					//更新：添加新的一条记录
 					id =fcService.addSopFile(bean);
 				}else{
 					//上传之前:查数据库中是否存在信息，存在更新，否则新增
-					paramMap.put("projectId", bean.getProjectId());
-					paramMap.put("fileWorkType", bean.getFileWorkType());
 					Map<String,Object> info = fcService.getLatestSopFileInfo(paramMap);
 					if(info!=null && info.get("id")!=null && CUtils.get().object2Long(info.get("id"))!=0){
 						bean.setId(CUtils.get().object2Long(info.get("id")));
+						bean.setUpdatedTime(new Date().getTime());
 						id=fcService.updateSopFile(bean);
 					}else{
 						id =fcService.addSopFile(bean);
