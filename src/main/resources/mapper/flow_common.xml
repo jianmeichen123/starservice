@@ -74,9 +74,10 @@
 		update sop_task 
 		<set>
 		  <if test="taskStatus != null" > task_status = #{taskStatus}, </if>
-	      <if test="updatedTime != null" > updated_time = #{updatedTime} </if>
+	      <if test="updatedTime != null" > updated_time = #{updatedTime}, </if>
+	      <if test="taskDeadline != null" > task_deadline = #{taskDeadline} </if>
 		</set>
-		where project_id=#{projectId} and task_flag=#{taskFlag};
+		where project_id=#{projectId} and task_flag=#{taskFlag} and task_type=#{taskType};
 	</update>
 	
 	<!-- 获取项目的最新会议记录信息 -->

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.galaxy.im.bean.project.SopProjectBean;
+import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.flow.investmentintent.service.IInvestmentintentService;
@@ -194,6 +195,23 @@ public class StockequityController {
 					}
 				}
 				if(id>0){
+					//更新工商转让凭证待办任务
+					SopTask taskBean = new SopTask();
+					if (bean.getFileWorkType().equals(StaticConst.FILE_WORKTYPE_8)) {
+						taskBean.setTaskName(StaticConst.TASK_NAME_GSBG);
+						taskBean.setTaskFlag(StaticConst.TASK_FLAG_GSBG);
+					}else if (bean.getFileWorkType().equals(StaticConst.FILE_WORKTYPE_9)) {//更新资金调拨凭证
+						taskBean.setTaskName(StaticConst.TASK_NAME_ZJBF);
+						taskBean.setTaskFlag(StaticConst.TASK_FLAG_ZJBF);
+					}
+					taskBean.setProjectId(bean.getProjectId());
+					taskBean.setTaskStatus(StaticConst.TASK_STATUS_YWG);
+					taskBean.setTaskType(StaticConst.TASK_TYPE_XTBG);
+					taskBean.setUpdatedTime(new Date().getTime());
+					taskBean.setTaskDeadline(new Date());
+					@SuppressWarnings("unused")
+					Long taskId = fcService.updateSopTask(taskBean);
+					//返回信息
 					paramMap.clear();
 					paramMap.put("fileId", id);
 					resultBean.setMap(paramMap);

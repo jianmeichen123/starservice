@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.galaxy.im.bean.project.MeetingScheduling;
 import com.galaxy.im.bean.project.SopProjectBean;
+import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.flow.duediligence.service.IDuediligenceService;
@@ -245,6 +246,29 @@ public class DuediligenceController {
 					}
 				}
 				if(id>0){
+					//更新业务尽调报告待办任务
+					SopTask taskBean = new SopTask();
+					if (bean.getFileWorkType().equals(StaticConst.FILE_WORKTYPE_1)) {
+						taskBean.setTaskName(StaticConst.TASK_NAME_YWJD);
+						taskBean.setTaskFlag(StaticConst.TASK_FLAG_YWJD);
+					}else if (bean.getFileWorkType().equals(StaticConst.FILE_WORKTYPE_2)) {//更新人事尽调报告待办任务
+						taskBean.setTaskName(StaticConst.TASK_NAME_RSJD);
+						taskBean.setTaskFlag(StaticConst.TASK_FLAG_RSJD);
+					}else if (bean.getFileWorkType().equals(StaticConst.FILE_WORKTYPE_3)) {//更新财务尽职调查待办任务
+						taskBean.setTaskName(StaticConst.TASK_NAME_CWJD);
+						taskBean.setTaskFlag(StaticConst.TASK_FLAG_CWJD);
+					}else if (bean.getFileWorkType().equals(StaticConst.FILE_WORKTYPE_4)) {//更新法务尽职调查待办任务
+						taskBean.setTaskName(StaticConst.TASK_NAME_FWJD);
+						taskBean.setTaskFlag(StaticConst.TASK_FLAG_FWJD);
+					}
+					taskBean.setProjectId(bean.getProjectId());
+					taskBean.setTaskStatus(StaticConst.TASK_STATUS_YWG);
+					taskBean.setTaskType(StaticConst.TASK_TYPE_XTBG);
+					taskBean.setUpdatedTime(new Date().getTime());
+					taskBean.setTaskDeadline(new Date());
+					@SuppressWarnings("unused")
+					Long taskId = fcService.updateSopTask(taskBean);
+					//返回信息
 					paramMap.clear();
 					paramMap.put("fileId", id);
 					resultBean.setMap(paramMap);

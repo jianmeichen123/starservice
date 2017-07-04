@@ -323,6 +323,20 @@ public class InvestmentPolicyController {
 					}
 				}
 				if(id>0){
+					//更新投资协议代办任务
+					if (bean.getFileWorkType().equals(StaticConst.FILE_WORKTYPE_6)) {
+						SopTask taskBean = new SopTask();
+						taskBean.setProjectId(bean.getProjectId());
+						taskBean.setTaskName(StaticConst.TASK_NAME_TZXY);
+						taskBean.setTaskFlag(StaticConst.TASK_FLAG_TZXY);
+						taskBean.setTaskStatus(StaticConst.TASK_STATUS_YWG);
+						taskBean.setTaskType(StaticConst.TASK_TYPE_XTBG);
+						taskBean.setUpdatedTime(new Date().getTime());
+						taskBean.setTaskDeadline(new Date());
+						@SuppressWarnings("unused")
+						Long taskId = fcService.updateSopTask(taskBean);
+					}
+					//返回信息
 					paramMap.clear();
 					paramMap.put("fileId", id);
 					resultBean.setMap(paramMap);

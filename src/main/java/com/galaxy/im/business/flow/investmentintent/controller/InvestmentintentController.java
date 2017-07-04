@@ -255,7 +255,9 @@ public class InvestmentintentController{
 					taskBean.setTaskName(StaticConst.TASK_NAME_SCTZYXS);
 					taskBean.setTaskFlag(StaticConst.TASK_FLAG_SCTZYXS);
 					taskBean.setTaskStatus(StaticConst.TASK_STATUS_YWG);
+					taskBean.setTaskType(StaticConst.TASK_TYPE_XTBG);
 					taskBean.setUpdatedTime(new Date().getTime());
+					taskBean.setTaskDeadline(new Date());
 					@SuppressWarnings("unused")
 					Long taskId = fcService.updateSopTask(taskBean);
 					//返回信息
