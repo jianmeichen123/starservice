@@ -229,7 +229,7 @@ public class projectController {
 								res = service.updateInvestById(bean);
 							}
 						}
-						resultBean.setStatus("ok");
+						resultBean.setStatus("OK");
 						resultBean.setMessage("项目修改成功!");
 					}
 				}else{
@@ -275,7 +275,7 @@ public class projectController {
 						long id = service.saveProject(bean);
 						if (id > 0) {
 							map.put("id", id);
-							resultBean.setStatus("ok");
+							resultBean.setStatus("OK");
 							resultBean.setMessage("项目添加成功!");
 							resultBean.setMap(map);									
 						}
