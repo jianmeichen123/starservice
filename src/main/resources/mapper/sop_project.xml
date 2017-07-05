@@ -80,7 +80,7 @@
             d4.name industryOwnDs,
             
             u2.id hhrId,
-            u2.user_name hhrName
+            u2.user_name hhrName,
             d6.dict_code projectProgressCode,
 			d6.`name` projectProgress,
 			d6.dict_value projectProgressId
