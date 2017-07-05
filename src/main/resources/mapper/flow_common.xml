@@ -84,7 +84,8 @@
 	<select id="getLatestMeetingRecordInfo" parameterType="hashmap" resultType="hashmap">
 		SELECT r.id,
 			date_format(r.meeting_date,'%Y-%m-%d %H:%i') meetingDate,
-			d1.name meetingResult
+			d1.name meetingResult,
+			r.meeting_type meetingType
 		FROM sop_meeting_record r 
 		left join dict d1 on r.meeting_result=d1.dict_code
 		WHERE r.project_id=#{projectId} and r.meeting_type=#{meetingType} 

@@ -141,11 +141,11 @@ public class InternalreviewController {
 							bean.setApplyTime(new Timestamp(new Date().getTime()));
 							fcService.insertMeetingScheduling(bean);// ceo排期
 						}
+						resultBean.setMap(map);
+						resultBean.setStatus("OK");
+					} else {
+						resultBean.setMessage("项目当前状态已被修改，无法进入ceo评审阶段");
 					}
-					resultBean.setMap(map);
-					resultBean.setStatus("OK");
-				} else {
-					resultBean.setMessage("项目当前状态已被修改，无法进入ceo评审阶段");
 				}
 			}
 		} catch (Exception e) {

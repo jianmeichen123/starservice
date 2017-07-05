@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.flow.interview.service.IInterviewService;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
+import com.galaxy.im.common.StaticConst;
 
 /**
  * 接触访谈
@@ -107,22 +109,38 @@ public class InterviewController {
 	 */
 	@RequestMapping("startInternalreview")
 	@ResponseBody
-	public Object startCeoReview(@RequestBody String paramString){
+	public Object startCeoReview(@RequestBody String paramString) {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
-		try{
-			Map<String,Object> map =new HashMap<String,Object>();
-			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
-			if(CUtils.get().mapIsNotEmpty(paramMap)){
-				paramMap.put("projectProgress", "projectProgress:2");	//表示进入内部评审阶段
-				if(fcService.enterNextFlow(paramMap)){
-					resultBean.setFlag(1);
-					map.put("projectProgress", "projectProgress:2");
+		try {
+			String progressHistory = "";
+			Map<String, Object> map = new HashMap<String, Object>();
+			Map<String, Object> paramMap = CUtils.get().jsonString2map(paramString);
+			if (CUtils.get().mapIsNotEmpty(paramMap)) {
+				SopProjectBean sopBean = fcService.getSopProjectInfo(paramMap);
+				if (sopBean != null) {
+					if (sopBean.getProjectProgress().equals(StaticConst.PROJECT_PROGRESS_1)) {
+						// 项目当前所处在接触访谈阶段,在流程历史记录拼接要进入的下个阶段
+						if (!"".equals(sopBean.getProgressHistory()) && sopBean.getProgressHistory() != null) {
+							progressHistory = sopBean.getProgressHistory() + "," + StaticConst.PROJECT_PROGRESS_2;
+						} else {
+							progressHistory = StaticConst.PROJECT_PROGRESS_2;
+						}
+						paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_2); // 表示进入内部评审阶段
+						paramMap.put("progressHistory", progressHistory); // 流程历史记录
+						if (fcService.enterNextFlow(paramMap)) {
+							resultBean.setFlag(1);
+							map.put("projectProgress", StaticConst.PROJECT_PROGRESS_2);
+						}
+						resultBean.setMap(map);
+						resultBean.setStatus("OK");
+					} else {
+						resultBean.setMessage("项目当前状态已被修改，无法进入内部评审阶段");
+					}
+
 				}
 			}
-			resultBean.setMap(map);
-			resultBean.setStatus("OK");
-		}catch(Exception e){
+		} catch (Exception e) {
 		}
 		return resultBean;
 	}
