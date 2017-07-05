@@ -1,6 +1,8 @@
 package com.galaxy.im.bean.project;
 
 
+
+import com.galaxy.im.common.NumberUtils;
 import com.galaxy.im.common.db.PagableEntity;
 
 public class SopProjectBean extends PagableEntity {
@@ -51,6 +53,16 @@ public class SopProjectBean extends PagableEntity {
     private String progressHistory;				//流程历史记录(逗号分割)
     private String businessTypeCode;			//业务类型编码：TZ-投资，ST-闪投
     
+    private String createDate;
+    private String formatContribution;
+    private String formatValuations;
+    private String formatUnit;
+    private String formatShareRatio;
+    private String formatFinalValuations;
+    private String formatFinalContribution;
+    private String formatFinalShareRatio;
+    
+    
     
     
 	public Long getIdeaId() {
@@ -96,8 +108,11 @@ public class SopProjectBean extends PagableEntity {
 		this.industryOwn = industryOwn;
 	}
 	public Double getProjectValuations() {
-		return projectValuations;
-	}
+    	if(this.formatValuations != null && !"".equals(this.formatValuations.trim())){
+			this.projectValuations = NumberUtils.toFormatNoSplitFour(this.formatValuations.trim());
+		}
+        return projectValuations;
+    }
 	public void setProjectValuations(Double projectValuations) {
 		this.projectValuations = projectValuations;
 	}
@@ -114,8 +129,11 @@ public class SopProjectBean extends PagableEntity {
 		this.financeStatus = financeStatus;
 	}
 	public Double getProjectContribution() {
-		return projectContribution;
-	}
+    	if(this.formatContribution != null && !"".equals(this.formatContribution.trim())){
+			this.projectContribution = NumberUtils.toFormatNoSplitFour(this.formatContribution.trim());
+		}
+        return projectContribution;
+    }
 	public void setProjectContribution(Double projectContribution) {
 		this.projectContribution = projectContribution;
 	}
@@ -126,14 +144,20 @@ public class SopProjectBean extends PagableEntity {
 		this.finalContribution = finalContribution;
 	}
 	public Integer getCurrencyUnit() {
-		return currencyUnit;
-	}
+    	if(this.formatUnit != null && !"".equals(this.formatUnit.trim())){
+			this.currencyUnit = Integer.parseInt(this.formatUnit.trim());
+		}
+        return currencyUnit;
+    }
 	public void setCurrencyUnit(Integer currencyUnit) {
 		this.currencyUnit = currencyUnit;
 	}
 	public Double getProjectShareRatio() {
-		return projectShareRatio;
-	}
+    	if(this.formatShareRatio != null && !"".equals(this.formatShareRatio.trim())){
+			this.projectShareRatio = NumberUtils.toFormatNoSplitFour(this.formatShareRatio.trim());
+		}
+        return projectShareRatio;
+    }
 	public void setProjectShareRatio(Double projectShareRatio) {
 		this.projectShareRatio = projectShareRatio;
 	}
@@ -310,6 +334,54 @@ public class SopProjectBean extends PagableEntity {
 	}
 	public void setProjectDepartId(Long projectDepartId) {
 		this.projectDepartId = projectDepartId;
+	}
+	public String getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
+	}
+	public String getFormatValuations() {
+		return formatValuations;
+	}
+	public void setFormatValuations(String formatValuations) {
+		this.formatValuations = formatValuations;
+	}
+	public String getFormatUnit() {
+		return formatUnit;
+	}
+	public void setFormatUnit(String formatUnit) {
+		this.formatUnit = formatUnit;
+	}
+	public String getFormatShareRatio() {
+		return formatShareRatio;
+	}
+	public void setFormatShareRatio(String formatShareRatio) {
+		this.formatShareRatio = formatShareRatio;
+	}
+	public String getFormatContribution() {
+		return formatContribution;
+	}
+	public void setFormatContribution(String formatContribution) {
+		this.formatContribution = formatContribution;
+	}
+	public String getFormatFinalValuations() {
+		return formatFinalValuations;
+	}
+	public void setFormatFinalValuations(String formatFinalValuations) {
+		this.formatFinalValuations = formatFinalValuations;
+	}
+	public String getFormatFinalContribution() {
+		return formatFinalContribution;
+	}
+	public void setFormatFinalContribution(String formatFinalContribution) {
+		this.formatFinalContribution = formatFinalContribution;
+	}
+	public String getFormatFinalShareRatio() {
+		return formatFinalShareRatio;
+	}
+	public void setFormatFinalShareRatio(String formatFinalShareRatio) {
+		this.formatFinalShareRatio = formatFinalShareRatio;
 	}
 	
 }

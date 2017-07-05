@@ -85,6 +85,11 @@ public class StaticConst {
 	public static final String PROJECT_PROGRESS_9 = "projectProgress:9";	//股权交割
 	public static final String PROJECT_PROGRESS_10 = "projectProgress:10";	//投后运营
 	public static final String PROJECT_PROGRESS_11 = "projectProgress:11";	//会后商务谈判
+	//项目状态
+	public static final String PROJECT_STATUS_0 = "projectStatus:0";	//跟进中
+	public static final String PROJECT_STATUS_1 = "projectStatus:1";	//投后运营
+	public static final String PROJECT_STATUS_2 = "projectStatus:2";	//已否决
+	public static final String PROJECT_STATUS_3 = "projectStatus:3";	//已退出
 	//会议结论
 	public static final String MEETING_RESULT_1 = "meetingResult:1";	//通过
 	public static final String MEETING_RESULT_2 = "meetingResult:2";	//待定

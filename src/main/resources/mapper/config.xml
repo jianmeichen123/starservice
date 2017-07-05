@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.galaxy.im.bean.common.Config" >
+
+  <resultMap id="BaseResultMap" type="com.galaxy.im.bean.common.Config" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="config_key" property="key" />
+    <result column="config_value" property="value" />
+    <result column="updated_time" property="updatedTime" />
+    <result column="created_time" property="createdTime" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, config_key, config_value, updated_time, created_time
+  </sql>
+  
+  <sql id="Base_Where_Clause">
+		<where>
+			<trim prefixOverrides="and">
+			  <if test="id != null"> and id =#{id}</if>
+			  <if test="key != null" > and config_key = #{key} </if>
+		      <if test="value != null" > and config_value = #{value} </if>
+		      <if test="updatedTime != null" > and updated_time = #{updatedTime} </if>
+		      <if test="createdTime != null" > and created_time = #{createdTime} </if>
+			</trim>
+		</where>
+	</sql>
+	
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long" parameterType="java.util.Map">
+		select count(id) from sop_config
+		<include refid="Base_Where_Clause" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from sop_config
+		<include refid="Base_Where_Clause" />
+	</select>
+
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from sop_config where id = #{id}
+	</select>
+	
+  	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.galaxy.im.bean.common.Config" >
+	    insert into sop_config (id, config_key, config_value, 
+	      	updated_time, created_time)
+	    values (#{id}, #{key}, #{value}, 
+	      	#{updatedTime}, #{createdTime})
+    </insert>
+    
+    <!-- 更新 -->
+	<update id="updateByIdSelective" parameterType="com.galaxy.im.bean.common.Config">
+		update sop_config
+		<set>
+			<if test="key != null" >  config_key = #{key}, </if>
+		      <if test="value != null" >  config_value = #{value}, </if>
+		      <if test="updatedTime != null" >  updated_time = #{updatedTime}, </if>
+		</set>
+		<where>
+			<trim prefixOverrides="and">
+			  <if test="id != null"> and id =#{id}</if>
+			</trim>
+		</where>
+	</update>
+	
+    <!-- 通过ID更新 -->
+	<update id="updateById" parameterType="com.galaxy.im.bean.common.Config">
+		update sop_config
+		<set>
+			<if test="key != null" >  config_key = #{key}, </if>
+		      <if test="value != null" >  config_value = #{value}, </if>
+		      <if test="updatedTime != null" >  updated_time = #{updatedTime}, </if>
+		</set>
+		where id = #{id}
+	</update>
+    
+    <!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from sop_config
+		<include refid="Base_Where_Clause" />
+	</delete>
+	
+    <!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from sop_config where id = #{id}
+	</delete>
+	
+	
+</mapper>
