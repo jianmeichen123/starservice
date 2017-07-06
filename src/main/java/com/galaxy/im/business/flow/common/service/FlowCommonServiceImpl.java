@@ -163,7 +163,7 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 	 * @return
 	 */
 	@Override
-	public long getDeptId(Long guserid, HttpServletRequest request, HttpServletResponse response) {
+	public List<Map<String, Object>> getDeptId(Long guserid, HttpServletRequest request, HttpServletResponse response) {
 		//调用客户端
 		Map<String,Object> headerMap = QHtmlClient.get().getHeaderMap(request);
 		String url = env.getProperty("power.server") + StaticConst.getCreadIdInfo;
@@ -188,14 +188,14 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 				log.error(FlowCommonServiceImpl.class.getName() + "getDeptId：获取创建人信息时出错","服务器返回正常，获取数据失败");
 			}
 		}
-		if(list!=null){
+		/*if(list!=null){
 			for(Map<String, Object> vMap:list){
 				guserid= CUtils.get().object2Long( vMap.get("deptId"));
 			}
 		}else{
 			guserid=0l;
-		}
-		return guserid;
+		}*/
+		return list;
 	}
 
 	/**

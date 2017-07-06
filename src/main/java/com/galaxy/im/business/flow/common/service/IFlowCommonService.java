@@ -22,7 +22,7 @@ public interface IFlowCommonService extends IBaseService<ProjectBean>{
 	//获取最新的会议信息
 	Map<String, Object> getLatestMeetingRecordInfo(Map<String, Object> paramMap);
 	//根据用户id获取所属部门id
-	long getDeptId(Long guserid, HttpServletRequest request, HttpServletResponse response);
+	List<Map<String, Object>> getDeptId(Long guserid, HttpServletRequest request, HttpServletResponse response);
 	//获取最新上传的文件信息
 	Map<String, Object> getLatestSopFileInfo(Map<String, Object> paramMap);
 	//获取部门id

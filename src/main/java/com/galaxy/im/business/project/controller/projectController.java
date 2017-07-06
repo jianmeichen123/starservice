@@ -25,6 +25,7 @@ import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.ProjectBeanVo;
 import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.business.common.config.service.ConfigService;
+import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.project.service.IFinanceHistoryService;
 import com.galaxy.im.business.project.service.IProjectService;
 import com.galaxy.im.common.CUtils;
@@ -46,6 +47,9 @@ public class projectController {
 	
 	@Autowired
 	IFinanceHistoryService fsService;
+	
+	@Autowired
+	private IFlowCommonService fcService;
 	
 	@RequestMapping("getProjectList")
 	@ResponseBody
@@ -157,12 +161,20 @@ public class projectController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		try{
+			long deptId=0l;
+			String userName="";
 			Map<String,Object> map =new HashMap<String,Object>();
 			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 			Long userId = sessionBean.getGuserid();
 			SopProjectBean p=null;
 			//通过用户id获取一些信息
-			
+			List<Map<String, Object>> list = fcService.getDeptId(userId,request,response);
+			if(list!=null){
+				for(Map<String, Object> vMap:list){
+					deptId= CUtils.get().object2Long( vMap.get("deptId"));
+					userName=CUtils.get().object2String(vMap.get("userName"));
+				}
+			}
 			
 			//验证项目名是否重复
 			List<SopProjectBean> projectList = service.getSopProjectList(bean);
@@ -255,18 +267,15 @@ public class projectController {
 					nf.setGroupingUsed(false);
 					nf.setMaximumIntegerDigits(6);
 					nf.setMinimumIntegerDigits(6);
-					Long did = 13L;
-					if (did != null) {
-						int code = EnumUtil.getCodeByCareerline(did.longValue());
+					if (deptId != 0) {
+						int code = EnumUtil.getCodeByCareerline(deptId);
 						String projectCode = String.valueOf(code) + nf.format(Integer.parseInt(config.getValue()));
 						bean.setProjectCode(String.valueOf(projectCode));
-						
-						
 						bean.setCurrencyUnit(0);
 						bean.setStockTransfer(0);
 						bean.setCreateUid(userId);
-						//bean.setCreateUname(user.getRealName());
-						bean.setProjectDepartId(did);
+						bean.setCreateUname(userName);
+						bean.setProjectDepartId(deptId);
 						bean.setProjectProgress(StaticConst.PROJECT_PROGRESS_1);
 						bean.setProjectStatus(StaticConst.PROJECT_STATUS_0);
 						bean.setUpdatedTime(new Date().getTime());

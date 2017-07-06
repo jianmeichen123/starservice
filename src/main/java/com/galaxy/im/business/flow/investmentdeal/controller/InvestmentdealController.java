@@ -2,6 +2,7 @@ package com.galaxy.im.business.flow.investmentdeal.controller;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -132,6 +133,7 @@ public class InvestmentdealController {
 		Map<String, Object> map = new HashMap<>();
 		resultBean.setFlag(0);
 		try {
+			long deptId=0l;
 			String progressHistory = "";
 			Map<String, Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if (CUtils.get().mapIsNotEmpty(paramMap)) {
@@ -152,7 +154,12 @@ public class InvestmentdealController {
 							// 生成投资协议代办任务
 							SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 							// 获取用户所属部门id
-							long userDeptId = fcService.getDeptId(sessionBean.getGuserid(), request, response);
+							List<Map<String, Object>> list = fcService.getDeptId(sessionBean.getGuserid(), request, response);
+							if(list!=null){
+								for(Map<String, Object> vMap:list){
+									deptId= CUtils.get().object2Long( vMap.get("deptId"));
+								}
+							}
 							SopTask bean = new SopTask();
 							bean.setProjectId(CUtils.get().object2Long(paramMap.get("projectId")));
 							bean.setTaskName(StaticConst.TASK_NAME_TZXY);
@@ -161,7 +168,7 @@ public class InvestmentdealController {
 							bean.setTaskStatus(StaticConst.TASK_STATUS_DRL);
 							bean.setTaskOrder(StaticConst.TASK_ORDER_NORMAL);
 							bean.setAssignUid(sessionBean.getGuserid());
-							bean.setDepartmentId(userDeptId);
+							bean.setDepartmentId(deptId);
 							bean.setCreatedTime(new Date().getTime());
 							@SuppressWarnings("unused")
 							Long id = fcService.insertsopTask(bean);

@@ -89,6 +89,7 @@ public class InvestmentPolicyController {
 		Map<String, Object> map = new HashMap<>();
 		resultBean.setFlag(0);
 		try {
+			long deptId=0l;
 			String progressHistory = "";
 			Map<String, Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if (CUtils.get().mapIsNotEmpty(paramMap)) {
@@ -111,7 +112,12 @@ public class InvestmentPolicyController {
 							SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 							// 给投资经理自己生成业务尽职调查待办任务
 							SopTask bean = new SopTask();
-							long userDeptId = fcService.getDeptId(sessionBean.getGuserid(), request, response);
+							List<Map<String, Object>> list = fcService.getDeptId(sessionBean.getGuserid(), request, response);
+							if(list!=null){
+								for(Map<String, Object> vMap:list){
+									deptId= CUtils.get().object2Long( vMap.get("deptId"));
+								}
+							}
 							bean.setProjectId(CUtils.get().object2Long(paramMap.get("projectId")));
 							bean.setTaskName(StaticConst.TASK_NAME_YWJD);
 							bean.setTaskType(StaticConst.TASK_TYPE_XTBG);
@@ -119,7 +125,7 @@ public class InvestmentPolicyController {
 							bean.setTaskStatus(StaticConst.TASK_STATUS_DWG);
 							bean.setTaskOrder(StaticConst.TASK_ORDER_NORMAL);
 							bean.setAssignUid(sessionBean.getGuserid());
-							bean.setDepartmentId(userDeptId);
+							bean.setDepartmentId(deptId);
 							bean.setCreatedTime(new Date().getTime());
 							@SuppressWarnings("unused")
 							Long id = fcService.insertsopTask(bean);
