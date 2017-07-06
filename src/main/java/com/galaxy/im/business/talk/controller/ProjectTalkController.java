@@ -84,6 +84,7 @@ public class ProjectTalkController {
 						sopFileBean.setFileName(nameMap.get("fileName"));
 						sopFileBean.setFileSuffix(nameMap.get("fileSuffix"));
 						sopFileBean.setFileType("fileType:2");
+						sopFileBean.setInterviewRecordId(bean.getId());
 						long sopId =talkService.saveSopFile(sopFileBean);
 						//获取sopfile 主键
 						if(sopId!=0){

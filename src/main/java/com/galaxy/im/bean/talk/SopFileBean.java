@@ -26,6 +26,8 @@ public class SopFileBean extends BaseEntity{
 	private long fileValid;					//文档是否有效，默认1表示有效，0表示无效
 	private int recordType;					//是否为创意的标识
 	private long meetingId;					//会议ID 关联sop_meeting_record
+	private long interviewRecordId;			//访谈记录id
+	private long meetinRecordId;			//会议记录id
 	
 	public SopFileBean(){
 	}
@@ -189,6 +191,22 @@ public class SopFileBean extends BaseEntity{
 
 	public void setProjectProgress(String projectProgress) {
 		this.projectProgress = projectProgress;
+	}
+
+	public long getInterviewRecordId() {
+		return interviewRecordId;
+	}
+
+	public void setInterviewRecordId(long interviewRecordId) {
+		this.interviewRecordId = interviewRecordId;
+	}
+
+	public long getMeetinRecordId() {
+		return meetinRecordId;
+	}
+
+	public void setMeetinRecordId(long meetinRecordId) {
+		this.meetinRecordId = meetinRecordId;
 	}
 	
 }

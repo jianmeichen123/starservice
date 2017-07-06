@@ -97,11 +97,11 @@
 	 		file_type, remark, voucher_id, file_status,
 	 		file_uid, fil_uri, updated_time,
 	 		created_time, file_length, file_key,
-	 		bucket_name,file_name,file_suffix,record_type,meeting_id)
+	 		bucket_name,file_name,file_suffix,record_type,meeting_id,interview_record_id,meeting_record_id)
  		values (#{projectId}, #{belongUid}, #{fileValid},#{projectProgress},
 	 		#{fileWorkType}, #{careerLine}, #{fileSource},#{fileType}, #{remark},#{voucherId},
 	 		#{fileStatus},#{fileUid}, #{filUri}, #{createdTime},#{createdTime}, #{fileLength},
-	 		#{fileKey},#{bucketName},#{fileName},#{fileSuffix},#{recordType},#{meetingId})
+	 		#{fileKey},#{bucketName},#{fileName},#{fileSuffix},#{recordType},#{meetingId},#{interviewRecordId},#{meetinRecordId})
     	<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
 			SELECT LAST_INSERT_ID() AS id
 		</selectKey>

@@ -187,7 +187,7 @@ public class TalkRecordController {
 	}
 	
 	/**
-	 * 保存/编辑拜访记录
+	 * 保存/编辑拜访的访谈记录
 	 * @param paramString
 	 * @return
 	 */
@@ -211,6 +211,7 @@ public class TalkRecordController {
 						sopFileBean.setFileLength(talkBean.getFileLength());
 						sopFileBean.setBucketName(talkBean.getBucketName());
 						sopFileBean.setFileName(talkBean.getFileName());
+						sopFileBean.setInterviewRecordId(talkBean.getId());
 						long sopId =service.saveSopFile(sopFileBean);
 						//获取sopfile 主键
 						if(sopId!=0){

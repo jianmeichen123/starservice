@@ -113,6 +113,7 @@ public class MeetingRecordController {
 						sopFileBean.setFileName(nameMap.get("fileName"));
 						sopFileBean.setFileSuffix(nameMap.get("fileSuffix"));
 						sopFileBean.setFileType("fileType:2");
+						sopFileBean.setMeetinRecordId(bean.getId());
 						long sopId =talkService.saveSopFile(sopFileBean);
 						//获取sopfile 主键
 						if(sopId!=0){
