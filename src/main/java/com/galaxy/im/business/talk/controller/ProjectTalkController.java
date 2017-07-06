@@ -1,5 +1,6 @@
 package com.galaxy.im.business.talk.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,13 +16,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.galaxy.im.bean.common.SessionBean;
+import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.talk.ProjectTalkBean;
 import com.galaxy.im.bean.talk.SopFileBean;
+import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.talk.service.IProjectTalkService;
 import com.galaxy.im.business.talk.service.ITalkRecordService;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.ResultBean;
+import com.galaxy.im.common.StaticConst;
 import com.galaxy.im.common.db.QPage;
 
 @Controller
@@ -33,6 +37,8 @@ public class ProjectTalkController {
 	IProjectTalkService service;
 	@Autowired
 	ITalkRecordService talkService;
+	@Autowired
+	private IFlowCommonService fcService;
 	
 	/**
 	 * 项目访谈记录列表
@@ -70,26 +76,41 @@ public class ProjectTalkController {
 			int updateCount = 0;
 			Long id = 0L;
 			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
-			
+			Map<String,Object> paramMap = new HashMap<String,Object>();
 			if(bean!=null){
 				//项目访谈记录存在，进行更新操作，否则保存
 				if(bean.getId()!=null && bean.getId()!=0){
 					//保存sop_file
 					if(!"".equals(bean.getFileKey()) && bean.getFileKey()!=null){
+						paramMap.put("projectId", bean.getProjectId());
+						SopProjectBean p = fcService.getSopProjectInfo(paramMap);
+						
 						Map<String,String> nameMap = transFileNames(bean.getFileName());
 						SopFileBean sopFileBean =new SopFileBean();
+						if(p!=null){
+							//项目id，当前阶段，所属事业线
+							sopFileBean.setProjectId(p.getId());
+							sopFileBean.setProjectProgress(p.getProjectProgress());
+							sopFileBean.setCareerLine(p.getProjectDepartId());
+						}
 						sopFileBean.setFileKey(bean.getFileKey());
 						sopFileBean.setFileLength(bean.getFileLength());
 						sopFileBean.setBucketName(bean.getBucketName());
 						sopFileBean.setFileName(nameMap.get("fileName"));
 						sopFileBean.setFileSuffix(nameMap.get("fileSuffix"));
-						sopFileBean.setFileType("fileType:2");
-						sopFileBean.setInterviewRecordId(bean.getId());
+						sopFileBean.setFileType(StaticConst.FILE_TYPE_2);
+						sopFileBean.setMeetinRecordId(bean.getId());
+						sopFileBean.setFileUid(sessionBean.getGuserid());
+						sopFileBean.setFileStatus(StaticConst.FILE_STATUS_2);
+						sopFileBean.setCreatedTime(new Date().getTime());
+						sopFileBean.setFileSource("1");
+						
 						long sopId =talkService.saveSopFile(sopFileBean);
 						//获取sopfile 主键
 						if(sopId!=0){
 							bean.setFileId(sopId);
 						}
+					
 					}
 					id=bean.getId();
 					updateCount = service.updateById(bean);

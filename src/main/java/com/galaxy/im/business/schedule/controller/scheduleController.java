@@ -1,5 +1,6 @@
 package com.galaxy.im.business.schedule.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +40,7 @@ public class scheduleController {
 		try {
 			//获取登录用户信息
 			SessionBean bean = CUtils.get().getBeanBySession(request);
-			
+			Map<String,Object> m = new HashMap<String,Object>();
 			Map<String,Object> map = CUtils.get().jsonString2map(paramString);
 			if(map!=null){
 				map.put("userId",bean.getGuserid());
@@ -53,6 +54,8 @@ public class scheduleController {
 						resultBean.setStatus("ok");
 						resultBean.setMessage(list.size()+"个日程");
 					}
+					m.put("ctCount", list.size());
+					resultBean.setMap(m);
 				}else{
 					resultBean.setStatus("error");
 				}
