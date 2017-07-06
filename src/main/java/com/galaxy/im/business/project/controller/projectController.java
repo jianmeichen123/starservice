@@ -166,7 +166,7 @@ public class projectController {
 			Map<String,Object> map =new HashMap<String,Object>();
 			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 			Long userId = sessionBean.getGuserid();
-			SopProjectBean p=null;
+			
 			//通过用户id获取一些信息
 			List<Map<String, Object>> list = fcService.getDeptId(userId,request,response);
 			if(list!=null){
@@ -194,9 +194,8 @@ public class projectController {
 					//编辑：去掉自己的重复
 					if(null != projectList && projectList.size()>0){
 						for(int i=0;i<projectList.size();i++){
-							SopProjectBean sb =projectList.get(i);
-							if(String.valueOf(bean.getId()).equals(String.valueOf(sb.getId()))){
-								p =projectList.get(i);
+							SopProjectBean p =projectList.get(i);
+							if(String.valueOf(bean.getId()).equals(String.valueOf(p.getId()))){
 								projectList.remove(p);
 							}
 						}
@@ -212,6 +211,7 @@ public class projectController {
 						resultBean.setMessage("项目名重复!");
 						return resultBean;
 					}
+					SopProjectBean p = service.getProjectInfoById(bean.getId());
 					if (p == null) {
 						resultBean.setMessage("未找到相应的项目信息!");
 						return resultBean;

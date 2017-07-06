@@ -2,6 +2,7 @@ package com.galaxy.im.business.talk.controller;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -75,6 +76,7 @@ public class ProjectTalkController {
 		try{
 			int updateCount = 0;
 			Long id = 0L;
+			Long deptId = 0L;
 			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 			Map<String,Object> paramMap = new HashMap<String,Object>();
 			if(bean!=null){
@@ -84,15 +86,21 @@ public class ProjectTalkController {
 					if(!"".equals(bean.getFileKey()) && bean.getFileKey()!=null){
 						paramMap.put("projectId", bean.getProjectId());
 						SopProjectBean p = fcService.getSopProjectInfo(paramMap);
-						
+						//通过用户id获取一些信息
+						List<Map<String, Object>> list = fcService.getDeptId(sessionBean.getGuserid(),request,response);
+						if(list!=null){
+							for(Map<String, Object> vMap:list){
+								deptId = CUtils.get().object2Long( vMap.get("deptId"));
+							}
+						}
 						Map<String,String> nameMap = transFileNames(bean.getFileName());
 						SopFileBean sopFileBean =new SopFileBean();
 						if(p!=null){
 							//项目id，当前阶段，所属事业线
 							sopFileBean.setProjectId(p.getId());
 							sopFileBean.setProjectProgress(p.getProjectProgress());
-							sopFileBean.setCareerLine(p.getProjectDepartId());
 						}
+						sopFileBean.setCareerLine(deptId);
 						sopFileBean.setFileKey(bean.getFileKey());
 						sopFileBean.setFileLength(bean.getFileLength());
 						sopFileBean.setBucketName(bean.getBucketName());

@@ -182,6 +182,19 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 		return dao.updateInvestById(bean);
 	}
 
+	/**
+	 * 更加项目id查询项目信息
+	 */
+	@Override
+	public SopProjectBean getProjectInfoById(Long id) {
+		try{
+			return dao.getProjectInfoById(id);
+		}catch(Exception e){
+			log.error(ProjectServiceImpl.class.getName() + "_getProjectInfoById",e);
+			throw new ServiceException(e);
+		}
+	}
+
 	
 	
 }

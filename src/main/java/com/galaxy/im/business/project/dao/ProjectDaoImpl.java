@@ -127,5 +127,18 @@ public class ProjectDaoImpl extends BaseDaoImpl<ProjectBean,Long> implements IPr
 		}
 	}
 
+	/**
+	 * 更加项目id查询项目信息
+	 */
+	@Override
+	public SopProjectBean getProjectInfoById(Long id) {
+		try{
+			return sqlSessionTemplate.selectOne(getSqlName("getProjectInfoById"),id);
+		}catch(Exception e){
+			log.error(ProjectDaoImpl.class.getName() + "_getProjectInfoById",e);
+			throw new DaoException(e);
+		}
+	}
+
 	
 }

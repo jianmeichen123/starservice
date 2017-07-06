@@ -174,13 +174,13 @@
 	</select>
 	
 	<!-- 获取项目信息 -->
-	<select id="getSopProjectList" resultType="com.galaxy.im.bean.project.SopProjectBean" parameterType="hashmap" resultMap="sopProjectListMap">
+	<select id="getSopProjectList" resultType="com.galaxy.im.bean.project.SopProjectBean" parameterType="hashmap" resultMap="BaseResultMap">
 		SELECT 
 		<include refid="Base_Column_List" />
 		from sop_project
 		<if test="projectName != null" > WHERE project_name = #{projectName}</if>
 	</select>
-	<resultMap type="com.galaxy.im.bean.project.SopProjectBean" id="sopProjectListMap">
+	<resultMap type="com.galaxy.im.bean.project.SopProjectBean" id="BaseResultMap">
 		<result column="id" property="id"/>
 		<result column="project_name" property="projectName"/>
 	    <result column="project_code" property="projectCode" />
@@ -300,6 +300,13 @@
 		</set>
 		where id = #{id}
 	</update>
+	
+	<!-- 根据ID查询 -->
+	<select id="getProjectInfoById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from sop_project where id = #{id}
+	</select>
 	
 
 </mapper>

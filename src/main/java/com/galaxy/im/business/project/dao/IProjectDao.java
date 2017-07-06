@@ -23,5 +23,7 @@ public interface IProjectDao extends IBaseDao<ProjectBean,Long>{
 	int updateInvestById(SopProjectBean bean);
 	//编辑项目
 	int updateProject(SopProjectBean bean);
+	//更加项目id查询项目信息
+	SopProjectBean getProjectInfoById(Long id);
 	
 }

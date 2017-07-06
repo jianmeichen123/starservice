@@ -23,4 +23,6 @@ public interface IProjectService extends IBaseService<ProjectBean>{
 	int deleteInvestById(SopProjectBean bean);
 	//更新项目下的所有投资方的投资形式
 	int updateInvestById(SopProjectBean bean);
+	//根据项目id查看项目信息
+	SopProjectBean getProjectInfoById(Long id);
 }
