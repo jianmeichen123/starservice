@@ -43,5 +43,7 @@ public interface IFlowCommonService extends IBaseService<ProjectBean>{
 	Map<String, String> transFileNames(String fileName);
 	//更新代办任务
 	Long updateSopTask(SopTask bean);
+	//获取人事，法务，财务的认领状态信息
+	List<Map<String, Object>> getSopTaskList(Map<String, Object> paramMap);
 
 }

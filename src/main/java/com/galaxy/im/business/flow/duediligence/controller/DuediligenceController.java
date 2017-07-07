@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -172,12 +175,14 @@ public class DuediligenceController {
 	 */
 	@RequestMapping("duediligenceList")
 	@ResponseBody
-	public Object duediligenceList(@RequestBody String paramString){
+	public Object duediligenceList(HttpServletRequest request,HttpServletResponse response,@RequestBody String paramString){
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		try{
 			List<String> fileWorkTypeList = new ArrayList<String>();
+			List<Integer> taskFlagList = new ArrayList<Integer>();
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
+			Map<String,Object> resultMap = new HashMap<String,Object>();
 			
 			fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_1);
 			fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_2);
@@ -185,10 +190,34 @@ public class DuediligenceController {
 			fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_4);
 			fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_18);
 			fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_19);
-			
+			//调查报告信息
 			paramMap.put("fileWorkTypeList", fileWorkTypeList);
 			List<Map<String,Object>> list = fcService.getSopFileList(paramMap);
-			resultBean.setMapList(list);
+			
+			//人事，法务，财务的代办任务的状态和认领人
+			taskFlagList.add(StaticConst.TASK_FLAG_RSJD);
+			taskFlagList.add(StaticConst.TASK_FLAG_FWJD);
+			taskFlagList.add(StaticConst.TASK_FLAG_CWJD);
+			paramMap.put("taskFlagList", taskFlagList);
+			List<Map<String,Object>> taskList = fcService.getSopTaskList(paramMap);
+			if(taskList!=null){
+				for(Map<String,Object> map:taskList){
+					if(map.containsKey("assignUid")){
+						//通过用户id获取一些信息
+						List<Map<String, Object>> userList = fcService.getDeptId(CUtils.get().object2Long(map.get("assignUid")),request,response);
+						if(userList!=null){
+							for(Map<String, Object> vMap:userList){
+								String userName=CUtils.get().object2String(vMap.get("userName"));
+								map.put("assignName", userName);
+							}
+						}
+					}
+				}
+			}
+			
+			resultMap.put("fileInfo", list);
+			resultMap.put("taskInfo", taskList);
+			resultBean.setMap(resultMap);
 			resultBean.setStatus("ok");
 		}catch(Exception e){
 		}

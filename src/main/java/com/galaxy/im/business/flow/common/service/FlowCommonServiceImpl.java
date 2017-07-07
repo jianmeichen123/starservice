@@ -334,5 +334,18 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 		}
 	}
 
+	/**
+	 * 获取人事，法务，财务的认领状态信息
+	 */
+	@Override
+	public List<Map<String, Object>> getSopTaskList(Map<String, Object> paramMap) {
+		try{
+			return dao.getSopTaskList(paramMap);
+		}catch(Exception e){
+			log.error(FlowCommonServiceImpl.class.getName() + ":getSopTaskList",e);
+			throw new ServiceException(e);
+		}
+	}
+
 	
 }

@@ -288,4 +288,21 @@
 		<result column="businessTypeCode" property="businessTypeCode"/>
 	</resultMap>
 	
+	<!-- 获取人事，法务，财务任务认领状态信息-->
+	<select id="getSopTaskList" parameterType="hashmap" resultType="hashmap">
+		SELECT tt.id,tt.task_name taskName,tt.task_flag taskFlag ,
+			   tt.assign_uid assignUid,tt.name taskStatus ,tt.dict_code taskStatusCode 
+		FROM (
+			    SELECT s.id,s.task_name,s.task_flag,s.assign_uid,dct1.name,dct1.dict_code FROM sop_task s
+			    LEFT JOIN dict dct1 ON dct1.parent_code='taskStatus' and dct1.dict_code=s.task_status 
+			    WHERE s.project_id=#{projectId}
+				<if test="taskFlagList != null">
+					and s.task_flag in 
+					<foreach collection="taskFlagList" item="taskFlag" index="index" open="(" close=")" separator=",">
+						#{taskFlag}
+					</foreach>
+				</if>
+				ORDER BY s.updated_time DESC )tt
+		GROUP BY taskFlag;
+	</select>
 </mapper>

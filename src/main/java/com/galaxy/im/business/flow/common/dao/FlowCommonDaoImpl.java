@@ -196,5 +196,20 @@ public class FlowCommonDaoImpl extends BaseDaoImpl<ProjectBean, Long> implements
 			throw new DaoException(e);
 		}
 	}
+
+	/**
+	 * 获取人事，财务，法务的任务认领状态信息
+	 */
+	@Override
+	public List<Map<String, Object>> getSopTaskList(Map<String, Object> paramMap) {
+		try{
+			String sqlName = "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.getSopTaskList";
+			List<Map<String, Object>> map =sqlSessionTemplate.selectList(sqlName,paramMap);
+			return map;
+		}catch(Exception e){
+			log.error(FlowCommonDaoImpl.class.getName() + "：getSopTaskList",e);
+			throw new DaoException(e);
+		}
+	}
 	
 }
