@@ -6,12 +6,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.talk.SopFileBean;
@@ -151,12 +155,22 @@ public class StockequityController {
 	 */
 	@RequestMapping("uploadStockequity")
 	@ResponseBody
-	public Object uploadStockequity(@RequestBody SopFileBean bean){
+	public Object uploadStockequity(HttpServletRequest request,HttpServletResponse response,@RequestBody SopFileBean bean){
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		resultBean.setFlag(0);
 		long id=0L;
 		try{
+			Long deptId =0L;
+			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
+			//通过用户id获取一些信息
+			List<Map<String, Object>> list = fcService.getDeptId(sessionBean.getGuserid(),request,response);
+			if(list!=null){
+				for(Map<String, Object> vMap:list){
+					deptId= CUtils.get().object2Long( vMap.get("deptId"));
+				}
+			}
+			
 			paramMap.put("projectId", bean.getProjectId());
 			paramMap.put("fileWorkType", bean.getFileWorkType());
 			
@@ -166,8 +180,9 @@ public class StockequityController {
 					//项目id，当前阶段，所属事业线
 					bean.setProjectId(sopBean.getId());
 					bean.setProjectProgress(sopBean.getProjectProgress());
-					bean.setCareerLine(sopBean.getProjectDepartId());
 				}
+				//事业线为用户部门id
+				bean.setCareerLine(deptId);
 				//文件类型
 				String fileType =fcService.getFileType(bean.getFileSuffix());
 				bean.setFileType(fileType);
