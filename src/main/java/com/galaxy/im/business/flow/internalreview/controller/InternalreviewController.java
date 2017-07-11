@@ -46,6 +46,7 @@ public class InternalreviewController {
 	public Object projectOperateStatus(@RequestBody String paramString){
 		ResultBean<Object> result = new ResultBean<Object>();
 		try{
+			
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			Map<String,Object> m = service.hasPassMeeting(paramMap);
 			if(CUtils.get().mapIsNotEmpty(m)){
@@ -56,6 +57,10 @@ public class InternalreviewController {
 			Map<String,Object> map = fcService.getLatestMeetingRecordInfo(paramMap);
 			if(CUtils.get().mapIsNotEmpty(map)){
 				result.setMap(map);
+			}else {
+				paramMap.clear();
+				paramMap.put("meetingType", StaticConst.MEETING_TYPE_INTERNAL);
+				result.setMap(paramMap);
 			}
 			result.setStatus("OK");
 		}catch(Exception e){
