@@ -46,14 +46,14 @@ public class InternalreviewController {
 	public Object projectOperateStatus(@RequestBody String paramString){
 		ResultBean<Object> result = new ResultBean<Object>();
 		try{
-			
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
+			paramMap.put("meetingType", StaticConst.MEETING_TYPE_INTERNAL);
 			Map<String,Object> m = service.hasPassMeeting(paramMap);
 			if(CUtils.get().mapIsNotEmpty(m)){
 				result.setEntity(m);
 			}
 			//会议最新信息
-			paramMap.put("meetingType", StaticConst.MEETING_TYPE_INTERNAL);
+			
 			Map<String,Object> map = fcService.getLatestMeetingRecordInfo(paramMap);
 			if(CUtils.get().mapIsNotEmpty(map)){
 				result.setMap(map);

@@ -61,13 +61,13 @@ public class InvestmentdealController {
 		ResultBean<Object> result = new ResultBean<Object>();
 		try{
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
-			//Map<String,Object> m = service.hasPassMeeting(paramMap);
+			paramMap.put("meetingType",StaticConst.MEETING_TYPE_INVEST);
 			Map<String,Object> m = iiService.getInvestmentdealOperateStatus(paramMap);
 			if(CUtils.get().mapIsNotEmpty(m)){
 				result.setEntity(m);
 			}
 			//会议最新信息
-			paramMap.put("meetingType",StaticConst.MEETING_TYPE_INVEST);
+			
 			Map<String,Object> map = fcService.getLatestMeetingRecordInfo(paramMap);
 			if(CUtils.get().mapIsNotEmpty(map)){
 				result.setMap(map);

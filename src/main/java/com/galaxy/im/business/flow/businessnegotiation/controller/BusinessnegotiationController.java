@@ -55,12 +55,12 @@ public class BusinessnegotiationController {
 		ResultBean<Object> result = new ResultBean<Object>();
 		try{
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
+			paramMap.put("meetingType", StaticConst.MEETING_TYPE_BUSINESS);
 			Map<String,Object> m = service.businessOperateStatus(paramMap);
 			if(CUtils.get().mapIsNotEmpty(m)){
 				result.setEntity(m);
 			}
 			//会议最新信息
-			paramMap.put("meetingType", StaticConst.MEETING_TYPE_BUSINESS);
 			Map<String,Object> map = fcService.getLatestMeetingRecordInfo(paramMap);
 			if(CUtils.get().mapIsNotEmpty(map)){
 				result.setMap(map);
