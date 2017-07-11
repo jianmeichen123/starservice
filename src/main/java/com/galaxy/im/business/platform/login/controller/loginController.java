@@ -1,5 +1,6 @@
 package com.galaxy.im.business.platform.login.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -97,7 +98,9 @@ public class loginController {
 			String tokenValue = TokenGenerator.getInstance().generateToken();
 			cache.put(tokenValue, tokenValue,StaticConst.TOKEN_IN_REDIS_TIMEOUT_SECONDS,TimeUnit.SECONDS);
 			result.setStatus("OK");
-			result.setEntity(tokenValue);
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("TOKEN", tokenValue);
+			result.setMap(map);
 		}catch(Exception e){
 		}
 		
