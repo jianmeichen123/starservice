@@ -64,6 +64,10 @@ public class BusinessnegotiationController {
 			Map<String,Object> map = fcService.getLatestMeetingRecordInfo(paramMap);
 			if(CUtils.get().mapIsNotEmpty(map)){
 				result.setMap(map);
+			}else {
+				paramMap.clear();
+				paramMap.put("meetingType", StaticConst.MEETING_TYPE_BUSINESS);
+				result.setMap(paramMap);
 			}
 			result.setStatus("OK");
 		}catch(Exception e){

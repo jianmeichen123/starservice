@@ -71,6 +71,10 @@ public class InvestmentdealController {
 			Map<String,Object> map = fcService.getLatestMeetingRecordInfo(paramMap);
 			if(CUtils.get().mapIsNotEmpty(map)){
 				result.setMap(map);
+			}else {
+				paramMap.clear();
+				paramMap.put("meetingType", StaticConst.MEETING_TYPE_INVEST);
+				result.setMap(paramMap);
 			}
 			result.setStatus("OK");
 		}catch(Exception e){
