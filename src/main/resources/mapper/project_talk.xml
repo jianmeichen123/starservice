@@ -13,7 +13,8 @@
 				dct1.dict_value interviewResultId,
 				dct1.`name` interviewResult,
 				dct2.dict_value resultReasonId,
-				dct2.`name` resultReason
+				dct2.`name` resultReason,
+				tt.reason_other reasonOther
 		FROM(SELECT r.id,
 					 r.view_date,
 					 r.view_target,
@@ -25,7 +26,8 @@
 					else ''
 					end resultReason,
 					r.result_reason,
-					r.view_notes
+					r.view_notes,
+					r.reason_other
 				FROM sop_interview_record r
 				WHERE r.project_id=#{projectId}
 			ORDER BY r.view_date desc) tt
@@ -49,7 +51,8 @@
 					else ''
 					end resultReason,
 					r.result_reason,
-					r.view_notes
+					r.view_notes,
+					r.reason_other
 				FROM sop_interview_record r
 				WHERE r.project_id=#{projectId}
 			ORDER BY r.view_date desc) tt

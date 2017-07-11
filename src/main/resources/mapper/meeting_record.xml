@@ -14,7 +14,8 @@
 				dct2.dict_value resultReasonId,
 				dct2.`name` resultReason,
 				dct3.dict_value meetingTypeId,
-				dct3.`name` meetingType
+				dct3.`name` meetingType,
+				tt.reason_other reasonOther
 		FROM(
 			SELECT  r.id,
 					case r.meeting_type
@@ -36,7 +37,8 @@
 					WHEN locate('pos',r.meeting_type)>0 THEN 'postMeetingType'
 					else 'meetingType'
 					end meetingType,
-					r.meeting_type
+					r.meeting_type,
+					r.reason_other
 				FROM sop_meeting_record r 
 				WHERE r.project_id=#{projectId} 
 				<if test="meetingTypeList != null">
@@ -78,7 +80,8 @@
 					WHEN locate('pos',r.meeting_type)>0 THEN 'postMeetingType'
 					else 'meetingType'
 					end meetingType,
-					r.meeting_type
+					r.meeting_type,
+					r.reason_other
 				FROM sop_meeting_record r
 				WHERE r.project_id=#{projectId} 
 				<if test="meetingTypeList != null">
