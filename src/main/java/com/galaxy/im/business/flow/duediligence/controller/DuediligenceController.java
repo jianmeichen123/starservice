@@ -59,6 +59,7 @@ public class DuediligenceController {
 		ResultBean<Object> result = new ResultBean<Object>();
 		try{
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
+			paramMap.put("fileStatus", StaticConst.FILE_STATUS_2);
 			Map<String,Object> m = service.duediligenceOperateStatus(paramMap);
 			if(CUtils.get().mapIsNotEmpty(m)){
 				result.setEntity(m);
