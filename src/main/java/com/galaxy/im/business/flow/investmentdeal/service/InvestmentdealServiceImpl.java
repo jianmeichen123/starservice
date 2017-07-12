@@ -66,13 +66,13 @@ public class InvestmentdealServiceImpl extends BaseServiceImpl<Test> implements 
 			}
 			
 			if (list!=null&&list.size()>0) {
-				String meetingResult;
+				String businessTypeCode;
 				for(Map<String,Object> map : list){
-					meetingResult=CUtils.get().object2String(map.get("meetingResult"), "");
+					businessTypeCode=CUtils.get().object2String(map.get("businessTypeCode"), "");
 					
-					if ("meeting5Result:4".equals(meetingResult)) {//结果投资
+					if ("TZ".equals(businessTypeCode)) {//结果投资
 						ress=true;
-					}else if ("meeting5Result:3".equals(meetingResult)) {//结果闪投
+					}else if ("ST".equals(businessTypeCode)) {//结果闪投
 						resss=true;
 					}
 				}
