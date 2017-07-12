@@ -122,6 +122,7 @@ public class StaticConst {
 	public static final String FILE_STATUS_1 = "fileStatus:1";	    	//缺失
 	public static final String FILE_STATUS_2 = "fileStatus:2";	    	//已上传
 	public static final String FILE_STATUS_3 = "fileStatus:3";	    	//已签署
+	public static final String FILE_STATUS_4 = "fileStatus:4";	    	//已放弃
 	//文件类型
 	public static final String FILE_TYPE_1 = "fileType:1";	    	//文档
 	public static final String FILE_TYPE_2 = "fileType:2";	    	//音频文件

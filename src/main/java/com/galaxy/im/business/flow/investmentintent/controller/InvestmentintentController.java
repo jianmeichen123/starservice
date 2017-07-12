@@ -55,7 +55,8 @@ public class InvestmentintentController{
 		ResultBean<Object> result = new ResultBean<Object>();
 		try{
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
-			paramMap.put("fileStatus", StaticConst.FILE_STATUS_2);
+			paramMap.put("fileStatus2", StaticConst.FILE_STATUS_2);
+			paramMap.put("fileStatus4", StaticConst.FILE_STATUS_4);
 			Map<String,Object> m = service.investmentOperateStatus(paramMap);
 			if(CUtils.get().mapIsNotEmpty(m)){
 				result.setEntity(m);
