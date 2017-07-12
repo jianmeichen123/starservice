@@ -42,7 +42,7 @@ public class InvestmentdealServiceImpl extends BaseServiceImpl<Test> implements 
 			Map<String,Object> result = new HashMap<String,Object>();
 			
 			result.put("veto", false);
-			result.put("inverstpass", false);
+			result.put("investpass", false);
 			result.put("flashpass", false);
 			List<Map<String,Object>> dataList = dao.hasPassMeeting(paramMap);//是否存在通过的会议
 			String s = dao.projectResult(paramMap);//获取项目在“会后商务谈判”阶段的结论
@@ -73,7 +73,7 @@ public class InvestmentdealServiceImpl extends BaseServiceImpl<Test> implements 
 					}
 			}
 			if (res && ress) {//会议通过且投资
-				result.put("inverstpass", true);
+				result.put("investpass", true);
 			}
 			if(res && resss){//会议通过且闪投
 				result.put("flashpass", true);

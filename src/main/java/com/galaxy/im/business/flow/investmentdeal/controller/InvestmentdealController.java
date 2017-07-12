@@ -50,7 +50,7 @@ public class InvestmentdealController {
 	 * @param
 	 * 	projectId   项目ID-使用JSON的方式传递
 	 * @return
-	 *  entity ->  "inverstpass": true, 存在“会后商务谈判”阶段的结论是“投资”
+	 *  entity ->  "investpass": true, 存在“会后商务谈判”阶段的结论是“投资”
 	 * 	entity ->  "flashpass": true 存在通过的会议且“会后商务谈判”阶段的结论是“闪投”
 	 *  entity ->  ""veto": true,"  不存在通过的会议
 	 */
