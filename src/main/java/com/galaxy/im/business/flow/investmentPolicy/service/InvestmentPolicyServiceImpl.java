@@ -71,7 +71,7 @@ public class InvestmentPolicyServiceImpl extends BaseServiceImpl<Test> implement
 			result.put("investmentpolicypass", false);
 			result.put("flashpass", false);
 			List<Map<String,Object>> dataList = dao.hasPassMeeting(paramMap);
-			List<Map<String,Object>> list = dao.projectResult(paramMap);
+			String businessTypeCode= dao.projectResult(paramMap);
 			if(dataList!=null && dataList.size()>0){
 				String dictCode;
 				Integer pcount = 0;
@@ -91,14 +91,9 @@ public class InvestmentPolicyServiceImpl extends BaseServiceImpl<Test> implement
 				}
 			}
 			// 获取项目在“会后商务谈判”阶段的结论
-			if (list!=null&&list.size()>0) {
-				String meetingResult;
-				for(Map<String,Object> map : list){
-					meetingResult=CUtils.get().object2String(map.get("meetingResult"), "");
-					
-					if ("meeting5Result:3".equals(meetingResult)) {//结果闪投
+			if (businessTypeCode!=null&&businessTypeCode.length()>0) {
+					if ("ST".equals(businessTypeCode)) {//结果闪投
 						resss=true;
-					}
 				}
 			}
 			//判断是否有上传完成的协议

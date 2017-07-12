@@ -12,6 +12,6 @@ public interface IInvestmentPolicyDao extends IBaseDao<Test, Long>{
 
 	List<Map<String, Object>> hasPassMeeting(Map<String, Object> paramMap);
 
-	List<Map<String, Object>> projectResult(Map<String, Object> paramMap);
+	String projectResult(Map<String, Object> paramMap);
 
 }

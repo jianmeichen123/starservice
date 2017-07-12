@@ -52,10 +52,10 @@ public class InvestmentPolicyDaoImpl extends BaseDaoImpl<Test, Long> implements 
 	 * 获取项目在“会后商务谈判”阶段的结论
 	 */
 	@Override
-	public List<Map<String, Object>> projectResult(Map<String, Object> paramMap) {
+	public String projectResult(Map<String, Object> paramMap) {
 		String sqlName = "com.galaxy.im.business.flow.investmentdeal.dao.IInvestmentdealDao.projectResult";
 		try{
-			return sqlSessionTemplate.selectList(sqlName,paramMap);
+			return sqlSessionTemplate.selectOne(sqlName,paramMap);
 		}catch(Exception e){
 			log.error(String.format("查询对象总数出错！语句：%s", sqlName), e);
 			throw new DaoException(e);
