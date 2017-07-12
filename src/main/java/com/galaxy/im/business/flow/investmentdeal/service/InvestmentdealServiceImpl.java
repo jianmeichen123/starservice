@@ -45,7 +45,7 @@ public class InvestmentdealServiceImpl extends BaseServiceImpl<Test> implements 
 			result.put("inverstpass", false);
 			result.put("flashpass", false);
 			List<Map<String,Object>> dataList = dao.hasPassMeeting(paramMap);//是否存在通过的会议
-			List<Map<String,Object>> list = dao.projectResult(paramMap);//获取项目在“会后商务谈判”阶段的结论
+			String s = dao.projectResult(paramMap);//获取项目在“会后商务谈判”阶段的结论
 			if(dataList!=null && dataList.size()>0){
 				String dictCode;
 				Integer pcount = 0;
@@ -64,18 +64,13 @@ public class InvestmentdealServiceImpl extends BaseServiceImpl<Test> implements 
 					}
 				}
 			}
-			
-			if (list!=null&&list.size()>0) {
-				String businessTypeCode;
-				for(Map<String,Object> map : list){
-					businessTypeCode=CUtils.get().object2String(map.get("businessTypeCode"), "");
-					
+			if (s!=null&&s.length()>0) {
+					String businessTypeCode=s;
 					if ("TZ".equals(businessTypeCode)) {//结果投资
 						ress=true;
 					}else if ("ST".equals(businessTypeCode)) {//结果闪投
 						resss=true;
 					}
-				}
 			}
 			if (res && ress) {//会议通过且投资
 				result.put("inverstpass", true);
