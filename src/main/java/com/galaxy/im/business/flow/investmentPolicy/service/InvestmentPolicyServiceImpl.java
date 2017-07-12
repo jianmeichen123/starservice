@@ -68,7 +68,7 @@ public class InvestmentPolicyServiceImpl extends BaseServiceImpl<Test> implement
 			Map<String,Object> result = new HashMap<String,Object>();
 			
 			//result.put("veto", false);
-			result.put("investmentpolicypass", false);
+			result.put("investpass", false);
 			result.put("flashpass", false);
 			List<Map<String,Object>> dataList = dao.hasPassMeeting(paramMap);
 			String businessTypeCode= dao.projectResult(paramMap);
@@ -115,7 +115,7 @@ public class InvestmentPolicyServiceImpl extends BaseServiceImpl<Test> implement
 			}
 			
 			if (ress && resss) {//有上传完成的协议且是闪投
-				result.put("investmentpolicypass", true);
+				result.put("investpass", true);
 			}
 			if(res && resss){//会议通过且闪投
 				result.put("flashpass", true);
