@@ -1,0 +1,13 @@
+ baseinfo:			基础信息
+ project：			项目
+ team：				团队
+ operationaldata：	运营数据
+ competition：      		竞争
+ strategy：           		战略及策略
+ financial： 			财务
+ legal：				法务
+ valuation：			融资及估值
+ 
+ 
+
+	 
