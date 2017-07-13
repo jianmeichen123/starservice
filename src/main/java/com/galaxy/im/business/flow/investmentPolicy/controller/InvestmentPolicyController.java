@@ -59,6 +59,8 @@ public class InvestmentPolicyController {
 		ResultBean<Object> result = new ResultBean<Object>();
 		try {
 			Map<String, Object> paramMap = CUtils.get().jsonString2map(paramString);
+			paramMap.put("fileStatus2", StaticConst.FILE_STATUS_2);
+			paramMap.put("fileStatus4", StaticConst.FILE_STATUS_4);
 			Map<String, Object> m = iPService.getInvestmentdealOperateStatus(paramMap);
 			if (CUtils.get().mapIsNotEmpty(m)) {
 				result.setEntity(m);
