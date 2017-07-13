@@ -16,13 +16,7 @@
 		group by d1.dict_code;
 	</select>
 	
-	<!-- 进入到下一个流程阶段 -非绿色通道 -->
-	<update id="enterNextFlow" parameterType="hashmap">
-		update sop_project p
-			set p.project_progress=#{projectProgress},
-			p.project_status=#{projectStatus}
-			where p.id=#{projectId};
-	</update>
+
 	
 	<!-- 获取资金拨付代办任务的状态-->
 	<select id="status"  parameterType="hashmap" resultType="hashmap">

@@ -105,7 +105,7 @@ public class StockequityController {
 						paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_10); // 表示进入投后运营阶段
 						paramMap.put("projectStatus", "projectStatus:1");// 将项目状态调整为“投后运营”
 						paramMap.put("progressHistory", progressHistory); // 流程历史记录
-						if (isservice.enterNextFlow(paramMap)) {
+						if (fcService.enterNextFlow(paramMap)) {
 							resultBean.setFlag(1);
 							map.put("projectProgress", StaticConst.PROJECT_PROGRESS_10);
 						}

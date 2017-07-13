@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.galaxy.im.bean.Test;
-import com.galaxy.im.business.flow.common.service.FlowCommonServiceImpl;
 import com.galaxy.im.business.flow.stockequity.dao.IStockequityDao;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.db.IBaseDao;
@@ -73,19 +72,6 @@ public class StockequityServiceImpl extends BaseServiceImpl<Test> implements ISt
 			return result;
 		}catch(Exception e){
 			log.error(StockequityServiceImpl.class.getName() + ":operateStatus",e);
-			throw new ServiceException(e);
-		}
-	}
-	
-	/**
-	 * 流程进入到下一阶段
-	 */
-	@Override
-	public boolean enterNextFlow(Map<String, Object> paramMap) {
-		try{
-			return dao.enterNextFlow(paramMap)>0;
-		}catch(Exception e){
-			log.error(FlowCommonServiceImpl.class.getName() + ":enterNextFlow",e);
 			throw new ServiceException(e);
 		}
 	}

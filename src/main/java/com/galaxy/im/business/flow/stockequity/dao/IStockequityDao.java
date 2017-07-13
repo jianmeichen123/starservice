@@ -10,8 +10,6 @@ public interface IStockequityDao extends IBaseDao<Test, Long>{
 
 	List<Map<String, Object>> operateStatus(Map<String, Object> paramMap);
 
-	Integer enterNextFlow(Map<String, Object> paramMap);
-
 	List<Map<String, Object>> status(Map<String, Object> paramMap);
 
 }

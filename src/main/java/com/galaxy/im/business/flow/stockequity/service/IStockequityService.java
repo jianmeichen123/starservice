@@ -9,6 +9,5 @@ public interface IStockequityService extends IBaseService<Test>{
 
 	Map<String, Object> operateStatus(Map<String, Object> paramMap);
 
-	boolean enterNextFlow(Map<String, Object> paramMap);
 
 }
