@@ -62,39 +62,25 @@ public class InvestmentPolicyServiceImpl extends BaseServiceImpl<Test> implement
 	@Override
 	public Map<String, Object> getInvestmentdealOperateStatus(Map<String, Object> paramMap) {
 		try{
-			Boolean res=false;//是否有通过的会议
-			Boolean ress=false;//是否有上传完成的协议
-			Boolean resss=false;//闪投
+			Boolean resFile=false;//是否有上传完成的协议
+			Boolean resST=false;//闪投
+			Boolean resTZ=false;//投资
 			Map<String,Object> result = new HashMap<String,Object>();
 			
-			//result.put("veto", false);
+			
 			result.put("investpass", false);
 			result.put("flashpass", false);
-			List<Map<String,Object>> dataList = dao.hasPassMeeting(paramMap);
+		
 			String businessTypeCode= dao.projectResult(paramMap);
-			if(dataList!=null && dataList.size()>0){
-				String dictCode;
-				Integer pcount = 0;
-				for(Map<String,Object> map : dataList){
-					dictCode = CUtils.get().object2String(map.get("dictCode"), "");
-					pcount = CUtils.get().object2Integer(map.get("pcount"), 0);
-					
-					if("meetingResult:1".equals(dictCode)){//通过的会议
-						if(pcount>0){
-							res=true;
-						}
-					}else if("meetingResult:3".equals(dictCode)){//否决的会议
-						if(pcount>0){
-							result.put("veto", true);
-						}
-					}
-				}
-			}
+			
 			// 获取项目在“会后商务谈判”阶段的结论
 			if (businessTypeCode!=null&&businessTypeCode.length()>0) {
-					if ("ST".equals(businessTypeCode)) {//结果闪投
-						resss=true;
+				if ("ST".equals(businessTypeCode)) {//结果闪投
+					resST=true;
+				}else if ("TZ".equals(businessTypeCode)) {
+					resTZ=true;
 				}
+					
 			}
 			//判断是否有上传完成的协议
 			List<Map<String,Object>> dataList1 = dao.investmentpolicy(paramMap);
@@ -107,17 +93,16 @@ public class InvestmentPolicyServiceImpl extends BaseServiceImpl<Test> implement
 					//是否上传了"投资协议"
 					if("fileWorktype:6".equals(dictCode)){
 						if(pcount>0){
-							ress=true;
-							//result.put("pass", true);
+							resFile=true;
 						}
 					}
 				}
 			}
 			
-			if (ress && resss) {//有上传完成的协议且是闪投
+			if (resFile && resTZ) {//有上传完成的协议且是投资
 				result.put("investpass", true);
 			}
-			if(res && resss){//会议通过且闪投
+			if(resFile && resST){//有上传完成的协议且是闪投
 				result.put("flashpass", true);
 			}
 			return result;
