@@ -13,7 +13,7 @@
 		from sop_project p
 		left join sop_file f on p.id=f.project_id
 		left join dict d1 on f.file_worktype=d1.dict_code
-		where p.id=#{projectId} and f.file_status in (#{fileStatus2},#{fileStatus4}) and f.file_valid=1
+		where f.file_valid=1 and p.id=#{projectId} and f.file_status in (#{fileStatus2},#{fileStatus4}) 
 		group by d1.dict_code;
 	</select>
 </mapper>
