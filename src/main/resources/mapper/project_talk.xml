@@ -110,9 +110,9 @@
 		<result column="fileLength" property="fileLength"/>
 		<result column="bucketName" property="bucketName"/>
 		<result column="fileName" property="fileName"/>
-		<result column="meetingResultId" property="meetingResultId"/>
-		<result column="meetingResultCode" property="meetingResultCode"/>
-		<result column="meetingResult" property="meetingResult"/>
+		<result column="interviewResultId" property="interviewResultId"/>
+		<result column="interviewResultCode" property="interviewResultCode"/>
+		<result column="interviewResult" property="interviewResult"/>
 		<result column="resultReasonId" property="resultReasonId"/>
 		<result column="resultReasonCode" property="resultReasonCode"/>
 		<result column="resultReason" property="resultReason"/>

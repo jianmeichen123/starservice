@@ -69,9 +69,11 @@
 	<!-- 添加访谈记录 -->
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id"  keyColumn="id" parameterType="com.galaxy.im.bean.talk.TalkRecordBean" >
 		insert into sop_interview_record (id, project_id, file_id, view_date, 
-		  	view_target, view_notes, view_notes_text, created_time, created_id, update_time,schedule_id)
+		  	view_target, view_notes, view_notes_text, created_time, created_id, update_time,schedule_id,
+		  	interview_result,result_reason,reason_other)
 	    values (#{id}, #{projectId}, #{fileId}, #{viewDate}, #{viewTarget}, #{viewNotes}, 
-	    	#{viewNotesText}, #{createdTime},#{createdId},#{createdTime},#{scheduleId});
+	    	#{viewNotesText}, #{createdTime},#{createdId},#{createdTime},#{scheduleId},
+	    	#{interviewResult},#{resultReason},#{reasonOther});
     	<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
 			SELECT LAST_INSERT_ID() AS id
 		</selectKey>
@@ -85,6 +87,9 @@
 	      <if test="viewTarget != null" > view_target = #{viewTarget}, </if>
 	      <if test="viewNotes != null" > view_notes = #{viewNotes}, </if>
 	      <if test="viewNotesText != null" > view_notes_text = #{viewNotesText}, </if>
+	      <if test="interviewResult != null" > interview_result = #{interviewResult}, </if>
+	      <if test="resultReason != null" > result_reason = #{resultReason}, </if>
+	      <if test="reasonOther != null" > reason_other = #{reasonOther}, </if>
 	      <if test="updatedTime != null" > update_time = #{updatedTime} </if>
 		</set>
 		where id=#{id};

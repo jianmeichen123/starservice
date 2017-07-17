@@ -17,7 +17,14 @@
 				tt.file_length fileLength,
 				tt.bucket_name bucketName,
 				tt.file_name fileName,
-				tt.view_notes viewNotes
+				tt.view_notes viewNotes,
+				dct1.dict_value interviewResultId,
+				dct1.dict_code interviewResultCode,
+				dct1.`name` interviewResult,
+				dct2.dict_value resultReasonId,
+				dct2.dict_code resultReasonCode,
+				dct2.`name` resultReason,
+				tt.reason_other reasonOther
 		FROM(
 			SELECT  r.id,
 					r.created_id,
@@ -29,11 +36,22 @@
 					sf.bucket_name,
 					sf.file_name,
 					r.view_notes,
-					r.schedule_id
+					r.schedule_id,
+					r.interview_result,
+					case 
+					WHEN locate('Veto',r.result_reason)>0 THEN 'meetingVetoReason'
+					WHEN locate('Undetermined',r.result_reason)>0 THEN 'meetingUndeterminedReason'
+					WHEN locate('Following',r.result_reason)>0 THEN 'meetingFollowingReason'
+					else ''
+					end resultReason,
+					r.result_reason,
+					r.reason_other
 				FROM sop_interview_record r 
 				left join sop_file sf on sf.id=r.file_id
 				left join schedule_contacts con on r.view_target=con.id 
-				WHERE r.id=#{id})tt ;
+				WHERE r.id=#{id} )tt 
+		LEFT JOIN dict dct1 ON dct1.parent_code='meetingResult' and dct1.dict_code=tt.interview_result
+		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason;
 	</select>
 	<resultMap type="com.galaxy.im.bean.talk.TalkRecordDetailBean" id="detailMap">
 		<result column="id" property="id"/>
@@ -45,6 +63,13 @@
 		<result column="bucketName" property="bucketName"/>
 		<result column="fileName" property="fileName"/>
 		<result column="viewNotes" property="viewNotes"/>
+		<result column="interviewResultId" property="interviewResultId"/>
+		<result column="interviewResultCode" property="interviewResultCode"/>
+		<result column="interviewResult" property="interviewResult"/>
+		<result column="resultReasonId" property="resultReasonId"/>
+		<result column="resultReasonCode" property="resultReasonCode"/>
+		<result column="resultReason" property="resultReason"/>
+		<result column="reasonOther" property="reasonOther"/>
 	</resultMap>
 
 </mapper>

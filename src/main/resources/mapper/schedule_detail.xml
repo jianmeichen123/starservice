@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
 <mapper namespace="com.galaxy.im.bean.schedule.ScheduleDetailBean">
 
-	<resultMap type="com.galaxy.im.bean.schedule.ScheduleDetailBean" id="detailMap">
+	<resultMap type="com.galaxy.im.bean.schedule.ScheduleDetailBean" id="callonDetailMap">
 		<result column="id" property="id"/>
 		<result column="startTime" property="startTime"/>
 		<result column="endTime" property="endTime"/>
@@ -32,48 +32,101 @@
 		<result column="talkRecordId" property="talkRecordId"/>
 		<result column="createdId" property="createdId"/>
 		<result column="interviewFalg" property="interviewFalg"/>
+		<result column="interviewResultId" property="interviewResultId"/>
+		<result column="interviewResultCode" property="interviewResultCode"/>
+		<result column="interviewResult" property="interviewResult"/>
+		<result column="resultReasonId" property="resultReasonId"/>
+		<result column="resultReasonCode" property="resultReasonCode"/>
+		<result column="resultReason" property="resultReason"/>
+		<result column="reasonOther" property="reasonOther"/>
 	</resultMap>
 	<!-- 拜访详情 -->
-	<select id="selectById" resultType="com.galaxy.im.bean.schedule.ScheduleDetailBean" parameterType="java.lang.Long" resultMap="detailMap">
-		select 
-			info.id,
-	    	date_format(info.start_time,'%Y/%m/%d %H:%i') startTime,
-		    date_format(info.end_time,'%Y/%m/%d %H:%i') endTime,
-			info.remark remark,
-			info.name schedultMatter,
-			info.callon_address callonAddress,
-			info.created_id createdId,
-			case UNIX_TIMESTAMP(current_timestamp())>UNIX_TIMESTAMP(info.start_time) 
-			when 1 then 1 else 0 end interviewFalg,
-			con.id contactId,
-			con.name contactName,
-	    	con.post contactPost,
-	    	con.phone1 contactPhone,
-			con.company contactCompany,
-			project.id projectId,
-	    	project.project_name projectName,
-	    	dct1.name industryOwnName,
-			dct2.name financeStatusName,
-			info.significance significanceId,
-			dct3.name significanceName,
-			info.wakeup_id wakeupId,
-			sd.name wakeupTime,
-			sf.file_key fileKey,
-			sf.file_length fileLength,
-			sf.bucket_name bucketName,
-			sf.file_name fileName,
-			inre.view_notes viewNotes,
-			inre.id talkRecordId
-		from schedule_info info
-		left join schedule_contacts con on info.callon_person=con.id
-		left join sop_project project on info.project_type=1 and info.project_id=project.id
-		left join dict dct1 on dct1.parent_code='industryOwn' and dct1.dict_code=project.industry_own
-		left join dict dct2 on dct2.parent_code='financeStatus' and dct2.dict_code=project.finance_status
-		left join dict dct3 on dct3.parent_code='significance' and dct3.dict_value=info.significance
-		left join schedule_dict sd on sd.id = info.wakeup_id
-		left join sop_interview_record inre on inre.schedule_id=info.id
-		left join sop_file sf on sf.id=inre.file_id
-		where info.id=#{id} and info.is_del=0 ORDER BY inre.created_time desc;
+	<select id="selectById" resultType="com.galaxy.im.bean.schedule.ScheduleDetailBean" parameterType="java.lang.Long" resultMap="callonDetailMap">
+		SELECT 
+			tt.id,
+			tt.startTime,
+			tt.endTime,
+			tt.remark,
+			tt.schedultMatter,
+			tt.callonAddress,
+			tt.createdId,
+			tt.interviewFalg,
+			tt.contactId,
+			tt.contactName,
+			tt.contactPost,
+			tt.contactPhone,
+			tt.contactCompany,
+			tt.projectId,
+			tt.projectName,
+			tt.industryOwnName,
+			tt.financeStatusName,
+			tt.significanceId,
+			tt.significanceName,
+			tt.wakeupId,
+			tt.wakeupTime,
+			tt.fileKey,
+			tt.fileLength,
+			tt.bucketName,
+			tt.fileName,
+			tt.viewNotes,
+			tt.talkRecordId,
+			dct4.dict_value interviewResultId,
+			dct4.dict_code interviewResultCode,
+			dct4.`name` interviewResult,
+			dct5.dict_value resultReasonId,
+			dct5.dict_code resultReasonCode,
+			dct5.`name` resultReason,
+			tt.reason_other reasonOther
+		FROM (select 
+					info.id,
+				    date_format(info.start_time,'%Y/%m/%d %H:%i') startTime,
+					date_format(info.end_time,'%Y/%m/%d %H:%i') endTime,
+					info.remark remark,
+					info.name schedultMatter,
+					info.callon_address callonAddress,
+					info.created_id createdId,
+					case UNIX_TIMESTAMP(current_timestamp())>UNIX_TIMESTAMP(info.start_time) 
+					when 1 then 1 else 0 end interviewFalg,
+					con.id contactId,
+					con.name contactName,
+				    con.post contactPost,
+				    con.phone1 contactPhone,
+					con.company contactCompany,
+					project.id projectId,
+				    project.project_name projectName,
+				    dct1.name industryOwnName,
+					dct2.name financeStatusName,
+					info.significance significanceId,
+					dct3.name significanceName,
+					info.wakeup_id wakeupId,
+					sd.name wakeupTime,
+					sf.file_key fileKey,
+					sf.file_length fileLength,
+					sf.bucket_name bucketName,
+					sf.file_name fileName,
+					inre.view_notes viewNotes,
+					inre.id talkRecordId,
+				    inre.interview_result,
+					inre.reason_other,
+					inre.result_reason,
+					case 
+					WHEN locate('Veto',inre.result_reason)>0 THEN 'meetingVetoReason'
+					WHEN locate('Undetermined',inre.result_reason)>0 THEN 'meetingUndeterminedReason'
+					WHEN locate('Following',inre.result_reason)>0 THEN 'meetingFollowingReason'
+					else ''
+					end resultReason
+				from schedule_info info
+				left join schedule_contacts con on info.callon_person=con.id
+				left join sop_project project on info.project_type=1 and info.project_id=project.id
+				left join dict dct1 on dct1.parent_code='industryOwn' and dct1.dict_code=project.industry_own
+				left join dict dct2 on dct2.parent_code='financeStatus' and dct2.dict_code=project.finance_status
+				left join dict dct3 on dct3.parent_code='significance' and dct3.dict_value=info.significance
+				left join schedule_dict sd on sd.id = info.wakeup_id
+				left join sop_interview_record inre on inre.schedule_id=info.id
+				left join sop_file sf on sf.id=inre.file_id
+				where info.id=#{id} and info.is_del=0 ORDER BY inre.created_time desc ) tt
+			LEFT JOIN dict dct4 ON dct4.parent_code='meetingResult' and dct4.dict_code=tt.interview_result
+			LEFT JOIN dict dct5 ON dct5.parent_code=tt.resultReason and dct5.dict_code=tt.result_reason;
 	</select>
 	
 	<!-- 项目的拜访历史记录个数 -->

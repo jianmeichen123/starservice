@@ -18,6 +18,57 @@ public class TalkRecordDetailBean extends BaseEntity{
 	
 	private String viewNotes;			//访谈纪要
 	
+	private Long interviewResultId;		//访谈结论id
+	private String interviewResultCode;	//访谈结论code
+	private String interviewResult;		//访谈结论
+	private Long resultReasonId;		//结论原因id
+    private String resultReasonCode;	//结论原因code
+    private String resultReason;		//结论原因
+    private String reasonOther;			//其他原因
+    
+	
+	public Long getInterviewResultId() {
+		return interviewResultId;
+	}
+	public void setInterviewResultId(Long interviewResultId) {
+		this.interviewResultId = interviewResultId;
+	}
+	public String getInterviewResultCode() {
+		return interviewResultCode;
+	}
+	public void setInterviewResultCode(String interviewResultCode) {
+		this.interviewResultCode = interviewResultCode;
+	}
+	public String getInterviewResult() {
+		return interviewResult;
+	}
+	public void setInterviewResult(String interviewResult) {
+		this.interviewResult = interviewResult;
+	}
+	public Long getResultReasonId() {
+		return resultReasonId;
+	}
+	public void setResultReasonId(Long resultReasonId) {
+		this.resultReasonId = resultReasonId;
+	}
+	public String getResultReasonCode() {
+		return resultReasonCode;
+	}
+	public void setResultReasonCode(String resultReasonCode) {
+		this.resultReasonCode = resultReasonCode;
+	}
+	public String getResultReason() {
+		return resultReason;
+	}
+	public void setResultReason(String resultReason) {
+		this.resultReason = resultReason;
+	}
+	public String getReasonOther() {
+		return reasonOther;
+	}
+	public void setReasonOther(String reasonOther) {
+		this.reasonOther = reasonOther;
+	}
 	public String getFileKey() {
 		return fileKey;
 	}
