@@ -44,6 +44,7 @@ public class UserController {
 						JSONObject valueJson = resultJson.getJSONObject("value");
 						result.setEntity(valueJson);
 						result.setStatus("OK");
+						result.setMessage(resultJson.getString("message"));
 					}else{
 						result.setMessage(resultJson.getString("message"));
 					}
