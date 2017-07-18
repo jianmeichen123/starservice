@@ -6,8 +6,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
 import com.galaxy.im.common.CUtils;
@@ -15,6 +17,7 @@ import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
 import com.galaxy.im.common.html.QHtmlClient;
 
+@Controller
 public class UserController {
 	
 	@Autowired
@@ -26,6 +29,7 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping("/user/resetPwd")
+	@ResponseBody
 	public Object resetPwd(HttpServletRequest request,@RequestBody String paramString){
 		ResultBean<Object> result = new ResultBean<Object>();
 		try{
