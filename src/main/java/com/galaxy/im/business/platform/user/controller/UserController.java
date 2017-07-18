@@ -21,7 +21,7 @@ public class UserController {
 	private Environment env;
 	
 	/**
-	 * 登录
+	 * 修改密码
 	 * @param paramString
 	 * @return
 	 */
