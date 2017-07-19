@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.galaxy.im.bean.common.SessionBean;
-import com.galaxy.im.bean.user.User;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
 import com.galaxy.im.common.TokenGenerator;
 import com.galaxy.im.common.cache.redis.IRedisCache;
 import com.galaxy.im.common.html.QHtmlClient;
+import com.galaxyinternet.model.user.User;
 
 @Controller
 @ResponseBody
@@ -48,7 +48,6 @@ public class loginController {
 			String url = env.getProperty("power.server") + StaticConst.login;
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			String htmlString = QHtmlClient.get().post(url, null, paramMap);
-			System.out.println(htmlString);
 			if(CUtils.get().stringIsNotEmpty(htmlString) && !"error".equals(htmlString)){
 				JSONObject resultJson = CUtils.get().object2JSONObject(htmlString); 
 				if(resultJson!=null && resultJson.containsKey("success")){
