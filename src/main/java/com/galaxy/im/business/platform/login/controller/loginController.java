@@ -68,6 +68,7 @@ public class loginController {
 						user.setRole(CUtils.get().object2String(map.get("roleName")));
 						user.setSessionId(sessionId);
 						cache.put(sessionId, user); 
+						request.getSession().setAttribute(StaticConst.SESSION_USER_KEY, user);
 						// 将sessionId存入cache
 						//cache.put(sessionId, resultJson);
 					}else{
