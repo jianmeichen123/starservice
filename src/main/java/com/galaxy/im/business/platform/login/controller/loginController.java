@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.galaxy.im.bean.common.SessionBean;
+import com.galaxy.im.bean.user.User;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
@@ -41,6 +42,8 @@ public class loginController {
 	@RequestMapping("/userlogin/login")
 	public Object login(HttpServletRequest request,@RequestBody String paramString){
 		ResultBean<Object> result = new ResultBean<Object>();
+		User user = new User();
+		Map<String, Object> map = null;
 		try{
 			String url = env.getProperty("power.server") + StaticConst.login;
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
@@ -52,11 +55,22 @@ public class loginController {
 					if(resultJson.getBoolean("success")){
 						String sessionId = request.getSession().getId();
 						JSONObject valueJson = resultJson.getJSONObject("value");
-						valueJson.put("sessionId", sessionId);
+						//valueJson.put("sessionId", sessionId);
 						result.setEntity(valueJson);
 						result.setStatus("OK");
+						result.setMessage(resultJson.getString("message"));
 						//设置sessionID
-						cache.put(sessionId, resultJson);
+						map=CUtils.get().jsonString2map(valueJson);
+						user.setId(CUtils.get().object2Long(map.get("id")));
+						user.setNickName(CUtils.get().object2String(map.get("loginName")));
+						user.setRealName(CUtils.get().object2String(map.get("realName")));
+						user.setDepartmentId(CUtils.get().object2Long(map.get("departmentId")));
+						user.setDepartmentName(CUtils.get().object2String(map.get("departmentName")));
+						user.setRole(CUtils.get().object2String(map.get("roleName")));
+						user.setSessionId(sessionId);
+						cache.put(sessionId, user); 
+						// 将sessionId存入cache
+						//cache.put(sessionId, resultJson);
 					}else{
 						result.setMessage(resultJson.getString("message"));
 					}
