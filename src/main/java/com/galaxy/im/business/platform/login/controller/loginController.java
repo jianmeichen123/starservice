@@ -54,7 +54,7 @@ public class loginController {
 					if(resultJson.getBoolean("success")){
 						String sessionId = request.getSession().getId();
 						JSONObject valueJson = resultJson.getJSONObject("value");
-						//valueJson.put("sessionId", sessionId);
+						valueJson.put("sessionId", sessionId);
 						result.setEntity(valueJson);
 						result.setStatus("OK");
 						result.setMessage(resultJson.getString("message"));
