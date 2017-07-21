@@ -148,7 +148,9 @@ public class MeetingRecordController {
 						}
 					}
 					id=bean.getId();
-					bean.setMeetingDate(DateUtil.convertStringtoD(bean.getMeetingDateStr()));
+					if(bean.getMeetingDateStr()!=null){
+						bean.setMeetingDate(DateUtil.convertStringtoD(bean.getMeetingDateStr()));
+					}
 					updateCount = service.updateById(bean);
 				}else{
 					//保存
