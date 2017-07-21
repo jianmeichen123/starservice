@@ -131,19 +131,43 @@ public class StockequityController {
 	 */
 	@RequestMapping("stockequityList")
 	@ResponseBody
-	public Object stockequityList(@RequestBody String paramString){
+	public Object stockequityList(HttpServletRequest request,HttpServletResponse response,@RequestBody String paramString){
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		try{
 			List<String> fileWorkTypeList = new ArrayList<String>();
+			List<Integer> taskFlagList = new ArrayList<Integer>();
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
-			
+			Map<String,Object> resultMap = new HashMap<String,Object>();
 			fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_8);
 			fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_9);
 			
 			paramMap.put("fileWorkTypeList", fileWorkTypeList);
 			List<Map<String,Object>> list = fcService.getSopFileList(paramMap);
-			resultBean.setMapList(list);
+			
+			//工商转让凭证和资金调拨凭证的代办任务的状态和认领人
+			taskFlagList.add(StaticConst.TASK_FLAG_GSBG);
+			taskFlagList.add(StaticConst.TASK_FLAG_ZJBF);
+			paramMap.put("taskFlagList", taskFlagList);
+			List<Map<String,Object>> taskList = fcService.getSopTaskList(paramMap);
+			if(taskList!=null){
+				for(Map<String,Object> map:taskList){
+					if(map.containsKey("assignUid")){
+						//通过用户id获取一些信息
+						List<Map<String, Object>> userList = fcService.getDeptId(CUtils.get().object2Long(map.get("assignUid")),request,response);
+						if(userList!=null){
+							for(Map<String, Object> vMap:userList){
+								String userName=CUtils.get().object2String(vMap.get("userName"));
+								map.put("assignName", userName);
+							}
+						}
+					}
+				}
+			}
+			
+			resultMap.put("fileInfo", list);
+			resultMap.put("taskInfo", taskList);
+			resultBean.setMap(resultMap);
 			resultBean.setStatus("ok");
 		}catch(Exception e){
 		}
