@@ -277,6 +277,7 @@ public class projectController {
 						bean.setCreateUname(userName);
 						bean.setProjectDepartId(deptId);
 						bean.setProjectProgress(StaticConst.PROJECT_PROGRESS_1);
+						bean.setProgressHistory(StaticConst.PROJECT_PROGRESS_1);
 						bean.setProjectStatus(StaticConst.PROJECT_STATUS_0);
 						bean.setUpdatedTime(new Date().getTime());
 						bean.setProjectTime(new Date().getTime());
