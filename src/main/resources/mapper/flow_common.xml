@@ -89,7 +89,7 @@
 		FROM sop_meeting_record r 
 		left join dict d1 on r.meeting_result=d1.dict_code
 		WHERE r.project_id=#{projectId} and r.meeting_type=#{meetingType} 
-		ORDER BY r.created_time desc LIMIT 1;
+		ORDER BY r.meeting_date desc LIMIT 1;
 	</select>
 	
 	<!-- 获取上传文件的最新记录-->
