@@ -212,6 +212,7 @@ public class TalkRecordController {
 						sopFileBean.setBucketName(talkBean.getBucketName());
 						sopFileBean.setFileName(talkBean.getFileName());
 						sopFileBean.setInterviewRecordId(talkBean.getId());
+						sopFileBean.setFileStatus(StaticConst.FILE_STATUS_2);
 						long sopId =service.saveSopFile(sopFileBean);
 						//获取sopfile 主键
 						if(sopId!=0){
