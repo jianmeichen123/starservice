@@ -164,12 +164,13 @@ public class InvestmentdealController {
 									deptId= CUtils.get().object2Long( vMap.get("deptId"));
 								}
 							}
+							//给投资经理生成代码任务
 							SopTask bean = new SopTask();
 							bean.setProjectId(CUtils.get().object2Long(paramMap.get("projectId")));
 							bean.setTaskName(StaticConst.TASK_NAME_TZXY);
 							bean.setTaskType(StaticConst.TASK_TYPE_XTBG);
 							bean.setTaskFlag(StaticConst.TASK_FLAG_TZXY);
-							bean.setTaskStatus(StaticConst.TASK_STATUS_DRL);
+							bean.setTaskStatus(StaticConst.TASK_STATUS_DWG);
 							bean.setTaskOrder(StaticConst.TASK_ORDER_NORMAL);
 							bean.setAssignUid(sessionBean.getGuserid());
 							bean.setDepartmentId(deptId);
