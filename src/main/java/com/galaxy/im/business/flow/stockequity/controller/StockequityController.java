@@ -219,10 +219,12 @@ public class StockequityController {
 				bean.setFileStatus(StaticConst.FILE_STATUS_2);
 				bean.setFileValid(1);
 				bean.setCreatedTime(new Date().getTime());
-				
+				bean.setFileUid(sessionBean.getGuserid());
 				//业务操作
 				if(bean.getId()!=null && bean.getId()!=0){
 					//更新：添加新的一条记录
+					@SuppressWarnings("unused")
+					int vid = fcService.updateValid(bean.getId());
 					id =fcService.addSopFile(bean);
 				}else{
 					//上传之前:查数据库中是否存在信息，存在更新，否则新增

@@ -222,7 +222,7 @@
 						dct1.dict_value fileWorktypeId
 				FROM sop_file f
 			  	LEFT JOIN dict dct1 ON dct1.parent_code='fileWorktype' and dct1.dict_code=f.file_worktype 
-				WHERE f.project_id=#{projectId}
+				WHERE f.project_id=#{projectId} AND f.file_valid=1
 				<if test="fileWorkTypeList != null">
 					and f.file_worktype in 
 					<foreach collection="fileWorkTypeList" item="fileWorkType" index="index" open="(" close=")" separator=",">
@@ -305,4 +305,10 @@
 				ORDER BY s.updated_time DESC )tt
 		GROUP BY taskFlag;
 	</select>
+	
+	<!-- 更新sop_file -->
+	<update id="updateValid" parameterType="hashmap">
+		update sop_file set file_valid=0
+		where id = #{id};
+	</update>
 </mapper>

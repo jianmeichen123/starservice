@@ -347,5 +347,20 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 		}
 	}
 
+	/**
+	 * 更新文件上传valid=0
+	 */
+	@Override
+	public int updateValid(Long id) {
+		try{
+			Map<String, Object> paramMap =new HashMap<String, Object>();
+			paramMap.put("id", id);
+			return dao.updateValid(paramMap);
+		}catch(Exception e){
+			log.error(FlowCommonServiceImpl.class.getName() + ":updateValid",e);
+			throw new ServiceException(e);
+		}
+	}
+
 	
 }

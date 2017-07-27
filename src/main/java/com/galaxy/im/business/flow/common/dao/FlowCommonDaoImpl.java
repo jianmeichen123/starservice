@@ -211,5 +211,19 @@ public class FlowCommonDaoImpl extends BaseDaoImpl<ProjectBean, Long> implements
 			throw new DaoException(e);
 		}
 	}
+
+	/**
+	 * 更新valid=0
+	 */
+	@Override
+	public int updateValid(Map<String, Object> paramMap) {
+		try{
+			String sqlName = "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.updateValid";
+			return sqlSessionTemplate.update(sqlName,paramMap);
+		}catch(Exception e){
+			log.error(FlowCommonDaoImpl.class.getName() + "：updateValid",e);
+			throw new DaoException(e);
+		}
+	}
 	
 }
