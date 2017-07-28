@@ -216,7 +216,7 @@
 						f.file_suffix fileSuffix,
 						f.file_key fileKey,
 						f.file_valid fileValid,
-						f.updated_time fileTime,
+						f.created_time fileTime,
 						f.remark fileDs,
 						dct1.name fileWorktype,
 						dct1.dict_value fileWorktypeId
@@ -229,7 +229,7 @@
 						#{fileWorkType}
 					</foreach>
 				</if>
-				ORDER BY f.updated_time DESC 
+				ORDER BY f.created_time DESC 
 			) tt 
 		GROUP BY tt.fileWorktype;
 	</select>
