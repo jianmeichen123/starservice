@@ -157,8 +157,6 @@ public class CeoreviewController {
 							resultBean.setMap(map);
 							resultBean.setStatus("OK");
 						}else{
-							resultBean.setMap(map);
-							resultBean.setStatus("error");
 							resultBean.setMessage("项目当前状态已被修改，无法进入立项会阶段");
 						}
 					} else {
