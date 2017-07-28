@@ -201,13 +201,15 @@
     
     <!-- 获取流程上传文件的信息-->
 	<select id="getSopFileList" parameterType="hashmap" resultType="hashmap">
-		SELECT  tt.id,
+			SELECT  tt.id,
 				tt.fileName,
 				tt.fileSuffix,
 				tt.fileKey,
 				tt.fileValid,
 				tt.fileTime,
 				tt.fileDs,
+				tt.fileStatus,
+				tt.fileStatusCode,
 				tt.fileWorktype,
 				tt.fileWorktypeId 
 		FROM(
@@ -218,11 +220,14 @@
 						f.file_valid fileValid,
 						f.created_time fileTime,
 						f.remark fileDs,
+						dct2.name fileStatus,
+						dct2.dict_code fileStatusCode,
 						dct1.name fileWorktype,
 						dct1.dict_value fileWorktypeId
 				FROM sop_file f
-			  	LEFT JOIN dict dct1 ON dct1.parent_code='fileWorktype' and dct1.dict_code=f.file_worktype 
-				WHERE f.project_id=#{projectId} AND f.file_valid=1
+			  	LEFT JOIN dict dct1 ON dct1.parent_code='fileWorktype' and dct1.dict_code=f.file_worktype
+				LEFT JOIN dict dct2 ON dct2.parent_code='fileStatus' AND dct2.dict_code=f.file_status
+				WHERE f.project_id=#{projectId} AND f.file_valid=1 
 				<if test="fileWorkTypeList != null">
 					and f.file_worktype in 
 					<foreach collection="fileWorkTypeList" item="fileWorkType" index="index" open="(" close=")" separator=",">
