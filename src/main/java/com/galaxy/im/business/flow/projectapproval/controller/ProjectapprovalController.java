@@ -161,11 +161,13 @@ public class ProjectapprovalController {
 							paramMap.put("updateTime", DateUtil.getMillis(new Date()));
 							paramMap.put("meetingCount",count);
 							service.updateMeetingScheduling(paramMap);
+							resultBean.setMap(map);
+							resultBean.setStatus("OK");
+						}else{
+							resultBean.setMessage("项目当前状态已被修改，无法进入会后商务谈判阶段");	
 						}
-						resultBean.setMap(map);
-						resultBean.setStatus("OK");
 					}else{
-						resultBean.setMessage("项目当前状态已被修改，无法进入会后商务谈判");	
+						resultBean.setMessage("项目当前状态已被修改，无法进入会后商务谈判阶段");	
 					}
 				}
 			}

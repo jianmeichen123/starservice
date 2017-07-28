@@ -158,9 +158,11 @@ public class DuediligenceController {
 							bean.setApplyTime(new Timestamp(new Date().getTime()));
 							@SuppressWarnings("unused")
 							Long id = fcService.insertMeetingScheduling(bean);
+							resultBean.setMap(map);
+							resultBean.setStatus("OK");
+						}else{
+							resultBean.setMessage("项目当前状态已被修改，无法申请投决会排期");
 						}
-						resultBean.setMap(map);
-						resultBean.setStatus("OK");
 					}else{
 						resultBean.setMessage("项目当前状态已被修改，无法申请投决会排期");	
 					}

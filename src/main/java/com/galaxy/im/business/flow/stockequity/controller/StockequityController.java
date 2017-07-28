@@ -110,10 +110,11 @@ public class StockequityController {
 						if (fcService.enterNextFlow(paramMap)) {
 							resultBean.setFlag(1);
 							map.put("projectProgress", StaticConst.PROJECT_PROGRESS_10);
+							resultBean.setStatus("OK");
+							resultBean.setMap(map);
+						}else {
+							resultBean.setMessage("项目当前状态已被修改，无法进入投后运营阶段");
 						}
-						resultBean.setStatus("OK");
-						resultBean.setMap(map);
-
 					} else {
 						resultBean.setMessage("项目当前状态已被修改，无法进入投后运营阶段");
 					}

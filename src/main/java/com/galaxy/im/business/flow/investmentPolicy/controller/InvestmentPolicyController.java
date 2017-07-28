@@ -171,9 +171,11 @@ public class InvestmentPolicyController {
 							@SuppressWarnings("unused")
 							Long law = fcService.insertsopTask(beanLaw);
 						}
+						resultBean.setMap(map);
+						resultBean.setStatus("OK");
+					} else {
+						resultBean.setMessage("项目当前状态已被修改，无法进入尽职调查阶段");
 					}
-					resultBean.setMap(map);
-					resultBean.setStatus("OK");
 				} else {
 					resultBean.setMessage("项目当前状态已被修改，无法进入尽职调查阶段");
 				}
@@ -241,9 +243,11 @@ public class InvestmentPolicyController {
 							beanFd.setCreatedTime(new Date().getTime());
 							@SuppressWarnings("unused")
 							Long fd = fcService.insertsopTask(beanFd);
+							resultBean.setMap(map);
+							resultBean.setStatus("OK");
+						}else {
+							resultBean.setMessage("项目当前状态已被修改，无法进入股权交割阶段");
 						}
-						resultBean.setMap(map);
-						resultBean.setStatus("OK");
 					} else {
 						resultBean.setMessage("项目当前状态已被修改，无法进入股权交割阶段");
 					}

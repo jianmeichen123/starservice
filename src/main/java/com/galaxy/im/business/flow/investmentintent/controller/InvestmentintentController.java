@@ -168,11 +168,13 @@ public class InvestmentintentController{
 							beanLaw.setCreatedTime(new Date().getTime());
 							@SuppressWarnings("unused")
 							Long law = fcService.insertsopTask(beanLaw);
+							resultBean.setMap(map);
+							resultBean.setStatus("OK");
+						}else{
+							resultBean.setMessage("项目当前状态已被修改，无法进入尽职调查阶段");
 						}
-						resultBean.setMap(map);
-						resultBean.setStatus("OK");
 					}else{
-						resultBean.setMessage("项目当前状态已被修改，无法进入尽职调查");	
+						resultBean.setMessage("项目当前状态已被修改，无法进入尽职调查阶段");	
 					}
 				}
 			}

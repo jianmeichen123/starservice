@@ -154,9 +154,13 @@ public class CeoreviewController {
 							paramMap.put("scheduleStatus", 2);
 							paramMap.put("updatedTime", DateUtil.getMillis(new Date()));
 							icService.updateCeoScheduling(paramMap); // 修改ceo评审排期状态为已通过
+							resultBean.setMap(map);
+							resultBean.setStatus("OK");
+						}else{
+							resultBean.setMap(map);
+							resultBean.setStatus("error");
+							resultBean.setMessage("项目当前状态已被修改，无法进入立项会阶段");
 						}
-						resultBean.setMap(map);
-						resultBean.setStatus("OK");
 					} else {
 						resultBean.setMessage("项目当前状态已被修改，无法进入立项会阶段");
 					}

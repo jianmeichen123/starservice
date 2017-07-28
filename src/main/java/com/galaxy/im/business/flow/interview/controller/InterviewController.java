@@ -131,9 +131,11 @@ public class InterviewController {
 						if (fcService.enterNextFlow(paramMap)) {
 							resultBean.setFlag(1);
 							map.put("projectProgress", StaticConst.PROJECT_PROGRESS_2);
+							resultBean.setMap(map);
+							resultBean.setStatus("OK");
+						}else{
+							resultBean.setMessage("项目当前状态已被修改，无法进入内部评审阶段");
 						}
-						resultBean.setMap(map);
-						resultBean.setStatus("OK");
 					} else {
 						resultBean.setMessage("项目当前状态已被修改，无法进入内部评审阶段");
 					}
