@@ -27,6 +27,7 @@
 		update sop_project p
 		<set>
 		  <if test="projectProgress != null" > p.project_progress = #{projectProgress}, </if>
+		  <if test="projectStatus != null" > p.project_status = #{projectStatus}, </if>
 	      <if test="progressHistory != null" > p.progress_history = #{progressHistory} </if>
 		</set>
 		where p.project_status &lt;&gt; 'projectStatus:2' and p.id=#{projectId} 
