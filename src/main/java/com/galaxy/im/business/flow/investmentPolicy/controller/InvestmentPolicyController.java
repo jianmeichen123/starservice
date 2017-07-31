@@ -174,7 +174,7 @@ public class InvestmentPolicyController {
 						resultBean.setMap(map);
 						resultBean.setStatus("OK");
 					} else {
-						resultBean.setMessage("项目当前状态已被修改，无法进入尽职调查阶段");
+						resultBean.setMessage("项目当前状态或进度已被修改，请刷新");
 					}
 				} else {
 					resultBean.setMessage("项目当前状态已被修改，无法进入尽职调查阶段");
@@ -246,7 +246,7 @@ public class InvestmentPolicyController {
 							resultBean.setMap(map);
 							resultBean.setStatus("OK");
 						}else {
-							resultBean.setMessage("项目当前状态已被修改，无法进入股权交割阶段");
+							resultBean.setMessage("项目当前状态或进度已被修改，请刷新");
 						}
 					} else {
 						resultBean.setMessage("项目当前状态已被修改，无法进入股权交割阶段");

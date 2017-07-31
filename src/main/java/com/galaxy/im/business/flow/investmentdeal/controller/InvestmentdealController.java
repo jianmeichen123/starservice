@@ -184,7 +184,7 @@ public class InvestmentdealController {
 							resultBean.setMap(map);
 							resultBean.setStatus("OK");
 						}else{
-							resultBean.setMessage("项目当前状态已被修改，无法进入投资协议阶段");
+							resultBean.setMessage("项目当前状态或进度已被修改，请刷新");
 						}
 					} else {
 						resultBean.setMessage("项目当前状态已被修改，无法进入投资协议阶段");
@@ -261,7 +261,7 @@ public class InvestmentdealController {
 							resultBean.setMap(map);
 							resultBean.setStatus("OK");
 						}else{
-							resultBean.setMessage("项目当前状态已被修改，无法进入股权交割阶段");
+							resultBean.setMessage("项目当前状态或进度已被修改，请刷新");
 						}
 					} else {
 						resultBean.setMessage("项目当前状态已被修改，无法进入股权交割阶段");

@@ -168,9 +168,11 @@ public class BusinessnegotiationController {
 							bean.setCreatedTime(new Date().getTime());
 							@SuppressWarnings("unused")
 							Long id = fcService.insertsopTask(bean);
+							resultBean.setMap(map);
+							resultBean.setStatus("OK");
+						}else{
+							resultBean.setMessage("项目当前状态或进度已被修改，请刷新");
 						}
-						resultBean.setMap(map);
-						resultBean.setStatus("OK");
 					}else{
 						resultBean.setMessage("项目当前状态已被修改，无法进入投资协议");
 					}
@@ -234,9 +236,11 @@ public class BusinessnegotiationController {
 							bean.setCreatedTime(new Date().getTime());
 							@SuppressWarnings("unused")
 							Long id = fcService.insertsopTask(bean);
+							resultBean.setMap(map);
+							resultBean.setStatus("OK");
+						}else{
+							resultBean.setMessage("项目当前状态或进度已被修改，请刷新");
 						}
-						resultBean.setMap(map);
-						resultBean.setStatus("OK");
 					}else{
 						resultBean.setMessage("项目当前状态已被修改，无法进入投资意向书");	
 					}
