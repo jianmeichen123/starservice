@@ -19,7 +19,7 @@
 	<update id="vetoProject" parameterType="hashmap">
 		update sop_project p 
 			set p.project_status='projectStatus:2' 
-			where p.id=#{projectId};
+			where p.id=#{projectId} and p.project_status &lt;&gt; 'projectStatus:2';
 	</update>
 	
 	<!-- 进入到下一个流程阶段 -非绿色通道 -->
