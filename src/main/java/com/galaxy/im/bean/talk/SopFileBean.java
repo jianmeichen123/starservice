@@ -14,7 +14,7 @@ public class SopFileBean extends BaseEntity{
 	private String fileSource;				//档案来源 1:内部 2:外部
 	private String fileType;				//存储类型 1:文档 2:图片 3:音视频
 	private String remark;					//档案摘要
-	private long voucherId;					//签署证明文件ID
+	private Long voucherId;					//签署证明文件ID
 	private String fileStatus;				//档案状态 缺失，已上传，已审核... 
 	private long fileUid;					//上传人/起草者 uid
 	private String filUri;					//存储地址
@@ -87,14 +87,6 @@ public class SopFileBean extends BaseEntity{
 
 	public void setRemark(String remark) {
 		this.remark = remark;
-	}
-
-	public long getVoucherId() {
-		return voucherId;
-	}
-
-	public void setVoucherId(long voucherId) {
-		this.voucherId = voucherId;
 	}
 
 	public String getFileStatus() {
@@ -207,6 +199,14 @@ public class SopFileBean extends BaseEntity{
 
 	public void setMeetinRecordId(long meetinRecordId) {
 		this.meetinRecordId = meetinRecordId;
+	}
+
+	public Long getVoucherId() {
+		return voucherId;
+	}
+
+	public void setVoucherId(Long voucherId) {
+		this.voucherId = voucherId;
 	}
 	
 }
