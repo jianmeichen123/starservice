@@ -99,10 +99,10 @@
 				concat(file_name,'.',file_suffix) as fileName,
 				file_suffix fileSuffix,
 				file_key fileKey,
-				updated_time fileTime
+				created_time fileTime
 		FROM sop_file 
 		WHERE project_id=#{projectId} and file_worktype=#{fileWorkType}
-		ORDER BY updated_time DESC LIMIT 1;
+		ORDER BY created_time DESC LIMIT 1;
 	</select>
 	
 	<!-- 创建会议排期 -->
