@@ -65,6 +65,7 @@ public class SopProjectBean extends PagableEntity {
     
     
     
+    
 	public Long getIdeaId() {
 		return ideaId;
 	}
@@ -117,8 +118,13 @@ public class SopProjectBean extends PagableEntity {
 		this.projectValuations = projectValuations;
 	}
 	public Double getFinalValuations() {
+    	if(this.formatFinalValuations != null && !"".equals(this.formatFinalValuations.trim())){
+			this.finalValuations = NumberUtils.toFormatNoSplitFour(this.formatFinalValuations.trim());
+		}
+       
 		return finalValuations;
 	}
+
 	public void setFinalValuations(Double finalValuations) {
 		this.finalValuations = finalValuations;
 	}
@@ -138,8 +144,12 @@ public class SopProjectBean extends PagableEntity {
 		this.projectContribution = projectContribution;
 	}
 	public Double getFinalContribution() {
+		if(this.formatFinalContribution != null && !"".equals(this.formatFinalContribution.trim())){
+			this.finalContribution = NumberUtils.toFormatNoSplitFour(this.formatFinalContribution.trim());
+		}
 		return finalContribution;
 	}
+
 	public void setFinalContribution(Double finalContribution) {
 		this.finalContribution = finalContribution;
 	}
@@ -162,8 +172,13 @@ public class SopProjectBean extends PagableEntity {
 		this.projectShareRatio = projectShareRatio;
 	}
 	public Double getFinalShareRatio() {
+		if(this.formatFinalShareRatio != null && !"".equals(this.formatFinalShareRatio.trim())){
+			this.finalShareRatio = NumberUtils.toFormatNoSplitFour(this.formatFinalShareRatio.trim());
+		}
+		
 		return finalShareRatio;
 	}
+
 	public void setFinalShareRatio(Double finalShareRatio) {
 		this.finalShareRatio = finalShareRatio;
 	}
