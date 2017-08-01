@@ -109,7 +109,7 @@ public class ProjectapprovalController {
 							paramMap.put("updateTime", DateUtil.getMillis(new Date()));
 							service.updateMeetingScheduling(paramMap);
 						}else{
-							result.setMessage("项目当前状态或进度已被修改，请刷新");
+							rMap.put("message", "项目当前状态或进度已被修改，请刷新");
 						}
 					}else{
 						rMap.put("flag", 0);

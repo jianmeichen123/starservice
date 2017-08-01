@@ -109,7 +109,7 @@ public class InvestmentdealController {
 							paramMap.put("updatedTime", DateUtil.getMillis(new Date()));
 							iiService.updateInvestmentdeal(paramMap);  //修改投决会评审排期状态为已否决
 						}else{
-							result.setMessage("项目当前状态或进度已被修改，请刷新");
+							rMap.put("message", "项目当前状态或进度已被修改，请刷新");
 						}
 					}else{
 						rMap.put("flag", 0);
