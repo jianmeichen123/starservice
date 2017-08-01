@@ -51,7 +51,6 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 		try{
 			Map<String,Object> result = new HashMap<String,Object>();
 			result.put("flag", 0);
-			result.put("message", "未知错误");
 			Map<String,Object> daoMap = dao.projectStatus(paramMap);
 			
 			if(daoMap!=null && !daoMap.isEmpty()){

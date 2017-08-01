@@ -92,8 +92,7 @@ public class DuediligenceController {
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			Map<String,Object> rMap = new HashMap<String,Object>();
 			rMap.put("flag",0);
-			rMap.put("message", "未知错误");
-			
+			paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_6);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
 				//验证该项目的状态，查看能否进行操作
 				Map<String,Object> statusMap = fcService.projectStatus(paramMap);
@@ -104,6 +103,8 @@ public class DuediligenceController {
 						if(fcService.vetoProject(paramMap)){
 							rMap.put("flag", 1);
 							rMap.put("message", "否决项目成功");
+						}else{
+							result.setMessage("项目当前状态或进度已被修改，请刷新");
 						}
 					}else{
 						rMap.put("flag", 0);

@@ -19,7 +19,7 @@
 	<update id="vetoProject" parameterType="hashmap">
 		update sop_project p 
 			set p.project_status='projectStatus:2' 
-			where p.id=#{projectId} and p.project_status &lt;&gt; 'projectStatus:2';
+			where p.id=#{projectId} and p.project_progress = #{projectProgress};
 	</update>
 	
 	<!-- 进入到下一个流程阶段 -非绿色通道 -->
@@ -30,7 +30,7 @@
 		  <if test="projectStatus != null" > p.project_status = #{projectStatus}, </if>
 	      <if test="progressHistory != null" > p.progress_history = #{progressHistory} </if>
 		</set>
-		where p.project_status &lt;&gt; 'projectStatus:2' and p.id=#{projectId} 
+		where p.project_status &lt;&gt; 'projectStatus:2' and p.id=#{projectId}; 
 	</update>
 	
 	<!-- 生成代办任务 -->
