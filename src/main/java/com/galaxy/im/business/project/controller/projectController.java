@@ -217,7 +217,7 @@ public class projectController {
 						return resultBean;
 					}
 					// 项目创建者用户ID与当前登录人ID是否一样
-					if (userId != p.getCreateUid()) {
+					if (userId.longValue() != p.getCreateUid().longValue()) {
 						resultBean.setMessage("没有权限修改项目信息!");
 						return resultBean;
 					}
