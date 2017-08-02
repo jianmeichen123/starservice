@@ -103,7 +103,7 @@ public class CeoreviewController {
 						}
 					}else{
 						rMap.put("flag", 0);
-						rMap.put("message", CUtils.get().object2String(statusMap.get("message"), "项目当前状态或进度已被修改，请刷新"));
+						result.setMessage(CUtils.get().object2String(statusMap.get("message")));
 					}
 				}
 			}

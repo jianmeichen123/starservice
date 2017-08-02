@@ -92,7 +92,7 @@ public class InterviewController {
 						}
 					}else{
 						rMap.put("flag", 0);
-						rMap.put("message", CUtils.get().object2String(statusMap.get("message"), "未知错误"));
+						result.setMessage(CUtils.get().object2String(statusMap.get("message")));
 					}
 				}
 			}
