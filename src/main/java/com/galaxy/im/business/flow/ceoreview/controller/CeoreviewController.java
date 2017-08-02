@@ -94,6 +94,7 @@ public class CeoreviewController {
 						if(fcService.vetoProject(paramMap)){
 							rMap.put("flag", 1);
 							rMap.put("message", "否决项目成功");
+							result.setStatus("OK");
 							paramMap.put("scheduleStatus", 3);
 							paramMap.put("updatedTime", DateUtil.getMillis(new Date()));
 							icService.updateCeoScheduling(paramMap);  //修改ceo评审排期状态为已否决
@@ -106,7 +107,6 @@ public class CeoreviewController {
 					}
 				}
 			}
-			result.setStatus("OK");
 			result.setEntity(rMap);
 			
 		}catch(Exception e){

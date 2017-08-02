@@ -192,7 +192,6 @@ public class InvestmentdealController {
 					}
 				}
 			}
-			
 		} catch (Exception e) {
 		}
 		return resultBean;

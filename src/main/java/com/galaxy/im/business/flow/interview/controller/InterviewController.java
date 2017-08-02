@@ -97,7 +97,6 @@ public class InterviewController {
 				}
 			}
 			result.setEntity(rMap);
-			
 		}catch(Exception e){
 		}
 		return result;
