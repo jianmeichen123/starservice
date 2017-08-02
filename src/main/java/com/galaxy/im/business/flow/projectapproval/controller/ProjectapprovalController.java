@@ -101,7 +101,7 @@ public class ProjectapprovalController {
 						//否决项目
 						if(fcService.vetoProject(paramMap)){
 							rMap.put("flag", 1);
-							rMap.put("message", "否决项目成功");
+							result.setMessage("否决项目成功");
 							result.setStatus("OK");
 							//将立项会排期的会议结果和排期结果调整为已否决
 							paramMap.put("status", StaticConst.MEETING_RESULT_3);
@@ -110,7 +110,7 @@ public class ProjectapprovalController {
 							paramMap.put("updateTime", DateUtil.getMillis(new Date()));
 							service.updateMeetingScheduling(paramMap);
 						}else{
-							rMap.put("message", "项目当前状态或进度已被修改，请刷新");
+							result.setMessage("项目当前状态或进度已被修改，请刷新");
 						}
 					}else{
 						rMap.put("flag", 0);

@@ -93,13 +93,13 @@ public class CeoreviewController {
 						//否决
 						if(fcService.vetoProject(paramMap)){
 							rMap.put("flag", 1);
-							rMap.put("message", "否决项目成功");
+							result.setMessage("否决项目成功");
 							result.setStatus("OK");
 							paramMap.put("scheduleStatus", 3);
 							paramMap.put("updatedTime", DateUtil.getMillis(new Date()));
 							icService.updateCeoScheduling(paramMap);  //修改ceo评审排期状态为已否决
 						}else{
-							rMap.put("message", "项目当前状态或进度已被修改，请刷新");
+							result.setMessage("项目当前状态或进度已被修改，请刷新");
 						}
 					}else{
 						rMap.put("flag", 0);
