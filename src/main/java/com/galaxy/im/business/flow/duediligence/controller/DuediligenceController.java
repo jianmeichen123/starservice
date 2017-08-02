@@ -165,7 +165,7 @@ public class DuediligenceController {
 							resultBean.setMessage("项目当前状态或进度已被修改，请刷新");
 						}
 					}else{
-						resultBean.setMessage("项目当前状态已被修改，无法申请投决会排期");	
+						resultBean.setMessage("项目当前状态或进度已被修改，请刷新");	
 					}
 				}
 			}

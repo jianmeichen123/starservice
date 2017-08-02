@@ -177,7 +177,7 @@ public class InvestmentPolicyController {
 						resultBean.setMessage("项目当前状态或进度已被修改，请刷新");
 					}
 				} else {
-					resultBean.setMessage("项目当前状态已被修改，无法进入尽职调查阶段");
+					resultBean.setMessage("项目当前状态或进度已被修改，请刷新");
 				}
 			}
 		} catch (Exception e) {
@@ -249,7 +249,7 @@ public class InvestmentPolicyController {
 							resultBean.setMessage("项目当前状态或进度已被修改，请刷新");
 						}
 					} else {
-						resultBean.setMessage("项目当前状态已被修改，无法进入股权交割阶段");
+						resultBean.setMessage("项目当前状态或进度已被修改，请刷新");
 					}
 				}
 			}
