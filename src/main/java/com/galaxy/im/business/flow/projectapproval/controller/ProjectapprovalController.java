@@ -102,6 +102,7 @@ public class ProjectapprovalController {
 						if(fcService.vetoProject(paramMap)){
 							rMap.put("flag", 1);
 							rMap.put("message", "否决项目成功");
+							result.setStatus("OK");
 							//将立项会排期的会议结果和排期结果调整为已否决
 							paramMap.put("status", StaticConst.MEETING_RESULT_3);
 							paramMap.put("scheduleStatus", 3);
@@ -117,9 +118,7 @@ public class ProjectapprovalController {
 					}
 				}
 			}
-			result.setStatus("OK");
 			result.setEntity(rMap);
-			
 		}catch(Exception e){
 		}
 		return result;

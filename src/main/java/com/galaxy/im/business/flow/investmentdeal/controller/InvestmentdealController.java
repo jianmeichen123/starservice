@@ -105,6 +105,7 @@ public class InvestmentdealController {
 						if(fcService.vetoProject(paramMap)){
 							rMap.put("flag", 1);
 							rMap.put("message", "否决项目成功");
+							result.setStatus("OK");
 							paramMap.put("scheduleStatus", 3);
 							paramMap.put("updatedTime", DateUtil.getMillis(new Date()));
 							iiService.updateInvestmentdeal(paramMap);  //修改投决会评审排期状态为已否决
@@ -117,9 +118,7 @@ public class InvestmentdealController {
 					}
 				}
 			}
-			result.setStatus("OK");
 			result.setEntity(rMap);
-			
 		}catch(Exception e){
 		}
 		return result;

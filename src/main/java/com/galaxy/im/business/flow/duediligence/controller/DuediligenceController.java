@@ -113,7 +113,6 @@ public class DuediligenceController {
 					}
 				}
 			}
-			
 			result.setEntity(rMap);
 		}catch(Exception e){
 		}

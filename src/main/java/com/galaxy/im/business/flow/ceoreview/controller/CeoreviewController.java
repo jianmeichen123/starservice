@@ -108,7 +108,6 @@ public class CeoreviewController {
 				}
 			}
 			result.setEntity(rMap);
-			
 		}catch(Exception e){
 		}
 		return result;
