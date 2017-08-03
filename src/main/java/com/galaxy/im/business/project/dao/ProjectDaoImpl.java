@@ -140,5 +140,18 @@ public class ProjectDaoImpl extends BaseDaoImpl<ProjectBean,Long> implements IPr
 		}
 	}
 
+	/**
+	 * 项目是否处于接触访谈阶段
+	 */
+	@Override
+	public int projectIsInterview(Long id) {
+		try{
+			return sqlSessionTemplate.selectOne(getSqlName("projectIsInterview"),id);
+		}catch(Exception e){
+			log.error(ProjectDaoImpl.class.getName() + "projectIsInterview",e);
+			throw new DaoException(e);
+		}
+	}
+
 	
 }

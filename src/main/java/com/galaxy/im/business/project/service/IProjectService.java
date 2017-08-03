@@ -25,4 +25,6 @@ public interface IProjectService extends IBaseService<ProjectBean>{
 	int updateInvestById(SopProjectBean bean);
 	//根据项目id查看项目信息
 	SopProjectBean getProjectInfoById(Long id);
+	//项目是否处于接触访谈阶段
+	int projectIsInterview(Long id);
 }
