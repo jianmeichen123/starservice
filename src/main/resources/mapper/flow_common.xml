@@ -276,6 +276,7 @@
 				project_name projectName,
 				project_type projectType,
 				project_progress projectProgress,
+				project_status projectStatus,
 				project_departId projectDepartId,
 				create_uid createUid,
 				progress_history progressHistory,
@@ -288,6 +289,7 @@
 		<result column="projectName" property="projectName"/>
 		<result column="projectType" property="projectType"/>
 		<result column="projectProgress" property="projectProgress"/>
+		<result column="projectStatus" property="projectStatus"/>
 		<result column="projectDepartId" property="projectDepartId"/>
 		<result column="createUid" property="createUid"/>
 		<result column="progressHistory" property="progressHistory"/>

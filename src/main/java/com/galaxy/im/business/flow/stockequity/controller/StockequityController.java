@@ -203,64 +203,66 @@ public class StockequityController {
 			
 			if(bean!=null){
 				SopProjectBean sopBean = fcService.getSopProjectInfo(paramMap);
-				if(sopBean!=null){
+				if(sopBean!=null && sopBean.getProjectStatus().equals(StaticConst.PROJECT_STATUS_0)){
 					//项目id，当前阶段，所属事业线
 					bean.setProjectId(sopBean.getId());
 					bean.setProjectProgress(sopBean.getProjectProgress());
-				}
-				//事业线为用户部门id
-				bean.setCareerLine(deptId);
-				//文件类型
-				String fileType =fcService.getFileType(bean.getFileSuffix());
-				bean.setFileType(fileType);
-				//文件名称拆分
-				Map<String,String> nameMap = fcService.transFileNames(bean.getFileName());
-				bean.setFileName(nameMap.get("fileName"));
-				//文件状态：已上传
-				bean.setFileStatus(StaticConst.FILE_STATUS_2);
-				bean.setFileValid(1);
-				bean.setCreatedTime(new Date().getTime());
-				bean.setFileUid(sessionBean.getGuserid());
-				//业务操作
-				if(bean.getId()!=null && bean.getId()!=0){
-					//更新：添加新的一条记录
-					@SuppressWarnings("unused")
-					int vid = fcService.updateValid(bean.getId());
-					id =fcService.addSopFile(bean);
-				}else{
-					//上传之前:查数据库中是否存在信息，存在更新，否则新增
-					Map<String,Object> info = fcService.getLatestSopFileInfo(paramMap);
-					if(info!=null && info.get("id")!=null && CUtils.get().object2Long(info.get("id"))!=0){
-						bean.setId(CUtils.get().object2Long(info.get("id")));
-						bean.setUpdatedTime(new Date().getTime());
-						id=fcService.updateSopFile(bean);
-					}else{
+					//事业线为用户部门id
+					bean.setCareerLine(deptId);
+					//文件类型
+					String fileType =fcService.getFileType(bean.getFileSuffix());
+					bean.setFileType(fileType);
+					//文件名称拆分
+					Map<String,String> nameMap = fcService.transFileNames(bean.getFileName());
+					bean.setFileName(nameMap.get("fileName"));
+					//文件状态：已上传
+					bean.setFileStatus(StaticConst.FILE_STATUS_2);
+					bean.setFileValid(1);
+					bean.setCreatedTime(new Date().getTime());
+					bean.setFileUid(sessionBean.getGuserid());
+					//业务操作
+					if(bean.getId()!=null && bean.getId()!=0){
+						//更新：添加新的一条记录
+						@SuppressWarnings("unused")
+						int vid = fcService.updateValid(bean.getId());
 						id =fcService.addSopFile(bean);
+					}else{
+						//上传之前:查数据库中是否存在信息，存在更新，否则新增
+						Map<String,Object> info = fcService.getLatestSopFileInfo(paramMap);
+						if(info!=null && info.get("id")!=null && CUtils.get().object2Long(info.get("id"))!=0){
+							bean.setId(CUtils.get().object2Long(info.get("id")));
+							bean.setUpdatedTime(new Date().getTime());
+							id=fcService.updateSopFile(bean);
+						}else{
+							id =fcService.addSopFile(bean);
+						}
 					}
-				}
-				if(id>0){
-					//更新工商转让凭证待办任务
-					SopTask taskBean = new SopTask();
-					if (bean.getFileWorkType().equals(StaticConst.FILE_WORKTYPE_8)) {
-						taskBean.setTaskName(StaticConst.TASK_NAME_GSBG);
-						taskBean.setTaskFlag(StaticConst.TASK_FLAG_GSBG);
-					}else if (bean.getFileWorkType().equals(StaticConst.FILE_WORKTYPE_9)) {//更新资金调拨凭证
-						taskBean.setTaskName(StaticConst.TASK_NAME_ZJBF);
-						taskBean.setTaskFlag(StaticConst.TASK_FLAG_ZJBF);
+					if(id>0){
+						//更新工商转让凭证待办任务
+						SopTask taskBean = new SopTask();
+						if (bean.getFileWorkType().equals(StaticConst.FILE_WORKTYPE_8)) {
+							taskBean.setTaskName(StaticConst.TASK_NAME_GSBG);
+							taskBean.setTaskFlag(StaticConst.TASK_FLAG_GSBG);
+						}else if (bean.getFileWorkType().equals(StaticConst.FILE_WORKTYPE_9)) {//更新资金调拨凭证
+							taskBean.setTaskName(StaticConst.TASK_NAME_ZJBF);
+							taskBean.setTaskFlag(StaticConst.TASK_FLAG_ZJBF);
+						}
+						taskBean.setProjectId(bean.getProjectId());
+						taskBean.setTaskStatus(StaticConst.TASK_STATUS_YWG);
+						taskBean.setTaskType(StaticConst.TASK_TYPE_XTBG);
+						taskBean.setUpdatedTime(new Date().getTime());
+						taskBean.setTaskDeadline(new Date());
+						@SuppressWarnings("unused")
+						Long taskId = fcService.updateSopTask(taskBean);
+						//返回信息
+						paramMap.clear();
+						paramMap.put("fileId", id);
+						resultBean.setMap(paramMap);
+						resultBean.setStatus("ok");
+						resultBean.setFlag(1);
 					}
-					taskBean.setProjectId(bean.getProjectId());
-					taskBean.setTaskStatus(StaticConst.TASK_STATUS_YWG);
-					taskBean.setTaskType(StaticConst.TASK_TYPE_XTBG);
-					taskBean.setUpdatedTime(new Date().getTime());
-					taskBean.setTaskDeadline(new Date());
-					@SuppressWarnings("unused")
-					Long taskId = fcService.updateSopTask(taskBean);
-					//返回信息
-					paramMap.clear();
-					paramMap.put("fileId", id);
-					resultBean.setMap(paramMap);
-					resultBean.setStatus("ok");
-					resultBean.setFlag(1);
+				}else{
+					resultBean.setMessage("项目当前状态或进度已被修改，请刷新");	
 				}
 			}
 		}catch(Exception e){
