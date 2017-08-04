@@ -30,6 +30,8 @@ public class ProjectTalkBean extends PagableEntity{
 	private String bucketName;			//档案bucketName
 	private String fileName;			//档案名称
 	
+	private String projectProgress;		//项目的当前所处阶段
+	
 	public long getProjectId() {
 		return projectId;
 	}
@@ -143,6 +145,12 @@ public class ProjectTalkBean extends PagableEntity{
 	}
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
+	}
+	public String getProjectProgress() {
+		return projectProgress;
+	}
+	public void setProjectProgress(String projectProgress) {
+		this.projectProgress = projectProgress;
 	}
 	
 

@@ -204,7 +204,8 @@ public class ProjectapprovalController {
 			
 			if(bean!=null){
 				SopProjectBean sopBean = fcService.getSopProjectInfo(paramMap);
-				if(sopBean!=null && sopBean.getProjectStatus().equals(StaticConst.PROJECT_STATUS_0)){
+				if(sopBean!=null && sopBean.getProjectStatus().equals(StaticConst.PROJECT_STATUS_0)
+						&& sopBean.getProjectProgress().equals(bean.getProjectProgress())){
 					//项目id，当前阶段，所属事业线
 					bean.setProjectId(sopBean.getId());
 					bean.setProjectProgress(sopBean.getProjectProgress());
