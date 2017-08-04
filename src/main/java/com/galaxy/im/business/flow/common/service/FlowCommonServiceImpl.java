@@ -295,9 +295,13 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 	 */
 	@Override
 	public String getFileType(String fileSuffix) {
-		if(fileSuffix.equals("pdf") || fileSuffix.equals("PDF")){
-			return StaticConst.FILE_TYPE_1;
-		}else if(fileSuffix.equals("jpeg") || fileSuffix.equals("jpg") ||fileSuffix.equals("png")){
+		if(fileSuffix.contains("PDF") || fileSuffix.contains("pdf")
+				|| fileSuffix.contains("xls") || fileSuffix.contains("xlsx") 
+				|| fileSuffix.contains("XLS") || fileSuffix.contains("XLSX")){
+			return StaticConst.FILE_TYPE_1; 
+		}else if(fileSuffix.contains("jpeg") || fileSuffix.contains("jpg")
+				||fileSuffix.contains("png") ||fileSuffix.contains("JPG") 
+				|| fileSuffix.contains("JPEG") ||fileSuffix.contains("PNG")){
 			return StaticConst.FILE_TYPE_4;
 		}else{
 			return "";

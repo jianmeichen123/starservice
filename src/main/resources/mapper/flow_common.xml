@@ -101,7 +101,7 @@
 				file_key fileKey,
 				created_time fileTime
 		FROM sop_file 
-		WHERE project_id=#{projectId} and file_worktype=#{fileWorkType}
+		WHERE file_valid=1 and project_id=#{projectId} and file_worktype=#{fileWorkType}
 		ORDER BY created_time DESC LIMIT 1;
 	</select>
 	

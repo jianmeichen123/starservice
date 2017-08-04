@@ -80,53 +80,59 @@ public class ProjectTalkController {
 			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 			Map<String,Object> paramMap = new HashMap<String,Object>();
 			if(bean!=null){
-				//项目访谈记录存在，进行更新操作，否则保存
-				if(bean.getId()!=null && bean.getId()!=0){
-					//保存sop_file
-					if(!"".equals(bean.getFileKey()) && bean.getFileKey()!=null){
-						paramMap.put("projectId", bean.getProjectId());
-						SopProjectBean p = fcService.getSopProjectInfo(paramMap);
-						//通过用户id获取一些信息
-						List<Map<String, Object>> list = fcService.getDeptId(sessionBean.getGuserid(),request,response);
-						if(list!=null){
-							for(Map<String, Object> vMap:list){
-								deptId = CUtils.get().object2Long( vMap.get("deptId"));
+				paramMap.put("projectId", bean.getProjectId());
+				Map<String, Object> projectStatus = fcService.projectStatus(paramMap);
+				if(projectStatus.containsKey("flag")&&CUtils.get().object2Integer(projectStatus.get("flag"))==1){
+					//项目访谈记录存在，进行更新操作，否则保存
+					if(bean.getId()!=null && bean.getId()!=0){
+						//保存sop_file
+						if(!"".equals(bean.getFileKey()) && bean.getFileKey()!=null){
+							
+							SopProjectBean p = fcService.getSopProjectInfo(paramMap);
+							//通过用户id获取一些信息
+							List<Map<String, Object>> list = fcService.getDeptId(sessionBean.getGuserid(),request,response);
+							if(list!=null){
+								for(Map<String, Object> vMap:list){
+									deptId = CUtils.get().object2Long( vMap.get("deptId"));
+								}
 							}
-						}
-						Map<String,String> nameMap = transFileNames(bean.getFileName());
-						SopFileBean sopFileBean =new SopFileBean();
-						if(p!=null){
-							//项目id，当前阶段，所属事业线
-							sopFileBean.setProjectId(p.getId());
-							sopFileBean.setProjectProgress(p.getProjectProgress());
-						}
-						sopFileBean.setCareerLine(deptId);
-						sopFileBean.setFileKey(bean.getFileKey());
-						sopFileBean.setFileLength(bean.getFileLength());
-						sopFileBean.setBucketName(bean.getBucketName());
-						sopFileBean.setFileName(nameMap.get("fileName"));
-						sopFileBean.setFileSuffix(nameMap.get("fileSuffix"));
-						sopFileBean.setFileType(StaticConst.FILE_TYPE_2);
-						sopFileBean.setMeetinRecordId(bean.getId());
-						sopFileBean.setFileUid(sessionBean.getGuserid());
-						sopFileBean.setFileStatus(StaticConst.FILE_STATUS_2);
-						sopFileBean.setCreatedTime(new Date().getTime());
-						sopFileBean.setFileSource("1");
+							Map<String,String> nameMap = transFileNames(bean.getFileName());
+							SopFileBean sopFileBean =new SopFileBean();
+							if(p!=null){
+								//项目id，当前阶段，所属事业线
+								sopFileBean.setProjectId(p.getId());
+								sopFileBean.setProjectProgress(p.getProjectProgress());
+							}
+							sopFileBean.setCareerLine(deptId);
+							sopFileBean.setFileKey(bean.getFileKey());
+							sopFileBean.setFileLength(bean.getFileLength());
+							sopFileBean.setBucketName(bean.getBucketName());
+							sopFileBean.setFileName(nameMap.get("fileName"));
+							sopFileBean.setFileSuffix(nameMap.get("fileSuffix"));
+							sopFileBean.setFileType(StaticConst.FILE_TYPE_2);
+							sopFileBean.setMeetinRecordId(bean.getId());
+							sopFileBean.setFileUid(sessionBean.getGuserid());
+							sopFileBean.setFileStatus(StaticConst.FILE_STATUS_2);
+							sopFileBean.setCreatedTime(new Date().getTime());
+							sopFileBean.setFileSource("1");
+							
+							long sopId =talkService.saveSopFile(sopFileBean);
+							//获取sopfile 主键
+							if(sopId!=0){
+								bean.setFileId(sopId);
+							}
 						
-						long sopId =talkService.saveSopFile(sopFileBean);
-						//获取sopfile 主键
-						if(sopId!=0){
-							bean.setFileId(sopId);
 						}
-					
+						id=bean.getId();
+						updateCount = service.updateById(bean);
+					}else{
+						//保存
+						bean.setViewDate(DateUtil.convertStringtoD(bean.getViewDateStr()));
+						bean.setCreatedId(sessionBean.getGuserid());
+						id = service.insert(bean);
 					}
-					id=bean.getId();
-					updateCount = service.updateById(bean);
 				}else{
-					//保存
-					bean.setViewDate(DateUtil.convertStringtoD(bean.getViewDateStr()));
-					bean.setCreatedId(sessionBean.getGuserid());
-					id = service.insert(bean);
+					resultBean.setMessage("项目当前状态或进度已被修改，请刷新");	
 				}
 			}
 			
