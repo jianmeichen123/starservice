@@ -84,8 +84,7 @@ public class ProjectTalkController {
 				Map<String, Object> projectStatus = fcService.projectStatus(paramMap);
 				SopProjectBean p = fcService.getSopProjectInfo(paramMap);
 				if(projectStatus.containsKey("flag") && 
-						CUtils.get().object2Integer(projectStatus.get("flag"))==1 && 
-						p.getProjectProgress().equals(bean.getProjectProgress()) ){
+						CUtils.get().object2Integer(projectStatus.get("flag"))==1){
 					//项目访谈记录存在，进行更新操作，否则保存
 					if(bean.getId()!=null && bean.getId()!=0){
 						//保存sop_file
