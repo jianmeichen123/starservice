@@ -6,18 +6,15 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
-import com.galaxy.im.common.db.GSONUtil;
 import com.galaxyinternet.framework.core.model.BaseUser;
 
 public class User extends BaseUser {
 	private static final long serialVersionUID = 1L;
 
-	private int userTzjlSum;
-	
 	@NotBlank(message="真实姓名不能为空")
 	private String realName;// 真实姓名
 	@NotBlank(message="登陆名称不能为空")
@@ -45,21 +42,14 @@ public class User extends BaseUser {
 	private String address;// 地址
 	private Boolean isAdmin;// 是否管理员
 	
+	//2016/8/23 修改app端获取当前登录人的版本号
+	private String version;
+	//2016/12/21 添加app端的新字段
 	private boolean isCurrentUser;
 	
-	private String companyId;
+	//部门Ids2016/12/21
+	private List<Long> departmentIds;
 	
-	
-	
-	private long idstr;
-	public boolean isCurrentUser() {
-		return isCurrentUser;
-	}
-
-	public void setCurrentUser(boolean isCurrentUser) {
-		this.isCurrentUser = isCurrentUser;
-	}
-
 	public List<Long> getIds() {
 		return ids;
 	}
@@ -74,18 +64,26 @@ public class User extends BaseUser {
 	private List<Long> ids;
 	private String nameMbLike;
 	
-	//部门Ids
-	private List<Long> departmentIds;
+	//2017/4/6 修改 添加设备区分开 
 	
-	public List<Long> getDepartmentIds() {
-		return departmentIds;
-	}
-	public void setDepartmentIds(List<Long> departmentIds) {
-		this.departmentIds = departmentIds;
-	}
+	private String aclient;         //客户端名称
+	/*
+	 * private String salt; private String originSalt;
+	 */
+	private String androidVersion;   //获取Android版本号（系统版本号）
+	
+	private String androidClient;    //登录设备（手机设备） 
 
 	public String getBirthStr() {
 		return birthStr;
+	}
+
+	public String getAclient() {
+		return aclient;
+	}
+
+	public void setAclient(String aclient) {
+		this.aclient = aclient;
 	}
 
 	public void setBirthStr(String birthStr) {
@@ -205,7 +203,7 @@ public class User extends BaseUser {
 	}
 
 	public Date getBirth() {
-		if (CUtils.get().stringIsNotEmpty(this.getBirthStr())) {
+		if (StringUtils.isNotBlank(this.getBirthStr())) {
 			try {
 				this.setBirth(DateUtil.convertStringToDate(this.getBirthStr()));
 			} catch (ParseException e) {
@@ -251,47 +249,47 @@ public class User extends BaseUser {
 		this.roleId = roleId;
 	}
 
-	public int getUserTzjlSum() {
-		return userTzjlSum;
+	public String getVersion() {
+		return version;
 	}
 
-	public void setUserTzjlSum(int userTzjlSum) {
-		this.userTzjlSum = userTzjlSum;
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public boolean isCurrentUser() {
+		return isCurrentUser;
+	}
+
+	public void setCurrentUser(boolean isCurrentUser) {
+		this.isCurrentUser = isCurrentUser;
+	}
+
+	public List<Long> getDepartmentIds() {
+		return departmentIds;
+	}
+
+	public void setDepartmentIds(List<Long> departmentIds) {
+		this.departmentIds = departmentIds;
+	}
+
+	public String getAndroidVersion() {
+		return androidVersion;
+	}
+
+	public void setAndroidVersion(String androidVersion) {
+		this.androidVersion = androidVersion;
+	}
+
+	public String getAndroidClient() {
+		return androidClient;
+	}
+
+	public void setAndroidClient(String androidClient) {
+		this.androidClient = androidClient;
 	}
 	
-	@Override
-	public Long getId() {
-		return this.id;
-	}
-
-	@Override
-	public void setId(Long id) {
-		if(id!=null){
-			this.idstr = id.longValue();
-		}
-		this.id = id;
-	}
 	
-	public long getIdstr() {
-		return idstr;
-	}
-
-	public void setIdstr(long idstr) {
-		if(this.id!=null){
-			this.idstr = this.id.longValue();
-		}else this.idstr = idstr;
-	}
 	
-	public String getCompanyId() {
-		return companyId;
-	}
-
-	public void setCompanyId(String companyId) {
-		this.companyId = companyId;
-	}
-
-	@Override
-	public String toString() {
-		return GSONUtil.toJson(this);
-	}
+	
 }
