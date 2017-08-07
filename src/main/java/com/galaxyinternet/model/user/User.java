@@ -12,7 +12,7 @@ import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.db.GSONUtil;
 
-public class User extends BaseUser {
+public class User extends com.galaxyinternet.framework.core.model.BaseUser {
 	private static final long serialVersionUID = 1L;
 
 	private int userTzjlSum;
