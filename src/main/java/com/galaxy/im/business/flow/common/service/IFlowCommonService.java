@@ -47,5 +47,7 @@ public interface IFlowCommonService extends IBaseService<ProjectBean>{
 	List<Map<String, Object>> getSopTaskList(Map<String, Object> paramMap);
 	//更新文件上传的历史记录的valid=0
 	int updateValid(Long id);
+	//获取项目状态
+	Map<String, Object> getProjectStatus(Map<String, Object> paramMap);
 
 }

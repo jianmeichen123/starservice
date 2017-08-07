@@ -365,5 +365,38 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 		}
 	}
 
+	/**
+	 * 获取项目状态
+	 */
+	@Override
+	public Map<String, Object> getProjectStatus(Map<String, Object> paramMap) {
+
+		try{
+			Map<String,Object> result = new HashMap<String,Object>();
+			result.put("flag", 0);
+			Map<String,Object> daoMap = dao.projectStatus(paramMap);
+			
+			if(daoMap!=null && !daoMap.isEmpty()){
+				String projectStatus = CUtils.get().object2String(daoMap.get("dictCode"),"");
+				if("projectStatus:0".equals(projectStatus)){
+					result.put("flag",1);
+				}else if("projectStatus:1".equals(projectStatus)){
+					result.put("flag",1);
+				}else if("projectStatus:2".equals(projectStatus)){
+					result.put("flag",0);
+				}else if("projectStatus:3".equals(projectStatus)){
+					result.put("flag",0);
+				}else{
+					result.put("flag",0);
+				}
+			}
+			return result;
+		}catch(Exception e){
+			log.error(FlowCommonServiceImpl.class.getName() + ":getProjectStatus",e);
+			throw new ServiceException(e);
+		}
+	
+	}
+
 	
 }

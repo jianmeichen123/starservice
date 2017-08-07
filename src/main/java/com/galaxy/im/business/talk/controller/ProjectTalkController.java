@@ -81,7 +81,7 @@ public class ProjectTalkController {
 			Map<String,Object> paramMap = new HashMap<String,Object>();
 			if(bean!=null){
 				paramMap.put("projectId", bean.getProjectId());
-				Map<String, Object> projectStatus = fcService.projectStatus(paramMap);
+				Map<String, Object> projectStatus = fcService.getProjectStatus(paramMap);
 				SopProjectBean p = fcService.getSopProjectInfo(paramMap);
 				if(projectStatus.containsKey("flag") && 
 						CUtils.get().object2Integer(projectStatus.get("flag"))==1){
