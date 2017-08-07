@@ -11,8 +11,9 @@ import org.hibernate.validator.constraints.NotBlank;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.db.GSONUtil;
+import com.galaxyinternet.framework.core.model.BaseUser;
 
-public class User extends com.galaxyinternet.framework.core.model.BaseUser {
+public class User extends BaseUser {
 	private static final long serialVersionUID = 1L;
 
 	private int userTzjlSum;
