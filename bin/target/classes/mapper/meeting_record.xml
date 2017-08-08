@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.bean.meeting.MeetingRecordBean">
+
+	<!-- 会议记录列表 -->
+	<select id="getMeetingRecordList" parameterType="hashmap" resultType="hashmap">
+		SELECT  tt.id,
+				date_format(tt.meeting_date,'%Y/%m/%d %H:%i') meetingDateStr,
+				tt.meeting_notes meetingNotes,
+				dct1.dict_value meetingResultId,
+				dct1.`name` meetingResult,
+				dct2.dict_value resultReasonId,
+				dct2.`name` resultReason,
+				dct3.dict_value meetingTypeId,
+				dct3.`name` meetingType
+		FROM(
+			SELECT  r.id,
+					case r.meeting_type
+					WHEN 'meetingType:3' THEN 'meeting3Result'
+					WHEN 'meetingType:5' THEN 'meeting5Result'
+					else 'meetingResult' 
+					end meetingResult,
+					case 
+					WHEN locate('Veto',r.result_reason)>0 THEN 'meetingVetoReason'
+					WHEN locate('Undetermined',r.result_reason)>0 THEN 'meetingUndeterminedReason'
+					WHEN locate('Following',r.result_reason)>0 THEN 'meetingFollowingReason'
+					else ''
+					end resultReason,
+					r.meeting_result,
+					r.result_reason,
+					r.meeting_date,
+					r.meeting_notes,
+					case  
+					WHEN locate('pos',r.meeting_type)>0 THEN 'postMeetingType'
+					else 'meetingType'
+					end meetingType,
+					r.meeting_type
+				FROM sop_meeting_record r 
+				WHERE r.project_id=#{projectId} 
+				<if test="meetingTypeList != null">
+					and r.meeting_type in 
+					<foreach collection="meetingTypeList" item="meetingType" index="index" open="(" close=")" separator=",">
+						#{meetingType}
+					</foreach>
+				</if>
+				<!-- and r.meeting_type=#{meetingType}  -->
+				and r.record_type=#{recordType})tt 
+		LEFT JOIN dict dct1 ON dct1.parent_code=tt.meetingResult and dct1.dict_code=tt.meeting_result
+		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason
+		LEFT JOIN dict dct3 ON dct3.parent_code=tt.meetingType and dct3.dict_code=tt.meeting_type
+		ORDER BY tt.meeting_date ${direction}
+		LIMIT #{offset},${limit};
+	</select>
+	
+	<!-- 会议记录列表个数 -->
+	<select id="countMeetingRecordList" parameterType="hashmap" resultType="integer">
+		SELECT count(1) 
+		FROM(
+			SELECT  r.id,
+					case r.meeting_type
+					WHEN 'meetingType:3' THEN 'meeting3Result'
+					WHEN 'meetingType:5' THEN 'meeting5Result'
+					else 'meetingResult' 
+					end meetingResult,
+					case 
+					WHEN locate('Veto',r.result_reason)>0 THEN 'meetingVetoReason'
+					WHEN locate('Undetermined',r.result_reason)>0 THEN 'meetingUndeterminedReason'
+					WHEN locate('Following',r.result_reason)>0 THEN 'meetingFollowingReason'
+					else ''
+					end resultReason,
+					r.meeting_result,
+					r.result_reason,
+					r.meeting_date,
+					r.meeting_notes,
+					case  
+					WHEN locate('pos',r.meeting_type)>0 THEN 'postMeetingType'
+					else 'meetingType'
+					end meetingType,
+					r.meeting_type
+				FROM sop_meeting_record r
+				WHERE r.project_id=#{projectId} 
+				<if test="meetingTypeList != null">
+					and r.meeting_type in 
+					<foreach collection="meetingTypeList" item="meetingType" index="index" open="(" close=")" separator=",">
+						#{meetingType}
+					</foreach>
+				</if>
+				<!-- and r.meeting_type=#{meetingType}  -->
+				and r.record_type=#{recordType})tt 
+		LEFT JOIN dict dct1 ON dct1.parent_code=tt.meetingResult and dct1.dict_code=tt.meeting_result
+		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason
+		LEFT JOIN dict dct3 ON dct3.parent_code=tt.meetingType and dct3.dict_code=tt.meeting_type;
+	</select>
+	
+	<!-- 会议记录的详情 -->
+	<select id="selectById" resultType="com.galaxy.im.bean.meeting.MeetingRecordBean" parameterType="java.lang.Long" resultMap="detailMap">
+		SELECT  tt.id,
+				date_format(tt.meeting_date,'%Y/%m/%d %H:%i') meetingDateStr,
+				tt.meeting_notes meetingNotes,
+				tt.reason_other reasonOther,
+				tt.file_key fileKey,
+				tt.file_length fileLength,
+				tt.bucket_name bucketName,
+				tt.file_name fileName,
+				dct1.dict_value meetingResultId,
+				dct1.dict_code meetingResultCode,
+				dct1.`name` meetingResult,
+				dct2.dict_value resultReasonId,
+				dct2.dict_code resultReasonCode,
+				dct2.`name` resultReason
+		FROM(
+			SELECT  r.id,
+					case r.meeting_type
+					WHEN 'meetingType:3' THEN 'meeting3Result'
+					WHEN 'meetingType:5' THEN 'meeting5Result'
+					else 'meetingResult' 
+					end meetingType,
+					case 
+					WHEN locate('Veto',r.result_reason)>0 THEN 'meetingVetoReason'
+					WHEN locate('Undetermined',r.result_reason)>0 THEN 'meetingUndeterminedReason'
+					WHEN locate('Following',r.result_reason)>0 THEN 'meetingFollowingReason'
+					else ''
+					end resultReason,
+					r.meeting_result,
+					r.result_reason,
+					r.meeting_date,
+					r.meeting_notes,
+					r.reason_other,
+					sf.file_key,
+					sf.file_length,
+					sf.bucket_name,
+					sf.file_name
+				FROM sop_meeting_record r 
+				left join sop_file sf on sf.id=r.file_id
+				WHERE r.id=#{id} )tt 
+		LEFT JOIN dict dct1 ON dct1.parent_code=tt.meetingType and dct1.dict_code=tt.meeting_result
+		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason;
+	</select>
+	<resultMap type="com.galaxy.im.bean.meeting.MeetingRecordBean" id="detailMap">
+		<result column="id" property="id"/>
+		<result column="meetingDateStr" property="meetingDateStr"/>
+		<result column="meetingNotes" property="meetingNotes"/>
+		<result column="reasonOther" property="reasonOther"/>
+		<result column="fileKey" property="fileKey"/>
+		<result column="fileLength" property="fileLength"/>
+		<result column="bucketName" property="bucketName"/>
+		<result column="fileName" property="fileName"/>
+		<result column="meetingResultId" property="meetingResultId"/>
+		<result column="meetingResultCode" property="meetingResultCode"/>
+		<result column="meetingResult" property="meetingResult"/>
+		<result column="resultReasonId" property="resultReasonId"/>
+		<result column="resultReasonCode" property="resultReasonCode"/>
+		<result column="resultReason" property="resultReason"/>
+	</resultMap>
+	
+	<!-- 添加会议记录 -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"  keyColumn="id" parameterType="com.galaxy.im.bean.meeting.MeetingRecordBean" >
+		insert into sop_meeting_record (id, project_id, file_id, meeting_date, meeting_type, meeting_result,
+			 meeting_notes, meeting_notes_text,created_time,record_type,participant, create_uid,meet_valid,
+			 meeting_name, update_time,result_reason,reason_other)
+	    values (#{id}, #{projectId}, #{fileId}, #{meetingDate}, #{meetingType}, #{meetingResult}, 
+		    #{meetingNotes}, #{meetingNotesText}, #{createdTime}, #{recordType},#{participant},#{createdId},
+		    #{meetValid},#{meetingName}, #{updatedTime},#{resultReason},#{reasonOther});
+    	<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+    </insert>
+    
+    <!-- 更新会议记录 -->
+	<update id="updateById" parameterType="com.galaxy.im.bean.meeting.MeetingRecordBean">
+		update sop_meeting_record
+		<set>
+		  <if test="fileId != 0" > file_id = #{fileId}, </if>
+	      <if test="meetingDate != null" > meeting_date = #{meetingDate}, </if>
+	      <if test="meetingNotes != null" > meeting_notes = #{meetingNotes}, </if>
+	      <if test="meetingNotesText != null" > meeting_notes_text = #{meetingNotesText}, </if>
+	      <if test="meetingResult != null" > meeting_result = #{meetingResult}, </if>
+	      <if test="resultReason != null" > result_reason = #{resultReason}, </if>
+	      <if test="reasonOther != null" > reason_other = #{reasonOther}, </if>
+	      <if test="updatedTime != null" > update_time = #{updatedTime} </if>
+		</set>
+		where id=#{id};
+	</update>
+	
+	<!-- 健康状况 -->
+	<select id="getSopProjectHealth" parameterType="hashmap" resultType="hashmap">
+		SELECT id, project_id projectId, health_state healthState, user_name userName
+		FROM sop_project_health 
+		WHERE project_id=#{projectId} 
+		ORDER BY created_time desc LIMIT 1;
+	</select>
+</mapper>

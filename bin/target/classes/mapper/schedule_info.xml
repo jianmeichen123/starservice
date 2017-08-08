@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.bean.schedule.ScheduleInfo">
+
+
+	<!-- 查询拜访列表 -->
+	<select id="selectCallonList" parameterType="hashmap" resultType="hashmap">
+		select 
+		<include refid="info_column_list"></include>
+		<include refid="info_table_list"></include>
+		<include refid="info_where_list"></include>
+		order by ${property} ${direction}
+		limit #{offset},${limit};
+	</select>
+	
+	<!-- 拜访列表记录个数 -->
+	<select id="countCallonList" parameterType="hashmap" resultType="integer">
+		select count(1)
+		<include refid="info_table_list"></include>
+		<include refid="info_where_list"></include>
+	</select>
+	
+	<!-- 更新拜访计划 -->
+	<update id="updateById" parameterType="com.galaxy.im.bean.schedule.ScheduleInfo">
+		update schedule_info set
+			parent_id = #{parentId},
+			type = #{type},
+			name_id = #{nameId},
+			name = #{name},
+			project_type = #{projectType},
+			project_id = #{projectId},
+			start_time = #{startTime},
+			end_time = #{endTime}, 
+			is_allday = #{isAllday},
+			wakeup_id = #{wakeupId},
+			callon_person = #{callonPerson},
+			remark = #{remark},
+			updated_id = #{updatedId},
+			updated_time = #{updatedTime},
+			significance = #{significance},
+			callon_address = #{callonAddress}
+		WHERE id = #{id};
+	</update>
+	
+	<!-- 删除拜访计划 -->
+	<update id="delCallonById" parameterType="hashmap">
+		update schedule_info set 
+			is_del=1,
+			updated_time=#{updatedTime},
+			updated_id=#{updatedId}
+			where id=#{id};
+	</update>
+	
+	<!-- 判断拜访计划是否允许删除或修改 -->
+	<select id="callonEnableEditOrDel" parameterType="long" resultType="integer">
+		select count(1)
+			from schedule_info info 
+			left join sop_interview_record sir on sir.schedule_id=info.id
+			where now()>info.start_time
+			and info.id=#{id}
+	</select>
+	
+	
+	
+	<!-- 一些提取的共享部分 -->
+	<sql id="info_table_list">
+		from (select 
+			info.id,
+			con.name contactName,
+		    con.post contactPost,
+		    info.name schedultMatter,
+		    date_format(info.start_time,'%Y/%m/%d %H:%i') startTime,
+		    UNIX_TIMESTAMP(info.start_time) startTimeUnix,
+		    date_format(info.end_time,'%Y/%m/%d %H:%i') endTime,
+		    UNIX_TIMESTAMP(info.end_time) endTimeUnix,
+		    date_format(now(),'%Y/%m/%d %H:%i') currentTime,
+		    UNIX_TIMESTAMP(current_timestamp()) currentTimeUnix,
+		    dct1.name significanceText,
+		    dct1.dict_value significance,
+		    project.id projectId,
+		    project.project_name projectName,
+		    case (isnull(sir.id) &amp;&amp; UNIX_TIMESTAMP(current_timestamp())>UNIX_TIMESTAMP(info.start_time)) when 1 then 1 else 2 end isInterview,
+		    info.is_del isDel,
+		    info.created_time createdTime,
+		    info.created_id createdId
+		from schedule_info info
+		left join schedule_contacts con on info.callon_person=con.id
+		left join dict dct1 on dct1.parent_code='significance' and dct1.dict_value=info.significance
+		left join sop_project project on info.project_type=1 and info.project_id=project.id
+		left join sop_interview_record sir on sir.schedule_id=info.id
+		where info.type=2
+		and info.is_del=0
+		<if test="createdId != null">and info.created_id=#{createdId}</if>
+		group by info.id) t
+	</sql>
+	
+	<sql id="info_column_list">
+		id,
+		contactName,
+	    contactPost,
+	    schedultMatter,
+	    startTime,
+	    startTimeUnix,
+	    endTime,
+	    endTimeUnix,
+	    currentTime,
+	    currentTimeUnix,
+	    significanceText,
+	    significance,
+	    projectId,
+	    projectName,
+	    isInterview,
+	    case (currentTimeUnix>startTimeUnix) when 1 then 2 else 1 end callonProgress,
+	    createdTime,
+	    createdId
+	</sql>
+	
+	<sql id="info_where_list">
+		<where>
+			t.isDel=0
+			<if test="startTimeUnix != null">and t.startTimeUnix>UNIX_TIMESTAMP(#{startTimeUnix})</if>
+			<if test="endTimeUnix != null">and t.startTimeUnix&lt;UNIX_TIMESTAMP(#{endTimeUnix})</if>
+			<if test="callonProgress == 1">and t.currentTimeUnix&lt;=t.startTimeUnix</if>
+			<if test="callonProgress == 2">and t.currentTimeUnix>t.startTimeUnix</if>
+			<if test="significance != null">and t.significance=#{significance}</if>
+			<if test="isInterview != null">
+				and t.isInterview=#{isInterview}
+			</if>
+			
+			<if test="selectKey != null">
+				and (t.contactName like #{selectKey} or t.projectName like #{selectKey})
+			</if>
+			
+		</where>
+	</sql>
+	
+	<insert id="insert" parameterType="com.galaxy.im.bean.schedule.ScheduleInfo">
+		insert into schedule_info(
+			type,
+		    name,
+		    project_type,
+		    project_id,
+		    start_time,
+		    end_time,
+		    is_allday,
+		    wakeup_id,
+		    callon_person,
+		    remark,
+		    significance,
+		    callon_address,
+		    created_id,
+		    created_time
+		)values(
+			#{type},
+		    #{name},
+		    #{projectType},
+		    #{projectId},
+		    #{startTime},
+		    #{endTime},
+		    #{isAllday},
+		    #{wakeupId},
+		    #{callonPerson},
+		    #{remark},
+		    #{significance},
+		    #{callonAddress},
+		    #{createdId},
+		    #{createdTime}
+		    );
+		    <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+				SELECT LAST_INSERT_ID() AS id
+			</selectKey>
+</insert>
+	
+	<resultMap type="com.galaxy.im.bean.schedule.ScheduleInfo" id="departResult">
+		<id column="id" property="id"/>
+		<result column="parent_id" property="parentId"/>
+		<result column="type" property="type"/>
+		<result column="name_id" property="nameId"/>
+		<result column="name" property="name"/>
+		<result column="project_type" property="projectType"/>
+		<result column="project_id" property="projectId"/>
+		<result column="start_time" property="startTime"/>
+		<result column="end_time" property="endTime"/>
+		<result column="is_allday" property="isAllday"/>
+		<result column="wakeup_id" property="wakeupId"/>
+		<result column="remark" property="remark"/>
+		<result column="created_id" property="createdId"/>
+		<result column="updated_id" property="updatedId"/>
+		<result column="created_time" property="createdTime"/>
+		<result column="updated_time" property="updatedTime"/>
+		<result column="significance" property="significance"/>
+		<result column="callon_address" property="callonAddress"/>
+	</resultMap>
+	
+	<!-- 判断时间是否冲突 或 时间冲突数 -->
+	<select id="getCTSchedule" parameterType="hashmap" resultType="hashmap">
+		select id, name
+		from schedule_info
+		<where>
+			<trim prefixOverrides="and">
+				<if test="id != null"> and id != #{id} </if>
+				<if test="createdId != 0" > and created_id = #{userId} </if>
+				and is_del = #{isDel}
+			    and (start_time &lt;= #{bqEndTime} and end_time >= #{eqStartTime} and is_allday = 0 
+				or (start_time >= #{sbTimeForAllday} and start_time &lt;= #{seTimeForAllday} and is_allday = 1))
+			</trim>
+		</where>
+	</select>
+</mapper>

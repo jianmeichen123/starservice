@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+  <mapper namespace="com.galaxy.im.bean.invest.InvestBean">
+  <!-- 查询列表 -->
+  <select id="selectInvestList" parameterType="hashmap" resultType="hashmap" >
+  	select 
+  		invest.id,
+  		invest.delivery_name deliveryName,
+		invest.delivery_amount deliveryAmount,
+		invest.delivery_share_ratio deliveryShareRatio
+	from joint_delivery invest
+	where project_id = #{projectId}  
+	<if test="deliveryType != null" > and delivery_type =  #{deliveryType}</if>
+	order by ${property} ${direction}
+	limit #{offset},${limit};
+	
+  
+  </select>
+  <!-- 列表记录个数 -->
+	<select id="countInvestList" parameterType="hashmap" resultType="integer">
+		select count(1)
+		from joint_delivery invest where project_id=#{projectId}
+	</select>
+  
+  <resultMap type="com.galaxy.im.bean.invest.InvestBean" id="investMap">
+		<result column="id" property="id"/>
+		<result column="delivery_name" property="deliveryName"/>
+		<result column="delivery_amount" property="deliveryAmount"/>
+		<result column="delivery_share_ratio" property="deliveryShareRatio"/>
+	</resultMap>
+	
+	<!-- 新增投资方 -->
+	<insert id="insert" parameterType="com.galaxy.im.bean.invest.InvestBean">
+		insert into joint_delivery(
+			delivery_type,
+			delivery_name,
+			delivery_amount,
+			delivery_share_ratio,
+			project_id,
+			create_uid,
+			create_time
+		)values(
+			#{deliveryType},
+			#{deliveryName},
+			#{deliveryAmount},
+			#{deliveryShareRatio},
+			#{projectId},
+			#{createdId},
+			#{createdTime}
+		);
+		<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+				SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+	
+	</insert>
+	<!-- 更新投资方 -->
+	<update id="updateById" parameterType="com.galaxy.im.bean.invest.InvestBean">
+		update joint_delivery set
+			<if test="deliveryType != null" > delivery_type = #{deliveryType},</if>
+			<if test="deliveryName != null" > delivery_name = #{deliveryName},</if>
+			<if test="deliveryAmount != null" > delivery_amount = #{deliveryAmount},</if>
+			<if test="deliveryShareRatio != null" > delivery_share_ratio = #{deliveryShareRatio},</if>
+			<if test="updatedId != null" > create_uid = #{updatedId},</if>
+			<if test="updatedTime != null" >update_time = #{updatedTime}</if>
+		where id = #{id} and project_id = #{projectId};
+	
+	</update>
+	
+	<!-- 根据id删除投资方 -->
+	<delete id="deleteByIdAndPid" parameterType="hashmap" >
+		delete from joint_delivery where id = #{id} and project_id = #{projectId};
+	
+	
+	</delete>
+	
+	</mapper>

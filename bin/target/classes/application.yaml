@@ -1,0 +1,8 @@
+
+spring: 
+  profiles: 
+    active: "local"
+    
+mybatis: 
+  typeAliasesPackage: com.bobycloud.im.bean
+  mapperLocations: classpath:mapper/*.xml

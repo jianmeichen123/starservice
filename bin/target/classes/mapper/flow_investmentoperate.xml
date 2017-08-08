@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.business.flow.investmentoperate.dao.IInvestmentoperateDao">
+
+	<!-- 会议记录列表个数 -->
+	<select id="getMeetingCount" parameterType="hashmap" resultType="integer">
+		SELECT count(1) 
+		FROM(
+			SELECT  r.id,
+					case r.meeting_type
+					WHEN 'meetingType:3' THEN 'meeting3Result'
+					WHEN 'meetingType:5' THEN 'meeting5Result'
+					else 'meetingResult' 
+					end meetingResult,
+					case 
+					WHEN locate('Veto',r.result_reason)>0 THEN 'meetingVetoReason'
+					WHEN locate('Undetermined',r.result_reason)>0 THEN 'meetingUndeterminedReason'
+					WHEN locate('Following',r.result_reason)>0 THEN 'meetingFollowingReason'
+					else ''
+					end resultReason,
+					r.meeting_result,
+					r.result_reason,
+					r.meeting_date,
+					r.meeting_notes,
+					case  
+					WHEN locate('pos',r.meeting_type)>0 THEN 'postMeetingType'
+					else 'meetingType'
+					end meetingType,
+					r.meeting_type
+				FROM sop_meeting_record r
+				WHERE r.project_id=#{projectId} 
+				<if test="meetingTypeList != null">
+					and r.meeting_type in 
+					<foreach collection="meetingTypeList" item="meetingType" index="index" open="(" close=")" separator=",">
+						#{meetingType}
+					</foreach>
+				</if>
+				<!-- and r.meeting_type=#{meetingType}  -->
+				and r.record_type=#{recordType})tt 
+		LEFT JOIN dict dct1 ON dct1.parent_code=tt.meetingResult and dct1.dict_code=tt.meeting_result
+		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason
+		LEFT JOIN dict dct3 ON dct3.parent_code=tt.meetingType and dct3.dict_code=tt.meeting_type;
+	</select>
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.business.flow.internalreview.dao.IInternalreviewDao">
+
+	<!-- 项目是否存在通过／否决状态的会议记录 -->
+	<select id="hasPassMeeting" parameterType="hashmap" resultType="hashmap">
+		select 
+			case isnull(d1.dict_code) when 1 then 'no' else d1.dict_code end dictCode,
+			count(1) pcount
+		from sop_project p
+		left join sop_meeting_record smr on p.id=smr.project_id
+		left join dict d1 on smr.meeting_result=d1.dict_code
+		where p.id=#{projectId}
+		group by d1.dict_code;
+	</select>
+	
+	<!-- 申请ceo评审排期 -->
+	<insert id="insertCeoScheduling" parameterType="hashmap">
+		insert into sop_meeting_scheduling(
+			project_id,
+			meeting_type,
+			meeting_count,
+			status,
+			schedule_status,
+			apply_time,
+			created_time
+		)values(
+			#{projectId},
+			#{meetingType},
+			#{meetingCount},
+			#{status},
+			#{scheduleStatus},
+			#{applyTime},
+			#{createdTime}
+		);
+		<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+				SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+	
+	</insert>
+	
+	
+	
+	
+
+</mapper>

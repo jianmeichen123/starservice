@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.bean.Test">
+
+
+
+
+	
+	<insert id="insert" parameterType="com.galaxy.im.bean.Test">
+		insert into test(name,address) values(#{name},#{address});
+	
+	</insert>
+	
+	
+	<resultMap type="com.galaxy.im.bean.Test" id="departResult">
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="address" property="address"></result>
+	</resultMap>
+	
+	
+	
+	
+
+</mapper>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<!-- 文件输出格式 -->  
+    <property name="PATTERN" value="%-12(%d{yyyy-MM-dd HH:mm:ss.SSS}) |-%-5level [%thread] %c [%L] -| %msg%n" />  
+    
+    <!-- 线上环境日志文件路径 -->  
+    <property name="ONLINE_FILE_PATH" value="/data/apps/starservice/log"></property>
+    
+    <!-- dev环境下的日志路 -->
+    <property name="DEV_FILE_PATH" value="/data/apps/startservice_dev"></property>
+    <!-- rc环境下的日志路 -->
+    <property name="RC_FILE_PATH" value="/data/apps/starservice_rc"></property>
+  
+  	<!-- rc环境 -->
+    <springProfile name="rc">
+        <appender name="RC_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> 
+				<fileNamePattern>${RC_FILE_PATH}/logFile.%d{yyyy-MM-dd}.log</fileNamePattern> 
+				<maxHistory>30</maxHistory> 
+			</rollingPolicy> 
+			<encoder> 
+				<pattern>${PATTERN}</pattern> 
+			</encoder> 
+		</appender> 
+		<root level="INFO"> 
+			<appender-ref ref="RC_FILE" /> 
+		</root> 
+    </springProfile> 
+    
+  	<!-- qa环境 -->
+    <springProfile name="qa">
+        <appender name="DEV_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> 
+				<fileNamePattern>${DEV_FILE_PATH}/logFile_qa.%d{yyyy-MM-dd}.log</fileNamePattern> 
+				<maxHistory>30</maxHistory> 
+			</rollingPolicy> 
+			<encoder> 
+				<pattern>${PATTERN}</pattern> 
+			</encoder> 
+		</appender> 
+		<root level="INFO"> 
+			<appender-ref ref="DEV_FILE" /> 
+		</root> 
+    </springProfile> 
+    
+    <!-- 开发环境 -->
+    <springProfile name="dev">
+        <appender name="DEV_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> 
+				<fileNamePattern>${DEV_FILE_PATH}/logFile_dev.%d{yyyy-MM-dd}.log</fileNamePattern> 
+				<maxHistory>30</maxHistory> 
+			</rollingPolicy> 
+			<encoder> 
+				<pattern>${PATTERN}</pattern> 
+			</encoder> 
+		</appender> 
+
+		<root level="INFO"> 
+			<appender-ref ref="DEV_FILE" /> 
+		</root> 
+    </springProfile>  
+  
+    <!-- 线上环境 -->  
+    <springProfile name="online">
+        <appender name="ONLINE_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> 
+				<fileNamePattern>${ONLINE_FILE_PATH}/logFile.%d{yyyy-MM-dd}.log</fileNamePattern> 
+				<maxHistory>30</maxHistory> 
+			</rollingPolicy> 
+			<encoder> 
+				<pattern>${PATTERN}</pattern> 
+			</encoder> 
+		</appender> 
+
+		<root level="INFO"> 
+			<appender-ref ref="ONLINE_FILE" /> 
+		</root> 
+    </springProfile>  
+    
+    <!-- 本地测试 -->  
+    <springProfile name="local">  
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">  
+            <encoder>  
+                <pattern>${PATTERN}</pattern>  
+            </encoder>  
+        </appender> 
+        <root level="info">  
+            <appender-ref ref="CONSOLE" />  
+        </root>  
+    </springProfile>  
+</configuration>  

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.bean.project.ProjectBean">
+	
+	<!-- 获取项目list -->
+	<select id="select" resultType="com.galaxy.im.bean.project.ProjectBean" parameterType="java.util.Map" resultMap="projectMap">
+		SELECT p.id,p.project_name projectName 
+		FROM sop_project p WHERE p.id not in(SELECT tr.project_id FROM sop_transfer_record tr WHERE tr.record_status is null)
+		and p.create_uid=#{createdId} and p.project_status = 'projectStatus:0' 
+		and p.project_progress='projectProgress:1'
+		<if test="pName !=null and pName !='null' and pName !=''">
+			and project_name like concat(concat('%','${pName}'),'%')
+		</if>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit};
+		</if>
+	</select>
+	<resultMap type="com.galaxy.im.bean.project.ProjectBean" id="projectMap">
+		<result column="id" property="id"/>
+		<result column="project_name" property="projectName"/>
+	</resultMap>
+	
+	<!-- 项目list总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(p.id) 
+		FROM sop_project p WHERE p.id not in(SELECT tr.project_id FROM sop_transfer_record tr WHERE tr.record_status is null)
+		and p.create_uid=#{createdId} and p.project_status = 'projectStatus:0' 
+		and p.project_progress='projectProgress:1'
+		<if test="pName !=null and pName !='null' and pName !=''">
+			and project_name like concat(concat('%','${pName}'),'%')
+		</if>
+	</select>
+	
+	<!-- 项目详情 基础信息、融资计划、实际投资-->
+	<select id="getBaseProjectInfo" resultType="hashmap" parameterType="long">
+		select 
+			p.id,
+			p.project_code projectCode,
+		    p.project_name projectName,
+		    d1.name projectTypeName,
+		    d1.dict_code projectTypeCode,
+		    p.created_time createdTimeUnix,
+		    p.finance_mode financeMode,
+            d5.name financeModeDs,
+		    date_format(from_unixtime(p.created_time/1000),'%Y-%m-%d') createdTimeDs,
+		    d2.dict_code financeStatus,					<!-- 融资状态Code -->
+		    d2.name financeStatusDs,					<!-- 融资状态名称 -->
+		    p.create_uid createUid,
+		    u.user_name createUname,
+		    p.fa_flag faFlag,							
+		    case p.fa_flag=1 when 1 then p.fa_name else null end faName,	
+		    
+		    p.project_contribution projectContribution,	<!-- 计划-融资金额 -->
+		    p.project_valuations projectValuations,		<!-- 计划-项目估值 -->
+		    p.project_share_ratio projectShareRatio,	<!-- 计划-出让股份 -->
+		    
+		    p.final_contribution finalContribution,		<!-- 实际-投资金额 -->
+		    p.final_valuations finalValuations,			<!-- 实际-项目估值 -->
+		    p.final_share_ratio finalShareRatio,		<!-- 实际-股权占比 -->
+		    p.service_charge serviceCharge,				<!-- 加速服务费占比 -->
+		    
+		    p.project_status projectStatus,
+            d3.name projectStatusDs,
+            p.project_departId projectDepartId,
+            t.name projectDepartName,
+            
+            p.industry_own industryOwn,
+            d4.name industryOwnDs,
+            
+            u2.id hhrId,
+            u2.user_name hhrName
+            
+            
+		from sop_project p
+		left join dict d1 on d1.dict_code=p.project_type
+		left join dict d2 on d2.dict_code=p.finance_status
+		left join dict d3 on d3.dict_code=p.project_status
+		left join dict d4 on p.industry_own=d4.dict_code and d4.parent_code='industryOwn'
+		left join dict d5 on p.finance_mode=d5.dict_code
+		left join v_user u on u.id=p.create_uid
+		left join v_department t on p.project_departId=t.id
+		left join v_user u2 on t.dep_manager=u2.id
+		where p.id=#{projectId};
+	</select>
+
+	<!-- 判断用户画像等是否为空 -->
+	<select id="getProjectInoIsNull" parameterType="long" resultType="hashmap">
+		select 
+			case (isnull(p.project_describe_financing) &amp;&amp; isnull(p.project_describe)) when 1 then 0 else 1 end projectDescribe,	<!-- 项目描述 -->
+			case isnull(p.company_location) when 1 then 0 else 1 end companyLocation,				<!-- 公司定位 -->	
+		    case isnull(p.user_portrait) when 1 then 0 else 1 end userPortrait,						<!-- 用户画像 -->		
+		    case isnull(p.project_business_model) when 1 then 0 else 1 end projectBusinessModel,	<!-- 产品服务 -->
+		    case isnull(p.operational_data) when 1 then 0 else 1 end operationalData,				<!-- 运营数据 -->
+		    case isnull(p.industry_analysis) when 1 then 0 else 1 end industryAnalysis,				<!-- 行业分析 -->
+		    case isnull(p.prospect_analysis) when 1 then 0 else 1 end prospectAnalysis,				<!-- 竞争分析 -->
+		    case isnull(p.next_financing_source) when 1 then 0 else 1 end nextFinancingSource,		<!-- 下一轮融资路径 -->
+		    case count(f.id)&lt;=0 when 1 then 0 else 1 end businessPlanFile,						<!-- 商业计划书 -->
+		    case count(l.id)&lt;=0 when 1 then 0 else 1 end projectPerson,							<!-- 团队成员 -->
+		    case count(f2.id)&lt;=0 when 1 then 0 else 1 end projectFile,							<!-- 项目文档 -->
+		    case count(s.id)&lt;=0 when 1 then 0 else 1 end projectShares,							<!-- 股权结构 -->
+		    case count(d.id)&lt;=0 when 1 then 0 else 1 end projectDelivery,						<!-- 交割前事项 -->
+		    case count(h.id)>0 || count(m.id)>0 when 1 then 1 else 0 end operationalAnalysis		<!-- 运营分析 -->
+		    
+		from sop_project p
+		left join sop_file f on f.project_id=p.id and f.file_worktype='fileWorktype:12'
+		left join sop_project_person l on p.id=l.project_id
+		left join sop_file f2 on p.id=f2.project_id and f2.file_worktype in (
+			'fileWorktype:1','fileWorktype:2','fileWorktype:3','fileWorktype:4','fileWorktype:5',
+			'fileWorktype:6','fileWorktype:7','fileWorktype:8','fileWorktype:9') and f2.file_key is not null
+		left join sop_project_shares s on s.project_id=p.id
+		left join sop_delivery d on p.id=d.project_id
+		left join sop_project_health h on p.id=h.project_id
+		left join sop_meeting_record m on m.project_id=p.id and m.meeting_type in ('postMeetingType:1' ,'postMeetingType:2','postMeetingType:3')
+		where p.id=#{projectId}
+		group by p.id;
+	</select>
+	
+	<!-- 新增融资历史 -->
+	<insert id="addFinanceHistory">
+		INSERT INTO finance_history(
+			project_id,
+			finance_date,
+			finance_from,
+			finance_amount,
+			finance_unit,
+			finance_proportion,
+			finance_status,
+			create_uid,
+			create_time
+		)VALUES(
+			#{project_id},
+			#{finance_date},
+			#{finance_from},
+			#{finance_amount},
+			#{finance_unit},
+			#{finance_proportion},
+			#{finance_status},
+			#{create_uid},
+			#{create_time}
+		);
+		<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+	</insert>
+	
+	<select id="projectIsYJZ" parameterType="long" resultType="int">
+		select 
+			case count(1)>0 when 1 then 1 else 0 end projectYjz
+		from sop_transfer_record 
+		where project_id = #{projectId} 
+		and record_status is null
+	</select>
+	
+	<select id="projectIsShow" parameterType="long" resultType="int">
+		SELECT 
+			count(1) isFlag
+		FROM sop_project p 
+		WHERE ( p.id in(SELECT tr.project_id FROM sop_transfer_record tr WHERE tr.record_status is null) or p.project_status = 'projectStatus:2')
+		and p.id=#{projectId} ;
+	</select>
+	
+	
+	
+	
+
+</mapper>

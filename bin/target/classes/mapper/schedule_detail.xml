@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.bean.schedule.ScheduleDetailBean">
+
+	<resultMap type="com.galaxy.im.bean.schedule.ScheduleDetailBean" id="detailMap">
+		<result column="id" property="id"/>
+		<result column="startTime" property="startTime"/>
+		<result column="endTime" property="endTime"/>
+		<result column="remark" property="remark"/>
+		<result column="schedultMatter" property="schedultMatter"/>
+		<result column="callonAddress" property="callonAddress"/>
+		<result column="contactId" property="contactId"/>
+		<result column="contactName" property="contactName"/>
+		<result column="contactPost" property="contactPost"/>
+		<result column="contactPhone" property="contactPhone"/>
+		<result column="contactCompany" property="contactCompany"/>
+		<result column="projectId" property="projectId"/>
+		<result column="projectName" property="projectName"/>
+		<result column="industryOwnName" property="industryOwnName"/>
+		<result column="financeStatusName" property="financeStatusName"/>
+		<result column="significanceId" property="significanceId"/>
+		<result column="significanceName" property="significanceName"/>
+		<result column="wakeupId" property="wakeupId"/>
+		<result column="wakeupTime" property="wakeupTime"/>
+		<result column="fileKey" property="fileKey"/>
+		<result column="fileLength" property="fileLength"/>
+		<result column="bucketName" property="bucketName"/>
+		<result column="fileName" property="fileName"/>
+		<result column="viewNotes" property="viewNotes"/>
+		<result column="talkRecordId" property="talkRecordId"/>
+		<result column="createdId" property="createdId"/>
+		<result column="interviewFalg" property="interviewFalg"/>
+	</resultMap>
+	<!-- 拜访详情 -->
+	<select id="selectById" resultType="com.galaxy.im.bean.schedule.ScheduleDetailBean" parameterType="java.lang.Long" resultMap="detailMap">
+		select 
+			info.id,
+	    	date_format(info.start_time,'%Y/%m/%d %H:%i') startTime,
+		    date_format(info.end_time,'%Y/%m/%d %H:%i') endTime,
+			info.remark remark,
+			info.name schedultMatter,
+			info.callon_address callonAddress,
+			info.created_id createdId,
+			case UNIX_TIMESTAMP(current_timestamp())>UNIX_TIMESTAMP(info.start_time) 
+			when 1 then 1 else 0 end interviewFalg,
+			con.id contactId,
+			con.name contactName,
+	    	con.post contactPost,
+	    	con.phone1 contactPhone,
+			con.company contactCompany,
+			project.id projectId,
+	    	project.project_name projectName,
+	    	dct1.name industryOwnName,
+			dct2.name financeStatusName,
+			info.significance significanceId,
+			dct3.name significanceName,
+			info.wakeup_id wakeupId,
+			sd.name wakeupTime,
+			sf.file_key fileKey,
+			sf.file_length fileLength,
+			sf.bucket_name bucketName,
+			sf.file_name fileName,
+			inre.view_notes viewNotes,
+			inre.id talkRecordId
+		from schedule_info info
+		left join schedule_contacts con on info.callon_person=con.id
+		left join sop_project project on info.project_type=1 and info.project_id=project.id
+		left join dict dct1 on dct1.parent_code='industryOwn' and dct1.dict_code=project.industry_own
+		left join dict dct2 on dct2.parent_code='financeStatus' and dct2.dict_code=project.finance_status
+		left join dict dct3 on dct3.parent_code='significance' and dct3.dict_value=info.significance
+		left join schedule_dict sd on sd.id = info.wakeup_id
+		left join sop_interview_record inre on inre.schedule_id=info.id
+		left join sop_file sf on sf.id=inre.file_id
+		where info.id=#{id} and info.is_del=0 ORDER BY inre.created_time desc;
+	</select>
+	
+	<!-- 项目的拜访历史记录个数 -->
+	<select id="selectCount" resultType="java.lang.Long" parameterType="java.util.Map">
+		SELECT COUNT(1) FROM sop_interview_record WHERE 1=1
+		<choose>
+			<when test="proId!=0">
+				and project_id=#{proId}
+			</when>
+			<when test="conId!=0">
+				and schedule_id in (SELECT id FROM schedule_info WHERE callon_person=#{conId})
+			</when>
+		</choose>
+		<if test="talkId != null">
+			<![CDATA[ and id<>#{talkId}]]> ;
+		</if>
+	</select>
+	
+	<!-- 重要性list -->
+	<select id="getSignificanceDictList" resultType="hashmap">
+		select 
+			dict.parent_code parentCode,
+			dict.name,
+		    dict.dict_value dictValue
+		from dict dict 
+		where dict.parent_code ='significance';
+	</select>
+	
+	<!-- 提醒通知list -->
+	<select id="getScheduleDictList" resultType="hashmap">
+		SELECT id,type,name FROM schedule_dict; 
+	</select>
+	
+	<!-- 历史访谈记录个数 -->
+	<select id="getTalkHistoryCounts" resultType="java.lang.Long" parameterType="java.util.Map">
+		SELECT COUNT(1) FROM sop_interview_record WHERE 
+		<if test="conId!=0" >schedule_id in (SELECT id FROM schedule_info WHERE callon_person=#{conId});</if>
+	</select>
+
+</mapper>

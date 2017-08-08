@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.bean.DepartBean">
+	<select id="select" parameterType="com.galaxy.im.bean.DepartBeanVO" resultType="com.galaxy.im.bean.DepartBean">
+		select 
+			d.id,
+			d.dep_name depName
+		from department d
+		where d.is_del=0
+		and d.is_outtage=0
+		and d.is_del=0
+		and d.id=#{id};
+	</select>
+	
+	<select id="selectList" parameterType="com.galaxy.im.bean.DepartBeanVO" resultType="com.galaxy.im.bean.DepartBean">
+		select 
+			t.id id,
+		    t.dep_name depName,
+		    t.parent_id parentId
+		from department t
+		where t.dep_name like #{depName}
+		and t.is_del=0
+		and t.is_outtage=0
+		and t.is_show=0
+		and t.company_id=#{companyId};
+	</select>
+	
+	<resultMap type="com.galaxy.im.bean.DepartBean" id="departResult">
+		<id column="id" property="id"/>
+		<result column="dep_name" property="depName"/>
+	</resultMap>
+	
+
+</mapper>
