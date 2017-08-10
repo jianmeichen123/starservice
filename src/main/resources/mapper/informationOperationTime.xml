@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.business.hologram.operationtime.dao.IInformationOperationTimeDao">
+
+	 <resultMap id="BaseResultMap" type="com.galaxy.im.bean.information.InformationOperationTime">
+	    <id column="id" property="id" />
+	    <result column="project_id" property="projectId" />
+	    <result column="information_time" property="informationTime" />
+	    <result column="project_time" property="projectTime" />
+	    <result column="team_time" property="teamTime" />
+	    <result column="operation_data_time" property="operationDataTime" />
+	    <result column="compete_time" property="competeTime" />
+	    <result column="stratagem_time" property="stratagemTime" />
+	    <result column="finance_time" property="financeTime" />
+	    <result column="law_time" property="lawTime" />
+	    <result column="financing_time" property="financingTime" />
+	    <result column="exit_evaluation_time" property="exitEvaluationTime" />
+	    <result column="investment_program_time" property="investmentProgramTime" />
+	    <result column="other_business_time" property="otherBusinessTime" />
+	    <result column="time4" property="time4" />
+	    <result column="time5" property="time5" />
+	    <result column="time6" property="time6" />
+	    <result column="time7" property="time7" />
+	    <result column="time8" property="time8" />
+	    <result column="time9" property="time9" />
+	    <result column="time10" property="time10" />
+	  </resultMap>
+  
+	 <sql id="Base_Column_List">
+	    id, report_type,project_id, information_time, project_time, team_time, operation_data_time, compete_time, 
+	    stratagem_time, finance_time, law_time, financing_time, exit_evaluation_time, investment_program_time, other_business_time,
+	    time4, time5, time6, time7, time8, time9, time10
+	 </sql>
+  
+  	 <!-- 获取更新时间 -->
+	 <select id="getInformationTime" parameterType="com.galaxy.im.bean.information.InformationOperationTime" resultMap="BaseResultMap">
+	    select 
+	    <include refid="Base_Column_List" />
+	    from information_operation_time
+	    where project_id = #{projectId} and report_type=#{reportType};
+	 </select>
+	 
+</mapper>
