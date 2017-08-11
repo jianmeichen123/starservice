@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.business.statistics.dao.IStatisticsProjectDao">
+
+	<!-- 公用部分 -->
+	<resultMap id="countResultMap" type="com.galaxy.im.bean.statistics.ScheduleCountVO" >
+	    <result column="number" property="number"/>
+	    <result column="meeting_type" property="meetingType"/>
+	</resultMap>
+	
+	<sql id="Base_Where_sql">		
+			   <if test="createUid != null" > and p.create_uid = #{createUid} </if>
+			    <if test="projectDepartId != null" > and p.project_departId  = #{projectDepartId} </if>
+			   <if test="projectType != null" > and p.project_type = #{projectType} </if>	            
+    </sql>	
+    
+	
+	<!-- 项目总览 -->
+	<select id="selectCountProjectOverview"  resultType="java.lang.Long"   parameterType="java.util.Map">
+		select count(1)  from sop_project p 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="createUid != null"> and p.create_uid = #{createUid}</if>
+				<if test="projectType != null"> and p.project_type = #{projectType}</if>
+				<if test="projectStatus != null"> and p.project_status = #{projectStatus}</if>
+				<if test="careerLineId !=null"> and p.project_departId = #{careerLineId}</if>		 
+			</trim>
+	   </where>
+	</select>
+	
+	<!-- 事业部top5 -->
+	<select id="selectCountCareerLineTop"  resultType="hashMap"  parameterType="java.util.Map">
+		SELECT p.project_departId  as careerLineId,d.name careerLineName,
+		             COUNT(1) AS totalProjects 
+					FROM sop_project p, v_department d WHERE p.project_departId = d.id AND d.is_careerline = 1
+					GROUP BY p.project_departId 
+					ORDER BY totalProjects DESC  
+			<if test="offset != null and limit != null">
+					LIMIT #{offset}, #{limit}
+			</if>   
+	</select>
+	
+	<!-- 本月数据 -->
+	<select id="selectCountCurrentMonthProjectNumber"  resultType="java.lang.Long"  parameterType="java.util.Map">
+          <![CDATA[
+			    select count(1)  from sop_project p
+			     where  ( p.created_time between #{startTime}  and #{endTime}  )
+			      ]]>
+			     <include refid="Base_Where_sql" />			     
+    </select>
+    
+    <!-- 查询投资经理的当日 立项会 ceo评审 投决会 总数-->
+	<select id="selectTZJLScheduleCount" resultMap="countResultMap" parameterType="java.lang.Long">
+		select meeting_type,count(meeting_type) as number
+		from sop_meeting_scheduling 
+		where project_id in(
+			select id from sop_project where create_uid =  #{uid}
+			)  
+		and schedule_status = 1 and date(reserve_time_start)= date(now())
+		group by meeting_type;
+	</select>
+	
+	<!-- 查询合伙人的当日 立项会 ceo评审 投决会 总数-->
+	<select id="selectHHRScheduleCount" resultMap="countResultMap" parameterType="java.lang.Long">
+		select meeting_type,count(meeting_type) as number 
+		from sop_meeting_scheduling 
+		where project_id in(
+			select id from sop_project where create_uid in (
+				select id from platform_user where department_id = (
+					select department_id from platform_user where id=#{uid}  
+				)
+			)
+		)  
+		and  schedule_status = 1 and date(reserve_time_start)= date(now()) 
+		group by meeting_type;
+	</select>
+	
+	<!-- 查询CEO的当日 立项会 ceo评审 投决会 总数-->
+	<select id="selectCEOScheduleCount" resultMap="countResultMap" parameterType="java.lang.Long">
+		select meeting_type ,count(meeting_type) as number
+		from sop_meeting_scheduling  
+		where schedule_status = 1 and date(reserve_time_start)= date(now())
+		group by meeting_type;
+	</select>
+	
+	<select id="selectStageSummary" resultType="hashMap" parameterType="java.util.Map">
+		select count(1)as count,project_progress projectProgress from sop_project
+		<where>
+				project_status NOT IN('projectStatus:2','projectStatus:3')	
+              <if test="startTime != null"> <![CDATA[  and created_time >= #{startTime} ]]> </if>
+		      <if test="endTime != null"> <![CDATA[ and created_time <= #{endTime} ]]> </if>
+			  <if test="projectDepartid != null" >and project_departId = #{projectDepartid} </if>
+			  <if test="createUid != null" > and create_uid = #{createUid} </if>
+		</where>
+		group by project_progress
+		ORDER BY CAST(REPLACE(project_progress,'projectProgress:','')  AS SIGNED)
+	</select>
+	
+</mapper>

@@ -23,10 +23,10 @@ public class StaticConst {
 	public static final String getShareUserList = "user/getShareUserList"; 				//power外部接口：获取共享列表
 	public static final String getCreadIdInfo = "user/getCreadIdInfo";   				//power外部接口：获取用户名和部门名称
 	public static final String getDeptIdByDeptName = "depart/getDeptIdByDeptName";   	//power外部接口：获取部门名称
-	public static final String login = "login/userLoginForApp";					//登录
+	public static final String login = "login/userLoginForApp";							//登录
 	public static final String resetPwd = "user/resetPasswordForApp";					//重置密码
-	public static final String getCareerLineList = "depart/getCareerLineList";	//获得事业线
-	
+	public static final String getCareerLineList = "depart/getCareerLineList";			//获得事业线
+	public static final String getRoleCodeByUserId = "role/getRoleCodeByUserId";		//角色code
 	//过滤器白名单
 	public static final String FILTER_WHITE_LOGIN = "userlogin/login";		//用户登录白名单
 	
@@ -91,6 +91,9 @@ public class StaticConst {
 	public static final String PROJECT_STATUS_1 = "projectStatus:1";	//投后运营
 	public static final String PROJECT_STATUS_2 = "projectStatus:2";	//已否决
 	public static final String PROJECT_STATUS_3 = "projectStatus:3";	//已退出
+	//项目类型
+	public static final String PROJECT_TYPE_1 = "projectType:1";		//外部投资
+	public static final String PROJECT_TYPE_2 = "projectType:2";		//内部创建
 	//会议结论
 	public static final String MEETING_RESULT_1 = "meetingResult:1";	//通过
 	public static final String MEETING_RESULT_2 = "meetingResult:2";	//待定
@@ -129,9 +132,16 @@ public class StaticConst {
 	public static final String FILE_TYPE_2 = "fileType:2";	    	//音频文件
 	public static final String FILE_TYPE_3 = "fileType:3";	    	//视频文件
 	public static final String FILE_TYPE_4 = "fileType:4";	    	//图片
+
 	
-	
-	
+	//角色类型
+	public static final String TZJL = "TZJL";
+	public static final String HHR = "HHR";
+	public static final String CEO = "CEO";
+	public static final String CEOMS = "CEOMS";
+	public static final String DSZ = "DSZ";
+	public static final String DMS = "DMS";
+
 	
 	
 	
