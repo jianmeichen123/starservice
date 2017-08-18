@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.galaxy.im.bean.message.ScheduleMessageUserBean">
+
+	<!-- 查询列表 -->
+	<select id="selectMuserAndMcontentList" parameterType="hashmap"
+		resultType="hashmap">
+		select
+		mu.id, mu.mid, mu.uid, mu.type_role typeRole, mu.is_read isRead,mu.is_use
+		isUse,
+		me.type, me.remrk_id remrkId, me.content , me.send_time sendTime
+		from
+		schedule_message_user mu left join schedule_message me on mu.mid =
+		me.id
+		where
+		<if test="userId != null" > mu.uid = #{userId}</if>
+		<if test="isUse != null" >and mu.is_use = #{isUse}</if>
+		<if test="isDel != null" >and mu.is_del = #{isDel}</if>
+		<if test="isRead != null" >and mu.is_read = #{isRead}</if>
+		<if test="isSend != null" >and mu.is_send = #{isSend}</if>
+		<if test="status != null" >and me.status = #{status}</if>
+		order by ${property} ${direction}
+		limit #{offset},${limit};
+
+	</select>
+
+	<!-- 列表记录个数 -->
+	<select id="selectMuserAndMcontentCount" parameterType="hashmap"
+		resultType="integer">
+		select
+		count(mu.id)
+		from
+		schedule_message_user mu left join schedule_message me on mu.mid = me.id
+		where
+		<if test="userId != null" > mu.uid = #{userId}</if>
+		<if test="isUse != null" >and mu.is_use = #{isUse}</if>
+		<if test="isDel != null" >and mu.is_del = #{isDel}</if>
+		<if test="isRead != null" >and mu.is_read = #{isRead}</if>
+		<if test="isSend != null" >and mu.is_send = #{isSend}</if>
+		<if test="status != null" >and me.status = #{status}</if>
+	</select>
+
+	<!-- 单条已读 -->
+	<update id="updateToRead" parameterType="hashmap">
+		update schedule_message_user set
+		<if test="isRead != null" >is_read = #{isRead},</if>
+		<if test="updatedTime != null" >updated_time = #{updatedTime}</if>
+		where mid=#{mid};
+	</update>
+	
+	
+	<!-- 消息列表 -->
+	<select id="selectMessageList" parameterType="hashmap"
+		resultType="com.galaxy.im.bean.message.ScheduleMessageUserBean">
+		select
+		mu.id, mu.mid, mu.uid, mu.type_role typeRole, mu.is_read isRead,mu.is_use
+		isUse,mu.is_send,
+		me.type, me.remrk_id remrkId, me.content , me.send_time sendTime
+		from
+		schedule_message_user mu left join schedule_message me on mu.mid =
+		me.id
+		where
+		<if test="userId != null" > mu.uid = #{userId}</if>
+		<if test="isUse != null" >and mu.is_use = #{isUse}</if>
+		<if test="isDel != null" >and mu.is_del = #{isDel}</if>
+		<if test="isRead != null" >and mu.is_read = #{isRead}</if>
+		<if test="isSend != null" >and mu.is_send = #{isSend}</if>
+		<if test="status != null" >and me.status = #{status}</if>
+	</select>
+	
+	<!-- 全部设为已读 -->
+	<update id="perMessageToRead" parameterType="hashmap">
+		update schedule_message_user set
+		<if test="isRead != null" >is_read = #{isRead},</if>
+		<if test="updatedTime != null" >updated_time = #{updatedTime}</if>
+		where 
+			<trim prefixOverrides="and">
+				<if test="ids != null">
+					and mid IN
+					<foreach collection="ids" index="atem" item="atem" open="(" separator="," close=")">
+						#{atem}
+					</foreach>
+				</if> 
+				<if test="userId != null" > and uid = #{userId}  </if>
+			</trim>
+	</update>
+	
+	<!-- 全部清空-->
+	<update id="perMessageToClear" parameterType="hashmap">
+		update schedule_message_user set
+		<if test="isDel != null" >is_del = #{isDel},</if>
+		<if test="updatedTime != null" >updated_time = #{updatedTime}</if>
+		where 
+			<trim prefixOverrides="and">
+				<if test="ids != null">
+					and mid IN
+					<foreach collection="ids" index="atem" item="atem" open="(" separator="," close=")">
+						#{atem}
+					</foreach>
+				</if> 
+				<if test="userId != null" > and uid = #{userId}  </if>
+			</trim>
+	</update>
+
+
+
+
+
+
+</mapper>
