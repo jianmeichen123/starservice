@@ -291,13 +291,13 @@ public class DuediligenceController {
 						//更新：添加新的一条记录
 						vid = fcService.updateValid(bean.getId());
 						id = fcService.addSopFile(bean);
+						prograss=1;
 					}else{
 						//上传之前:查数据库中是否存在信息，存在更新，否则新增
 						Map<String,Object> info = fcService.getLatestSopFileInfo(paramMap);
 						if(info!=null && info.get("id")!=null && CUtils.get().object2Long(info.get("id"))!=0){
 							bean.setId(CUtils.get().object2Long(info.get("id")));
 							bean.setUpdatedTime(new Date().getTime());
-							prograss=1;
 							id=fcService.updateSopFile(bean);
 						}else{
 							id =fcService.addSopFile(bean);
