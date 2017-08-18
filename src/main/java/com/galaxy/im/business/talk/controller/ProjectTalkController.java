@@ -21,6 +21,7 @@ import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.talk.ProjectTalkBean;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
+import com.galaxy.im.business.operationLog.controller.ControllerUtils;
 import com.galaxy.im.business.talk.service.IProjectTalkService;
 import com.galaxy.im.business.talk.service.ITalkRecordService;
 import com.galaxy.im.common.CUtils;
@@ -28,6 +29,7 @@ import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
 import com.galaxy.im.common.db.QPage;
+import com.galaxy.im.common.webconfig.interceptor.operationLog.UrlNumber;
 
 @Controller
 @RequestMapping("/projectTalk")
@@ -77,6 +79,7 @@ public class ProjectTalkController {
 			int updateCount = 0;
 			Long id = 0L;
 			Long deptId = 0L;
+			int prograss = 0;
 			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 			Map<String,Object> paramMap = new HashMap<String,Object>();
 			if(bean!=null){
@@ -87,6 +90,7 @@ public class ProjectTalkController {
 						CUtils.get().object2Integer(projectStatus.get("flag"))==1){
 					//项目访谈记录存在，进行更新操作，否则保存
 					if(bean.getId()!=null && bean.getId()!=0){
+						prograss=1;
 						//保存sop_file
 						if(!"".equals(bean.getFileKey()) && bean.getFileKey()!=null){
 							
@@ -135,13 +139,20 @@ public class ProjectTalkController {
 				}else{
 					resultBean.setMessage("项目当前状态或进度已被修改，请刷新");	
 				}
-			}
-			
-			if(updateCount!=0 || id!=0L){
-				resultBean.setStatus("OK");
-				Map<String,Object> map = new HashMap<String,Object>();
-				map.put("talkRecordId", id);
-				resultBean.setMap(map);
+				if(updateCount!=0 || id!=0L){
+					resultBean.setStatus("OK");
+					Map<String,Object> map = new HashMap<String,Object>();
+					map.put("talkRecordId", id);
+					resultBean.setMap(map);
+					// 记录操作日志
+					UrlNumber uNum = null;
+					if(prograss==0){
+						uNum = UrlNumber.one;
+					}else{
+						uNum = UrlNumber.two;
+					}
+					ControllerUtils.setRequestParamsForMessageTip(request, p.getProjectName(), p.getId(), null, uNum);
+				}
 			}
 		}catch(Exception e){
 			log.error(ProjectTalkController.class.getName() + "_addProjectTalk",e);

@@ -19,6 +19,7 @@ import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.flow.investmentdeal.service.IInvestmentdealService;
+import com.galaxy.im.business.operationLog.controller.ControllerUtils;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.ResultBean;
@@ -87,7 +88,7 @@ public class InvestmentdealController {
 	 */
 	@RequestMapping("votedown")
 	@ResponseBody
-	public Object votedown(@RequestBody String paramString){
+	public Object votedown(@RequestBody String paramString,HttpServletRequest request){
 		ResultBean<Object> result = new ResultBean<Object>();
 		int flag = 0;
 		try{
@@ -96,6 +97,7 @@ public class InvestmentdealController {
 			rMap.put("flag",0);
 			paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_7);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
+				SopProjectBean p = fcService.getSopProjectInfo(paramMap);
 				//验证该项目的状态，查看能否进行操作
 				Map<String,Object> statusMap = fcService.projectStatus(paramMap);
 				if(CUtils.get().mapIsNotEmpty(statusMap)){
@@ -109,6 +111,8 @@ public class InvestmentdealController {
 							paramMap.put("scheduleStatus", 3);
 							paramMap.put("updatedTime", DateUtil.getMillis(new Date()));
 							iiService.updateInvestmentdeal(paramMap);  //修改投决会评审排期状态为已否决
+							//记录操作日志
+							ControllerUtils.setRequestParamsForMessageTip(request,p.getProjectName(), p.getId(),null, false, null, null, null);
 						}else{
 							result.setMessage("项目当前状态或进度已被修改，请刷新");
 						}
@@ -183,6 +187,8 @@ public class InvestmentdealController {
 							iiService.updateInvestmentdeal(paramMap);
 							resultBean.setMap(map);
 							resultBean.setStatus("OK");
+							//记录操作日志
+							ControllerUtils.setRequestParamsForMessageTip(request, sopBean.getProjectName(), sopBean.getId(),"");
 						}else{
 							resultBean.setMessage("项目当前状态或进度已被修改，请刷新");
 						}
@@ -259,6 +265,8 @@ public class InvestmentdealController {
 							iiService.updateInvestmentdeal(paramMap);
 							resultBean.setMap(map);
 							resultBean.setStatus("OK");
+							//记录操作日志
+							ControllerUtils.setRequestParamsForMessageTip(request, sopBean.getProjectName(), sopBean.getId(),"");
 						}else{
 							resultBean.setMessage("项目当前状态或进度已被修改，请刷新");
 						}

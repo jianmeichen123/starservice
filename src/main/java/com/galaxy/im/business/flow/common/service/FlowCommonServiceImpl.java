@@ -27,6 +27,7 @@ import com.galaxy.im.common.db.IBaseDao;
 import com.galaxy.im.common.db.service.BaseServiceImpl;
 import com.galaxy.im.common.exception.ServiceException;
 import com.galaxy.im.common.html.QHtmlClient;
+import com.galaxy.im.common.webconfig.interceptor.operationLog.UrlNumber;
 
 @Service
 public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implements IFlowCommonService{
@@ -396,6 +397,82 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 			throw new ServiceException(e);
 		}
 	
+	}
+
+	/**
+	 * 文件类型区分
+	 */
+	@Override
+	public UrlNumber setNumForFile(int prograss, SopFileBean bean) {
+		UrlNumber number = null;
+		switch (bean.getFileWorkType()) {
+		case "fileWorktype:1":			//业务尽职调查报告
+			if(prograss==0){
+				number = UrlNumber.one;
+			}else{
+				number = UrlNumber.two;
+			}	
+			break;
+		case "fileWorktype:18":			//尽职调查启动会报告
+			if(prograss==0){
+				number = UrlNumber.three;
+			}else{
+				number = UrlNumber.four;
+			}
+			break;
+		case "fileWorktype:19":		    //尽职调查总结会报告
+			if(prograss==0){
+				number = UrlNumber.five;
+			}else{
+				number = UrlNumber.six;
+			}
+			break;
+		case "fileWorktype:5":			//投资意向书
+			if(prograss==0){
+				number = UrlNumber.one;
+			}else{
+				number = UrlNumber.two;
+			}
+			break;
+		case "fileWorktype:6":			//投资协议
+			if(prograss==0){
+				number = UrlNumber.one;
+			}else{
+				number = UrlNumber.two;
+			}	
+			break;
+		case "fileWorktype:7":			//股权转让协议
+			if(prograss==0){
+				number = UrlNumber.one;
+			}else{
+				number = UrlNumber.two;
+			}	
+			break;
+		case "fileWorktype:17":			//立项报告
+			if(prograss==0){
+				number = UrlNumber.one;
+			}else{
+				number = UrlNumber.two;
+			}
+			break;
+		case "fileWorktype:8":			//工商转让凭证
+			if(prograss==0){
+				number = UrlNumber.one;
+			}else{
+				number = UrlNumber.two;
+			}
+			break;
+		case "fileWorktype:9":			//资金拨付凭证
+			if(prograss==0){
+				number = UrlNumber.one;
+			}else{
+				number = UrlNumber.two;
+			}
+			break;
+		default:
+			break;
+		}
+		return number;
 	}
 
 	

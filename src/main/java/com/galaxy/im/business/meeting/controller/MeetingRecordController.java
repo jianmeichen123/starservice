@@ -25,12 +25,14 @@ import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.common.dict.service.IDictService;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.meeting.service.IMeetingRecordService;
+import com.galaxy.im.business.operationLog.controller.ControllerUtils;
 import com.galaxy.im.business.talk.service.ITalkRecordService;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
 import com.galaxy.im.common.db.QPage;
+import com.galaxy.im.common.webconfig.interceptor.operationLog.UrlNumber;
 
 @Controller
 @RequestMapping("/meeting")
@@ -105,6 +107,7 @@ public class MeetingRecordController {
 			int updateCount = 0;
 			Long id = 0L;
 			Long deptId = 0L;
+			int prograss = 0;
 			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 			Map<String,Object> paramMap = new HashMap<String,Object>();
 			if(bean!=null){
@@ -116,6 +119,7 @@ public class MeetingRecordController {
 						p.getProjectProgress().equals(bean.getProjectProgress()) ){
 					//会议记录存在，进行更新操作，否则保存
 					if(bean.getId()!=null && bean.getId()!=0){
+						prograss = 1;
 						//保存sop_file
 						if(!"".equals(bean.getFileKey()) && bean.getFileKey()!=null){
 							//通过用户id获取一些信息
@@ -165,13 +169,60 @@ public class MeetingRecordController {
 				}else{
 					resultBean.setMessage("项目当前状态或进度已被修改，请刷新");	
 				}
-			}
-			
-			if(updateCount!=0 || id!=0L){
-				resultBean.setStatus("OK");
-				Map<String,Object> map = new HashMap<String,Object>();
-				map.put("meetingRecordId", id);
-				resultBean.setMap(map);
+				UrlNumber uNum = null;
+				@SuppressWarnings("unused")
+				String progress = null;
+				/**
+				 * 操作日志分区判断
+				 */
+				switch(bean.getMeetingType()){
+				       case "meetingType:1":
+				    	    if(prograss == 0)
+				    	    	uNum = UrlNumber.one;
+				    	    else 
+				    	    	uNum = UrlNumber.two;
+				    	    progress = StaticConst.PROJECT_PROGRESS_2;
+				    	    break;
+				       case "meetingType:2":
+				    	    if(prograss == 0)
+				    	    	uNum = UrlNumber.three;
+				    	    else 
+				    	    	uNum = UrlNumber.four;
+				    	    progress = StaticConst.PROJECT_PROGRESS_3;
+				    	    break;
+				       case "meetingType:3":
+				    	    if(prograss == 0)
+				    	    	uNum = UrlNumber.five;
+				    	    else 
+				    	    	uNum = UrlNumber.six;
+				    	    progress = StaticConst.PROJECT_PROGRESS_4;
+				    	    break;
+				       case "meetingType:4":
+				    	    if(prograss == 0)
+				    	    	uNum = UrlNumber.nine;
+				            else 
+				    	    	uNum = UrlNumber.ten;
+				    	    progress = StaticConst.PROJECT_PROGRESS_7;
+				    	    break;
+				       case "meetingType:5":
+				    	    if(prograss == 0)
+				    	    	uNum = UrlNumber.seven;
+				            else 
+				    	    	uNum = UrlNumber.eight;
+				    	    progress = StaticConst.PROJECT_PROGRESS_11;
+				    	    break;
+				    	default :
+				    		 break;
+				}
+				
+				if(updateCount!=0 || id!=0L){
+					resultBean.setStatus("OK");
+					Map<String,Object> map = new HashMap<String,Object>();
+					map.put("meetingRecordId", id);
+					resultBean.setMap(map);
+					//记录操作日志
+					ControllerUtils.setRequestParamsForMessageTip(request, p.getProjectName(), p.getId(), null,uNum);
+				}
 			}
 		}catch(Exception e){
 			log.error(MeetingRecordController.class.getName() + "_addMeetingRecord",e);

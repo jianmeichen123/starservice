@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +18,7 @@ import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.business.flow.ceoreview.service.ICeoreviewService;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.flow.internalreview.service.IInternalreviewService;
+import com.galaxy.im.business.operationLog.controller.ControllerUtils;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.ResultBean;
@@ -76,7 +79,7 @@ public class CeoreviewController {
 	 */
 	@RequestMapping("votedown")
 	@ResponseBody
-	public Object votedown(@RequestBody String paramString){
+	public Object votedown(@RequestBody String paramString,HttpServletRequest request){
 		ResultBean<Object> result = new ResultBean<Object>();
 		int flag = 0;
 		try{
@@ -85,6 +88,7 @@ public class CeoreviewController {
 			rMap.put("flag",0);
 			paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_3);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
+				SopProjectBean p = fcService.getSopProjectInfo(paramMap);
 				//验证该项目的状态，查看能否进行操作
 				Map<String,Object> statusMap = fcService.projectStatus(paramMap);
 				if(CUtils.get().mapIsNotEmpty(statusMap)){
@@ -98,6 +102,8 @@ public class CeoreviewController {
 							paramMap.put("scheduleStatus", 3);
 							paramMap.put("updatedTime", DateUtil.getMillis(new Date()));
 							icService.updateCeoScheduling(paramMap);  //修改ceo评审排期状态为已否决
+							//记录操作日志
+							ControllerUtils.setRequestParamsForMessageTip(request,p.getProjectName(), p.getId(),null, false, null, null, null);
 						}else{
 							result.setMessage("项目当前状态或进度已被修改，请刷新");
 						}
@@ -120,7 +126,7 @@ public class CeoreviewController {
 	 */
 	@RequestMapping("startRovalReview")
 	@ResponseBody
-	public Object startRovalReview(@RequestBody String paramString) {
+	public Object startRovalReview(@RequestBody String paramString,HttpServletRequest request) {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		Map<String, Object> map = new HashMap<>();
 		resultBean.setFlag(0);
@@ -156,6 +162,8 @@ public class CeoreviewController {
 							icService.updateCeoScheduling(paramMap); // 修改ceo评审排期状态为已通过
 							resultBean.setMap(map);
 							resultBean.setStatus("OK");
+							//记录操作日志
+							ControllerUtils.setRequestParamsForMessageTip(request, sopBean.getProjectName(), sopBean.getId(),"");
 						}else{
 							resultBean.setMessage("项目当前状态或进度已被修改，请刷新");
 						}

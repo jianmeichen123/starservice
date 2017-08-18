@@ -20,10 +20,12 @@ import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.flow.projectapproval.service.IProjectapprovalService;
+import com.galaxy.im.business.operationLog.controller.ControllerUtils;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
+import com.galaxy.im.common.webconfig.interceptor.operationLog.UrlNumber;
 
 /**
  * 立项会
@@ -84,7 +86,7 @@ public class ProjectapprovalController {
 	 */
 	@RequestMapping("votedown")
 	@ResponseBody
-	public Object votedown(@RequestBody String paramString){
+	public Object votedown(@RequestBody String paramString,HttpServletRequest request){
 		ResultBean<Object> result = new ResultBean<Object>();
 		int flag = 0;
 		try{
@@ -93,6 +95,7 @@ public class ProjectapprovalController {
 			rMap.put("flag",0);
 			paramMap.put("projectProgress", StaticConst.PROJECT_PROGRESS_4);
 			if(CUtils.get().mapIsNotEmpty(paramMap)){
+				SopProjectBean p = fcService.getSopProjectInfo(paramMap);
 				//验证该项目的状态，查看能否进行操作
 				Map<String,Object> statusMap = fcService.projectStatus(paramMap);
 				if(CUtils.get().mapIsNotEmpty(statusMap)){
@@ -109,6 +112,8 @@ public class ProjectapprovalController {
 							paramMap.put("meetingType", StaticConst.MEETING_TYPE_APPROVAL);
 							paramMap.put("updateTime", DateUtil.getMillis(new Date()));
 							service.updateMeetingScheduling(paramMap);
+							//记录操作日志
+							ControllerUtils.setRequestParamsForMessageTip(request,p.getProjectName(), p.getId(),null, false, null, null, null);
 						}else{
 							result.setMessage("项目当前状态或进度已被修改，请刷新");
 						}
@@ -131,7 +136,7 @@ public class ProjectapprovalController {
 	 */
 	@RequestMapping("startBusinessNegotiation")
 	@ResponseBody
-	public Object startBusinessNegotiation(@RequestBody String paramString){
+	public Object startBusinessNegotiation(@RequestBody String paramString,HttpServletRequest request){
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		try{
@@ -163,6 +168,8 @@ public class ProjectapprovalController {
 							service.updateMeetingScheduling(paramMap);
 							resultBean.setMap(map);
 							resultBean.setStatus("OK");
+							//记录操作日志
+							ControllerUtils.setRequestParamsForMessageTip(request, sopBean.getProjectName(), sopBean.getId(),"");
 						}else{
 							resultBean.setMessage("项目当前状态或进度已被修改，请刷新");	
 						}
@@ -188,6 +195,7 @@ public class ProjectapprovalController {
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		resultBean.setFlag(0);
 		long id=0L;
+		int prograss=0;
 		try{
 			Long deptId =0L;
 			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
@@ -234,6 +242,7 @@ public class ProjectapprovalController {
 						if(info!=null && info.get("id")!=null && CUtils.get().object2Long(info.get("id"))!=0){
 							bean.setId(CUtils.get().object2Long(info.get("id")));
 							bean.setUpdatedTime(new Date().getTime());
+							prograss=1;
 							id=fcService.updateSopFile(bean);
 						}else{
 							id =fcService.addSopFile(bean);
@@ -248,6 +257,11 @@ public class ProjectapprovalController {
 					}
 				}else{
 					resultBean.setMessage("项目当前状态或进度已被修改，请刷新");	
+				}
+				if(id!=0L){
+					//记录操作日志
+					UrlNumber uNum = fcService.setNumForFile(prograss,bean);
+					ControllerUtils.setRequestParamsForMessageTip(request, sopBean.getProjectName(), sopBean.getId(), null, uNum);
 				}
 			}
 		}catch(Exception e){

@@ -12,6 +12,7 @@ import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.common.db.service.IBaseService;
+import com.galaxy.im.common.webconfig.interceptor.operationLog.UrlNumber;
 
 public interface IFlowCommonService extends IBaseService<ProjectBean>{
 	Map<String, Object> projectStatus(Map<String, Object> paramMap);
@@ -49,5 +50,7 @@ public interface IFlowCommonService extends IBaseService<ProjectBean>{
 	int updateValid(Long id);
 	//获取项目状态
 	Map<String, Object> getProjectStatus(Map<String, Object> paramMap);
+	//文件类型区分
+	UrlNumber setNumForFile(int prograss, SopFileBean bean);
 
 }

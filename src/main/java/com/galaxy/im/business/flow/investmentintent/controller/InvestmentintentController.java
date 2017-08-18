@@ -21,9 +21,11 @@ import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.flow.investmentintent.service.IInvestmentintentService;
+import com.galaxy.im.business.operationLog.controller.ControllerUtils;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
+import com.galaxy.im.common.webconfig.interceptor.operationLog.UrlNumber;
 
 /**
  * 投资意向书
@@ -170,6 +172,8 @@ public class InvestmentintentController{
 							Long law = fcService.insertsopTask(beanLaw);
 							resultBean.setMap(map);
 							resultBean.setStatus("OK");
+							//记录操作日志
+							ControllerUtils.setRequestParamsForMessageTip(request, sopBean.getProjectName(), sopBean.getId(),"");
 						}else{
 							resultBean.setMessage("项目当前状态或进度已被修改，请刷新");
 						}
@@ -220,6 +224,7 @@ public class InvestmentintentController{
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		resultBean.setFlag(0);
 		long id=0L;
+		int prograss = 0;
 		try{
 			Long deptId =0L;
 			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
@@ -265,6 +270,7 @@ public class InvestmentintentController{
 						if(info!=null && info.get("id")!=null && CUtils.get().object2Long(info.get("id"))!=0){
 							bean.setId(CUtils.get().object2Long(info.get("id")));
 							bean.setUpdatedTime(new Date().getTime());
+							prograss=1;
 							id=fcService.updateSopFile(bean);
 						}else{
 							id =fcService.addSopFile(bean);
@@ -291,6 +297,11 @@ public class InvestmentintentController{
 					}
 				}else{
 					resultBean.setMessage("项目当前状态或进度已被修改，请刷新");	
+				}
+				if(id!=0L){
+					//记录操作日志
+					UrlNumber uNum = fcService.setNumForFile(prograss,bean);
+					ControllerUtils.setRequestParamsForMessageTip(request, sopBean.getProjectName(), sopBean.getId(), null, uNum);
 				}
 			}
 		}catch(Exception e){
