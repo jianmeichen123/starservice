@@ -11,6 +11,7 @@ import com.galaxy.im.common.db.IBaseDao;
 import com.galaxy.im.common.db.service.BaseServiceImpl;
 @Service
 public class ScheduleMessageUserServiceImpl extends BaseServiceImpl<ScheduleMessageUserBean>implements IScheduleMessageUserService{
+	@SuppressWarnings("unused")
 	private Logger log = LoggerFactory.getLogger(ScheduleMessageUserServiceImpl.class);
 	@Autowired
 	private IScheduleMessageUserDao dao;
