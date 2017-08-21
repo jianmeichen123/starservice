@@ -12,13 +12,14 @@
 		from
 		schedule_message_user mu left join schedule_message me on mu.mid =
 		me.id
-		where
+		<where>
 		<if test="userId != null" > mu.uid = #{userId}</if>
 		<if test="isUse != null" >and mu.is_use = #{isUse}</if>
 		<if test="isDel != null" >and mu.is_del = #{isDel}</if>
 		<if test="isRead != null" >and mu.is_read = #{isRead}</if>
 		<if test="isSend != null" >and mu.is_send = #{isSend}</if>
 		<if test="status != null" >and me.status = #{status}</if>
+		</where>
 		order by ${property} ${direction}
 		limit #{offset},${limit};
 
@@ -31,20 +32,23 @@
 		count(mu.id)
 		from
 		schedule_message_user mu left join schedule_message me on mu.mid = me.id
-		where
+		<where>
 		<if test="userId != null" > mu.uid = #{userId}</if>
 		<if test="isUse != null" >and mu.is_use = #{isUse}</if>
 		<if test="isDel != null" >and mu.is_del = #{isDel}</if>
 		<if test="isRead != null" >and mu.is_read = #{isRead}</if>
 		<if test="isSend != null" >and mu.is_send = #{isSend}</if>
 		<if test="status != null" >and me.status = #{status}</if>
+		</where>
 	</select>
 
 	<!-- 单条已读 -->
 	<update id="updateToRead" parameterType="hashmap">
-		update schedule_message_user set
+		update schedule_message_user 
+		<set>
 		<if test="isRead != null" >is_read = #{isRead},</if>
 		<if test="updatedTime != null" >updated_time = #{updatedTime}</if>
+		</set>
 		where mid=#{mid};
 	</update>
 	
@@ -59,21 +63,24 @@
 		from
 		schedule_message_user mu left join schedule_message me on mu.mid =
 		me.id
-		where
+		<where>
 		<if test="userId != null" > mu.uid = #{userId}</if>
 		<if test="isUse != null" >and mu.is_use = #{isUse}</if>
 		<if test="isDel != null" >and mu.is_del = #{isDel}</if>
 		<if test="isRead != null" >and mu.is_read = #{isRead}</if>
 		<if test="isSend != null" >and mu.is_send = #{isSend}</if>
 		<if test="status != null" >and me.status = #{status}</if>
+		</where>
 	</select>
 	
 	<!-- 全部设为已读 -->
 	<update id="perMessageToRead" parameterType="hashmap">
-		update schedule_message_user set
+		update schedule_message_user 
+		<set>
 		<if test="isRead != null" >is_read = #{isRead},</if>
 		<if test="updatedTime != null" >updated_time = #{updatedTime}</if>
-		where 
+		</set>
+		 <where>
 			<trim prefixOverrides="and">
 				<if test="ids != null">
 					and mid IN
@@ -83,14 +90,17 @@
 				</if> 
 				<if test="userId != null" > and uid = #{userId}  </if>
 			</trim>
+		</where>
 	</update>
 	
 	<!-- 全部清空-->
 	<update id="perMessageToClear" parameterType="hashmap">
-		update schedule_message_user set
+		update schedule_message_user 
+		<set>
 		<if test="isDel != null" >is_del = #{isDel},</if>
 		<if test="updatedTime != null" >updated_time = #{updatedTime}</if>
-		where 
+		</set>
+		<where>
 			<trim prefixOverrides="and">
 				<if test="ids != null">
 					and mid IN
@@ -100,6 +110,7 @@
 				</if> 
 				<if test="userId != null" > and uid = #{userId}  </if>
 			</trim>
+		</where>
 	</update>
 
 
