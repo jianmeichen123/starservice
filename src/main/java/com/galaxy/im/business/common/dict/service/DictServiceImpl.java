@@ -142,8 +142,54 @@ public class DictServiceImpl extends BaseServiceImpl<Dict> implements IDictServi
 	public List<Dict> selectByParentCode(String parentCode) {
 		return dictDao.selectByParentCode(parentCode);
 	}
-	
-	
-	
+
+	/**
+	 * 获取项目相关的选择信息
+	 */
+	@Override
+	public List<Map<String, Object>> getDictionaryList(Map<String, Object> paramMap) {
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		
+		try{
+			if(paramMap!=null && paramMap.containsKey("parentCode")){
+				if(CUtils.get().object2String(paramMap.get("parentCode")).equals("FNO1")){
+					list = dictDao.getFinanceStatusList(paramMap);
+					if(paramMap.containsKey("flag")&& CUtils.get().object2Integer(paramMap.get("flag"))==1){
+						Map<String,Object> map =new HashMap<String,Object>();
+						Map<String,Object> map1 =new HashMap<String,Object>();
+						map.put("name", "尚未获投");
+						map.put("code", "financeStatus:0");
+						map1.put("name", "不确定");
+						map1.put("code", "financeStatus:17");
+						list.add(map);
+						list.add(map1);
+					}
+				}else{
+					List<Dict> dataList = dictDao.selectByParentCode(CUtils.get().object2String(paramMap.get("parentCode")));
+					if(dataList!=null && dataList.size()>0){
+						for(Dict dict : dataList){
+							Map<String,Object> map =new HashMap<String,Object>();
+							map.put("name", dict.getName());
+							map.put("code", dict.getDictCode());
+							
+							if("projectType".equals(dict.getParentCode())){
+								//设置默认值
+								if(1==CUtils.get().object2Integer(dict.getDictValue(),0)){
+									map.put("defValue", 1);
+								}else{
+									map.put("defValue", 0);
+								}
+							}
+							list.add(map);
+						}
+					}
+				}
+			}
+		}catch(Exception e){
+			log.error(DictServiceImpl.class.getName() + "getDictionaryList",e);
+			throw new ServiceException(e);
+		}
+		return list;
+	}
 
 }

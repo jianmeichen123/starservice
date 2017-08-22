@@ -15,4 +15,6 @@ public interface IDictService extends IBaseService<Dict>{
 
 	List<Dict> selectByParentCode(String string);
 
+	List<Map<String, Object>> getDictionaryList(Map<String, Object> paramMap);
+
 }

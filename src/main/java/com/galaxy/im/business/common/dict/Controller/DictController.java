@@ -1,5 +1,6 @@
 package com.galaxy.im.business.common.dict.Controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -82,6 +83,33 @@ public class DictController {
 			}
 		}catch(Exception e){
 			log.error(DictController.class.getName() + "_selectReasonFilter",e);
+		}
+		return resultBean;
+	}
+	
+	
+	/**
+	 * 1.项目类型		projectType
+	 * 2.行业归属		industryOwn
+	 * 3.融资轮次		FNO1（全息报告数据，添加：无尚未获投和不确定，筛选时：多尚未获投和不确定）     
+	 * 4.项目进度 		projectProgress
+	 * 5.项目来源		projectSource
+	 * @return
+	 * @author liuli
+	 */
+	@RequestMapping("getDictionaryList")
+	@ResponseBody
+	public Object getDictionaryList(@RequestBody String paramString){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		try{
+			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);	
+			List<Map<String, Object>> entityMap = dictService.getDictionaryList(paramMap);
+			if(entityMap!=null && entityMap.size()>0){
+				resultBean.setStatus("OK");
+				resultBean.setMapList(entityMap);
+			}
+		}catch(Exception e){
+			log.error(DictController.class.getName() + "getDictionaryList",e);
 		}
 		return resultBean;
 	}

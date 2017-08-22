@@ -92,4 +92,12 @@
 		<result column="is_delete" property="isDelete"/>
 	</resultMap>
 	
+	<!-- 融资状态 -->
+	<select id="getFinanceStatusList" parameterType="hashmap" resultType="hashmap">
+		SELECT d.name name ,d.code code FROM information_title_relate r
+		LEFT JOIN information_dictionary d on r.title_id=d.title_id
+		WHERE r.code=#{parentCode} 
+		ORDER BY d.sort ASC;
+	</select>
+	
 </mapper>
