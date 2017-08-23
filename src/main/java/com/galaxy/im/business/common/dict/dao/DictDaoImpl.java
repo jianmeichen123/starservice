@@ -73,6 +73,28 @@ public class DictDaoImpl extends BaseDaoImpl<Dict, Long> implements IDictDao{
 		}
 		
 	}
+
+	@Override
+	public List<Map<String, Object>> getShareholderNatureList(Map<String, Object> paramMap) {
+		try {
+			return sqlSessionTemplate.selectList(getSqlName("getShareholderNatureList"),paramMap);
+		} catch (Exception e) {
+			log.error(String.format("查询对象总数出错！语句：%s", getSqlName("getShareholderNatureList")), e);
+			throw new DaoException(e);
+		}
+		
+	}
+
+	@Override
+	public List<Map<String, Object>> getShareholderTypeList(Map<String, Object> paramMap) {
+		try {
+			return sqlSessionTemplate.selectList(getSqlName("getShareholderTypeList"),paramMap);
+		} catch (Exception e) {
+			log.error(String.format("查询对象总数出错！语句：%s", getSqlName("getShareholderTypeList")), e);
+			throw new DaoException(e);
+		}
+		
+	}
 	
 	
 

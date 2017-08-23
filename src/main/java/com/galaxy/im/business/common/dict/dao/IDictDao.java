@@ -16,4 +16,8 @@ public interface IDictDao extends IBaseDao<Dict, Long>{
 	List<Dict> selectByParentCode(String parentCode);
 
 	List<Map<String, Object>> getFinanceStatusList(Map<String, Object> paramMap);
+
+	List<Map<String, Object>> getShareholderNatureList(Map<String, Object> paramMap);
+
+	List<Map<String, Object>> getShareholderTypeList(Map<String, Object> paramMap);
 }
