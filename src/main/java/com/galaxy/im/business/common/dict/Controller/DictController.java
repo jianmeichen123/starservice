@@ -94,6 +94,8 @@ public class DictController {
 	 * 3.融资轮次		FNO1（全息报告数据，添加：无尚未获投和不确定，筛选时：多尚未获投和不确定）     
 	 * 4.项目进度 		projectProgress
 	 * 5.项目来源		projectSource
+	 * 6.股东性质		shareholderNature
+	 * 7.股东类型		shareholderType
 	 * @return
 	 * @author liuli
 	 */
