@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.galaxy.im.bean.project.InformationListdata">
+
+	<!-- 股权结构法人信息 -->
+	<select id="selectFRInfo" resultType="hashmap" parameterType="hashmap">
+	SELECT group_concat(case when t.tid=#{tid1} then t.result else null end) as ProjectCompany,
+	group_concat(case when t.tid=#{tid2} then t.result else null end) as CompanyLegal,
+	group_concat(case when t.tid=#{tid3} then t.result else null end) as FormationDate
+	FROM (select title_id tid,content_describe1 result from information_result WHERE project_id =#{projectId} and  title_id IN(#{tid1},#{tid2},#{tid3}) ) t
+	</select>
+
+	<!-- 股权结构列表 -->
+	<select id="selectProjectShares" resultType="hashmap" parameterType="hashmap">
+	SELECT il.id id,il.field_1 field1,il.field_2 field2,id.name field3,ids.name field4  
+	FROM information_listdata il 
+	LEFT JOIN information_dictionary id ON il.field_3=id.id 
+	LEFT JOIN information_dictionary ids ON il.field_4=ids.id
+	WHERE il.project_id=#{projectId} and il.title_id=#{titleId}
+	order by ${property} ${direction}
+	limit #{offset},${limit};
+	</select>
+	
+	<!-- 股权结构列表总数 -->
+	<select id="selectProjectSharesCount" resultType="integer" parameterType="hashmap">
+	SELECT count(1)
+	FROM information_listdata 
+	WHERE project_id=#{projectId} and title_id=#{titleId}
+	</select>
+	
+	<!-- 根据id获取股权结构信息-->
+	<select id="selectInfoById" resultType="com.galaxy.im.bean.project.InformationListdata" parameterType="hashmap">
+	SELECT id,field_1 Field1,field_2 Field2,field_3 Field3,field_4 Field4
+	FROM information_listdata 
+	WHERE id=#{id}
+	</select>
+	
+	<!-- 添加股权结构信息-->
+	<insert id="addProjectShares" useGeneratedKeys="true" keyProperty="id" parameterType="hashmap">
+	    <![CDATA[
+	     insert into information_listdata (
+	     	id,
+	     	project_id,
+			title_id,
+			parent_id,
+			code, 
+			field_1,
+			field_2,
+			field_3,
+			field_4,
+			field_5,
+			field_6,
+			field_7,
+			field_8,
+			field_9,
+			field_10,
+			is_valid, 
+			created_time, 
+			create_id, 
+			updated_time, 
+			update_id
+		)
+		values (
+			#{id},
+			#{projectId},
+			#{titleId},
+			#{parentId},
+			#{code}, 
+			#{field1},
+			#{field2},
+			#{field3},
+			#{field4},
+			#{field5},
+			#{field6},
+			#{field7},
+			#{field8},
+			#{field9},
+			#{field10},
+			#{isValid}, 
+			#{createdTime}, 
+			#{createId}, 
+			#{updateTime}, 
+			#{updateId}
+		)
+	    ]]>
+	</insert>
+	
+	<!-- 更新股权结构信息-->
+	<update id="updateProjectShares" parameterType="hashmap">
+		update information_listdata
+		<set>
+			<if test="titleId != null"> title_id = #{titleId}, </if>
+			<if test="parentId != null"> parent_id = #{parentId}, </if>
+			<if test="code != null"> code = #{code }, </if>
+			<if test="field1 != null"> field_1 = #{field1 }, </if>
+			<if test="field2 != null"> field_2 = #{field2 }, </if>
+			<if test="field3 != null"> field_3 = #{field3 }, </if>
+			<if test="field4 != null"> field_4 = #{field4 }, </if>
+			<if test="field5 != null"> field_5 = #{field5 }, </if>
+			<if test="field6 != null"> field_6 = #{field6 }, </if>
+			<if test="field7 != null"> field_7 = #{field7 }, </if>
+			<if test="field8 != null"> field_8 = #{field8 }, </if>
+			<if test="field9 != null"> field_9 = #{field9 }, </if>
+			<if test="field10 != null"> field_10 = #{field10 }, </if>
+			<if test="isValid != null"> is_valid = #{isValid }, </if>
+			<if test="createdTime != null"> created_time = #{createdTime }, </if>
+			<if test="createId != null"> create_id = #{createId }, </if>
+			<if test="updateTime != null"> updated_time = #{updateTime }, </if>
+			<if test="updateId != null"> update_id = #{updateId } </if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<!-- 根据ID删除 -->
+	<delete id="deleteProjectSharesById" parameterType="hashmap">
+		delete from information_listdata
+		where id = #{id}
+	</delete>
+</mapper>
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

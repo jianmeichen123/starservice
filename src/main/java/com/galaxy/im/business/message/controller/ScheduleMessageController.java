@@ -65,7 +65,7 @@ public class ScheduleMessageController {
 				resultBean.setMap(map);
 			}
 			resultBean.setStatus("OK");
-			resultBean.setEntity(page);;
+			resultBean.setEntity(page);
 		} catch (Exception e) {
 			log.error(ScheduleMessageController.class.getName() + "：querySchedule",e);
 		}
