@@ -19,7 +19,7 @@
 	    <result column="exit_evaluation_time" property="exitEvaluationTime" />
 	    <result column="investment_program_time" property="investmentProgramTime" />
 	    <result column="other_business_time" property="otherBusinessTime" />
-	    <result column="time4" property="time4" />
+	    <result column="market_development_time" property="marketDevelopmentTime" />
 	    <result column="time5" property="time5" />
 	    <result column="time6" property="time6" />
 	    <result column="time7" property="time7" />
@@ -31,7 +31,7 @@
 	 <sql id="Base_Column_List">
 	    id, report_type,project_id, information_time, project_time, team_time, operation_data_time, compete_time, 
 	    stratagem_time, finance_time, law_time, financing_time, exit_evaluation_time, investment_program_time, other_business_time,
-	    time4, time5, time6, time7, time8, time9, time10
+	    market_development_time, time5, time6, time7, time8, time9, time10
 	 </sql>
   
   	 <!-- 获取更新时间 -->
