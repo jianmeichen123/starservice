@@ -52,5 +52,9 @@ public interface IFlowCommonService extends IBaseService<ProjectBean>{
 	Map<String, Object> getProjectStatus(Map<String, Object> paramMap);
 	//文件类型区分
 	UrlNumber setNumForFile(int prograss, SopFileBean bean);
+	//通过用户id获取角色code
+	List<String> selectRoleCodeByUserId(Long guserid, HttpServletRequest request, HttpServletResponse response);
+	//通过部门id获取部门名称
+	List<Map<String, Object>> getDeptNameByDeptId(Long deptId, HttpServletRequest request,HttpServletResponse response);
 
 }

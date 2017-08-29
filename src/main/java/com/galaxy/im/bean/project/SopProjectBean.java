@@ -2,6 +2,8 @@ package com.galaxy.im.bean.project;
 
 
 
+import java.util.List;
+
 import com.galaxy.im.common.NumberUtils;
 import com.galaxy.im.common.db.PagableEntity;
 
@@ -61,7 +63,20 @@ public class SopProjectBean extends PagableEntity {
     private String formatFinalValuations;
     private String formatFinalContribution;
     private String formatFinalShareRatio;
+    private Long projectDepartid;
+    //in查询
+    private List<Long> deptIdList;
     
+    private Integer projectYjz;
+    private String industry;
+    
+    private String projectTypeName;//项目类型名称
+    
+    private String projectProgressName; //项目阶段名称
+    
+    private String financeStatusName; //'融资状态'名称
+        
+    private String projectStatusName;  //项目状态名称;
     
     
     
@@ -397,6 +412,54 @@ public class SopProjectBean extends PagableEntity {
 	}
 	public void setFormatFinalShareRatio(String formatFinalShareRatio) {
 		this.formatFinalShareRatio = formatFinalShareRatio;
+	}
+	public Long getProjectDepartid() {
+		return projectDepartid;
+	}
+	public void setProjectDepartid(Long projectDepartid) {
+		this.projectDepartid = projectDepartid;
+	}
+	public List<Long> getDeptIdList() {
+		return deptIdList;
+	}
+	public void setDeptIdList(List<Long> deptIdList) {
+		this.deptIdList = deptIdList;
+	}
+	public Integer getProjectYjz() {
+		return projectYjz;
+	}
+	public void setProjectYjz(Integer projectYjz) {
+		this.projectYjz = projectYjz;
+	}
+	public String getIndustry() {
+		return industry;
+	}
+	public void setIndustry(String industry) {
+		this.industry = industry;
+	}
+	public String getProjectTypeName() {
+		return projectTypeName;
+	}
+	public void setProjectTypeName(String projectTypeName) {
+		this.projectTypeName = projectTypeName;
+	}
+	public String getProjectProgressName() {
+		return projectProgressName;
+	}
+	public void setProjectProgressName(String projectProgressName) {
+		this.projectProgressName = projectProgressName;
+	}
+	public String getFinanceStatusName() {
+		return financeStatusName;
+	}
+	public void setFinanceStatusName(String financeStatusName) {
+		this.financeStatusName = financeStatusName;
+	}
+	public String getProjectStatusName() {
+		return projectStatusName;
+	}
+	public void setProjectStatusName(String projectStatusName) {
+		this.projectStatusName = projectStatusName;
 	}
 	
 }

@@ -21,6 +21,7 @@ import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.flow.common.dao.IFlowCommonDao;
+import com.galaxy.im.business.statistics.controller.StatisticsProjectController;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.StaticConst;
 import com.galaxy.im.common.db.IBaseDao;
@@ -473,6 +474,65 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 			break;
 		}
 		return number;
+	}
+
+	@Override
+	public List<String> selectRoleCodeByUserId(Long guserid, HttpServletRequest request, HttpServletResponse response) {
+		//调用客户端
+		Map<String,Object> headerMap = QHtmlClient.get().getHeaderMap(request);
+		String url = env.getProperty("power.server") + StaticConst.getRoleCodeByUserId;
+		Map<String,Object> qMap = new HashMap<String,Object>();
+		qMap.put("userId",guserid);
+		JSONArray valueJson=null;
+		List<String> list = null;
+		String result = QHtmlClient.get().post(url, headerMap, qMap);
+		if("error".equals(result)){
+			log.error(StatisticsProjectController.class.getName() + "获取信息时出错","此时服务器返回状态码非200");
+		}else{
+			boolean flag = true;
+			JSONObject resultJson = JSONObject.parseObject(result);
+			if(resultJson!=null && resultJson.containsKey("value")){
+				valueJson = resultJson.getJSONArray("value");
+				if(resultJson.containsKey("success") && "true".equals(resultJson.getString("success"))){
+					flag = false;
+				}
+				list=CUtils.get().jsonString2list(valueJson);
+			}
+			if(flag){
+				log.error(StatisticsProjectController.class.getName() + "获取信息时出错","服务器返回正常，获取数据失败");
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public List<Map<String, Object>> getDeptNameByDeptId(Long deptId, HttpServletRequest request,
+			HttpServletResponse response) {
+		//调用客户端
+		Map<String,Object> headerMap = QHtmlClient.get().getHeaderMap(request);
+		String url = env.getProperty("power.server") + StaticConst.getDeptInfo;
+		Map<String,Object> qMap = new HashMap<String,Object>();
+		qMap.put("deptId",deptId);
+		JSONArray valueJson=null;
+		List<Map<String, Object>> list = null;
+		String result = QHtmlClient.get().post(url, headerMap, qMap);
+		if("error".equals(result)){
+			log.error(FlowCommonServiceImpl.class.getName() + "getDeptId：获取创建人信息时出错","此时服务器返回状态码非200");
+		}else{
+			boolean flag = true;
+			JSONObject resultJson = JSONObject.parseObject(result);
+			if(resultJson!=null && resultJson.containsKey("value")){
+				valueJson = resultJson.getJSONArray("value");
+				if(resultJson.containsKey("success") && "true".equals(resultJson.getString("success"))){
+					flag = false;
+				}
+				list=CUtils.get().jsonString2list(valueJson);
+			}
+			if(flag){
+				log.error(FlowCommonServiceImpl.class.getName() + "getDeptId：获取创建人信息时出错","服务器返回正常，获取数据失败");
+			}
+		}
+		return list;
 	}
 
 	

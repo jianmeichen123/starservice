@@ -12,13 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.statistics.ScheduleCountVO;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
@@ -27,7 +24,6 @@ import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
-import com.galaxy.im.common.html.QHtmlClient;
 
 
 @Controller
@@ -40,8 +36,6 @@ public class StatisticsProjectController {
 	IStatisticsProjectService service;
 	@Autowired
 	private IFlowCommonService fcService;
-	@Autowired
-	private Environment env;
 	
 	/**
 	 * 合伙人\投资经理\CEO项目数据统计
@@ -64,7 +58,7 @@ public class StatisticsProjectController {
 				}
 			}
 			//获取用户角色code
-			List<String> roleCodeList = selectRoleCodeByUserId(sessionBean.getGuserid(), request, response);
+			List<String> roleCodeList = fcService.selectRoleCodeByUserId(sessionBean.getGuserid(), request, response);
 			if(roleCodeList==null || roleCodeList.size()==0){
 				resultBean.setMessage("当前用户未配置任何角色，将不执行项目统计功能！");
 				return resultBean;
@@ -122,35 +116,6 @@ public class StatisticsProjectController {
 			log.error(StatisticsProjectController.class.getName() + ":computerRate",e);
 		}
 		return resultBean;
-	}
-	
-	//通过用户id，获取用户角色code
-	private List<String> selectRoleCodeByUserId(Long guserid,HttpServletRequest request, HttpServletResponse response) {
-		//调用客户端
-		Map<String,Object> headerMap = QHtmlClient.get().getHeaderMap(request);
-		String url = env.getProperty("power.server") + StaticConst.getRoleCodeByUserId;
-		Map<String,Object> qMap = new HashMap<String,Object>();
-		qMap.put("userId",guserid);
-		JSONArray valueJson=null;
-		List<String> list = null;
-		String result = QHtmlClient.get().post(url, headerMap, qMap);
-		if("error".equals(result)){
-			log.error(StatisticsProjectController.class.getName() + "获取信息时出错","此时服务器返回状态码非200");
-		}else{
-			boolean flag = true;
-			JSONObject resultJson = JSONObject.parseObject(result);
-			if(resultJson!=null && resultJson.containsKey("value")){
-				valueJson = resultJson.getJSONArray("value");
-				if(resultJson.containsKey("success") && "true".equals(resultJson.getString("success"))){
-					flag = false;
-				}
-				list=CUtils.get().jsonString2list(valueJson);
-			}
-			if(flag){
-				log.error(StatisticsProjectController.class.getName() + "获取信息时出错","服务器返回正常，获取数据失败");
-			}
-		}
-		return list;
 	}
 	
 }

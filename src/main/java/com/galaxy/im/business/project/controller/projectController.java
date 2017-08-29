@@ -10,10 +10,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,13 +24,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.galaxy.im.bean.common.Config;
 import com.galaxy.im.bean.common.SessionBean;
+import com.galaxy.im.bean.project.GeneralProjecttVO;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.ProjectBeanVo;
+import com.galaxy.im.bean.project.ProjectBo;
 import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.business.common.config.service.ConfigService;
+import com.galaxy.im.business.common.dict.service.IDictService;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.project.service.IFinanceHistoryService;
 import com.galaxy.im.business.project.service.IProjectService;
+import com.galaxy.im.common.BeanUtils;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.ResultBean;
@@ -50,6 +57,10 @@ public class projectController {
 	
 	@Autowired
 	private IFlowCommonService fcService;
+	
+	@Autowired
+	private IDictService dictService;
+	
 	
 	@RequestMapping("getProjectList")
 	@ResponseBody
@@ -300,6 +311,145 @@ public class projectController {
 			log.error(projectController.class.getName() + "_addProject",e);
 		}
 		return resultBean;
+	}
+	
+	/**
+	 * 项目列表
+	 * @param 
+	 * @return
+	 * @author liuli
+	 */
+	@RequestMapping("selectProjectList")
+	@ResponseBody
+	public Object selectProjectList(HttpServletRequest request,HttpServletResponse response,@RequestBody ProjectBo projectBo){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		GeneralProjecttVO genProjectBean = new GeneralProjecttVO();
+		try {
+			String deptName="";
+			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
+			if(sessionBean==null){
+				resultBean.setMessage("User用户信息在Session中不存在，无法执行项目列表查询！");
+				return resultBean;
+			}
+			//获取用户角色code
+			List<String> roleCodeList = fcService.selectRoleCodeByUserId(sessionBean.getGuserid(), request, response);
+			if(roleCodeList==null || roleCodeList.size()==0){
+				resultBean.setMessage("当前用户未配置任何角色，将不执行项目统计功能！");
+				return resultBean;
+			}
+			if(roleCodeList.contains(StaticConst.TZJL)&&(projectBo.getProjectDepartid()==null)&&(projectBo.getCreateUid()==null)&&(projectBo.getQuanbu()==null)&&(projectBo.getDeptIdList()==null)){//投资经理
+				projectBo.setCreateUid(sessionBean.getGuserid()); //项目创建者
+			}
+			List<Order> orderList = new ArrayList<Order>();
+			orderList.add(new Order(Direction.DESC, "updated_time"));
+			orderList.add(new Order(Direction.DESC, "created_time"));			
+			Sort sort = new Sort(orderList);
+			if(projectBo.getSflag()==1){
+				//跟进中
+				genProjectBean = service.querygjzProjectList(projectBo, new PageRequest(projectBo.getPageNum(), projectBo.getPageSize() , sort));
+			}
+			if(projectBo.getSflag()==2){
+				//投后运营
+				genProjectBean = service.querythyyList(projectBo, new PageRequest(projectBo.getPageNum(), projectBo.getPageSize() , sort));
+			}
+			if(projectBo.getSflag()==3){
+				//否决
+				genProjectBean = service.queryfjList(projectBo, new PageRequest(projectBo.getPageNum(), projectBo.getPageSize() , sort));
+			}
+			if(projectBo.getSflag()==4){
+				if(projectBo.getKeyword()!=null){
+					projectBo.setCeeword(projectBo.getKeyword().toUpperCase());
+				}
+				projectBo.setCreateUid(null);
+				genProjectBean = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
+			}
+			Page<SopProjectBean> page = genProjectBean.getPvPage();
+			List<SopProjectBean> dataList = page.getContent();
+			//内容处理
+			for(int i=0;i<dataList.size();i++){
+				@SuppressWarnings("unchecked")
+				Map<String,Object> map =(Map<String, Object>) dataList.get(i);
+				//项目事业线
+				if(StringUtils.isNotBlank(CUtils.get().object2String(map.get("projectDepartId")))){
+					//通过部门id获取部门名称
+					List<Map<String, Object>> list = fcService.getDeptNameByDeptId(CUtils.get().object2Long(map.get("projectDepartId")),request,response);
+					if(list!=null){
+						for(Map<String, Object> vMap:list){
+							deptName=CUtils.get().object2String(vMap.get("deptName"));
+						}
+					}
+					map.put("projectCareerline", deptName);
+				}
+				
+				// 标识 项目不处于移交中
+				if(StringUtils.isNotBlank(CUtils.get().object2String(map.get("id")))){
+					map.put("projectYjz", service.projectIsYJZ(CUtils.get().object2Long(map.get("id"))));
+				}
+				// 行业归属
+				if(map.containsKey("industryOwn")){
+					if(StringUtils.isNotBlank(CUtils.get().object2String(map.containsKey("industryOwn")))){
+						Map<String,Object> paramMap = new HashMap<String,Object>();
+						paramMap.put("parentCode", "industryOwn");
+						List<Map<String, Object>> entityMap = dictService.getDictionaryList(paramMap);
+						for(Map<String, Object> mapL : entityMap){
+							if(mapL.containsKey("code") && mapL.get("code").equals(CUtils.get().object2Long(map.get("industryOwn")))){
+								//行业归属名称
+								map.put("industry", CUtils.get().object2String(mapL.get("name")));
+							}else{
+								map.put("industry", "");
+							}
+						}
+					}
+				}else{
+					map.put("industry", "");
+				}
+				//项目类型名称
+				if(StringUtils.isNotBlank(CUtils.get().object2String(map.get("projectType")))){
+					map.put("projectTypeName", getNameByCode(CUtils.get().object2String(map.get("projectType")),"projectType"));
+				}
+				//项目进度名称
+				if(StringUtils.isNotBlank(CUtils.get().object2String(map.get("projectProgress")))){
+					map.put("projectProgressName", getNameByCode(CUtils.get().object2String(map.get("projectProgress")),"projectProgress"));
+				}
+				//融资状态名称
+				if(StringUtils.isNotBlank(CUtils.get().object2String(map.get("financeStatus")))){
+					map.put("financeStatusName", getNameByCode(CUtils.get().object2String(map.get("financeStatus")),"financeStatus"));
+				}
+				//项目状态编码
+				if(StringUtils.isNotBlank(CUtils.get().object2String(map.get("projectStatus")))){
+					map.put("projectStatusName", getNameByCode(CUtils.get().object2String(map.get("projectStatus")),"projectStatus"));
+				}
+			 }
+			 page.setContent(dataList);
+			 genProjectBean.setPvPage(page);
+			 Long gjzNum = service.queryProjectgjzCount(projectBo);
+			 Long thyyNum = service.queryProjectthyyCount(projectBo);
+			 Long yfjNum = service.queryProjectfjCount(projectBo);
+			
+			 genProjectBean.setGjzCount(gjzNum);
+			 genProjectBean.setThyyCount(thyyNum);
+			 genProjectBean.setYfjCount(yfjNum);
+			if(page!=null){
+				resultBean.setStatus("ok");
+				resultBean.setMap(BeanUtils.toMap(genProjectBean));
+			}
+		} catch (Exception e) {
+			log.error(projectController.class.getName() + "selectProjectList",e);
+		}
+		return resultBean;
+	}
+
+	private String getNameByCode(String type,String parentCode) {
+		String code="";
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("parentCode", parentCode);
+		List<Map<String, Object>> entityMap = dictService.getDictionaryList(paramMap);
+		for(Map<String, Object> map : entityMap){
+			if(map.containsKey("code") && map.get("code").equals(CUtils.get().object2String(type))){
+				code =CUtils.get().object2String(map.get("name"));
+			}
+		}
+		return code;
 	}
 
 }

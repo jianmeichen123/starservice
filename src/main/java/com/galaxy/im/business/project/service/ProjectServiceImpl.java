@@ -9,14 +9,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.galaxy.im.bean.project.GeneralProjecttVO;
 import com.galaxy.im.bean.project.ProjectBean;
+import com.galaxy.im.bean.project.ProjectBo;
 import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.flow.common.dao.IFlowCommonDao;
 import com.galaxy.im.business.project.dao.IProjectDao;
+import com.galaxy.im.business.project.dao.ISopProjectDao;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.StaticConst;
 import com.galaxy.im.common.db.IBaseDao;
+import com.galaxy.im.common.db.Page;
+import com.galaxy.im.common.db.PageRequest;
 import com.galaxy.im.common.db.service.BaseServiceImpl;
 import com.galaxy.im.common.exception.ServiceException;
 
@@ -28,6 +33,8 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 	private IProjectDao dao;
 	@Autowired
 	IFlowCommonDao flowdao;
+	@Autowired
+	ISopProjectDao sopdao;
 
 	@Override
 	protected IBaseDao<ProjectBean, Long> getBaseDao() {
@@ -195,6 +202,9 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 		}
 	}
 
+	/**
+	 * 项目是否处于接触访谈阶段
+	 */
 	@Override
 	public int projectIsInterview(Long id) {
 		try{
@@ -205,6 +215,66 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 		}
 	}
 
-	
+	/**
+	 * 跟进中项目列表
+	 */
+	@Override
+	public GeneralProjecttVO querygjzProjectList(ProjectBo query, PageRequest pageable) {
+		Page<SopProjectBean> pageBean =  sopdao.querygjzProjectList(query, pageable);
+		GeneralProjecttVO gpbean = new GeneralProjecttVO();
+		pageBean.setPageable(null);
+		gpbean.setPvPage(pageBean);
+		return gpbean;
+	}
+
+	/**
+	 * 投后运营项目列表
+	 */
+	@Override
+	public GeneralProjecttVO querythyyList(ProjectBo query, PageRequest pageable) {
+		Page<SopProjectBean> pageBean =  sopdao.querythyyList(query, pageable);
+		GeneralProjecttVO gpbean = new GeneralProjecttVO();
+		pageBean.setPageable(null);
+		gpbean.setPvPage(pageBean);
+		return gpbean;
+	}
+
+	/**
+	 * 否决项目列表
+	 */
+	@Override
+	public GeneralProjecttVO queryfjList(ProjectBo query, PageRequest pageable) {
+		Page<SopProjectBean> pageBean =  sopdao.queryfjList(query, pageable);
+		GeneralProjecttVO gpbean = new GeneralProjecttVO();
+		pageBean.setPageable(null);
+		gpbean.setPvPage(pageBean);
+		return gpbean;
+	}
+
+	/**
+	 * 全部
+	 */
+	@Override
+	public GeneralProjecttVO queryPageList(ProjectBo query, PageRequest pageable) {
+		Page<SopProjectBean> pageBean =  sopdao.queryPageList(query, pageable);
+		GeneralProjecttVO gpbean = new GeneralProjecttVO();
+		pageBean.setPageable(null);
+		gpbean.setPvPage(pageBean);
+		return gpbean;
+	}
+
+	//跟进中查询数目
+	public Long queryProjectgjzCount(ProjectBo query) {
+		return sopdao.queryCountgjz(query);
+	}
+	//投后运营查询数目
+	public Long queryProjectthyyCount(ProjectBo query) {
+		return sopdao.queryCountthyy(query);
+	}
+	//否决查询数目
+	public Long queryProjectfjCount(ProjectBo query) {
+		return sopdao.queryCountfj(query);
+	}
+
 	
 }

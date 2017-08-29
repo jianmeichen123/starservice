@@ -27,6 +27,7 @@ public class StaticConst {
 	public static final String resetPwd = "user/resetPasswordForApp";					//重置密码
 	public static final String getCareerLineList = "depart/getCareerLineList";			//获得事业线
 	public static final String getRoleCodeByUserId = "role/getRoleCodeByUserId";		//角色code
+	public static final String getDeptInfo = "depart/getDeptInfo";						//通过部门id获取部门名称
 	//过滤器白名单
 	public static final String FILTER_WHITE_LOGIN = "userlogin/login";		//用户登录白名单
 	
