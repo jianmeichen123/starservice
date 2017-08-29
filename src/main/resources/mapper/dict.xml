@@ -102,7 +102,7 @@
 	
 	<!-- 股东性质 -->
 	<select id="getShareholderNatureList" parameterType="hashmap" resultType="hashmap">
-		SELECT d.name name ,d.code code FROM information_title_relate r
+		SELECT d.id,d.name name ,d.code code FROM information_title_relate r
 		LEFT JOIN information_listdata_remark remark on remark.title_id=r.title_id
 		LEFT JOIN information_dictionary d on remark.sub_title_id4=d.title_id
 		WHERE r.code=#{parentCode} ORDER BY d.sort ASC;
@@ -110,7 +110,7 @@
 	
 	<!-- 股东类型 -->
 	<select id="getShareholderTypeList" parameterType="hashmap" resultType="hashmap">
-		SELECT d.name name ,d.code code FROM information_title_relate r
+		SELECT d.id,d.name name ,d.code code FROM information_title_relate r
 		LEFT JOIN information_listdata_remark remark on remark.title_id=r.title_id
 		LEFT JOIN information_dictionary d on remark.sub_title_id3=d.title_id
 		WHERE r.code=#{parentCode} ORDER BY d.sort ASC;
