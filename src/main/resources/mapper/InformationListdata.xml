@@ -12,7 +12,7 @@
 
 	<!-- 股权结构列表 -->
 	<select id="selectProjectShares" resultType="hashmap" parameterType="hashmap">
-	SELECT il.id id,il.field_1 field1,il.field_2 field2,id.name field3,ids.name field4  
+	SELECT il.id,il.field_1 sharesOwner,il.field_2 sharesRatio,id.name shareholderType,ids.name shareholderNature  
 	FROM information_listdata il 
 	LEFT JOIN information_dictionary id ON il.field_3=id.id 
 	LEFT JOIN information_dictionary ids ON il.field_4=ids.id
@@ -66,10 +66,10 @@
 			#{titleId},
 			#{parentId},
 			#{code}, 
-			#{field1},
-			#{field2},
-			#{field3},
-			#{field4},
+			#{sharesOwner},
+			#{sharesRatio},
+			#{shareholderType},
+			#{shareholderNature},
 			#{field5},
 			#{field6},
 			#{field7},
@@ -92,10 +92,10 @@
 			<if test="titleId != null"> title_id = #{titleId}, </if>
 			<if test="parentId != null"> parent_id = #{parentId}, </if>
 			<if test="code != null"> code = #{code }, </if>
-			<if test="field1 != null"> field_1 = #{field1 }, </if>
-			<if test="field2 != null"> field_2 = #{field2 }, </if>
-			<if test="field3 != null"> field_3 = #{field3 }, </if>
-			<if test="field4 != null"> field_4 = #{field4 }, </if>
+			<if test="sharesOwner != null"> field_1 = #{sharesOwner }, </if>
+			<if test="sharesRatio != null"> field_2 = #{sharesRatio }, </if>
+			<if test="shareholderType != null"> field_3 = #{shareholderType }, </if>
+			<if test="shareholderNature != null"> field_4 = #{shareholderNature }, </if>
 			<if test="field5 != null"> field_5 = #{field5 }, </if>
 			<if test="field6 != null"> field_6 = #{field6 }, </if>
 			<if test="field7 != null"> field_7 = #{field7 }, </if>
