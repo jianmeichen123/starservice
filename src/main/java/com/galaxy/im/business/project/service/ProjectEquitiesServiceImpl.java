@@ -9,17 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.galaxy.im.bean.project.InformationListdata;
-import com.galaxy.im.business.project.dao.InformationListdataDao;
+import com.galaxy.im.business.project.dao.IProjectEquitiesDao;
 import com.galaxy.im.common.db.IBaseDao;
 import com.galaxy.im.common.db.QPage;
 import com.galaxy.im.common.db.service.BaseServiceImpl;
 import com.galaxy.im.common.exception.ServiceException;
 @Service
-public class InformationListdataServiceImpl extends BaseServiceImpl<InformationListdata> implements InformationListdataService{
-	private static final Logger log = LoggerFactory.getLogger(InformationListdataServiceImpl.class);
+public class ProjectEquitiesServiceImpl extends BaseServiceImpl<InformationListdata> implements IProjectEquitiesService{
+	private static final Logger log = LoggerFactory.getLogger(ProjectEquitiesServiceImpl.class);
 	
 	@Autowired
-	private InformationListdataDao dao;
+	private IProjectEquitiesDao dao;
 	
 	@Override
 	protected IBaseDao<InformationListdata, Long> getBaseDao() {
@@ -31,7 +31,7 @@ public class InformationListdataServiceImpl extends BaseServiceImpl<InformationL
 		try {
 			return dao.selectFRInfo(paramMap);
 		} catch (Exception e) {
-			log.error(InformationListdataServiceImpl.class.getName() + "selectFRInfo",e);
+			log.error(ProjectEquitiesServiceImpl.class.getName() + "selectFRInfo",e);
 			throw new ServiceException(e);
 		}
 		
@@ -42,7 +42,7 @@ public class InformationListdataServiceImpl extends BaseServiceImpl<InformationL
 		try {
 			return dao.selectProjectShares(paramMap);
 		} catch (Exception e) {
-			log.error(InformationListdataServiceImpl.class.getName() + "selectProjectShares",e);
+			log.error(ProjectEquitiesServiceImpl.class.getName() + "selectProjectShares",e);
 			throw new ServiceException(e);
 		}
 	}
@@ -52,7 +52,7 @@ public class InformationListdataServiceImpl extends BaseServiceImpl<InformationL
 		try {
 			dao.addProjectShares(paramMap);
 		} catch (Exception e) {
-			log.error(InformationListdataServiceImpl.class.getName() + "addProjectShares",e);
+			log.error(ProjectEquitiesServiceImpl.class.getName() + "addProjectShares",e);
 			throw new ServiceException(e);
 		}
 	}
@@ -62,7 +62,7 @@ public class InformationListdataServiceImpl extends BaseServiceImpl<InformationL
 		try {
 			return dao.selectInfoById(paramMap);
 		} catch (Exception e) {
-			log.error(InformationListdataServiceImpl.class.getName() + "selectInfoById",e);
+			log.error(ProjectEquitiesServiceImpl.class.getName() + "selectInfoById",e);
 			throw new ServiceException(e);
 		}
 	}
@@ -72,7 +72,7 @@ public class InformationListdataServiceImpl extends BaseServiceImpl<InformationL
 		try {
 			dao.updateProjectShares(paramMap);
 		} catch (Exception e) {
-			log.error(InformationListdataServiceImpl.class.getName() + "updateProjectShares",e);
+			log.error(ProjectEquitiesServiceImpl.class.getName() + "updateProjectShares",e);
 			throw new ServiceException(e);
 		}
 	}
@@ -82,7 +82,7 @@ public class InformationListdataServiceImpl extends BaseServiceImpl<InformationL
 		try {
 			dao.deleteProjectSharesById(paramMap);
 		} catch (Exception e) {
-			log.error(InformationListdataServiceImpl.class.getName() + "deleteProjectSharesById",e);
+			log.error(ProjectEquitiesServiceImpl.class.getName() + "deleteProjectSharesById",e);
 			throw new ServiceException(e);
 		}
 	}

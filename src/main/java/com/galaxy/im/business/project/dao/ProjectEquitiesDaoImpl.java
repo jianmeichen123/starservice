@@ -13,11 +13,11 @@ import com.galaxy.im.common.db.BaseDaoImpl;
 import com.galaxy.im.common.db.QPage;
 import com.galaxy.im.common.exception.DaoException;
 @Repository
-public class InformationListdataDaoImpl extends BaseDaoImpl<InformationListdata, Long> implements InformationListdataDao{
+public class ProjectEquitiesDaoImpl extends BaseDaoImpl<InformationListdata, Long> implements IProjectEquitiesDao{
 
-	private Logger log = LoggerFactory.getLogger(InformationListdataDaoImpl.class);
+	private Logger log = LoggerFactory.getLogger(ProjectEquitiesDaoImpl.class);
 	
-	public InformationListdataDaoImpl(){
+	public ProjectEquitiesDaoImpl(){
 		super.setLogger(log);
 	}
 
@@ -26,7 +26,7 @@ public class InformationListdataDaoImpl extends BaseDaoImpl<InformationListdata,
 		try{
 			return sqlSessionTemplate.selectList(getSqlName("selectFRInfo"),paramMap);
 		}catch(Exception e){
-			log.error(InformationListdataDaoImpl.class.getName() + "selectFRInfo",e);
+			log.error(ProjectEquitiesDaoImpl.class.getName() + "selectFRInfo",e);
 			throw new DaoException(e);
 		}
 	}
@@ -42,7 +42,7 @@ public class InformationListdataDaoImpl extends BaseDaoImpl<InformationListdata,
 			}
 			return new QPage(contentList,total);
 		}catch(Exception e){
-			log.error(InformationListdataDaoImpl.class.getName() + "selectProjectShares",e);
+			log.error(ProjectEquitiesDaoImpl.class.getName() + "selectProjectShares",e);
 			throw new DaoException(e);
 		}
 	}
@@ -52,7 +52,7 @@ public class InformationListdataDaoImpl extends BaseDaoImpl<InformationListdata,
 		try{
 			sqlSessionTemplate.insert(getSqlName("addProjectShares"),paramMap);
 		}catch(Exception e){
-			log.error(InformationListdataDaoImpl.class.getName() + "addProjectShares",e);
+			log.error(ProjectEquitiesDaoImpl.class.getName() + "addProjectShares",e);
 			throw new DaoException(e);
 		}
 		
@@ -63,7 +63,7 @@ public class InformationListdataDaoImpl extends BaseDaoImpl<InformationListdata,
 		try{
 			return sqlSessionTemplate.selectOne(getSqlName("selectInfoById"),paramMap);
 		}catch(Exception e){
-			log.error(InformationListdataDaoImpl.class.getName() + "selectInfoById",e);
+			log.error(ProjectEquitiesDaoImpl.class.getName() + "selectInfoById",e);
 			throw new DaoException(e);
 		}
 	}
@@ -73,7 +73,7 @@ public class InformationListdataDaoImpl extends BaseDaoImpl<InformationListdata,
 		try{
 			 sqlSessionTemplate.update(getSqlName("updateProjectShares"),paramMap);
 		}catch(Exception e){
-			log.error(InformationListdataDaoImpl.class.getName() + "updateProjectShares",e);
+			log.error(ProjectEquitiesDaoImpl.class.getName() + "updateProjectShares",e);
 			throw new DaoException(e);
 		}
 		
@@ -84,7 +84,7 @@ public class InformationListdataDaoImpl extends BaseDaoImpl<InformationListdata,
 		try{
 			 sqlSessionTemplate.delete(getSqlName("deleteProjectSharesById"),paramMap);
 		}catch(Exception e){
-			log.error(InformationListdataDaoImpl.class.getName() + "deleteProjectSharesById",e);
+			log.error(ProjectEquitiesDaoImpl.class.getName() + "deleteProjectSharesById",e);
 			throw new DaoException(e);
 		}
 	}

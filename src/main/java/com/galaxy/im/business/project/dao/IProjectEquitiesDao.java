@@ -1,13 +1,13 @@
-package com.galaxy.im.business.project.service;
+package com.galaxy.im.business.project.dao;
 
 import java.util.List;
 import java.util.Map;
 
 import com.galaxy.im.bean.project.InformationListdata;
+import com.galaxy.im.common.db.IBaseDao;
 import com.galaxy.im.common.db.QPage;
-import com.galaxy.im.common.db.service.IBaseService;
 
-public interface InformationListdataService extends IBaseService<InformationListdata>{
+public interface IProjectEquitiesDao extends IBaseDao<InformationListdata, Long>{
 
 	List<Object> selectFRInfo(Map<String, Object> paramMap);
 

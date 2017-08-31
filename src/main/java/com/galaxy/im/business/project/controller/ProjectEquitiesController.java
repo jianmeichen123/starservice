@@ -19,7 +19,7 @@ import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.project.InformationListdata;
 import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.business.project.service.IProjectService;
-import com.galaxy.im.business.project.service.InformationListdataService;
+import com.galaxy.im.business.project.service.IProjectEquitiesService;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.db.QPage;
@@ -35,12 +35,12 @@ import com.galaxy.im.common.db.QPage;
  */
 @Controller
 @RequestMapping("/galaxy/projectShares")
-public class InformationListdataController {
+public class ProjectEquitiesController {
 
-	private Logger log=LoggerFactory.getLogger(InformationListdataController.class);
+	private Logger log=LoggerFactory.getLogger(ProjectEquitiesController.class);
 	
 	@Autowired 
-	private InformationListdataService service;
+	private IProjectEquitiesService service;
 	
 	@Autowired 
 	private IProjectService iProjectService;
@@ -61,7 +61,7 @@ public class InformationListdataController {
 			resultBean.setEntityList(list);;
 			resultBean.setStatus("OK");
 		} catch (Exception e) {
-			log.error(InformationListdataController.class.getName() + "：selectFRInfo",e);
+			log.error(ProjectEquitiesController.class.getName() + "：selectFRInfo",e);
 		}
 		return resultBean;
 		
@@ -83,7 +83,7 @@ public class InformationListdataController {
 			resultBean.setStatus("OK");
 			resultBean.setEntity(page);
 		} catch (Exception e) {
-			log.error(InformationListdataController.class.getName() + "：selectProjectShares",e);
+			log.error(ProjectEquitiesController.class.getName() + "：selectProjectShares",e);
 		}
 		return resultBean;
 	}
@@ -104,7 +104,7 @@ public class InformationListdataController {
 			SopProjectBean p = iProjectService.getProjectInfoById(sessionBean.getGuserid());
 			//项目创建者用户ID与当前登录人ID是否一样
 			if(p != null && sessionBean.getGuserid().doubleValue() != p.getCreateUid().doubleValue()){
-				resultBean.setMessage("没有权限修改该项目的团队成员信息!");
+				resultBean.setMessage("没有权限修改该项目的股权结构信息!");
 				return resultBean;
 			}
 			try {
@@ -130,7 +130,7 @@ public class InformationListdataController {
 					}
 				}
 		} catch (Exception e) {
-			log.error(InformationListdataController.class.getName() + "：addProjectShares",e);
+			log.error(ProjectEquitiesController.class.getName() + "：addProjectShares",e);
 		}
 		return resultBean;
 	}
@@ -151,7 +151,7 @@ public class InformationListdataController {
 		SopProjectBean p = iProjectService.getProjectInfoById(sessionBean.getGuserid());
 		//项目创建者用户ID与当前登录人ID是否一样
 		if(p != null && sessionBean.getGuserid().doubleValue() != p.getCreateUid().doubleValue()){
-			resultBean.setMessage("没有权限修改该项目的团队成员信息!");
+			resultBean.setMessage("没有权限修删除项目的团队成员信息!");
 			return resultBean;
 		}
 		try {
@@ -167,7 +167,7 @@ public class InformationListdataController {
 				}
 			}
 		} catch (Exception e) {
-			log.error(InformationListdataController.class.getName() + "：deleteProjectShares",e);
+			log.error(ProjectEquitiesController.class.getName() + "：deleteProjectShares",e);
 		}
 		return resultBean;
 	}
