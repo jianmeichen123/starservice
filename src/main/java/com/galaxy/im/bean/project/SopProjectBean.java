@@ -46,7 +46,7 @@ public class SopProjectBean extends PagableEntity {
     private String nextFinancingSource;			//下一轮融资路径
     private String industryAnalysis;			//行业分析
     private String operationalData;				//运营数据
-    private Integer faFlag;						//项目是否来源于FA，默认0表示"否"，1表示"是"
+    private String faFlag;						//项目来源
     private String faName;						//FA全名
     private String greanChannel;				//项目绿色通道标识(多通道支持,分割) 1：接触访谈，2：内部评审，3：CEO评审，4：立项会，5：投资意向书，6：尽职调查，7：投资决策会，8：投资协议，9：股权交割
     private String remark;						//备注
@@ -311,10 +311,11 @@ public class SopProjectBean extends PagableEntity {
 	public void setOperationalData(String operationalData) {
 		this.operationalData = operationalData;
 	}
-	public Integer getFaFlag() {
+	
+	public String getFaFlag() {
 		return faFlag;
 	}
-	public void setFaFlag(Integer faFlag) {
+	public void setFaFlag(String faFlag) {
 		this.faFlag = faFlag;
 	}
 	public String getFaName() {

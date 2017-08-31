@@ -34,7 +34,9 @@
 		 FROM(
 			  SELECT 
 				case #{meetingType}
+				WHEN 'meetingType:1' THEN 'meeting1Result'
 				WHEN 'meetingType:3' THEN 'meeting3Result'
+				WHEN 'meetingType:4' THEN 'meeting4Result'
 				WHEN 'meetingType:5' THEN 'meeting5Result'
 				else 'meetingResult' 
 				end meetingType,
@@ -55,7 +57,7 @@
 		 FROM(
 			SELECT 
 				case 
-				WHEN #{meetingResult} in('meetingResult:3','meeting3Result:6','meeting5Result:2') THEN 'meetingVetoReason'
+				WHEN #{meetingResult} in('meetingResult:3','meeting3Result:6','meeting5Result:2','meeting1Result:4','meeting4Result:3') THEN 'meetingVetoReason'
 				WHEN #{meetingResult} in('meetingResult:2') THEN 'meetingUndeterminedReason'
 				WHEN #{meetingResult} in('meeting5Result:1') THEN 'meetingFollowingReason'
 				else ''
