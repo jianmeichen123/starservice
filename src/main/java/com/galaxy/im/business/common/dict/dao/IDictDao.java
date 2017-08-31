@@ -20,4 +20,6 @@ public interface IDictDao extends IBaseDao<Dict, Long>{
 	List<Map<String, Object>> getShareholderNatureList(Map<String, Object> paramMap);
 
 	List<Map<String, Object>> getShareholderTypeList(Map<String, Object> paramMap);
+
+	List<Map<String, Object>> getTeamUserPosition(Map<String, Object> paramMap);
 }

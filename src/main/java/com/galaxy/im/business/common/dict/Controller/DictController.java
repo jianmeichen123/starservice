@@ -96,6 +96,7 @@ public class DictController {
 	 * 5.项目来源		projectSource
 	 * 6.股东性质		shareholderNature
 	 * 7.股东类型		shareholderType
+	 * 8.团队成员职位	FNO4（全息报告：团队成员职位列表）
 	 * @return
 	 * @author liuli
 	 */

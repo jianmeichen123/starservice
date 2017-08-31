@@ -165,6 +165,10 @@ public class DictServiceImpl extends BaseServiceImpl<Dict> implements IDictServi
 						list.add(map);
 						list.add(map1);
 					}
+				}else if(CUtils.get().object2String(paramMap.get("parentCode")).equals("FNO4")){
+					//团队成员职位
+					paramMap.put("code", "team-members");
+					list = dictDao.getTeamUserPosition(paramMap);
 				}else if(CUtils.get().object2String(paramMap.get("parentCode")).equals("shareholderNature")){
 					//股东性质
 					paramMap.clear();

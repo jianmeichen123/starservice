@@ -107,7 +107,8 @@
 		SELECT d.id,d.name name ,d.code code FROM information_title_relate r
 		LEFT JOIN information_listdata_remark remark on remark.title_id=r.title_id
 		LEFT JOIN information_dictionary d on remark.sub_title_id4=d.title_id
-		WHERE r.code=#{parentCode} ORDER BY d.sort ASC;
+		WHERE r.code=#{parentCode} 
+		ORDER BY d.sort ASC;
 	</select>
 	
 	<!-- 股东类型 -->
@@ -115,7 +116,17 @@
 		SELECT d.id,d.name name ,d.code code FROM information_title_relate r
 		LEFT JOIN information_listdata_remark remark on remark.title_id=r.title_id
 		LEFT JOIN information_dictionary d on remark.sub_title_id3=d.title_id
-		WHERE r.code=#{parentCode} ORDER BY d.sort ASC;
+		WHERE r.code=#{parentCode} 
+		ORDER BY d.sort ASC;
+	</select>
+	
+	<!-- 团队成员职位-->
+	<select id="getTeamUserPosition" parameterType="hashmap" resultType="hashmap">
+		SELECT d.id,d.name name ,d.code code FROM information_title_relate r
+		LEFT JOIN information_listdata_remark remark on remark.title_id=r.title_id
+		LEFT JOIN information_dictionary d on remark.sub_title_id2=d.title_id
+		WHERE r.code=#{parentCode} and remark.code=#{code} 
+		ORDER BY d.sort ASC;
 	</select>
 	
 </mapper>
