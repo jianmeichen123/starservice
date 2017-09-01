@@ -188,8 +188,15 @@ public class DictServiceImpl extends BaseServiceImpl<Dict> implements IDictServi
 							map.put("code", dict.getDictCode());
 							
 							if("projectType".equals(dict.getParentCode())){
-								//设置默认值
+								//项目类型：投资
 								if(1==CUtils.get().object2Integer(dict.getDictValue(),0)){
+									map.put("defValue", 1);
+								}else{
+									map.put("defValue", 0);
+								}
+							}else if("currency".equals(dict.getParentCode())){
+								//币种默认值：人民币
+								if(0==CUtils.get().object2Integer(dict.getDictValue(),0)){
 									map.put("defValue", 1);
 								}else{
 									map.put("defValue", 0);

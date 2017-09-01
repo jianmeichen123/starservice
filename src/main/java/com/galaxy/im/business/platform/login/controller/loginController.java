@@ -1,10 +1,12 @@
 package com.galaxy.im.business.platform.login.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.galaxy.im.bean.common.SessionBean;
+import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
@@ -33,6 +36,8 @@ public class loginController {
 	
 	@Autowired
 	private IRedisCache<String, Object> cache;
+	@Autowired
+	private IFlowCommonService fcService;
 	
 	/**
 	 * 登录
@@ -126,14 +131,34 @@ public class loginController {
 	 */
 	@RequestMapping("/platform/departmentList")
 	@ResponseBody
-	public Object departmentList(){
+	public Object departmentList(HttpServletRequest request,HttpServletResponse response){
 		ResultBean<Object> result = new ResultBean<Object>();
+		SessionBean sessionBean = CUtils.get().getBeanBySession(request);
+		Long deptId = 0L;
+		//System.out.println(cache.get(sessionBean.getSessionid()));
+		//通过用户id获取一些信息
+		List<Map<String, Object>> list = fcService.getDeptId(sessionBean.getGuserid(),request,response);
+		if(list!=null){
+			for(Map<String, Object> vMap:list){
+				deptId = CUtils.get().object2Long( vMap.get("deptId"));
+			}
+		}
 		String url = env.getProperty("power.server") + StaticConst.getCareerLineList;
 		String htmlString = QHtmlClient.get().post(url, null, null);
 		if(CUtils.get().stringIsNotEmpty(htmlString) && !"error".equals(htmlString)){
 			JSONArray array = CUtils.get().object2JSONArray(htmlString);
+			List<Map<String, Object>> dataList = CUtils.get().jsonString2list(array);
+			for(Map<String, Object> map : dataList){
+				if(map.containsKey("id")){
+					if(deptId==CUtils.get().object2Long(map.get("id"))){
+						map.put("isCurrentUser", true);
+					}else{
+						map.put("isCurrentUser", false);
+					}
+				}
+			}
 			result.setStatus("OK");
-			result.setEntity(array);
+			result.setMapList(dataList);
 		}
 		return result;
 	}
