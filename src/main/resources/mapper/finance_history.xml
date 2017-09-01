@@ -39,7 +39,7 @@
 				l.project_id projectId,				
 				l.field_3 financeAmount, 
 				l.field_4 financeProportion,			
-				l.field_5 financeValuation, 
+				CONCAT(FLOOR(l.field_5),'') financeValuation, 
 				l.field_9 contract,
 				l.field_10 commitment,
 				d1.name	financeUnit,			
@@ -85,21 +85,21 @@
 			#{titleId},
 			#{parentId},
 			#{code}, 
-			#{field1},
-			#{field2},
-			#{field3},
-			#{field4},
-			#{field5},
-			#{field6},
-			#{field7},
-			#{field8},
-			#{field9},
-			#{field10},
+			#{financeDateStr},
+			#{financeFrom},
+			#{financeAmount},
+			#{financeProportion},
+			#{financeValuation},
+			#{financeUnitId},
+			#{financingStatusId},
+			#{financingStockId},
+			#{contract},
+			#{commitment},
 			#{isValid}, 
 			#{createdTime}, 
 			#{createId}, 
-			#{updatedTime}, 
-			#{updateId}
+			#{createdTime}, 
+			#{createId}
 		)
 		<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
 			SELECT LAST_INSERT_ID() AS id
@@ -113,16 +113,16 @@
 			<if test="titleId != null"> title_id = #{titleId}, </if>
 			<if test="parentId != null"> parent_id = #{parentId}, </if>
 			<if test="code != null"> code = #{code}, </if>
-			<if test="field1 != null"> field_1 = #{field1}, </if>
-			<if test="field2 != null"> field_2 = #{field2}, </if>
-			<if test="field3 != null"> field_3 = #{field3}, </if>
-			<if test="field4 != null"> field_4 = #{field4}, </if>
-			<if test="field5 != null"> field_5 = #{field5}, </if>
-			<if test="field6 != null"> field_6 = #{field6}, </if>
-			<if test="field7 != null"> field_7 = #{field7}, </if>
-			<if test="field8 != null"> field_8 = #{field8}, </if>
-			<if test="field9 != null"> field_9 = #{field9}, </if>
-			<if test="field10 != null"> field_10 = #{field10}, </if>
+			<if test="field1 != null"> field_1 = #{financeDateStr}, </if>
+			<if test="field2 != null"> field_2 = #{financeFrom}, </if>
+			<if test="field3 != null"> field_3 = #{financeAmount}, </if>
+			<if test="field4 != null"> field_4 = #{financeProportion}, </if>
+			<if test="field5 != null"> field_5 = #{financeValuation}, </if>
+			<if test="field6 != null"> field_6 = #{financeUnitId}, </if>
+			<if test="field7 != null"> field_7 = #{financingStatusId}, </if>
+			<if test="field8 != null"> field_8 = #{financingStockId}, </if>
+			<if test="field9 != null"> field_9 = #{contract}, </if>
+			<if test="field10 != null"> field_10 = #{commitment}, </if>
 			<if test="isValid != null"> is_valid = #{isValid}, </if>
 			<if test="createdTime != null"> created_time = #{createdTime}, </if>
 			<if test="createId != null"> create_id = #{createId}, </if>

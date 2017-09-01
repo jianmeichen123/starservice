@@ -118,5 +118,30 @@ public class DictController {
 		return resultBean;
 	}
 	
+	/**
+	 * 获取融资历史字典信息
+	 * 1.融资轮次
+	 * 2.币种
+	 * 3.新老股
+	 * @param paramString
+	 * @return
+	 */
+	@RequestMapping("getDictionaryFinanceList")
+	@ResponseBody
+	public Object getDictionaryFinanceList(@RequestBody String paramString){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		try{
+			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);	
+			Map<String, Object> entityMap = dictService.getDictionaryFinanceList(paramMap);
+			if(entityMap!=null && entityMap.size()>0){
+				resultBean.setStatus("OK");
+				resultBean.setMap(entityMap);
+			}
+		}catch(Exception e){
+			log.error(DictController.class.getName() + "getDictionaryFinanceList",e);
+		}
+		return resultBean;
+	}
+	
 
 }

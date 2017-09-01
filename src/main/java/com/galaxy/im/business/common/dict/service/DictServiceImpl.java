@@ -214,4 +214,35 @@ public class DictServiceImpl extends BaseServiceImpl<Dict> implements IDictServi
 		return list;
 	}
 
+	/**
+	 * 获取融资轮次相关的选项列表
+	 */
+	@Override
+	public Map<String, Object> getDictionaryFinanceList(Map<String, Object> paramMap) {
+		List<Map<String,Object>> list6 = new ArrayList<Map<String,Object>>();
+		List<Map<String,Object>> list7 = new ArrayList<Map<String,Object>>();
+		List<Map<String,Object>> list8 = new ArrayList<Map<String,Object>>();
+		Map<String,Object> resultMap = null;
+		try{
+			if(paramMap!=null && paramMap.containsKey("parentCode")){
+				if(CUtils.get().object2String(paramMap.get("parentCode")).equals("FNO7")){
+					//币种
+					list6 = dictDao.getfinanceUnitList(paramMap);
+					//融资轮次
+					list7 = dictDao.getfinancingStatusList(paramMap);
+					//新老股
+					list8 = dictDao.getfinancingStockList(paramMap);
+				}
+				resultMap = new HashMap<String,Object>();
+				resultMap.put("financeUnit", list6);
+				resultMap.put("financingStatus", list7);
+				resultMap.put("financingStock", list8);
+			}
+		}catch(Exception e){
+			log.error(DictServiceImpl.class.getName() + "getDictionaryFinanceList",e);
+			throw new ServiceException(e);
+		}
+		return resultMap;
+	}
+
 }

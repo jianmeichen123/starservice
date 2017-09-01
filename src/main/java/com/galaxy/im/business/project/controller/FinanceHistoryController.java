@@ -81,6 +81,7 @@ public class FinanceHistoryController {
 			Long id = 0L;
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if(paramMap!=null && !paramMap.isEmpty()){
+				paramMap.put("titleId", 1903);
 				if(paramMap.containsKey("id") && CUtils.get().object2Long(paramMap.get("id"))!=0){
 					paramMap.put("updateId", CUtils.get().getBeanBySession(request).getGuserid());
 					paramMap.put("updatedTime", DateUtil.getMillis(new Date()));

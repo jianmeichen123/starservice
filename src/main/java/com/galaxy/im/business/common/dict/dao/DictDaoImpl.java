@@ -105,6 +105,36 @@ public class DictDaoImpl extends BaseDaoImpl<Dict, Long> implements IDictDao{
 			throw new DaoException(e);
 		}
 	}
+
+	@Override
+	public List<Map<String, Object>> getfinanceUnitList(Map<String, Object> paramMap) {
+		try {
+			return sqlSessionTemplate.selectList(getSqlName("getfinanceUnitList"),paramMap);
+		} catch (Exception e) {
+			log.error(String.format("查询对象总数出错！语句：%s", getSqlName("getfinanceUnitList")), e);
+			throw new DaoException(e);
+		}
+	}
+
+	@Override
+	public List<Map<String, Object>> getfinancingStatusList(Map<String, Object> paramMap) {
+		try {
+			return sqlSessionTemplate.selectList(getSqlName("getfinancingStatusList"),paramMap);
+		} catch (Exception e) {
+			log.error(String.format("查询对象总数出错！语句：%s", getSqlName("getfinancingStatusList")), e);
+			throw new DaoException(e);
+		}
+	}
+
+	@Override
+	public List<Map<String, Object>> getfinancingStockList(Map<String, Object> paramMap) {
+		try {
+			return sqlSessionTemplate.selectList(getSqlName("getfinancingStockList"),paramMap);
+		} catch (Exception e) {
+			log.error(String.format("查询对象总数出错！语句：%s", getSqlName("getfinancingStockList")), e);
+			throw new DaoException(e);
+		}
+	}
 	
 	
 

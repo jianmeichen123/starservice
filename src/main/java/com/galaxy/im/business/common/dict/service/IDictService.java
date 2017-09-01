@@ -17,4 +17,6 @@ public interface IDictService extends IBaseService<Dict>{
 
 	List<Map<String, Object>> getDictionaryList(Map<String, Object> paramMap);
 
+	Map<String, Object> getDictionaryFinanceList(Map<String, Object> paramMap);
+
 }

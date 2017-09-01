@@ -129,4 +129,31 @@
 		ORDER BY d.sort ASC;
 	</select>
 	
+	<!-- 融资：币种-->
+	<select id="getfinanceUnitList" parameterType="hashmap" resultType="hashmap">
+		SELECT d.id,d.name name ,d.code code FROM information_title_relate r
+		LEFT JOIN information_listdata_remark remark on remark.title_id=r.title_id
+		LEFT JOIN information_dictionary d on remark.sub_title_id6=d.title_id
+		WHERE r.code=#{parentCode} 
+		ORDER BY d.sort ASC;
+	</select>
+	
+	<!-- 融资：融资轮次-->
+	<select id="getfinancingStatusList" parameterType="hashmap" resultType="hashmap">
+		SELECT d.id,d.name name ,d.code code FROM information_title_relate r
+		LEFT JOIN information_listdata_remark remark on remark.title_id=r.title_id
+		LEFT JOIN information_dictionary d on remark.sub_title_id7=d.title_id
+		WHERE r.code=#{parentCode} 
+		ORDER BY d.sort ASC;
+	</select>
+	
+	<!-- 融资：新来股-->
+	<select id="getfinancingStockList" parameterType="hashmap" resultType="hashmap">
+		SELECT d.id,d.name name ,d.code code FROM information_title_relate r
+		LEFT JOIN information_listdata_remark remark on remark.title_id=r.title_id
+		LEFT JOIN information_dictionary d on remark.sub_title_id8=d.title_id
+		WHERE r.code=#{parentCode} 
+		ORDER BY d.sort ASC;
+	</select>
+	
 </mapper>
