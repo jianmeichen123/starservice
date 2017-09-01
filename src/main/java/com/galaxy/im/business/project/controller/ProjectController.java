@@ -45,8 +45,8 @@ import com.galaxy.im.common.enums.EnumUtil;
 
 @Controller
 @RequestMapping("/project")
-public class projectController {
-	private Logger log = LoggerFactory.getLogger(projectController.class);
+public class ProjectController {
+	private Logger log = LoggerFactory.getLogger(ProjectController.class);
 	@Autowired
 	IProjectService service;
 	@Autowired
@@ -62,6 +62,13 @@ public class projectController {
 	private IDictService dictService;
 	
 	
+	/**
+	 * 拜访中的关联项目名称
+	 * @param request
+	 * @param response
+	 * @param project
+	 * @return
+	 */
 	@RequestMapping("getProjectList")
 	@ResponseBody
 	public Object getProjectList(HttpServletRequest request,HttpServletResponse response,@RequestBody ProjectBeanVo project){
@@ -92,7 +99,7 @@ public class projectController {
 			resultBean.setEntityList(projectList);
 			resultBean.setMap(map);
 		}catch(Exception e){
-			log.error(projectController.class.getName() + "_getProjectList",e);
+			log.error(ProjectController.class.getName() + "_getProjectList",e);
 		}
 		return resultBean;
 	}
@@ -308,7 +315,7 @@ public class projectController {
 				}
 			}
 		}catch(Exception e){
-			log.error(projectController.class.getName() + "_addProject",e);
+			log.error(ProjectController.class.getName() + "_addProject",e);
 		}
 		return resultBean;
 	}
@@ -434,7 +441,7 @@ public class projectController {
 				resultBean.setMap(BeanUtils.toMap(genProjectBean));
 			}
 		} catch (Exception e) {
-			log.error(projectController.class.getName() + "selectProjectList",e);
+			log.error(ProjectController.class.getName() + "selectProjectList",e);
 		}
 		return resultBean;
 	}

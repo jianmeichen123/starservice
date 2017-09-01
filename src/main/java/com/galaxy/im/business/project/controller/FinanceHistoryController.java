@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.galaxy.im.bean.project.FinanceHistoryBean;
+
 import com.galaxy.im.business.project.service.IFinanceHistoryService;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
@@ -47,36 +47,54 @@ public class FinanceHistoryController {
 	}
 	
 	/**
+	 * 融资历史详情
+	 * @param paramString
+	 * @return
+	 */
+	@RequestMapping("getFinanceHistoryDetails")
+	@ResponseBody
+	public Object getFinanceHistoryDetails(@RequestBody String paramString){
+		ResultBean<Object> result = new ResultBean<Object>();
+		try{
+			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
+			if(paramMap!=null && !paramMap.isEmpty()){
+				Map<String,Object> details = service.getFinanceHistoryDetails(paramMap);
+				if(details!=null){
+					result.setStatus("OK");
+					result.setMap(details);
+				}
+			}
+			result.setStatus("OK");
+		}catch(Exception e){
+		}
+		return result;
+	}
+	
+	/**
 	 * 新增／编辑融资历史
 	 */
 	@RequestMapping("saveFinanceHistory")
 	@ResponseBody
-	public Object saveFinanceHistory(HttpServletRequest request,@RequestBody FinanceHistoryBean historyBean){
+	public Object saveFinanceHistory(HttpServletRequest request,@RequestBody String paramString){
 		ResultBean<Object> result = new ResultBean<Object>();
 		try{
-			int count = 0;
 			Long id = 0L;
-			
-			//字符串转时间类型，用于持久化数据库
-			String financeString = historyBean.getFinanceDateStr(); 
-			if(CUtils.get().stringIsNotEmpty(financeString)){
-				Date date = DateUtil.convertStringToDate(historyBean.getFinanceDateStr());
-				historyBean.setFinanceDate(date);
-			}
-			
-			if(CUtils.get().stringIsNotEmpty(historyBean.getId())){
-				historyBean.setUpdatedUid(CUtils.get().getBeanBySession(request).getGuserid());
-				historyBean.setUpdatedTime(DateUtil.getMillis(new Date()));
-				
-				count = service.updateById(historyBean);
-			}else{
-				historyBean.setCreateUid(CUtils.get().getBeanBySession(request).getGuserid());
-				historyBean.setCreateTime(DateUtil.getMillis(new Date()));
-				
-				id = service.insert(historyBean);
-			}
-			if(count>0 || id>0){
-				result.setStatus("OK");
+			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
+			if(paramMap!=null && !paramMap.isEmpty()){
+				if(paramMap.containsKey("id") && CUtils.get().object2Long(paramMap.get("id"))!=0){
+					paramMap.put("updateId", CUtils.get().getBeanBySession(request).getGuserid());
+					paramMap.put("updatedTime", DateUtil.getMillis(new Date()));
+					//更新
+					id = service.updateFinanceHistory(paramMap);
+				}else{
+					paramMap.put("createId", CUtils.get().getBeanBySession(request).getGuserid());
+					paramMap.put("createdTime", DateUtil.getMillis(new Date()));
+					//添加
+					id = service.addFinanceHistory(paramMap);
+				}
+				if(id>0){
+					result.setStatus("OK");
+				}
 			}
 		}catch(Exception e){
 		}
@@ -88,12 +106,15 @@ public class FinanceHistoryController {
 	 */
 	@RequestMapping("delFinanceHistory")
 	@ResponseBody
-	public Object delFinanceHistory(HttpServletRequest request,@RequestBody FinanceHistoryBean historyBean){
+	public Object delFinanceHistory(@RequestBody String paramString){
 		ResultBean<Object> result = new ResultBean<Object>();
 		try{
-			int count = service.deleteById(historyBean.getId());
-			if(count>0){
-				result.setStatus("OK");
+			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
+			if(paramMap!=null && !paramMap.isEmpty() && paramMap.containsKey("id")){
+				int count = service.deleteById(CUtils.get().object2Long(paramMap.get("id")));
+				if(count>0){
+					result.setStatus("OK");
+				}
 			}
 		}catch(Exception e){
 		}

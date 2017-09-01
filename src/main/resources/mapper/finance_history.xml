@@ -4,81 +4,137 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
 <mapper namespace="com.galaxy.im.bean.project.FinanceHistoryBean">
 	
-	<!-- 融资历史 -->
+	<!-- 融资历史列表-->
 	<select id="getFinanceHistory" parameterType="hashmap" resultType="hashmap">
-		select 
-			h.id,
-            h.finance_from financeFrom,
-            h.project_id projectId,
-		    from_unixtime(h.finance_date) financeDateUnix,
-		    date_format(finance_date,'%Y.%m') financeDateP,
-		    date_format(finance_date,'%Y-%m-%d') financeDateStr,
-		    h.finance_amount financeAmount,
-			h.finance_unit financeUnit,
-		    d2.name financeUnitDs,
-		    h.finance_proportion financeProportion,
-		    d1.name financeStatusDs,
-            h.finance_status financeStatus
-		from finance_history h
-		left join dict d1 on h.finance_status=d1.dict_code
-		left join dict d2 on h.finance_unit=d2.dict_value and d2.parent_code='currency'
-		where h.project_id=#{id} 
-		order by finance_date desc
+		SELECT  l.id,
+				l.field_2 financeFrom,			
+				l.project_id projectId,				
+				date_format(l.field_1,'%Y-%m-%d') financeDateStr,  
+				l.field_3 financeAmount,   
+				l.field_4 financeProportion,			
+				d1.name	financeUnit,			
+				d1.code financeUnitCode,
+				d2.name financingStatus,			
+				d2.code financingStatusCode
+		FROM information_listdata l
+		LEFT JOIN information_dictionary d1 on d1.id=field_6
+		LEFT JOIN information_dictionary d2 on d2.id=field_7
+		WHERE l.project_id=#{projectId} 
+			 and l.title_id in(
+							SELECT title_id 
+							FROM information_title_relate 
+							WHERE report_type=4 and code='FNO7'
+							) 
+			 ORDER BY l.field_1 DESC
 		<if test="isOne != null">
-			limit 0,1
+			limit 0,1;
 		</if>
 	</select>
 	
+	<!-- 融资历史详情 -->
+	<select id="getFinanceHistoryDetails" parameterType="hashmap" resultType="hashmap">
+		SELECT  l.id,
+				date_format(l.field_1,'%Y-%m-%d') financeDateStr,
+				l.field_2 financeFrom,			
+				l.project_id projectId,				
+				l.field_3 financeAmount, 
+				l.field_4 financeProportion,			
+				l.field_5 financeValuation, 
+				l.field_9 contract,
+				l.field_10 commitment,
+				d1.name	financeUnit,			
+				d1.code financeUnitCode,
+				d2.name financingStatus,			
+				d2.code financingStatusCode,
+				d3.name financingStock,			
+				d3.code financingStockCode
+		FROM information_listdata l
+		LEFT JOIN information_dictionary d1 on d1.id=field_6
+		LEFT JOIN information_dictionary d2 on d2.id=field_7
+		LEFT JOIN information_dictionary d3 on d3.id=field_8
+		WHERE l.id=#{id};
+	</select>
+	
 	<!-- 新增融资历史 -->
-	<insert id="insert" parameterType="com.galaxy.im.bean.project.FinanceHistoryBean">
-		INSERT INTO finance_history(
-			project_id,
-			finance_date,
-			finance_from,
-			finance_amount,
-			finance_unit,
-			finance_proportion,
-			finance_status,
-			create_uid,
-			create_time
-		)VALUES(
+	<insert id="addFinanceHistory" useGeneratedKeys="true" keyProperty="id" parameterType="hashmap">
+		insert into information_listdata (
+	     	id,
+	     	project_id,
+			title_id,
+			parent_id,
+			code, 
+			field_1,
+			field_2,
+			field_3,
+			field_4,
+			field_5,
+			field_6,
+			field_7,
+			field_8,
+			field_9,
+			field_10,
+			is_valid, 
+			created_time, 
+			create_id, 
+			updated_time, 
+			update_id
+		)
+		values (
+			#{id},
 			#{projectId},
-			#{financeDate},
-			#{financeFrom},
-			#{financeAmount},
-			#{financeUnit},
-			#{financeProportion},
-			#{financeStatus},
-			#{createUid},
-			#{createTime}
-		);
+			#{titleId},
+			#{parentId},
+			#{code}, 
+			#{field1},
+			#{field2},
+			#{field3},
+			#{field4},
+			#{field5},
+			#{field6},
+			#{field7},
+			#{field8},
+			#{field9},
+			#{field10},
+			#{isValid}, 
+			#{createdTime}, 
+			#{createId}, 
+			#{updatedTime}, 
+			#{updateId}
+		)
 		<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
 			SELECT LAST_INSERT_ID() AS id
 		</selectKey>
 	</insert>
 	
-	<update id="updateById" parameterType="com.galaxy.im.bean.project.FinanceHistoryBean">
-		UPDATE finance_history
-			SET
-				project_id = #{projectId},
-				finance_date = #{financeDate},
-				finance_from = #{financeFrom},
-				finance_amount = #{financeAmount},
-				finance_unit = #{financeUnit},
-				finance_proportion = #{financeProportion},
-				finance_status = #{financeStatus},
-				updated_uid = #{updatedUid},
-				updated_time = #{updatedTime}
-			WHERE id = #{id};
+	<!-- 编辑融资历史 -->
+	<update id="updateById" parameterType="hashmap">
+		update information_listdata
+		<set>
+			<if test="titleId != null"> title_id = #{titleId}, </if>
+			<if test="parentId != null"> parent_id = #{parentId}, </if>
+			<if test="code != null"> code = #{code}, </if>
+			<if test="field1 != null"> field_1 = #{field1}, </if>
+			<if test="field2 != null"> field_2 = #{field2}, </if>
+			<if test="field3 != null"> field_3 = #{field3}, </if>
+			<if test="field4 != null"> field_4 = #{field4}, </if>
+			<if test="field5 != null"> field_5 = #{field5}, </if>
+			<if test="field6 != null"> field_6 = #{field6}, </if>
+			<if test="field7 != null"> field_7 = #{field7}, </if>
+			<if test="field8 != null"> field_8 = #{field8}, </if>
+			<if test="field9 != null"> field_9 = #{field9}, </if>
+			<if test="field10 != null"> field_10 = #{field10}, </if>
+			<if test="isValid != null"> is_valid = #{isValid}, </if>
+			<if test="createdTime != null"> created_time = #{createdTime}, </if>
+			<if test="createId != null"> create_id = #{createId}, </if>
+			<if test="updatedTime != null"> updated_time = #{updatedTime}, </if>
+			<if test="updateId != null"> update_id = #{updateId} </if>
+		</set>
+		where id = #{id}
 	</update>
 	
+	<!-- 删除融资历史记录 -->
 	<delete id="deleteById" parameterType="long">
-		delete from finance_history where id=#{id};
+		delete from information_listdata where id=#{id};
 	</delete>
-	
-	
-	
-	
-	
 
 </mapper>
