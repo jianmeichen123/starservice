@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.galaxy.im.bean.project.InformationListdata">
+
+	<!-- 交割前事项列表 -->
+	<select id="queryprodeliverypage" resultType="hashmap" parameterType="hashmap">
+		SELECT il.id, il.field_1 summary, id.name statusFormat, il.create_id createdUid, il.updated_time updatedTime
+		FROM information_listdata il
+		LEFT JOIN information_dictionary id on il.field_3 = id.id
+		WHERE il.project_id=#{projectId} and il.title_id=#{titleId}
+		order by ${property} ${direction}
+		limit #{offset},${limit};
+	</select>
+	
+	<!-- 交割前事项列表总数-->
+	<select id="selectprodeliveryCount" parameterType="hashmap" resultType="integer">
+		select count(1) from information_listdata
+		WHERE 
+		project_id=#{projectId} and title_id=#{titleId}
+	</select>
+	
+	<!-- 交割前事项详情-->
+	<select id="selectdelivery" parameterType="hashmap" resultType="hashmap">
+		SELECT  id, field_1 summary, field_2 details
+		FROM information_listdata 
+		where id=#{id} 
+	</select>
+	
+</mapper>
