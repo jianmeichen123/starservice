@@ -96,6 +96,7 @@
 		left join v_user u2 on t.dep_manager=u2.id
 		where p.id=#{projectId};
 	</select>
+	
 
 	<!-- 判断用户画像等是否为空 -->
 	<select id="getProjectInoIsNull" parameterType="long" resultType="hashmap">
@@ -130,7 +131,7 @@
 	</select>
 	
 	<!-- 新增融资历史 -->
-	<insert id="addFinanceHistory">
+	<!-- <insert id="addFinanceHistory">
 		INSERT INTO finance_history(
 			project_id,
 			finance_date,
@@ -155,7 +156,7 @@
 		<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
 			SELECT LAST_INSERT_ID() AS id
 		</selectKey>
-	</insert>
+	</insert> -->
 	
 	<select id="projectIsYJZ" parameterType="long" resultType="int">
 		select 
