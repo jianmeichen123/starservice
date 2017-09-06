@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.galaxy.im.bean.common.Dict;
 import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.meeting.MeetingRecordBean;
+import com.galaxy.im.bean.project.InformationResult;
 import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.common.dict.service.IDictService;
@@ -220,6 +221,8 @@ public class MeetingRecordController {
 					Map<String,Object> map = new HashMap<String,Object>();
 					map.put("meetingRecordId", id);
 					resultBean.setMap(map);
+					//全息报告数据同步
+					reportSync(bean);
 					//记录操作日志
 					ControllerUtils.setRequestParamsForMessageTip(request, p.getProjectName(), p.getId(), null,uNum);
 				}
@@ -230,6 +233,76 @@ public class MeetingRecordController {
 		return resultBean;
 	}
 	
+	//全息报告数据同步
+	@SuppressWarnings("unused")
+	private void reportSync(MeetingRecordBean bean) {
+		InformationResult result=null;
+		Map<String,Object> map = new HashMap<String,Object>();
+		List<InformationResult> list =new ArrayList<InformationResult>();
+		Long titleId=0L;
+		String choose="";
+		map.put("projectId", bean.getProjectId());
+		map.put("parentId", "7028");
+		//内部评审，立项会，投决会的结论同步全息报告
+		if(bean.getMeetingType().equals("meetingType:1")){
+			titleId=1111L;
+			if(bean.getMeetingResult().equals("meeting1Result:1")){
+				choose="1142";
+			}else if(bean.getMeetingResult().equals("meeting1Result:2")){
+				choose="1143";
+			}else if(bean.getMeetingResult().equals("meeting1Result:3")){
+				choose="1144";
+			}else if(bean.getMeetingResult().equals("meeting1Result:4")){
+				choose="1145";
+			}
+		}else if(bean.getMeetingType().equals("meetingType:3")){
+			titleId=1113L;
+			if(bean.getMeetingResult().equals("meeting3Result:1")){
+				choose="1164";
+			}else if(bean.getMeetingResult().equals("meeting3Result:2")){
+				choose="1162";
+			}else if(bean.getMeetingResult().equals("meeting3Result:3")){
+				choose="1163";
+			}else if(bean.getMeetingResult().equals("meeting3Result:4")){
+				choose="1165";
+			}else if(bean.getMeetingResult().equals("meeting3Result:5")){
+				choose="1166";
+			}else if(bean.getMeetingResult().equals("meeting3Result:6")){
+				choose="1167";
+			}
+		}else if(bean.getMeetingType().equals("meetingType:4")){
+			titleId=1114L;
+			if(bean.getMeetingResult().equals("meeting4Result:1")){
+				choose="1173";
+			}else if(bean.getMeetingResult().equals("meeting4Result:2")){
+				choose="1174";
+			}else if(bean.getMeetingResult().equals("meeting4Result:3")){
+				choose="1177";
+			}
+		}
+		map.put("titleId", titleId);
+		list = fcService.getReportInfo(map);
+		if(list.isEmpty()){
+			//添加
+			result =new InformationResult();
+			result.setProjectId(CUtils.get().object2String(bean.getProjectId()));
+			result.setTitleId(CUtils.get().object2String(titleId));
+			result.setContentChoose(choose);
+			result.setCreatedTime(new Date().getTime());
+			result.setCreateId(CUtils.get().object2String(bean.getCreatedId()));
+			long id = fcService.addInformationResult(result);
+		}else{
+			for(InformationResult res : list){
+				if(res.getContentChoose()!=null){
+					res.setContentChoose(choose);
+					res.setUpdatedTime(new Date().getTime());
+					res.setUpdateId(CUtils.get().object2String(bean.getCreatedId()));
+					long id = fcService.updateInformationResult(res);
+				}
+			}
+		}
+	}
+
 	/**
 	 * 会议记录详情
 	 * @param paramString

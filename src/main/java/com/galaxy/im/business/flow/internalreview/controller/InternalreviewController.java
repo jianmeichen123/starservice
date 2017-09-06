@@ -1,8 +1,10 @@
 package com.galaxy.im.business.flow.internalreview.controller;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.galaxy.im.bean.project.InformationResult;
 import com.galaxy.im.bean.project.MeetingScheduling;
 import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
@@ -56,7 +59,6 @@ public class InternalreviewController {
 				result.setEntity(m);
 			}
 			//会议最新信息
-			
 			Map<String,Object> map = fcService.getLatestMeetingRecordInfo(paramMap);
 			if(CUtils.get().mapIsNotEmpty(map)){
 				result.setMap(map);
@@ -153,6 +155,8 @@ public class InternalreviewController {
 							fcService.insertMeetingScheduling(bean);// ceo排期
 							resultBean.setMap(map);
 							resultBean.setStatus("OK");
+							//全息报告数据同步
+							reportSync(sopBean);
 							//记录操作日志
 							ControllerUtils.setRequestParamsForMessageTip(request, sopBean.getProjectName(), sopBean.getId(),"");
 						}else{
@@ -166,6 +170,50 @@ public class InternalreviewController {
 		} catch (Exception e) {
 		}
 		return resultBean;
+	}
+
+	//全息报告数据同步
+	@SuppressWarnings("unused")
+	private void reportSync(SopProjectBean sopBean) {
+		InformationResult result=null;
+		Map<String,Object> map = new HashMap<String,Object>();
+		List<InformationResult> list =new ArrayList<InformationResult>();
+		String choose="";
+		//会议最新信息
+		map.put("projectId", sopBean.getId());
+		map.put("meetingType", StaticConst.MEETING_TYPE_INTERNAL);
+		map.put("invest", "meeting1Result:2");
+		map.put("flash", "meeting1Result:1");
+		Map<String,Object> res = fcService.getMeetingRecordInfo(map);
+		if(res.containsKey("meetingResultCode") && res.get("meetingResultCode")!=null){
+			if(res.get("meetingResultCode").equals("meeting1Result:1")){
+				choose="1142";
+			}else if(res.get("meetingResultCode").equals("meeting1Result:2")){
+				choose="1143";
+			}
+		}
+		map.put("parentId", "7028");
+		map.put("titleId", "1111");
+		list = fcService.getReportInfo(map);
+		if(list.isEmpty()){
+			//添加
+			result =new InformationResult();
+			result.setProjectId(CUtils.get().object2String(sopBean.getId()));
+			result.setTitleId("1111");
+			result.setContentChoose(choose);
+			result.setCreatedTime(new Date().getTime());
+			result.setCreateId(CUtils.get().object2String(sopBean.getCreatedId()));
+			long id = fcService.addInformationResult(result);
+		}else{
+			for(InformationResult bean : list){
+				if(bean.getContentChoose()!=null){
+					bean.setContentChoose(choose);
+					bean.setUpdatedTime(new Date().getTime());
+					bean.setUpdateId(CUtils.get().object2String(sopBean.getCreatedId()));
+					long id = fcService.updateInformationResult(bean);
+				}
+			}
+		}
 	}
 	
 }

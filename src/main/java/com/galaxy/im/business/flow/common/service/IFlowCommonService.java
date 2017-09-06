@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.galaxy.im.bean.project.InformationResult;
 import com.galaxy.im.bean.project.MeetingScheduling;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.SopProjectBean;
@@ -56,5 +57,13 @@ public interface IFlowCommonService extends IBaseService<ProjectBean>{
 	List<String> selectRoleCodeByUserId(Long guserid, HttpServletRequest request, HttpServletResponse response);
 	//通过部门id获取部门名称
 	List<Map<String, Object>> getDeptNameByDeptId(Long deptId, HttpServletRequest request,HttpServletResponse response);
+	//获取全息报告信息
+	List<InformationResult> getReportInfo(Map<String, Object> map);
+	//添加全息报告同步的数据
+	long addInformationResult(InformationResult result);
+	//更新全息报告同步数据
+	long updateInformationResult(InformationResult res);
+	//获取会议记录信息（投资，闪投===通过）
+	Map<String, Object> getMeetingRecordInfo(Map<String, Object> map);
 
 }

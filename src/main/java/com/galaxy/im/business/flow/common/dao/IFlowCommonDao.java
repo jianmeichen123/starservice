@@ -3,6 +3,7 @@ package com.galaxy.im.business.flow.common.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.galaxy.im.bean.project.InformationResult;
 import com.galaxy.im.bean.project.MeetingScheduling;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.SopProjectBean;
@@ -37,5 +38,13 @@ public interface IFlowCommonDao extends IBaseDao<ProjectBean, Long>{
 	List<Map<String, Object>> getSopTaskList(Map<String, Object> paramMap);
 	//更新文件上传后历史记录的valid=0
 	int updateValid(Map<String, Object> paramMap);
+	//获取全息报告信息
+	List<InformationResult> getReportInfo(Map<String, Object> map);
+	//添加全息报告同步的数据
+	long addInformationResult(InformationResult result);
+	//更新全息报告同步数据
+	long updateInformationResult(InformationResult result);
+	//获取会议记录信息（投资，闪投===通过）
+	Map<String, Object> getMeetingRecordInfo(Map<String, Object> map);
 	
 }

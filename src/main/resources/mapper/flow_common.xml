@@ -319,4 +319,76 @@
 		update sop_file set file_valid=0
 		where id = #{id};
 	</update>
+	
+	<!-- 全息报告信息获取 -->
+	<select id="getReportInfo" parameterType="hashmap" resultType="com.galaxy.im.bean.project.InformationResult">
+		SELECT r.id,r.title_id titleId,r.content_choose contentChoose,r.content_describe1 contentDescribe1
+		FROM information_title_relate tr
+		LEFT JOIN information_result r on r.title_id=tr.title_id
+		WHERE r.project_id=#{projectId} 
+		and tr.report_type=4 
+		and tr.parent_id=#{parentId}
+		and r.title_id=#{titleId}
+	</select>
+	
+	<!-- 添加全息报告同步会议结论结果的数据 -->
+	<insert id="addInformationResult" useGeneratedKeys="true" keyProperty="id" parameterType="com.galaxy.im.bean.project.InformationResult">
+	     insert into information_result (
+	     	id, 
+			project_id, 
+			title_id,
+			content_choose, 
+			content_describe1,
+			content_describe2,
+			sort,
+			created_time,
+			create_id,
+			updated_time,
+			update_id
+		)
+		values (
+			#{id}, 
+			#{projectId}, 
+			#{titleId}, 
+			#{contentChoose}, 
+			#{contentDescribe1},
+			#{contentDescribe2},
+			#{sort},
+			#{createdTime},
+			#{createId},
+			#{createdTime},
+			#{createId}
+		)
+	</insert>
+	
+	<!-- 更新全息报告同步会议结论结果的数据 -->
+	<update id="updateInformationResult" parameterType="com.galaxy.im.bean.project.InformationResult">
+		update information_result
+		<set>
+			<if test="projectId != null"> project_id = #{projectId}, </if>
+			<if test="titleId != null"> title_id = #{titleId}, </if>
+			<if test="contentChoose != null"> content_choose = #{contentChoose}, </if>
+			<if test="contentDescribe1 != null"> content_describe1 = #{contentDescribe1}, </if>
+			<if test="contentDescribe2 != null"> content_describe2 = #{contentDescribe2}, </if>
+			<if test="sort != null"> sort = #{sort},</if>
+			<if test="updatedTime != null"> updated_time = #{updatedTime},</if>
+			<if test="updateId != null"> update_id = #{updateId}</if>
+		</set>
+		where id = #{id};
+	</update>
+	
+	<!-- 获取项目记录信息 -->
+	<select id="getMeetingRecordInfo" parameterType="hashmap" resultType="hashmap">
+		SELECT  r.id,
+				date_format(r.meeting_date,'%Y-%m-%d %H:%i') meetingDate,
+				d1.name meetingResult,
+				d1.dict_code meetingResultCode,
+				r.meeting_type meetingType
+		FROM sop_meeting_record r 
+		left join dict d1 on r.meeting_result=d1.dict_code
+		WHERE r.project_id=#{projectId} and r.meeting_type=#{meetingType} 
+		<if test="invest != null"> and r.meeting_result = #{invest}</if>
+		<if test="flash  != null"> or r.meeting_result = #{flash}</if>
+		ORDER BY r.created_time DESC LIMIT 1;
+	</select>
 </mapper>

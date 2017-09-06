@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.galaxy.im.bean.project.InformationResult;
 import com.galaxy.im.bean.project.MeetingScheduling;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.SopProjectBean;
@@ -222,6 +223,59 @@ public class FlowCommonDaoImpl extends BaseDaoImpl<ProjectBean, Long> implements
 			return sqlSessionTemplate.update(sqlName,paramMap);
 		}catch(Exception e){
 			log.error(FlowCommonDaoImpl.class.getName() + "：updateValid",e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 获取全息报告同步数据
+	 */
+	@Override
+	public List<InformationResult> getReportInfo(Map<String, Object> map) {
+		try{
+			String sqlName = "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.getReportInfo";
+			return sqlSessionTemplate.selectList(sqlName,map);
+		}catch(Exception e){
+			log.error(FlowCommonDaoImpl.class.getName() + "getReportInfo",e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 添加同步全息报告的信息
+	 */
+	@Override
+	public long addInformationResult(InformationResult result) {
+		try{
+			String sqlName = "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.addInformationResult";
+			return sqlSessionTemplate.insert(sqlName,result);
+		}catch(Exception e){
+			log.error(FlowCommonDaoImpl.class.getName() + "addInformationResult",e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 更新全息报告信息
+	 */
+	@Override
+	public long updateInformationResult(InformationResult result) {
+		try{
+			String sqlName = "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.updateInformationResult";
+			return sqlSessionTemplate.update(sqlName,result);
+		}catch(Exception e){
+			log.error(FlowCommonDaoImpl.class.getName() + "updateInformationResult",e);
+			throw new DaoException(e);
+		}
+	}
+
+	@Override
+	public Map<String, Object> getMeetingRecordInfo(Map<String, Object> map) {
+		String sqlName = "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.getMeetingRecordInfo";
+		try{
+			return sqlSessionTemplate.selectOne(sqlName,map);
+		}catch(Exception e){
+			log.error(String.format("查询对象总数出错！语句：%s", sqlName), e);
 			throw new DaoException(e);
 		}
 	}

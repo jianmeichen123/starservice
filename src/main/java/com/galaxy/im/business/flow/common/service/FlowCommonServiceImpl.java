@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.galaxy.im.bean.project.InformationResult;
 import com.galaxy.im.bean.project.MeetingScheduling;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.SopProjectBean;
@@ -533,6 +534,47 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 			}
 		}
 		return list;
+	}
+
+	@Override
+	public List<InformationResult> getReportInfo(Map<String, Object> map) {
+		try{
+			return dao.getReportInfo(map);
+		}catch(Exception e){
+			log.error(FlowCommonServiceImpl.class.getName() + "getReportInfo",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public long addInformationResult(InformationResult result) {
+		try{
+			return dao.addInformationResult(result);
+		}catch(Exception e){
+			log.error(FlowCommonServiceImpl.class.getName() + "addInformationResult",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public long updateInformationResult(InformationResult result) {
+		try{
+			return dao.updateInformationResult(result);
+		}catch(Exception e){
+			log.error(FlowCommonServiceImpl.class.getName() + "updateInformationResult",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public Map<String, Object> getMeetingRecordInfo(Map<String, Object> map) {
+		try{
+			Map<String,Object> result = dao.getMeetingRecordInfo(map);
+			return result;
+		}catch(Exception e){
+			log.error(FlowCommonServiceImpl.class.getName() + ":getMeetingRecordInfo",e);
+			throw new ServiceException(e);
+		}
 	}
 
 	

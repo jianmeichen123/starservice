@@ -42,13 +42,13 @@ public class InternalreviewServiceImpl extends BaseServiceImpl<Test> implements 
 				for(Map<String,Object> map : dataList){
 					dictCode = CUtils.get().object2String(map.get("dictCode"), "");
 					pcount = CUtils.get().object2Integer(map.get("pcount"), 0);
-					
-					if("meetingResult:1".equals(dictCode)){
+					//投资或闪投的会议
+					if("meeting1Result:1".equals(dictCode) || "meeting1Result:2".equals(dictCode)){
 						if(pcount>0){
 							result.put("pass", true);
 						
 						}
-					}else if("meetingResult:3".equals(dictCode)){
+					}else if("meeting1Result:4".equals(dictCode)){//否决的会议
 						if(pcount>0){
 							result.put("veto", true);
 							
