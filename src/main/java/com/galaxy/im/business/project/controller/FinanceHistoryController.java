@@ -60,6 +60,14 @@ public class FinanceHistoryController {
 			if(paramMap!=null && !paramMap.isEmpty()){
 				Map<String,Object> details = service.getFinanceHistoryDetails(paramMap);
 				if(details!=null){
+					if(details.containsKey("financeValuation") && details.get("financeValuation")!=null){
+						String s= CUtils.get().object2String(details.get("financeValuation"));
+						if(s.indexOf(".") > 0){  
+				            s = s.replaceAll("0+?$", "");//去掉多余的0  
+				            s = s.replaceAll("[.]$", "");//如最后一位是.则去掉  
+				        }
+						details.put("financeValuation", s);
+					}
 					result.setStatus("OK");
 					result.setMap(details);
 				}
