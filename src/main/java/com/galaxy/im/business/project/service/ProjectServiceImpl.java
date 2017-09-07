@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.galaxy.im.bean.project.GeneralProjecttVO;
+import com.galaxy.im.bean.project.InformationResult;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.ProjectBo;
 import com.galaxy.im.bean.project.SopProjectBean;
@@ -274,6 +275,36 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 	//否决查询数目
 	public Long queryProjectfjCount(ProjectBo query) {
 		return sopdao.queryCountfj(query);
+	}
+
+	@Override
+	public Map<String, Object> selectBaseProjectInfo(Map<String, Object> paramMap) {
+		try{
+			return dao.selectBaseProjectInfo(paramMap);
+		}catch(Exception e){
+			log.error(ProjectServiceImpl.class.getName() + "_ProjectServiceImpl",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public int updateProjects(Map<String, Object> hashmap) {
+		try{
+			return dao.updateProjects(hashmap);
+		}catch(Exception e){
+			log.error(ProjectServiceImpl.class.getName() + "updateProjects",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public InformationResult findResultInfoById(Map<String, Object> hashmap) {
+		try{
+			return dao.findResultInfoById(hashmap);
+		}catch(Exception e){
+			log.error(ProjectServiceImpl.class.getName() + "findResultInfoById",e);
+			throw new ServiceException(e);
+		}
 	}
 
 	

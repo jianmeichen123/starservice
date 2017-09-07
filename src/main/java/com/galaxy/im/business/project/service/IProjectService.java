@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.galaxy.im.bean.project.GeneralProjecttVO;
+import com.galaxy.im.bean.project.InformationResult;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.ProjectBo;
 import com.galaxy.im.bean.project.SopProjectBean;
@@ -42,4 +43,7 @@ public interface IProjectService extends IBaseService<ProjectBean>{
 	Long queryProjectgjzCount(ProjectBo projectBo);
 	Long queryProjectthyyCount(ProjectBo projectBo);
 	Long queryProjectfjCount(ProjectBo projectBo);
+	Map<String, Object> selectBaseProjectInfo(Map<String, Object> paramMap);
+	int updateProjects(Map<String, Object> hashmap);
+	InformationResult findResultInfoById(Map<String, Object> hashmap);
 }

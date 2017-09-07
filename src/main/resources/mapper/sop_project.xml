@@ -43,7 +43,7 @@
 		</if>
 	</select>
 	
-	<!-- 项目详情 基础信息、融资计划、实际投资-->
+	<!-- 项目详情 基础信息、融资计划、实际投资(来源项目表)-->
 	<select id="getBaseProjectInfo" resultType="hashmap" parameterType="long">
 		select 
 			p.id,
@@ -55,21 +55,21 @@
 		    p.finance_mode financeMode,
             d5.name financeModeDs,
 		    date_format(from_unixtime(p.created_time/1000),'%Y-%m-%d') createdTimeDs,
-		    d2.dict_code financeStatus,					<!-- 融资状态Code -->
-		    d2.name financeStatusDs,					<!-- 融资状态名称 -->
+		   <!--  d2.dict_code financeStatus,					融资状态Code
+		    d2.name financeStatusDs,					融资状态名称 -->
 		    p.create_uid createUid,
 		    u.user_name createUname,
 		    p.fa_flag faFlag,							
 		    case p.fa_flag=1 when 1 then p.fa_name else null end faName,	
 		    
-		    p.project_contribution projectContribution,	<!-- 计划-融资金额 -->
-		    p.project_valuations projectValuations,		<!-- 计划-项目估值 -->
-		    p.project_share_ratio projectShareRatio,	<!-- 计划-出让股份 -->
+		   <!--  p.project_contribution projectContribution,	计划-融资金额
+		    p.project_valuations projectValuations,		计划-项目估值
+		    p.project_share_ratio projectShareRatio,	计划-出让股份
 		    
-		    p.final_contribution finalContribution,		<!-- 实际-投资金额 -->
-		    p.final_valuations finalValuations,			<!-- 实际-项目估值 -->
-		    p.final_share_ratio finalShareRatio,		<!-- 实际-股权占比 -->
-		    p.service_charge serviceCharge,				<!-- 加速服务费占比 -->
+		    p.final_contribution finalContribution,		实际-投资金额
+		    p.final_valuations finalValuations,			实际-项目估值
+		    p.final_share_ratio finalShareRatio,		实际-股权占比
+		    p.service_charge serviceCharge,				加速服务费占比 -->
 		    
 		    p.project_status projectStatus,
             d3.name projectStatusDs,
@@ -95,6 +95,25 @@
 		left join v_department t on p.project_departId=t.id
 		left join v_user u2 on t.dep_manager=u2.id
 		where p.id=#{projectId};
+	</select>
+	
+	<!-- 项目详情 基础信息、融资计划、实际投资(来源全息报告)-->
+	<select id="selectBaseProjectInfo" parameterType="hashmap" resultType="hashmap">
+	SELECT id.name financeStatusDs,
+	group_concat(case when t.tid=#{titleId1} then t.result else null end) as projectContribution,
+	group_concat(case when t.tid=#{titleId2} then t.result else null end) as projectShareRatio,
+	group_concat(case when t.tid=#{titleId3} then t.result else null end) as projectValuations,
+	group_concat(case when t.tid=#{titleId4} then t.result else null end) as finalContribution,
+	group_concat(case when t.tid=#{titleId5} then t.result else null end) as finalShareRatio,
+	group_concat(case when t.tid=#{titleId6} then t.result else null end) as serviceCharge,
+	group_concat(case when t.tid=#{titleId7} then t.result else null end) as finalValuations 
+	FROM 
+	(SELECT title_id tid, content_describe1 result, content_choose choose 
+	 FROM
+	 information_result 
+	 WHERE  project_id=#{projectId} AND title_id in(#{titleId1},#{titleId2},#{titleId3},#{titleId4},#{titleId5},#{titleId6},#{titleId7},#{titleId8})) t
+	LEFT JOIN information_dictionary id ON t.choose=id.id
+	
 	</select>
 	
 
@@ -310,12 +329,39 @@
 		</set>
 		where id = #{id}
 	</update>
+	<!-- 更新到result表 -->
+	<update id="updateProjects" parameterType="hashmap">
+	update information_result
+	<set>
+	<if test="financeStatus != null" > content_choose = #{financeStatus}, </if>
+	<if test="projectContribution != null" > content_describe1 = #{projectContribution}, </if>
+	<if test="projectShareRatio != null" > content_describe1 = #{projectShareRatio}, </if>
+	<if test="projectValuations != null" > content_describe1 = #{projectValuations}, </if>
+	<if test="finalContribution != null" > content_describe1 = #{finalContribution}, </if>
+	<if test="finalShareRatio != null" > content_describe1 = #{finalShareRatio}, </if>
+	<if test="serviceCharge != null" > content_describe1 = #{serviceCharge}, </if>
+	<if test="finalValuations != null" > content_describe1 = #{finalValuations},</if>
+	<if test="sort != null"> sort = #{sort},</if>
+	<if test="updatedTime != null"> updated_time = #{updatedTime},</if>
+	<if test="updateId != null"> update_id = #{updateId}</if>
+	where
+	project_id=#{id}
+	</set>
+	</update>
 	
 	<!-- 根据ID查询 -->
 	<select id="getProjectInfoById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
 		from sop_project where id = #{id}
+	</select>
+	
+	<!-- 全息报告信息获取 -->
+	<select id="findResultInfoById" parameterType="hashmap" resultType="com.galaxy.im.bean.project.InformationResult">
+		SELECT id, project_id projectId,title_id titleId, content_choose contentChoose, content_describe1 contentDescribe1 
+		FROM information_result 
+		WHERE project_id=#{projectId}  
+		and title_id=#{titleId} 
 	</select>
 	
 

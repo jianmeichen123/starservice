@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.galaxy.im.bean.common.Config;
 import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.project.GeneralProjecttVO;
+import com.galaxy.im.bean.project.InformationResult;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.ProjectBeanVo;
 import com.galaxy.im.bean.project.ProjectBo;
@@ -119,13 +120,25 @@ public class ProjectController {
 			Map<String,Object> resultMap = new HashMap<String,Object>();
 			Long projectId = CUtils.get().object2Long(paramMap.get("id"));
 			
-			//基础信息
+			paramMap.put("titleId1", 1916);
+			paramMap.put("titleId2", 1917);
+			paramMap.put("titleId3", 1943);
+			paramMap.put("titleId4", 3004);
+			paramMap.put("titleId5", 3010);
+			paramMap.put("titleId6", 3011);
+			paramMap.put("titleId7", 3012);
+			paramMap.put("titleId8", 1108);
+			paramMap.put("projectId", projectId);
+			//基础信息(数据来源 全息报告)
+			Map<String,Object> QXinfoMap = service.selectBaseProjectInfo(paramMap);
+			//基础信息(数据来源项目表)
 			Map<String,Object> infoMap = service.getBaseProjectInfo(projectId);
-			if(infoMap!=null && !infoMap.isEmpty()){
+			if(infoMap!=null && !infoMap.isEmpty() && QXinfoMap!=null && !QXinfoMap.isEmpty()){
 				infoMap.put("projectYjz", service.projectIsYJZ(projectId));		//判断该项目是否处于移交中
+				infoMap.putAll(QXinfoMap);
 				resultMap.put("infoMap", infoMap);
+				
 			}
-			
 			//融资历史-最新一条
 			paramMap.put("isOne", "true");
 			List<Map<String,Object>> historyMap = fsService.getFinanceHistory(paramMap);
@@ -252,6 +265,82 @@ public class ProjectController {
 					bean.setUpdatedTime(System.currentTimeMillis());
 					//bean.setCreatedTime(DateUtil.convertStringToDate(p.getCreateDate().trim(), "yyyy-MM-dd").getTime());
 					int num = service.updateProject(bean);
+					
+					//全息报告result表数据更新
+					Map<String, Object> hashmap = new HashMap<>();
+					//InformationResult result = new InformationResult();
+					
+					if (bean.getId()!=null&&bean.getId()!=0) {
+						hashmap.put("projectId", bean.getId());
+						hashmap.put("titleId", 1108);
+						InformationResult result = service.findResultInfoById(hashmap);
+						if (result!=null) {
+							result.setId(result.getId());
+							result.setContentChoose(bean.getFinanceStatus());
+							result.setUpdateId(CUtils.get().object2String(userId));
+							result.setUpdatedTime(new Date().getTime());
+							fcService.updateInformationResult(result);
+						}else{
+							InformationResult result2 = new InformationResult();
+							result2.setProjectId(CUtils.get().object2String(bean.getId()));
+							result2.setTitleId("1108");
+							result2.setContentChoose(bean.getFinanceStatus());
+							result2.setCreateId(CUtils.get().object2String(userId));
+							result2.setCreatedTime(new Date().getTime());
+							fcService.addInformationResult(result2);
+						}
+						String array[] = {"1916","1917","1943","3004","3010","3011","3012"};
+						for(int i=0;i<array.length;i++){
+						hashmap.put("titleId", array[i]);
+						InformationResult result1 = service.findResultInfoById(hashmap);
+						if (result1!=null) {
+							result1.setId(result1.getId());
+							if (array[i].equals("1916") && bean.getProjectContribution()!=null) {
+								result1.setContentDescribe1(CUtils.get().object2String(bean.getProjectContribution()));
+							}else if (array[i].equals("1917") && bean.getProjectShareRatio()!=null) {
+								result1.setContentDescribe1(CUtils.get().object2String(bean.getProjectShareRatio()));
+							}else if (array[i].equals("1943") && bean.getProjectValuations()!=null) {
+								result1.setContentDescribe1(CUtils.get().object2String(bean.getProjectValuations()));
+							}else if (array[i].equals("3004") && bean.getFinalContribution()!=null) {
+								result1.setContentDescribe1(CUtils.get().object2String(bean.getFinalContribution()));
+							}else if (array[i].equals("3010") && bean.getFinalShareRatio()!=null) {
+								result1.setContentDescribe1(CUtils.get().object2String(bean.getFinalShareRatio()));
+							}else if (array[i].equals("3011") && bean.getServiceCharge()!=null&&bean.getServiceCharge()!=0) {
+								result1.setContentDescribe1(CUtils.get().object2String(bean.getServiceCharge()));
+							}else if (array[i].equals("3012") && bean.getFinalValuations()!=null) {
+								result1.setContentDescribe1(CUtils.get().object2String(bean.getFinalValuations()));
+							}
+							result1.setUpdateId(CUtils.get().object2String(userId));
+							result1.setUpdatedTime(new Date().getTime());
+							fcService.updateInformationResult(result1);
+						}else{
+							InformationResult result2 = new InformationResult();
+							result2.setProjectId(CUtils.get().object2String(bean.getId()));
+							result2.setTitleId(array[i]);
+							if (array[i].equals("1916") && bean.getProjectContribution()!=null) {
+								result2.setContentDescribe1(CUtils.get().object2String(bean.getProjectContribution()));
+							}else if (array[i].equals("1917") && bean.getProjectShareRatio()!=null) {
+								result2.setContentDescribe1(CUtils.get().object2String(bean.getProjectShareRatio()));
+							}else if (array[i].equals("1943") && bean.getProjectValuations()!=null) {
+								result2.setContentDescribe1(CUtils.get().object2String(bean.getProjectValuations()));
+							}else if (array[i].equals("3004") && bean.getFinalContribution()!=null) {
+								result2.setContentDescribe1(CUtils.get().object2String(bean.getFinalContribution()));
+							}else if (array[i].equals("3010") && bean.getFinalShareRatio()!=null) {
+								result2.setContentDescribe1(CUtils.get().object2String(bean.getFinalShareRatio()));
+							}else if (array[i].equals("3011") && bean.getServiceCharge()!=null&&bean.getServiceCharge()!=0) {
+								result2.setContentDescribe1(CUtils.get().object2String(bean.getServiceCharge()));
+							}else if (array[i].equals("3012") && bean.getFinalValuations()!=null) {
+								result2.setContentDescribe1(CUtils.get().object2String(bean.getFinalValuations()));
+							}
+							result2.setCreateId(CUtils.get().object2String(userId));
+							result2.setCreatedTime(new Date().getTime());
+							fcService.addInformationResult(result2);
+						}
+					}
+						
+						
+					}
+				
 					if (num > 0) {
 						//0：删除项目下所有投资方，其他：修改项目所有投资方信息
 						@SuppressWarnings("unused")
@@ -305,6 +394,31 @@ public class ProjectController {
 						bean.setProjectTime(new Date().getTime());
 						bean.setCreatedTime(DateUtil.convertStringToDate(bean.getCreateDate().trim(), "yyyy-MM-dd").getTime());
 						long id = service.saveProject(bean);
+						//新建项目存入全息报告中的信息
+						String array[] = {"1916","1917","1943","3004","3010","3011","3012"};
+						for(int i=0;i<array.length;i++){
+							InformationResult result2 = new InformationResult();
+							result2.setProjectId(CUtils.get().object2String(bean.getId()));
+							result2.setTitleId(array[i]);
+							if (array[i].equals("1916") && bean.getProjectContribution()!=null) {
+								result2.setContentDescribe1(CUtils.get().object2String(bean.getProjectContribution()));
+							}else if (array[i].equals("1917") && bean.getProjectShareRatio()!=null) {
+								result2.setContentDescribe1(CUtils.get().object2String(bean.getProjectShareRatio()));
+							}else if (array[i].equals("1943") && bean.getProjectValuations()!=null) {
+								result2.setContentDescribe1(CUtils.get().object2String(bean.getProjectValuations()));
+							}else if (array[i].equals("3004") && bean.getFinalContribution()!=null) {
+								result2.setContentDescribe1(CUtils.get().object2String(bean.getFinalContribution()));
+							}else if (array[i].equals("3010") && bean.getFinalShareRatio()!=null) {
+								result2.setContentDescribe1(CUtils.get().object2String(bean.getFinalShareRatio()));
+							}else if (array[i].equals("3011") && bean.getServiceCharge()!=null&&bean.getServiceCharge()!=0) {
+								result2.setContentDescribe1(CUtils.get().object2String(bean.getServiceCharge()));
+							}else if (array[i].equals("3012") && bean.getFinalValuations()!=null) {
+								result2.setContentDescribe1(CUtils.get().object2String(bean.getFinalValuations()));
+							}
+							result2.setCreateId(CUtils.get().object2String(userId));
+							result2.setCreatedTime(new Date().getTime());
+							fcService.addInformationResult(result2);
+						}
 						if (id > 0) {
 							map.put("id", id);
 							resultBean.setStatus("OK");

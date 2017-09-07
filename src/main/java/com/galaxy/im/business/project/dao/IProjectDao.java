@@ -3,6 +3,7 @@ package com.galaxy.im.business.project.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.galaxy.im.bean.project.InformationResult;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.common.db.IBaseDao;
@@ -26,5 +27,8 @@ public interface IProjectDao extends IBaseDao<ProjectBean,Long>{
 	//更加项目id查询项目信息
 	SopProjectBean getProjectInfoById(Long id);
 	int projectIsInterview(Long id);
+	Map<String, Object> selectBaseProjectInfo(Map<String, Object> paramMap);
+	int updateProjects(Map<String, Object> hashmap);
+	InformationResult findResultInfoById(Map<String, Object> hashmap);
 	
 }

@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.galaxy.im.bean.project.InformationResult;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.common.BeanUtils;
@@ -149,6 +150,36 @@ public class ProjectDaoImpl extends BaseDaoImpl<ProjectBean,Long> implements IPr
 			return sqlSessionTemplate.selectOne(getSqlName("projectIsInterview"),id);
 		}catch(Exception e){
 			log.error(ProjectDaoImpl.class.getName() + "projectIsInterview",e);
+			throw new DaoException(e);
+		}
+	}
+
+	@Override
+	public Map<String, Object> selectBaseProjectInfo(Map<String, Object> paramMap) {
+		try{
+			return sqlSessionTemplate.selectOne(getSqlName("selectBaseProjectInfo"),paramMap);
+		}catch(Exception e){
+			log.error(ProjectDaoImpl.class.getName() + "selectBaseProjectInfo",e);
+			throw new DaoException(e);
+		}
+	}
+
+	@Override
+	public int updateProjects(Map<String, Object> hashmap) {
+		try{
+			return sqlSessionTemplate.update(getSqlName("updateProjects"),hashmap);
+		}catch(Exception e){
+			log.error(ProjectDaoImpl.class.getName() + "updateProjects",e);
+			throw new DaoException(e);
+		}
+	}
+
+	@Override
+	public InformationResult findResultInfoById(Map<String, Object> hashmap) {
+		try{
+			return sqlSessionTemplate.selectOne(getSqlName("findResultInfoById"),hashmap);
+		}catch(Exception e){
+			log.error(ProjectDaoImpl.class.getName() + "findResultInfoById",e);
 			throw new DaoException(e);
 		}
 	}

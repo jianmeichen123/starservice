@@ -325,10 +325,11 @@
 		SELECT r.id,r.title_id titleId,r.content_choose contentChoose,r.content_describe1 contentDescribe1
 		FROM information_title_relate tr
 		LEFT JOIN information_result r on r.title_id=tr.title_id
-		WHERE r.project_id=#{projectId} 
-		and tr.report_type=4 
-		and tr.parent_id=#{parentId}
-		and r.title_id=#{titleId}
+		WHERE  
+		tr.report_type=4 
+		<if test="projectId != null"> and r.project_id = #{projectId} </if>
+		<if test="parentId != null"> and tr.parent_id = #{parentId} </if>
+		<if test="titleId != null"> and r.title_id = #{titleId} </if>
 	</select>
 	
 	<!-- 添加全息报告同步会议结论结果的数据 -->
