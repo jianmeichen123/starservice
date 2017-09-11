@@ -17,6 +17,8 @@ import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.business.sopfile.service.ISopFileService;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
+import com.galaxy.im.common.StaticConst;
+import com.galaxy.im.common.db.QPage;
 
 @Controller
 @RequestMapping("/sopFile")
@@ -44,7 +46,11 @@ public class SopFileController {
 			if(!paramMap.containsKey("projectId")){
 				resultBean.setMessage("传入的projectId为空");
 			}
+			paramMap.put("fileWorktype", StaticConst.FILE_WORKTYPE_12);
 			
+			Map<String,Object> map = service.getBusinessPlanFile(paramMap);
+			resultBean.setStatus("OK");
+			resultBean.setMap(map);
 		}catch(Exception e){
 			log.error(SopFileController.class.getName() + "getBusinessPlanFile",e);
 		}
