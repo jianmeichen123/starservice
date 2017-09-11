@@ -120,7 +120,8 @@
 		left join sop_project_person l on p.id=l.project_id
 		left join sop_file f2 on p.id=f2.project_id and f2.file_worktype in (
 			'fileWorktype:1','fileWorktype:2','fileWorktype:3','fileWorktype:4','fileWorktype:5',
-			'fileWorktype:6','fileWorktype:7','fileWorktype:8','fileWorktype:9') and f2.file_key is not null
+			'fileWorktype:6','fileWorktype:7','fileWorktype:8','fileWorktype:9',
+			'fileWorktype:12','fileWorktype:17','fileWorktype:18','fileWorktype:19') and f2.file_key is not null
 		left join sop_project_shares s on s.project_id=p.id
 		left join sop_delivery d on p.id=d.project_id
 		left join sop_project_health h on p.id=h.project_id
