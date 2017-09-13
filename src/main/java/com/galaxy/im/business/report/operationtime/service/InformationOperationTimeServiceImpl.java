@@ -45,6 +45,8 @@ public class InformationOperationTimeServiceImpl extends BaseServiceImpl<Test> i
 					map.put("projectId", bean.getProjectId());
 					map.put("reflect", bean.getReflect());
 				}
+			}else{
+				map.put("updateDate", "NotUpdated");
 			}
 		}catch (Exception e) {
 			log.error(InformationOperationTimeServiceImpl.class.getName() + ":getInformationTime",e);
