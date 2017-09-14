@@ -1,5 +1,6 @@
 package com.galaxy.im.business.sopfile.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -8,10 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.galaxy.im.bean.Test;
-import com.galaxy.im.business.callon.service.CallonServiceImpl;
 import com.galaxy.im.business.sopfile.dao.ISopFileDao;
 import com.galaxy.im.common.db.IBaseDao;
-import com.galaxy.im.common.db.QPage;
 import com.galaxy.im.common.db.service.BaseServiceImpl;
 import com.galaxy.im.common.exception.ServiceException;
 
@@ -34,6 +33,16 @@ public class SopFileServiceImpl extends BaseServiceImpl<Test> implements ISopFil
 			return dao.getBusinessPlanFile(paramMap);
 		}catch(Exception e){
 			log.error(SopFileServiceImpl.class.getName() + "getBusinessPlanFile",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public List<Map<String, Object>> searchappFileList(Map<String, Object> paramMap) {
+		try{
+			return dao.searchappFileList(paramMap);
+		}catch(Exception e){
+			log.error(SopFileServiceImpl.class.getName() + "searchappFileList",e);
 			throw new ServiceException(e);
 		}
 	}

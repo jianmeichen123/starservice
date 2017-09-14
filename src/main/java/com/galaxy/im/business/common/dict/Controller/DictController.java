@@ -1,5 +1,7 @@
 package com.galaxy.im.business.common.dict.Controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.galaxy.im.bean.common.Dict;
 import com.galaxy.im.business.common.dict.service.IDictService;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
+import com.galaxy.im.common.StaticConst;
 
 @Controller
 @RequestMapping("/dict")
@@ -139,6 +143,45 @@ public class DictController {
 			}
 		}catch(Exception e){
 			log.error(DictController.class.getName() + "getDictionaryFinanceList",e);
+		}
+		return resultBean;
+	}
+	
+	/**
+	 * 获取项目文档筛选条件
+	 * @param paramString
+	 * @return
+	 */
+	@RequestMapping("getDictByParent")
+	@ResponseBody
+	public Object getDictByParent(@RequestBody String paramString){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		try{
+			List<Map<String, Object>> listMap =new ArrayList<Map<String, Object>>();
+			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);	
+			if (paramMap.containsKey("fileWorktype")) {
+				List<Dict> list = dictService.selectByParentCode(CUtils.get().object2String(paramMap.get("fileWorktype")));
+				for(Dict dict : list){
+					if(!dict.getDictCode().equals(StaticConst.FILE_WORKTYPE_12)){
+						Map<String,Object> map =new HashMap<String,Object>();
+						map.put("name", dict.getName());
+						map.put("code", dict.getDictCode());
+						map.put("id", dict.getId());
+						map.put("sort", dict.getDictSort());
+						map.put("isDelete", dict.getIsDelete());
+						map.put("text", dict.getText());
+						map.put("value", dict.getDictValue());
+						map.put("createdTime", dict.getCreatedTime());
+						map.put("updatedTime", dict.getUpdatedTime());
+						map.put("parentCode", dict.getParentCode());
+						listMap.add(map);
+					}
+				}
+				resultBean.setStatus("OK");
+				resultBean.setMapList(listMap);
+			}
+		}catch(Exception e){
+			log.error(DictController.class.getName() + "getDictByParent",e);
 		}
 		return resultBean;
 	}

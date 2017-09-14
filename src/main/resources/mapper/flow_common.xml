@@ -392,4 +392,98 @@
 		<if test="flash  != null"> or r.meeting_result = #{flash}</if>
 		ORDER BY r.created_time DESC LIMIT 1;
 	</select>
+	
+	<!-- 商业计划书-->
+	<select id="getBusinessPlanFile" parameterType="hashmap" resultType="hashmap">
+		SELECT  
+				f.id, f.project_id projectId,
+			    f.project_progress projectProgress,
+				d1.name progress,
+				f.file_suffix fileSuffix,
+				f.file_key fileKey,
+				f.bucket_name bucketName,
+				f.file_name fileName,
+				f.file_length fileLength,
+				f.file_type fileType,
+				d2.name fType,
+				f.file_worktype fileWorktype,
+				d3.name fWorktype,
+				f.file_status fileStatus,
+				d4.name fileStatusDesc,
+				f.file_source fileSource,
+				case f.file_source
+				WHEN 1 THEN '内部'
+				WHEN 2 THEN '外部'
+				else ''
+				END fSource,
+				f.record_type recordType,
+				f.created_time createdTime,
+				f.file_uid fileUid,
+				f.career_line careerLine,
+				u.user_name fileUName,
+				d.name careerLineName	 
+		FROM sop_file f
+		LEFT JOIN dict d1 on f.project_progress=d1.dict_code
+		LEFT JOIN dict d2 on f.file_type=d2.dict_code
+		LEFT JOIN dict d3 on f.file_worktype=d3.dict_code
+		LEFT JOIN dict d4 on f.file_status=d4.dict_code
+		LEFT JOIN v_user u on u.id=f.file_uid
+		LEFT JOIN v_department d on f.career_line=d.id
+		WHERE f.project_id=#{projectId} and f.file_worktype=#{fileWorkType}
+		ORDER BY f.created_time DESC LIMIT 1;
+	</select>
+	
+	<!-- 项目文档列表-->
+	<select id="searchappFileList" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+				f.id, f.project_id projectId,
+			  	f.project_progress projectProgress,
+				d1.name progress,
+				f.file_suffix fileSuffix,
+				f.file_key fileKey,
+				f.bucket_name bucketName,
+				f.file_name fileName,
+				f.file_length fileLength,
+				f.fil_uri filUri,
+				f.file_type fileType,
+				d2.name fType,
+				f.file_worktype fileWorktype,
+				d3.name fWorktype,
+				f.file_status fileStatus,
+				d4.name fileStatusDesc,
+				f.file_source fileSource,
+				case f.file_source
+				WHEN 1 THEN '内部'
+				WHEN 2 THEN '外部'
+				else ''
+				END fSource,
+				f.record_type recordType,
+				f.created_time createdTime,
+				f.updated_time updatedTime,
+				f.belong_uid belongUid,
+				f.file_uid fileUid,
+				f.career_line careerLine,	 
+				u.user_name fileUName,
+				d.name careerLineName
+		FROM (
+				SELECT *
+				FROM sop_file 
+				WHERE project_id =#{projectId}
+				<if test="fileWorktypeList != null">
+					and file_worktype in 
+					<foreach collection="fileWorktypeList" item="fileList" index="index" open="(" close=")" separator=",">
+						#{fileList}
+					</foreach>
+				</if> 
+				ORDER BY created_time desc
+		) f
+		LEFT JOIN dict d1 on f.project_progress=d1.dict_code
+		LEFT JOIN dict d2 on f.file_type=d2.dict_code
+		LEFT JOIN dict d3 on f.file_worktype=d3.dict_code
+		LEFT JOIN dict d4 on f.file_status=d4.dict_code
+		LEFT JOIN v_user u on u.id=f.file_uid
+		LEFT JOIN v_department d on f.career_line=d.id
+		GROUP BY f.file_worktype;
+	</select>
+	
 </mapper>

@@ -150,34 +150,6 @@
 		group by p.id;
 	</select>
 	
-	<!-- 新增融资历史 -->
-	<!-- <insert id="addFinanceHistory">
-		INSERT INTO finance_history(
-			project_id,
-			finance_date,
-			finance_from,
-			finance_amount,
-			finance_unit,
-			finance_proportion,
-			finance_status,
-			create_uid,
-			create_time
-		)VALUES(
-			#{project_id},
-			#{finance_date},
-			#{finance_from},
-			#{finance_amount},
-			#{finance_unit},
-			#{finance_proportion},
-			#{finance_status},
-			#{create_uid},
-			#{create_time}
-		);
-		<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
-			SELECT LAST_INSERT_ID() AS id
-		</selectKey>
-	</insert> -->
-	
 	<select id="projectIsYJZ" parameterType="long" resultType="int">
 		select 
 			case count(1)>0 when 1 then 1 else 0 end projectYjz
