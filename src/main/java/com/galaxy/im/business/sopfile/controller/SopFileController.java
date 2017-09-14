@@ -160,6 +160,14 @@ public class SopFileController {
 			}
 			paramMap.put("fileWorktypeList", fileWorktypeList);
 			List<Map<String, Object>> map = service.searchappFileList(paramMap);
+			for(Map<String, Object> m :map){
+				if(m.containsKey("createdTime")){
+					m.put("createDate", DateUtil.longToString(CUtils.get().object2Long(m.get("createdTime"))));
+				}
+				if(m.containsKey("updatedTime")){
+					m.put("updatedDate", DateUtil.longToString(CUtils.get().object2Long(m.get("updatedTime"))));
+				}
+			}
 			resultBean.setStatus("OK");
 			resultBean.setMapList(map);
 		}catch(Exception e){
