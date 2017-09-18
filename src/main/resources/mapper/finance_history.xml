@@ -23,7 +23,7 @@
 			 and l.title_id in(
 							SELECT title_id 
 							FROM information_title_relate 
-							WHERE report_type=4 and code='FNO7'
+							WHERE report_type=4 and code='FNO1_7'
 							) 
 			 ORDER BY l.field_1 DESC
 		<if test="isOne != null">

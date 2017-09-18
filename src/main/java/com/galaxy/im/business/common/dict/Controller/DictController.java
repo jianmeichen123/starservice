@@ -95,12 +95,12 @@ public class DictController {
 	/**
 	 * 1.项目类型		projectType
 	 * 2.行业归属		industryOwn
-	 * 3.本轮融资轮次	FNO1（全息报告数据，添加：无尚未获投和不确定，筛选时：多尚未获投和不确定）     
+	 * 3.本轮融资轮次	FNO1_1（全息报告数据，添加：无尚未获投和不确定，筛选时：多尚未获投和不确定）     
 	 * 4.项目进度 		projectProgress
 	 * 5.项目来源		projectSource
 	 * 6.股东性质		shareholderNature
 	 * 7.股东类型		shareholderType
-	 * 8.团队成员职位	FNO4（全息报告：团队成员职位列表）
+	 * 8.团队成员职位	FNO1_4（全息报告：团队成员职位列表）
 	 * 9.投资方币种		currency
 	 * @return
 	 * @author liuli

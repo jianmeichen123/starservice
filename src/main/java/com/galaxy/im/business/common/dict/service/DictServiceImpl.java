@@ -152,7 +152,7 @@ public class DictServiceImpl extends BaseServiceImpl<Dict> implements IDictServi
 		
 		try{
 			if(paramMap!=null && paramMap.containsKey("parentCode")){
-				if(CUtils.get().object2String(paramMap.get("parentCode")).equals("FNO1")){
+				if(CUtils.get().object2String(paramMap.get("parentCode")).equals("FNO1_1")){
 					//融资状态
 					list = dictDao.getFinanceStatusList(paramMap);
 					if(paramMap.containsKey("flag")&& CUtils.get().object2Integer(paramMap.get("flag"))==1){
@@ -165,19 +165,19 @@ public class DictServiceImpl extends BaseServiceImpl<Dict> implements IDictServi
 						list.add(map);
 						list.add(map1);
 					}
-				}else if(CUtils.get().object2String(paramMap.get("parentCode")).equals("FNO4")){
+				}else if(CUtils.get().object2String(paramMap.get("parentCode")).equals("FNO1_4")){
 					//团队成员职位
 					paramMap.put("code", "team-members");
 					list = dictDao.getTeamUserPosition(paramMap);
 				}else if(CUtils.get().object2String(paramMap.get("parentCode")).equals("shareholderNature")){
 					//股东性质
 					paramMap.clear();
-					paramMap.put("parentCode", "FNO6");
+					paramMap.put("parentCode", "FNO1_6");
 					list = dictDao.getShareholderNatureList(paramMap);
 				}else if(CUtils.get().object2String(paramMap.get("parentCode")).equals("shareholderType")){
 					//股东类型
 					paramMap.clear();
-					paramMap.put("parentCode", "FNO6");
+					paramMap.put("parentCode", "FNO1_6");
 					list = dictDao.getShareholderTypeList(paramMap);
 				}else{
 					List<Dict> dataList = dictDao.selectByParentCode(CUtils.get().object2String(paramMap.get("parentCode")));
@@ -225,7 +225,7 @@ public class DictServiceImpl extends BaseServiceImpl<Dict> implements IDictServi
 		Map<String,Object> resultMap = null;
 		try{
 			if(paramMap!=null && paramMap.containsKey("parentCode")){
-				if(CUtils.get().object2String(paramMap.get("parentCode")).equals("FNO7")){
+				if(CUtils.get().object2String(paramMap.get("parentCode")).equals("FNO1_7")){
 					//币种
 					list6 = dictDao.getfinanceUnitList(paramMap);
 					//融资轮次
