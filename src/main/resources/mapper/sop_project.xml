@@ -142,7 +142,7 @@
 			'fileWorktype:1','fileWorktype:2','fileWorktype:3','fileWorktype:4','fileWorktype:5',
 			'fileWorktype:6','fileWorktype:7','fileWorktype:8','fileWorktype:9',
 			'fileWorktype:17','fileWorktype:18','fileWorktype:19') and f2.file_key is not null
-		left join sop_project_shares s on s.project_id=p.idghddh
+		left join sop_project_shares s on s.project_id=p.id
 		left join sop_delivery d on p.id=d.project_id
 		left join sop_project_health h on p.id=h.project_id
 		left join sop_meeting_record m on m.project_id=p.id and m.meeting_type in ('postMeetingType:1' ,'postMeetingType:2','postMeetingType:3')
