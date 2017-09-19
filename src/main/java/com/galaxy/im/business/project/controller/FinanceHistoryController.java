@@ -102,7 +102,10 @@ public class FinanceHistoryController {
 					id = service.addFinanceHistory(paramMap);
 				}
 				if(id>0){
+					paramMap.clear();
+					paramMap.put("id",id);
 					result.setStatus("OK");
+					result.setMap(paramMap);
 				}
 			}
 		}catch(Exception e){
