@@ -133,12 +133,12 @@ public class ProjectController {
 			Map<String,Object> QXinfoMap = service.selectBaseProjectInfo(paramMap);
 			//基础信息(数据来源项目表)
 			Map<String,Object> infoMap = service.getBaseProjectInfo(projectId);
-			if(infoMap!=null && !infoMap.isEmpty() && QXinfoMap!=null && !QXinfoMap.isEmpty()){
-				infoMap.put("projectYjz", service.projectIsYJZ(projectId));		//判断该项目是否处于移交中
+			if( QXinfoMap!=null && !QXinfoMap.isEmpty()){
 				infoMap.putAll(QXinfoMap);
-				resultMap.put("infoMap", infoMap);
-				
 			}
+			infoMap.put("projectYjz", service.projectIsYJZ(projectId));		//判断该项目是否处于移交中
+			resultMap.put("infoMap", infoMap);
+				
 			//融资历史-最新一条
 			paramMap.put("isOne", "true");
 			List<Map<String,Object>> historyMap = fsService.getFinanceHistory(paramMap);
