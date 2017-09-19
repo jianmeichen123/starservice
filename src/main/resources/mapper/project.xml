@@ -116,7 +116,7 @@
 	</select>
 	
 	<!-- 查询 项目列表 变化 投后运营的时候 -->
-	<select id="selectByth" resultMap="BaseResultMap" parameterType="java.util.Map">
+	<select id="selectByth" resultType="hashMap" parameterType="java.util.Map">
 		select * from sop_project  where  		 
 		  project_status = "projectStatus:1"
 		<if test="projectType != null" > and project_type = #{projectType} </if>	
@@ -160,7 +160,7 @@
 	</select>
 	
 	<!-- 查询 项目列表 变化 否决的时候 -->
-	<select id="selectByfj" resultMap="BaseResultMap" parameterType="java.util.Map">
+	<select id="selectByfj" resultType="hashMap" parameterType="java.util.Map">
 		select * from sop_project  where 		 
 		  project_status = "projectStatus:2" 
 		<if test="projectType != null" > and project_type = #{projectType} </if>	
@@ -211,7 +211,7 @@
 	</select>
 
 	<!-- 查询 -->
-	<select id="selectPageList" resultMap="BaseResultMap" parameterType="java.util.Map">
+	<select id="selectPageList" resultType="hashMap" parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
 		from sop_project
