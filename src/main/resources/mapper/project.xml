@@ -117,8 +117,10 @@
 	
 	<!-- 查询 项目列表 变化 投后运营的时候 -->
 	<select id="selectByth" resultType="hashMap" parameterType="java.util.Map">
-		select * from sop_project  where  		 
-		  project_status = "projectStatus:1"
+		select 
+			<include refid="Base_Column_List" />
+		from sop_project  where  		 
+		project_status = "projectStatus:1"
 		<if test="projectType != null" > and project_type = #{projectType} </if>	
 		<if test="projectProgress != null" > and project_progress = #{projectProgress} </if>		
 	    <if test="createUid != null" > and create_uid = #{createUid} </if>
@@ -161,8 +163,10 @@
 	
 	<!-- 查询 项目列表 变化 否决的时候 -->
 	<select id="selectByfj" resultType="hashMap" parameterType="java.util.Map">
-		select * from sop_project  where 		 
-		  project_status = "projectStatus:2" 
+		select 
+			<include refid="Base_Column_List" />
+		from sop_project  where 		 
+		project_status = "projectStatus:2" 
 		<if test="projectType != null" > and project_type = #{projectType} </if>	
 		<if test="projectProgress != null" > and project_progress = #{projectProgress} </if>
 		<if test="financeStatus != null" > and finance_status = #{financeStatus} </if>	
