@@ -21,7 +21,7 @@ public class SopProjectDaoImpl extends BaseDaoImpl<ProjectBo,Long> implements IS
 		long total = 0L;
 		try {
 			contentList = sqlSessionTemplate.selectList( getSqlName("selectBygjz"),getParams(query, pageable));
-			total = CUtils.get().object2Integer(sqlSessionTemplate.selectOne(getSqlName("selectBygjzCount"),getParams(query, pageable)));		
+			total = CUtils.get().object2Long(sqlSessionTemplate.selectOne(getSqlName("selectBygjzCount"),getParams(query, pageable)));		
 			return new  Page<SopProjectBean>(contentList, pageable, total); 
 		} catch (Exception e) {
 			throw new DaoException(String.format("根据分页对象查询列表出错！语句:%s", getSqlName("selectBygjz")), e);
@@ -35,7 +35,7 @@ public class SopProjectDaoImpl extends BaseDaoImpl<ProjectBo,Long> implements IS
 		long total = 0L;
 		try {
 			contentList = sqlSessionTemplate.selectList( getSqlName("selectByth"),getParams(query, pageable));
-			total = CUtils.get().object2Integer(sqlSessionTemplate.selectOne(getSqlName("selectBythCount"),getParams(query, pageable)));		
+			total = CUtils.get().object2Long(sqlSessionTemplate.selectOne(getSqlName("selectBythCount"),getParams(query, pageable)));		
 			return new  Page<SopProjectBean>(contentList, pageable, total); 
 		} catch (Exception e) {
 			throw new DaoException(String.format("根据分页对象查询列表出错！语句:%s", getSqlName("selectByth")), e);
@@ -48,7 +48,7 @@ public class SopProjectDaoImpl extends BaseDaoImpl<ProjectBo,Long> implements IS
 		long total = 0L;
 		try {
 			contentList = sqlSessionTemplate.selectList( getSqlName("selectByfj"),getParams(query, pageable));
-			total = CUtils.get().object2Integer(sqlSessionTemplate.selectOne(getSqlName("selectByfjCount"),getParams(query, pageable)));		
+			total = CUtils.get().object2Long(sqlSessionTemplate.selectOne(getSqlName("selectByfjCount"),getParams(query, pageable)));		
 			return new  Page<SopProjectBean>(contentList, pageable, total); 
 		} catch (Exception e) {
 			throw new DaoException(String.format("根据分页对象查询列表出错！语句:%s", getSqlName("selectByfj")), e);
@@ -61,7 +61,7 @@ public class SopProjectDaoImpl extends BaseDaoImpl<ProjectBo,Long> implements IS
 		long total = 0L;
 		try {
 			contentList = sqlSessionTemplate.selectList( getSqlName("selectPageList"),getParams(query, pageable));
-			total = CUtils.get().object2Integer(sqlSessionTemplate.selectOne(getSqlName("selectPageListCount"),getParams(query, pageable)));		
+			total = CUtils.get().object2Long(sqlSessionTemplate.selectOne(getSqlName("selectPageListCount"),getParams(query, pageable)));		
 			return new  Page<SopProjectBean>(contentList, pageable, total); 
 		} catch (Exception e) {
 			throw new DaoException(String.format("根据分页对象查询列表出错！语句:%s", getSqlName("selectPageList")), e);
