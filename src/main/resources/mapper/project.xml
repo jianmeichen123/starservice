@@ -228,10 +228,10 @@
 		<where>
 			<trim prefixOverrides="and">
 			  <if test="id != null"> and id =#{id}</if>
-			   <if test="createUid != null" > and create_uid = #{createUid,jdbcType=BIGINT} </if>
-			   <if test="projectProgress != null" > and project_progress = #{projectProgress,jdbcType=VARCHAR} </if>
-			   <if test="projectType != null" > and project_type = #{projectType,jdbcType=VARCHAR} </if>
-		       <if test="projectDepartid != null" > and project_departId = #{projectDepartid,jdbcType=BIGINT} </if>
+			   <if test="createUid != null" > and create_uid = #{createUid} </if>
+			   <if test="projectProgress != null" > and project_progress = #{projectProgress} </if>
+			   <if test="projectType != null" > and project_type = #{projectType} </if>
+		       <if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
 			   <if test="deptIdList != null">
 					AND project_departId IN
 					<foreach collection="deptIdList" index="item" item="item" open="("
@@ -239,44 +239,43 @@
 						#{item}
 					</foreach>
 			  </if>
-		      <if test="industryOwn != null" > and industry_own = #{industryOwn,jdbcType=BIGINT} </if>
-		      <if test="stockTransfer != null" > and stock_transfer = #{stockTransfer,jdbcType=INTEGER} </if>
+		      <if test="industryOwn != null" > and industry_own = #{industryOwn} </if>
+		      <if test="stockTransfer != null" > and stock_transfer = #{stockTransfer} </if>
 		      
-		      <if test="projectValuations != null" > and project_valuations = #{projectValuations,jdbcType=DECIMAL} </if>
-		      <if test="finalValuations != null" > and final_valuations = #{finalValuations,jdbcType=DECIMAL} </if>
-		      <if test="financeStatus != null" > and finance_status = #{financeStatus,jdbcType=VARCHAR} </if>
+		      <if test="projectValuations != null" > and project_valuations = #{projectValuations} </if>
+		      <if test="finalValuations != null" > and final_valuations = #{finalValuations} </if>
+		      <if test="financeStatus != null" > and finance_status = #{financeStatus} </if>
 		     
-		      <if test="projectContribution != null" >  and project_contribution = #{projectContribution,jdbcType=DECIMAL} </if>
-		      <if test="finalContribution != null" >  and final_contribution = #{finalContribution,jdbcType=DECIMAL} </if>
+		      <if test="projectContribution != null" >  and project_contribution = #{projectContribution} </if>
+		      <if test="finalContribution != null" >  and final_contribution = #{finalContribution} </if>
 		      <if test="currencyUnit != null" > and currency_unit = #{currencyUnit,jdbcType=INTEGER} </if>
-		      <if test="projectShareRatio != null" > and project_share_ratio = #{projectShareRatio,jdbcType=DECIMAL} </if>
-		      <if test="finalShareRatio != null" > and final_share_ratio = #{finalShareRatio,jdbcType=DECIMAL} </if>
-		      <if test="serviceCharge != null" > and service_charge = #{serviceCharge,jdbcType=DECIMAL} </if> 
-		      <if test="projectCareerline != null" > and project_careerline = #{projectCareerline,jdbcType=VARCHAR} </if>
-		      <if test="projectCompany != null" > and project_company = #{projectCompany,jdbcType=VARCHAR} </if>
-		      <if test="formationDate != null" > and formation_date = #{formationDate,jdbcType=BIGINT} </if>
-		      <if test="projectCompanyCode != null" > and project_company_code = #{projectCompanyCode,jdbcType=VARCHAR} </if>
-		      <if test="companyLegal != null" > and company_legal = #{companyLegal,jdbcType=VARCHAR} </if>
+		      <if test="projectShareRatio != null" > and project_share_ratio = #{projectShareRatio} </if>
+		      <if test="finalShareRatio != null" > and final_share_ratio = #{finalShareRatio} </if>
+		      <if test="serviceCharge != null" > and service_charge = #{serviceCharge} </if> 
+		      <if test="projectCareerline != null" > and project_careerline = #{projectCareerline} </if>
+		      <if test="projectCompany != null" > and project_company = #{projectCompany} </if>
+		      <if test="formationDate != null" > and formation_date = #{formationDate} </if>
+		      <if test="projectCompanyCode != null" > and project_company_code = #{projectCompanyCode} </if>
+		      <if test="companyLegal != null" > and company_legal = #{companyLegal} </if>
 		      
-		      <if test="createUposition != null" > and create_uposition = #{createUposition,jdbcType=VARCHAR} </if>
+		      <if test="createUposition != null" > and create_uposition = #{createUposition} </if>
 		     
-		      <if test="projectStatus != null" > and project_status = #{projectStatus,jdbcType=VARCHAR} </if>
-		      <if test="updatedTime != null" > and updated_time = #{updatedTime,jdbcType=BIGINT} </if>
-		      <if test="createdTime != null" > and created_time = #{createdTime,jdbcType=BIGINT} </if>
+		      <if test="projectStatus != null" > and project_status = #{projectStatus} </if>
+		      <if test="updatedTime != null" > and updated_time = #{updatedTime} </if>
+		      <if test="createdTime != null" > and created_time = #{createdTime} </if>
 		      
-		      <if test="startTime != null"> <![CDATA[  and created_time >= #{startTime,jdbcType=BIGINT} ]]> </if>
-			  <if test="endTime != null"> <![CDATA[ and created_time <= #{endTime,jdbcType=BIGINT} ]]> </if>
+		      <if test="startTime != null"> <![CDATA[  and created_time >= #{startTime} ]]> </if>
+			  <if test="endTime != null"> <![CDATA[ and created_time <= #{endTime} ]]> </if>
 		      
-		      <if test="projectDescribe != null" > and project_describe = #{projectDescribe,jdbcType=LONGVARCHAR} </if>
-		      <if test="projectBusinessModel != null" > and project_business_model = #{projectBusinessModel,jdbcType=LONGVARCHAR} </if>
-		      <if test="companyLocation != null" > and company_location = #{companyLocation,jdbcType=LONGVARCHAR} </if>
-		      <if test="userPortrait != null" > and user_portrait = #{userPortrait,jdbcType=LONGVARCHAR} </if>
-		      <if test="prospectAnalysis != null" > and prospect_analysis = #{prospectAnalysis,jdbcType=LONGVARCHAR} </if>
+		      <if test="projectDescribe != null" > and project_describe = #{projectDescribe} </if>
+		      <if test="projectBusinessModel != null" > and project_business_model = #{projectBusinessModel} </if>
+		      <if test="companyLocation != null" > and company_location = #{companyLocation} </if>
+		      <if test="userPortrait != null" > and user_portrait = #{userPortrait} </if>
+		      <if test="prospectAnalysis != null" > and prospect_analysis = #{prospectAnalysis} </if>
 				
-				
-			  <if test="projectName != null" > and project_name = #{projectName,jdbcType=VARCHAR} </if>
-			  <if test="createUname != null" > and create_uname = #{createUname,jdbcType=VARCHAR} </if>
-		      <if test="projectCode != null" > and project_code = #{projectCode,jdbcType=VARCHAR} </if>
+			  <if test="projectName != null" > and project_name = #{projectName} </if>
+			  <if test="createUname != null" > and create_uname = #{createUname} </if>
+		      <if test="projectCode != null" > and project_code = #{projectCode} </if>
 				<!-- 模糊查询 -->
 				<if test="keyword != null">
 					<choose>
@@ -326,16 +325,16 @@
 				<!--根据计划额度查询  -->
 				<if test="rComplany != null"> 
 					<if test="aComplany != null">
-					 	and project_contribution <![CDATA[ >=]]> #{aComplany,jdbcType=DECIMAL} 					 							 
+					 	and project_contribution <![CDATA[ >=]]> #{aComplany} 					 							 
 					</if> 
 					<if test="bComplany != null">
-						and project_contribution  &lt; #{bComplany,jdbcType=DECIMAL} 
+						and project_contribution  &lt; #{bComplany} 
 					</if>								 												
 				</if>
 				
 				<!-- 过滤已关闭项目 -->
 				<if test="resultCloseFilter != null">
-					AND project_status !=  #{resultCloseFilter,jdbcType=VARCHAR}
+					AND project_status !=  #{resultCloseFilter}
 				</if>
 				<if test="ids != null">
 					AND id IN
