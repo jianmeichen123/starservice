@@ -268,7 +268,6 @@ public class ProjectController {
 					
 					//全息报告result表数据更新
 					Map<String, Object> hashmap = new HashMap<>();
-					//InformationResult result = new InformationResult();
 					
 					if (bean.getId()!=null&&bean.getId()!=0) {
 						hashmap.put("projectId", bean.getId());

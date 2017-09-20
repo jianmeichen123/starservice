@@ -180,7 +180,10 @@
 		SELECT 
 		<include refid="Base_Column_List" />
 		from sop_project
-		<if test="projectName != null" > WHERE project_name = #{projectName}</if>
+		<where>
+		<if test="projectName != null" >  project_name = #{projectName}</if>
+		<if test="id != null" >and id = #{id}</if>
+		</where>
 	</select>
 	<resultMap type="com.galaxy.im.bean.project.SopProjectBean" id="BaseResultMap">
 		<result column="id" property="id"/>
