@@ -15,10 +15,15 @@
 				d1.name	financeUnit,			
 				d1.code financeUnitCode,
 				d2.name financingStatus,			
-				d2.code financingStatusCode
+				d2.code financingStatusCode,
+				d3.name financingStock,			
+				d3.code financingStockCode,
+				l.field_9 contract,
+				l.field_10 commitment
 		FROM information_listdata l
 		LEFT JOIN information_dictionary d1 on d1.id=field_6
 		LEFT JOIN information_dictionary d2 on d2.id=field_7
+		LEFT JOIN information_dictionary d3 on d3.id=field_8
 		WHERE l.project_id=#{projectId} 
 			 and l.title_id in(
 							SELECT title_id 
