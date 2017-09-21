@@ -18,6 +18,7 @@
 				d2.code financingStatusCode,
 				d3.name financingStock,			
 				d3.code financingStockCode,
+				l.field_5 financeValuation,
 				l.field_9 contract,
 				l.field_10 commitment
 		FROM information_listdata l

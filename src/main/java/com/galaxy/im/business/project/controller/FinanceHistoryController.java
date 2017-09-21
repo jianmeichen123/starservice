@@ -37,6 +37,16 @@ public class FinanceHistoryController {
 			if(paramMap!=null && !paramMap.isEmpty()){
 				List<Map<String,Object>> historyList = service.getFinanceHistory(paramMap);
 				if(historyList!=null && historyList.size()>0){
+					for(Map<String,Object> map :historyList){
+						if(map.containsKey("financeValuation") && map.get("financeValuation")!=null){
+							String s= CUtils.get().object2String(map.get("financeValuation"));
+							if(s.indexOf(".") > 0){  
+					            s = s.replaceAll("0+?$", "");//去掉多余的0  
+					            s = s.replaceAll("[.]$", "");//如最后一位是.则去掉  
+					        }
+							map.put("financeValuation", s);
+						}
+					}
 					result.setMapList(historyList);
 				}
 			}
