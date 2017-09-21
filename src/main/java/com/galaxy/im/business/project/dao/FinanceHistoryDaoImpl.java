@@ -68,10 +68,10 @@ public class FinanceHistoryDaoImpl extends BaseDaoImpl<FinanceHistoryBean, Long>
 	@Override
 	public Long updateFinanceHistory(Map<String, Object> paramMap) {
 		try {
-			sqlSessionTemplate.insert(getSqlName("addFinanceHistory"), paramMap);
+			sqlSessionTemplate.insert(getSqlName("updateFinanceHistory"), paramMap);
 			return CUtils.get().object2Long(paramMap.get("id"));
 		} catch (Exception e) {
-			log.error(FinanceHistoryDaoImpl.class.getName()+ "addFinanceHistory", e);
+			log.error(FinanceHistoryDaoImpl.class.getName()+ "updateFinanceHistory", e);
 			throw new DaoException(e);
 		}
 	}

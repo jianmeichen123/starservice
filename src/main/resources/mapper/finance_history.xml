@@ -117,7 +117,7 @@
 	</insert>
 	
 	<!-- 编辑融资历史 -->
-	<update id="updateById" parameterType="hashmap">
+	<update id="updateFinanceHistory" parameterType="hashmap">
 		update information_listdata
 		<set>
 			<if test="titleId != null"> title_id = #{titleId}, </if>
