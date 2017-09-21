@@ -67,7 +67,6 @@
 	<!-- 新增融资历史 -->
 	<insert id="addFinanceHistory" useGeneratedKeys="true" keyProperty="id" parameterType="hashmap">
 		insert into information_listdata (
-	     	id,
 	     	project_id,
 			title_id,
 			parent_id,
@@ -89,7 +88,6 @@
 			update_id
 		)
 		values (
-			#{id},
 			#{projectId},
 			#{titleId},
 			#{parentId},
