@@ -123,16 +123,16 @@
 			<if test="titleId != null"> title_id = #{titleId}, </if>
 			<if test="parentId != null"> parent_id = #{parentId}, </if>
 			<if test="code != null"> code = #{code}, </if>
-			<if test="field1 != null"> field_1 = #{financeDateStr}, </if>
-			<if test="field2 != null"> field_2 = #{financeFrom}, </if>
-			<if test="field3 != null"> field_3 = #{financeAmount}, </if>
-			<if test="field4 != null"> field_4 = #{financeProportion}, </if>
-			<if test="field5 != null"> field_5 = #{financeValuation}, </if>
-			<if test="field6 != null"> field_6 = #{financeUnitId}, </if>
-			<if test="field7 != null"> field_7 = #{financingStatusId}, </if>
-			<if test="field8 != null"> field_8 = #{financingStockId}, </if>
-			<if test="field9 != null"> field_9 = #{contract}, </if>
-			<if test="field10 != null"> field_10 = #{commitment}, </if>
+			<if test="financeDateStr != null"> field_1 = #{financeDateStr}, </if>
+			<if test="financeFrom != null"> field_2 = #{financeFrom}, </if>
+			<if test="financeAmount != null"> field_3 = #{financeAmount}, </if>
+			<if test="financeProportion != null"> field_4 = #{financeProportion}, </if>
+			<if test="financeValuation != null"> field_5 = #{financeValuation}, </if>
+			<if test="financeUnitId != null"> field_6 = #{financeUnitId}, </if>
+			<if test="financingStatusId != null"> field_7 = #{financingStatusId}, </if>
+			<if test="financingStockId != null"> field_8 = #{financingStockId}, </if>
+			<if test="contract != null"> field_9 = #{contract}, </if>
+			<if test="commitment != null"> field_10 = #{commitment}, </if>
 			<if test="isValid != null"> is_valid = #{isValid}, </if>
 			<if test="createdTime != null"> created_time = #{createdTime}, </if>
 			<if test="createId != null"> create_id = #{createId}, </if>
