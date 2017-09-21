@@ -51,10 +51,13 @@
 				l.field_5 financeValuation,
 				l.field_9 contract,
 				l.field_10 commitment,
+				d1.id financeUnitId,			
 				d1.name	financeUnit,			
 				d1.code financeUnitCode,
+				d2.id financingStatusId,
 				d2.name financingStatus,			
 				d2.code financingStatusCode,
+				d3.id financingStockId,
 				d3.name financingStock,			
 				d3.code financingStockCode
 		FROM information_listdata l
