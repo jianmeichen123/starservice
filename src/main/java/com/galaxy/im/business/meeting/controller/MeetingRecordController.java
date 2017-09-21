@@ -243,40 +243,49 @@ public class MeetingRecordController {
 		String choose="";
 		map.put("projectId", bean.getProjectId());
 		map.put("parentId", "7028");
+		
+		//会议最新信息
+		map.put("meetingType", bean.getMeetingType());
+		Map<String,Object> res = fcService.getMeetingRecordInfo(map);
+				
 		//内部评审，立项会，投决会的结论同步全息报告
 		if(bean.getMeetingType().equals("meetingType:1")){
 			titleId=1111L;
-			if(bean.getMeetingResult().equals("meeting1Result:1")){
-				choose="1142";
-			}else if(bean.getMeetingResult().equals("meeting1Result:2")){
-				choose="1143";
-			}else if(bean.getMeetingResult().equals("meeting1Result:3")){
-				choose="1144";
-			}else if(bean.getMeetingResult().equals("meeting1Result:4")){
-				choose="1145";
+			if(res.containsKey("meetingResultCode") && res.get("meetingResultCode")!=null){
+				if(res.get("meetingResultCode").equals("meeting1Result:1")){
+					choose="1142";
+				}else if(res.get("meetingResultCode").equals("meeting1Result:2")){
+					choose="1143";
+				}else if(res.get("meetingResultCode").equals("meeting1Result:3")){
+					choose="1144";
+				}else if(res.get("meetingResultCode").equals("meeting1Result:4")){
+					choose="1145";
+				}
 			}
 		}else if(bean.getMeetingType().equals("meetingType:3")){
 			titleId=1113L;
-			if(bean.getMeetingResult().equals("meeting3Result:1")){
-				choose="1164";
-			}else if(bean.getMeetingResult().equals("meeting3Result:2")){
-				choose="1162";
-			}else if(bean.getMeetingResult().equals("meeting3Result:3")){
-				choose="1163";
-			}else if(bean.getMeetingResult().equals("meeting3Result:4")){
-				choose="1165";
-			}else if(bean.getMeetingResult().equals("meeting3Result:5")){
-				choose="1166";
-			}else if(bean.getMeetingResult().equals("meeting3Result:6")){
-				choose="1167";
+			if(res.containsKey("meetingResultCode") && res.get("meetingResultCode")!=null){
+				if(res.get("meetingResultCode").equals("meeting3Result:1")){
+					choose="1164";
+				}else if(res.get("meetingResultCode").equals("meeting3Result:2")){
+					choose="1162";
+				}else if(res.get("meetingResultCode").equals("meeting3Result:3")){
+					choose="1163";
+				}else if(res.get("meetingResultCode").equals("meeting3Result:4")){
+					choose="1165";
+				}else if(res.get("meetingResultCode").equals("meeting3Result:5")){
+					choose="1166";
+				}else if(res.get("meetingResultCode").equals("meeting3Result:6")){
+					choose="1167";
+				}
 			}
 		}else if(bean.getMeetingType().equals("meetingType:4")){
 			titleId=1114L;
-			if(bean.getMeetingResult().equals("meeting4Result:1")){
+			if(res.get("meetingResultCode").equals("meeting4Result:1")){
 				choose="1173";
-			}else if(bean.getMeetingResult().equals("meeting4Result:2")){
+			}else if(res.get("meetingResultCode").equals("meeting4Result:2")){
 				choose="1174";
-			}else if(bean.getMeetingResult().equals("meeting4Result:3")){
+			}else if(res.get("meetingResultCode").equals("meeting4Result:3")){
 				choose="1177";
 			}
 		}
@@ -292,12 +301,12 @@ public class MeetingRecordController {
 			result.setCreateId(CUtils.get().object2String(bean.getCreatedId()));
 			long id = fcService.addInformationResult(result);
 		}else{
-			for(InformationResult res : list){
-				if(res.getContentChoose()!=null){
-					res.setContentChoose(choose);
-					res.setUpdatedTime(new Date().getTime());
-					res.setUpdateId(CUtils.get().object2String(bean.getCreatedId()));
-					long id = fcService.updateInformationResult(res);
+			for(InformationResult ir : list){
+				if(ir.getContentChoose()!=null){
+					ir.setContentChoose(choose);
+					ir.setUpdatedTime(new Date().getTime());
+					ir.setUpdateId(CUtils.get().object2String(bean.getCreatedId()));
+					long id = fcService.updateInformationResult(ir);
 				}
 			}
 		}
