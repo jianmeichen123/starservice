@@ -59,8 +59,9 @@
 		    d2.name financeStatusDs,					融资状态名称 -->
 		    p.create_uid createUid,
 		    u.user_name createUname,
-		    p.fa_flag faFlag,							
-		    case p.fa_flag=1 when 1 then p.fa_name else null end faName,	
+		    d7.name faFlag,	
+			d7.dict_code faFlagCode,
+		    p.fa_name faName,	
 		    
 		   <!--  p.project_contribution projectContribution,	计划-融资金额
 		    p.project_valuations projectValuations,		计划-项目估值
@@ -91,6 +92,7 @@
 		left join dict d4 on p.industry_own=d4.dict_code and d4.parent_code='industryOwn'
 		left join dict d5 on p.finance_mode=d5.dict_code
 		left join dict d6 on d6.dict_code=p.project_progress
+		left join dict d7 on d7.dict_code=p.fa_flag
 		left join v_user u on u.id=p.create_uid
 		left join v_department t on p.project_departId=t.id
 		left join v_user u2 on t.dep_manager=u2.id
