@@ -394,6 +394,15 @@ public class ProjectController {
 						bean.setCreatedTime(DateUtil.convertStringToDate(bean.getCreateDate().trim(), "yyyy-MM-dd").getTime());
 						long id = service.saveProject(bean);
 						//新建项目存入全息报告中的信息
+						if(bean.getFinanceStatus()!=null){
+						InformationResult result1 = new InformationResult();
+						result1.setProjectId(CUtils.get().object2String(bean.getId()));
+						result1.setTitleId("1108");
+						result1.setContentChoose(bean.getFinanceStatus());
+						result1.setCreateId(CUtils.get().object2String(userId));
+						result1.setCreatedTime(new Date().getTime());
+						fcService.addInformationResult(result1);
+						}
 						String array[] = {"1916","1917","1943","3004","3010","3011","3012"};
 						for(int i=0;i<array.length;i++){
 							InformationResult result2 = new InformationResult();
