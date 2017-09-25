@@ -127,7 +127,7 @@
 			<if test="updateTime != null"> updated_time = #{updateTime }, </if>
 			<if test="updateId != null"> update_id = #{updateId } </if>
 		</set>
-		where id = #{id}
+		where id = #{id} and project_id =#{projectId}
 	</update>
 	
 	<!-- 根据ID删除 -->
