@@ -12,7 +12,8 @@
 
 	<!-- 股权结构列表 -->
 	<select id="selectProjectShares" resultType="hashmap" parameterType="hashmap">
-	SELECT il.id,il.field_1 sharesOwner,il.field_2 sharesRatio,id.name shareholderType,ids.name shareholderNature  
+	SELECT il.id,il.field_1 sharesOwner,il.field_2 sharesRatio,id.name shareholderType,il.field_3 shareholderTypeId,ids.name shareholderNature,il.field_4  shareholderNatureId,
+	il.field_5 remark
 	FROM information_listdata il 
 	LEFT JOIN information_dictionary id ON il.field_3=id.id 
 	LEFT JOIN information_dictionary ids ON il.field_4=ids.id
@@ -70,7 +71,7 @@
 			#{sharesRatio},
 			#{shareholderType},
 			#{shareholderNature},
-			#{field5},
+			#{remark},
 			#{field6},
 			#{field7},
 			#{field8},
@@ -96,7 +97,7 @@
 			<if test="sharesRatio != null"> field_2 = #{sharesRatio }, </if>
 			<if test="shareholderType != null"> field_3 = #{shareholderType }, </if>
 			<if test="shareholderNature != null"> field_4 = #{shareholderNature }, </if>
-			<if test="field5 != null"> field_5 = #{field5 }, </if>
+			<if test="remark != null"> field_5 = #{remark }, </if>
 			<if test="field6 != null"> field_6 = #{field6 }, </if>
 			<if test="field7 != null"> field_7 = #{field7 }, </if>
 			<if test="field8 != null"> field_8 = #{field8 }, </if>
@@ -114,7 +115,7 @@
 	<!-- 根据ID删除 -->
 	<delete id="deleteProjectSharesById" parameterType="hashmap">
 		delete from information_listdata
-		where id = #{id}
+		where id = #{id} and project_id=#{projectId}
 	</delete>
 </mapper>
 	
