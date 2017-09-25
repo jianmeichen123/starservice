@@ -21,9 +21,10 @@
 	
 	<!-- 交割前事项详情-->
 	<select id="selectdelivery" parameterType="hashmap" resultType="hashmap">
-		SELECT  id, field_1 summary, field_2 details
-		FROM information_listdata 
-		where id=#{id} 
+		SELECT il.id,il.field_1 summary, il.field_2 details,ifile.file_name fileName, ifile.file_type fileType,ifile.file_length fileLength,ifile.file_key fileKey,ifile.file_suffix fileSuffix
+		FROM information_listdata il 
+		LEFT JOIN information_file ifile ON FIND_IN_SET(ifile.id,il.relate_file_id)
+		where il.id=#{id} and il.project_id=#{projectId}
 	</select>
 	
 </mapper>

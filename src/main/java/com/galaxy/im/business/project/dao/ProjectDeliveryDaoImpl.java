@@ -41,7 +41,7 @@ public class ProjectDeliveryDaoImpl extends BaseDaoImpl<InformationListdata,Long
 	@Override
 	public Object selectdelivery(Map<String, Object> paramMap) {
 		try{
-			return sqlSessionTemplate.selectOne(getSqlName("selectdelivery"),paramMap);
+			return sqlSessionTemplate.selectList(getSqlName("selectdelivery"),paramMap);
 		}catch(Exception e){
 			log.error(ProjectDeliveryDaoImpl.class.getName() + "selectdelivery",e);
 			throw new DaoException(e);
