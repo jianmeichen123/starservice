@@ -59,7 +59,7 @@ public class SopFileController {
 			paramMap.put("fileWorkType", StaticConst.FILE_WORKTYPE_12);
 			
 			Map<String,Object> map = service.getBusinessPlanFile(paramMap);
-			if(map.containsKey("createdTime")){
+			if(map!=null && map.containsKey("createdTime")){
 				map.put("createDate", DateUtil.longToString(CUtils.get().object2Long(map.get("createdTime"))));
 			}
 			resultBean.setStatus("OK");
