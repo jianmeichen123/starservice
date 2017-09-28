@@ -265,81 +265,8 @@ public class ProjectController {
 					bean.setUpdatedTime(System.currentTimeMillis());
 					//bean.setCreatedTime(DateUtil.convertStringToDate(p.getCreateDate().trim(), "yyyy-MM-dd").getTime());
 					int num = service.updateProject(bean);
-					
 					//全息报告result表数据更新
-					Map<String, Object> hashmap = new HashMap<>();
-					
-					if (bean.getId()!=null&&bean.getId()!=0) {
-						hashmap.put("projectId", bean.getId());
-						hashmap.put("titleId", 1108);
-						InformationResult result = service.findResultInfoById(hashmap);
-						if (result!=null) {
-							result.setId(result.getId());
-							result.setContentChoose(bean.getFinanceStatus());
-							result.setUpdateId(CUtils.get().object2String(userId));
-							result.setUpdatedTime(new Date().getTime());
-							fcService.updateInformationResult(result);
-						}else{
-							InformationResult result2 = new InformationResult();
-							result2.setProjectId(CUtils.get().object2String(bean.getId()));
-							result2.setTitleId("1108");
-							result2.setContentChoose(bean.getFinanceStatus());
-							result2.setCreateId(CUtils.get().object2String(userId));
-							result2.setCreatedTime(new Date().getTime());
-							fcService.addInformationResult(result2);
-						}
-						String array[] = {"1916","1917","1943","3004","3010","3011","3012"};
-						for(int i=0;i<array.length;i++){
-						hashmap.put("titleId", array[i]);
-						InformationResult result1 = service.findResultInfoById(hashmap);
-						if (result1!=null) {
-							result1.setId(result1.getId());
-							if (array[i].equals("1916") && bean.getProjectContribution()!=null) {
-								result1.setContentDescribe1(CUtils.get().object2String(bean.getProjectContribution()));
-							}else if (array[i].equals("1917") && bean.getProjectShareRatio()!=null) {
-								result1.setContentDescribe1(CUtils.get().object2String(bean.getProjectShareRatio()));
-							}else if (array[i].equals("1943") && bean.getProjectValuations()!=null) {
-								result1.setContentDescribe1(CUtils.get().object2String(bean.getProjectValuations()));
-							}else if (array[i].equals("3004") && bean.getFinalContribution()!=null) {
-								result1.setContentDescribe1(CUtils.get().object2String(bean.getFinalContribution()));
-							}else if (array[i].equals("3010") && bean.getFinalShareRatio()!=null) {
-								result1.setContentDescribe1(CUtils.get().object2String(bean.getFinalShareRatio()));
-							}else if (array[i].equals("3011") && bean.getServiceCharge()!=null&&bean.getServiceCharge()!=0) {
-								result1.setContentDescribe1(CUtils.get().object2String(bean.getServiceCharge()));
-							}else if (array[i].equals("3012") && bean.getFinalValuations()!=null) {
-								result1.setContentDescribe1(CUtils.get().object2String(bean.getFinalValuations()));
-							}
-							result1.setUpdateId(CUtils.get().object2String(userId));
-							result1.setUpdatedTime(new Date().getTime());
-							fcService.updateInformationResult(result1);
-						}else{
-							InformationResult result2 = new InformationResult();
-							result2.setProjectId(CUtils.get().object2String(bean.getId()));
-							result2.setTitleId(array[i]);
-							if (array[i].equals("1916") && bean.getProjectContribution()!=null) {
-								result2.setContentDescribe1(CUtils.get().object2String(bean.getProjectContribution()));
-							}else if (array[i].equals("1917") && bean.getProjectShareRatio()!=null) {
-								result2.setContentDescribe1(CUtils.get().object2String(bean.getProjectShareRatio()));
-							}else if (array[i].equals("1943") && bean.getProjectValuations()!=null) {
-								result2.setContentDescribe1(CUtils.get().object2String(bean.getProjectValuations()));
-							}else if (array[i].equals("3004") && bean.getFinalContribution()!=null) {
-								result2.setContentDescribe1(CUtils.get().object2String(bean.getFinalContribution()));
-							}else if (array[i].equals("3010") && bean.getFinalShareRatio()!=null) {
-								result2.setContentDescribe1(CUtils.get().object2String(bean.getFinalShareRatio()));
-							}else if (array[i].equals("3011") && bean.getServiceCharge()!=null&&bean.getServiceCharge()!=0) {
-								result2.setContentDescribe1(CUtils.get().object2String(bean.getServiceCharge()));
-							}else if (array[i].equals("3012") && bean.getFinalValuations()!=null) {
-								result2.setContentDescribe1(CUtils.get().object2String(bean.getFinalValuations()));
-							}
-							result2.setCreateId(CUtils.get().object2String(userId));
-							result2.setCreatedTime(new Date().getTime());
-							fcService.addInformationResult(result2);
-						}
-					}
-						
-						
-					}
-				
+					editInformationResult(bean,userId);
 					if (num > 0) {
 						//0：删除项目下所有投资方，其他：修改项目所有投资方信息
 						@SuppressWarnings("unused")
@@ -394,39 +321,7 @@ public class ProjectController {
 						bean.setCreatedTime(DateUtil.convertStringToDate(bean.getCreateDate().trim(), "yyyy-MM-dd").getTime());
 						long id = service.saveProject(bean);
 						//新建项目存入全息报告中的信息
-						if(bean.getFinanceStatus()!=null){
-						InformationResult result1 = new InformationResult();
-						result1.setProjectId(CUtils.get().object2String(bean.getId()));
-						result1.setTitleId("1108");
-						result1.setContentChoose(bean.getFinanceStatus());
-						result1.setCreateId(CUtils.get().object2String(userId));
-						result1.setCreatedTime(new Date().getTime());
-						fcService.addInformationResult(result1);
-						}
-						String array[] = {"1916","1917","1943","3004","3010","3011","3012"};
-						for(int i=0;i<array.length;i++){
-							InformationResult result2 = new InformationResult();
-							result2.setProjectId(CUtils.get().object2String(bean.getId()));
-							result2.setTitleId(array[i]);
-							if (array[i].equals("1916") && bean.getProjectContribution()!=null) {
-								result2.setContentDescribe1(CUtils.get().object2String(bean.getProjectContribution()));
-							}else if (array[i].equals("1917") && bean.getProjectShareRatio()!=null) {
-								result2.setContentDescribe1(CUtils.get().object2String(bean.getProjectShareRatio()));
-							}else if (array[i].equals("1943") && bean.getProjectValuations()!=null) {
-								result2.setContentDescribe1(CUtils.get().object2String(bean.getProjectValuations()));
-							}else if (array[i].equals("3004") && bean.getFinalContribution()!=null) {
-								result2.setContentDescribe1(CUtils.get().object2String(bean.getFinalContribution()));
-							}else if (array[i].equals("3010") && bean.getFinalShareRatio()!=null) {
-								result2.setContentDescribe1(CUtils.get().object2String(bean.getFinalShareRatio()));
-							}else if (array[i].equals("3011") && bean.getServiceCharge()!=null&&bean.getServiceCharge()!=0) {
-								result2.setContentDescribe1(CUtils.get().object2String(bean.getServiceCharge()));
-							}else if (array[i].equals("3012") && bean.getFinalValuations()!=null) {
-								result2.setContentDescribe1(CUtils.get().object2String(bean.getFinalValuations()));
-							}
-							result2.setCreateId(CUtils.get().object2String(userId));
-							result2.setCreatedTime(new Date().getTime());
-							fcService.addInformationResult(result2);
-						}
+						editInformationResult(bean,userId);
 						if (id > 0) {
 							map.put("id", id);
 							resultBean.setStatus("OK");
@@ -440,6 +335,64 @@ public class ProjectController {
 			log.error(ProjectController.class.getName() + "_addProject",e);
 		}
 		return resultBean;
+	}
+	
+	
+	void editInformationResult(SopProjectBean bean,Long userId){
+		String array[] = {"1916","1108","1917","1943","3004","3010","3011","3012"};
+			Map<String, Object> hashmap = new HashMap<>();
+			hashmap.put("projectId", bean.getId());
+			for(int i=0;i<array.length;i++){
+			hashmap.put("titleId", array[i]);
+			InformationResult result1 = service.findResultInfoById(hashmap);
+			if (result1!=null&&result1.getId()!=null) {
+				result1.setId(result1.getId());
+				if (array[i].equals("1916") && bean.getProjectContribution()!=null) {
+					result1.setContentDescribe1(CUtils.get().object2String(bean.getProjectContribution()));
+				}else if (array[i].equals("1108") && bean.getFinanceStatus()!=null) {
+					result1.setContentChoose(CUtils.get().object2String(bean.getFinanceStatus()));
+				}else if (array[i].equals("1917") && bean.getProjectShareRatio()!=null) {
+					result1.setContentDescribe1(CUtils.get().object2String(bean.getProjectShareRatio()));
+				}else if (array[i].equals("1943") && bean.getProjectValuations()!=null) {
+					result1.setContentDescribe1(CUtils.get().object2String(bean.getProjectValuations()));
+				}else if (array[i].equals("3004") && bean.getFinalContribution()!=null) {
+					result1.setContentDescribe1(CUtils.get().object2String(bean.getFinalContribution()));
+				}else if (array[i].equals("3010") && bean.getFinalShareRatio()!=null) {
+					result1.setContentDescribe1(CUtils.get().object2String(bean.getFinalShareRatio()));
+				}else if (array[i].equals("3011") && bean.getServiceCharge()!=null&&bean.getServiceCharge()!=0) {
+					result1.setContentDescribe1(CUtils.get().object2String(bean.getServiceCharge()));
+				}else if (array[i].equals("3012") && bean.getFinalValuations()!=null) {
+					result1.setContentDescribe1(CUtils.get().object2String(bean.getFinalValuations()));
+				}
+				result1.setUpdateId(CUtils.get().object2String(userId));
+				result1.setUpdatedTime(new Date().getTime());
+				fcService.updateInformationResult(result1);
+			}else{
+				InformationResult result2 = new InformationResult();
+				result2.setProjectId(CUtils.get().object2String(bean.getId()));
+				result2.setTitleId(array[i]);
+				if (array[i].equals("1916") && bean.getProjectContribution()!=null) {
+					result2.setContentDescribe1(CUtils.get().object2String(bean.getProjectContribution()));
+				}else if (array[i].equals("1108") && bean.getFinanceStatus()!=null) {
+					result2.setContentChoose(CUtils.get().object2String(bean.getFinanceStatus()));
+				}else if (array[i].equals("1917") && bean.getProjectShareRatio()!=null) {
+					result2.setContentDescribe1(CUtils.get().object2String(bean.getProjectShareRatio()));
+				}else if (array[i].equals("1943") && bean.getProjectValuations()!=null) {
+					result2.setContentDescribe1(CUtils.get().object2String(bean.getProjectValuations()));
+				}else if (array[i].equals("3004") && bean.getFinalContribution()!=null) {
+					result2.setContentDescribe1(CUtils.get().object2String(bean.getFinalContribution()));
+				}else if (array[i].equals("3010") && bean.getFinalShareRatio()!=null) {
+					result2.setContentDescribe1(CUtils.get().object2String(bean.getFinalShareRatio()));
+				}else if (array[i].equals("3011") && bean.getServiceCharge()!=null&&bean.getServiceCharge()!=0) {
+					result2.setContentDescribe1(CUtils.get().object2String(bean.getServiceCharge()));
+				}else if (array[i].equals("3012") && bean.getFinalValuations()!=null) {
+					result2.setContentDescribe1(CUtils.get().object2String(bean.getFinalValuations()));
+				}
+				result2.setCreateId(CUtils.get().object2String(userId));
+				result2.setCreatedTime(new Date().getTime());
+				fcService.addInformationResult(result2);
+			}
+		}
 	}
 	
 	/**
