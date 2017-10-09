@@ -40,6 +40,7 @@
 			delivery_name,
 			delivery_amount,
 			delivery_share_ratio,
+			delivery_currency,
 			project_id,
 			create_uid,
 			create_time
@@ -48,6 +49,7 @@
 			#{deliveryName},
 			#{deliveryAmount},
 			#{deliveryShareRatio},
+			#{deliveryCurrency},
 			#{projectId},
 			#{createdId},
 			#{createdTime}
@@ -64,6 +66,7 @@
 			<if test="deliveryName != null" > delivery_name = #{deliveryName},</if>
 			<if test="deliveryAmount != null" > delivery_amount = #{deliveryAmount},</if>
 			<if test="deliveryShareRatio != null" > delivery_share_ratio = #{deliveryShareRatio},</if>
+			<if test="deliveryCurrency != null" > delivery_currency = #{deliveryCurrency},</if>
 			<if test="updatedId != null" > create_uid = #{updatedId},</if>
 			<if test="updatedTime != null" >update_time = #{updatedTime}</if>
 		where id = #{id} and project_id = #{projectId};

@@ -11,7 +11,8 @@ public class InvestBean extends BaseEntity {
 	private String deliveryType;						//0-独投;1-领投;2-合投
 	private String deliveryName;					//合投机构名称
 	private Double deliveryAmount;					//投资金额
-	private Double deliveryShareRatio;			//股权占比
+	private Double deliveryShareRatio;				//股权占比
+	private String deliveryCurrency;				//币种
 	private Long projectId;							//项目ID
 	private Long createUid;							//创建人
 	
@@ -54,6 +55,12 @@ public class InvestBean extends BaseEntity {
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	public String getDeliveryCurrency() {
+		return deliveryCurrency;
+	}
+	public void setDeliveryCurrency(String deliveryCurrency) {
+		this.deliveryCurrency = deliveryCurrency;
 	}
 	
 
