@@ -5,12 +5,14 @@
   <mapper namespace="com.galaxy.im.bean.invest.InvestBean">
   <!-- 查询列表 -->
   <select id="selectInvestList" parameterType="hashmap" resultType="hashmap" >
-  	select 
+	select 
   		invest.id,
   		invest.delivery_name deliveryName,
 		invest.delivery_amount deliveryAmount,
-		invest.delivery_share_ratio deliveryShareRatio
-	from joint_delivery invest
+		invest.delivery_share_ratio deliveryShareRatio,
+		invest.delivery_currency deliveryCurrency,
+		d.name
+	from joint_delivery invest LEFT JOIN dict d on invest.delivery_currency=d.dict_code
 	where project_id = #{projectId}  
 	<if test="deliveryType != null" > and delivery_type =  #{deliveryType}</if>
 	order by ${property} ${direction}
