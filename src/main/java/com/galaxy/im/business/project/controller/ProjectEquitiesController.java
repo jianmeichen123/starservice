@@ -125,6 +125,21 @@ public class ProjectEquitiesController {
 						//更新
 						paramMap.put("updateId", sessionBean.getGuserid());
 						paramMap.put("updateTime",new Date().getTime());
+						if(!paramMap.containsKey("remark")){
+							paramMap.put("remark", "");
+						}
+						if(!paramMap.containsKey("shareholderType")){
+							paramMap.put("shareholderType", "");
+						}
+						if(!paramMap.containsKey("sharesRatio")){
+							paramMap.put("sharesRatio", "");
+						}
+						if(!paramMap.containsKey("shareholderNature")){
+							paramMap.put("shareholderNature", "");
+						}
+						if(!paramMap.containsKey("sharesOwner")){
+							paramMap.put("sharesOwner", "");
+						}
 						service.updateProjectShares(paramMap);
 						resultBean.setStatus("OK");
 					}
