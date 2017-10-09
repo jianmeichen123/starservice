@@ -11,7 +11,7 @@
 		invest.delivery_amount deliveryAmount,
 		invest.delivery_share_ratio deliveryShareRatio,
 		invest.delivery_currency deliveryCurrencyCode,
-		d.deliveryCurrencyName
+		d.name deliveryCurrencyName
 	from joint_delivery invest LEFT JOIN dict d on invest.delivery_currency=d.dict_code
 	where project_id = #{projectId}  
 	<if test="deliveryType != null" > and delivery_type =  #{deliveryType}</if>
