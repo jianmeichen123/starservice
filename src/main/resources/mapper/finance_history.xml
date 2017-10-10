@@ -34,7 +34,7 @@
 							FROM information_title_relate 
 							WHERE report_type=4 and code='FNO1_7'
 							) 
-			 ORDER BY l.field_1 DESC
+			 ORDER BY l.created_time ASC
 		<if test="isOne != null">
 			limit 0,1;
 		</if>
