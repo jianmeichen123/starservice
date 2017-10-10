@@ -18,7 +18,7 @@
 	LEFT JOIN information_dictionary id ON il.field_3=id.id 
 	LEFT JOIN information_dictionary ids ON il.field_4=ids.id
 	WHERE il.project_id=#{projectId} and il.title_id=#{titleId}
-	order by ${property} ${direction}
+	order by il.created_time ${direction}
 	limit #{offset},${limit};
 	</select>
 	

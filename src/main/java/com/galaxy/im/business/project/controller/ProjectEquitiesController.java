@@ -76,8 +76,7 @@ public class ProjectEquitiesController {
 		ResultBean<Object> resultBean = new ResultBean<>();
 		Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 		paramMap.put("titleId", 1906);
-		paramMap.put("property", "id");
-		paramMap.put("direction", "desc");
+		paramMap.put("direction", "ASC");
 		try {
 			QPage page = service.selectProjectShares(paramMap);
 			resultBean.setStatus("OK");
