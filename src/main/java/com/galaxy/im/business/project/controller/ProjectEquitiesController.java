@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.project.InformationListdata;
 import com.galaxy.im.bean.project.SopProjectBean;
-import com.galaxy.im.business.project.service.IProjectService;
 import com.galaxy.im.business.project.service.IProjectEquitiesService;
+import com.galaxy.im.business.project.service.IProjectService;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.db.QPage;
@@ -95,7 +94,7 @@ public class ProjectEquitiesController {
 	public Object addProjectShares(@RequestBody String paramString,HttpServletRequest request){
 		ResultBean<Object> resultBean = new ResultBean<>();
 		Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
-			if(StringUtils.isEmpty(String.valueOf(paramMap.get("projectId")))){
+			if(paramMap.get("projectId")==null){
 				resultBean.setMessage("必要的参数丢失");
 				return resultBean;
 			}
@@ -165,7 +164,7 @@ public class ProjectEquitiesController {
 	public Object deleteProjectShares(@RequestBody String paramString,HttpServletRequest request){
 		ResultBean<Object> resultBean = new ResultBean<>();
 		Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
-		if(StringUtils.isEmpty(String.valueOf(paramMap.get("projectId")))){
+		if(paramMap.get("projectId")==null){
 			resultBean.setMessage("必要的参数丢失");
 			return resultBean;
 		}

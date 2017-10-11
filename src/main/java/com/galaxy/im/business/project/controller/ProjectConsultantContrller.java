@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,7 +111,7 @@ public class ProjectConsultantContrller {
 		ResultBean<Object> resultBean = new ResultBean<>();
 		Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 		paramMap.put("code", "team-members");
-		if(StringUtils.isEmpty(String.valueOf(paramMap.get("projectId")))){
+		if(paramMap.get("projectId")==null){
 			resultBean.setMessage("必要的参数丢失");
 			return resultBean;
 		}
@@ -167,7 +166,7 @@ public class ProjectConsultantContrller {
 	public Object deleteProjectPerson(@RequestBody String paramString,HttpServletRequest request){
 		ResultBean<Object> resultBean = new ResultBean<>();
 		Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
-		if(StringUtils.isEmpty(String.valueOf(paramMap.get("projectId")))){
+		if(paramMap.get("projectId")==null){
 			resultBean.setMessage("必要的参数丢失");
 			return resultBean;
 		}
