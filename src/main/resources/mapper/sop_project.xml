@@ -236,17 +236,14 @@
 	     insert into sop_project 
 	     (id, project_name, project_code, 
 	      project_type, stock_transfer, project_careerline, project_departId, industry_own, 
-	      project_valuations, final_valuations, finance_status, project_contribution, 
-	      final_contribution, currency_unit, project_share_ratio, final_share_ratio,  
-	      service_charge, project_company, formation_date, project_company_code, company_legal, create_uid, 
+	      currency_unit, project_company, formation_date, project_company_code, company_legal, create_uid, 
 	      create_uname, create_uposition, project_progress, project_status, updated_time, created_time, 
 	      project_describe, project_describe_financing, project_business_model, company_location,
 	      user_portrait, prospect_analysis,idea_id,fa_flag,fa_name,project_time,progress_history)
 	    values 
 	    ( #{id}, #{projectName}, #{projectCode},
-	      #{projectType}, #{stockTransfer}, #{projectCareerline}, #{projectDepartId}, #{industryOwn}, 
-	      #{projectValuations}, #{finalValuations}, #{financeStatus}, #{projectContribution}, #{finalContribution}, 
-	      #{currencyUnit}, #{projectShareRatio}, #{finalShareRatio},#{serviceCharge}, #{projectCompany}, 
+	      #{projectType}, #{stockTransfer}, #{projectCareerline}, #{projectDepartId}, #{industryOwn},
+	      #{currencyUnit}, #{projectCompany}, 
 	      #{formationDate}, #{projectCompanyCode}, #{companyLegal}, #{createUid}, #{createUname}, 
 	      #{createUposition}, #{projectProgress}, #{projectStatus}, #{updatedTime}, #{createdTime}, 
 	      #{projectDescribe}, #{projectDescribeFinancing}, #{projectBusinessModel}, #{companyLocation},
@@ -271,15 +268,7 @@
 		      <if test="projectCareerline != null" > project_careerline = #{projectCareerline}, </if>
 		      <if test="projectDepartId != null" >  project_departId = #{projectDepartId}, </if>
 		      <if test="industryOwn != null" > industry_own = #{industryOwn}, </if>
-		      <if test="projectValuations != null" >   project_valuations = #{projectValuations}, </if>
-		      <if test="finalValuations != null" > final_valuations = #{finalValuations}, </if>
-		      <if test="financeStatus != null" > finance_status = #{financeStatus}, </if>
-		      <if test="projectContribution != null" >   project_contribution = #{projectContribution}, </if>
-		      <if test="finalContribution != null" >  final_contribution = #{finalContribution}, </if>
 		      <if test="currencyUnit != null" >  currency_unit = #{currencyUnit}, </if>
-		      <if test="projectShareRatio != null" > project_share_ratio = #{projectShareRatio}, </if>
-		      <if test="finalShareRatio != null" > final_share_ratio = #{finalShareRatio}, </if>		      
-		      <if test="serviceCharge != null" > service_charge = #{serviceCharge}, </if>
 		      <if test="projectCompany != null" >  project_company = #{projectCompany}, </if>
 		      <if test="formationDate != null" > formation_date = #{formationDate}, </if>
 		      <if test="projectCompanyCode != null" >  project_company_code = #{projectCompanyCode}, </if>
@@ -307,25 +296,7 @@
 		</set>
 		where id = #{id}
 	</update>
-	<!-- 更新到result表 -->
-	<update id="updateProjects" parameterType="hashmap">
-	update information_result
-	<set>
-	<if test="financeStatus != null" > content_choose = #{financeStatus}, </if>
-	<if test="projectContribution != null" > content_describe1 = #{projectContribution}, </if>
-	<if test="projectShareRatio != null" > content_describe1 = #{projectShareRatio}, </if>
-	<if test="projectValuations != null" > content_describe1 = #{projectValuations}, </if>
-	<if test="finalContribution != null" > content_describe1 = #{finalContribution}, </if>
-	<if test="finalShareRatio != null" > content_describe1 = #{finalShareRatio}, </if>
-	<if test="serviceCharge != null" > content_describe1 = #{serviceCharge}, </if>
-	<if test="finalValuations != null" > content_describe1 = #{finalValuations},</if>
-	<if test="sort != null"> sort = #{sort},</if>
-	<if test="updatedTime != null"> updated_time = #{updatedTime},</if>
-	<if test="updateId != null"> update_id = #{updateId}</if>
-	where
-	project_id=#{id}
-	</set>
-	</update>
+	
 	
 	<!-- 根据ID查询 -->
 	<select id="getProjectInfoById" resultMap="BaseResultMap" parameterType="java.lang.Long">
