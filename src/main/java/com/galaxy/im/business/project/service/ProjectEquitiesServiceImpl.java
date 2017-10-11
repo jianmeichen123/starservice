@@ -48,9 +48,9 @@ public class ProjectEquitiesServiceImpl extends BaseServiceImpl<InformationListd
 	}
 
 	@Override
-	public void addProjectShares(Map<String, Object> paramMap) {
+	public int addProjectShares(Map<String, Object> paramMap) {
 		try {
-			dao.addProjectShares(paramMap);
+			return dao.addProjectShares(paramMap);
 		} catch (Exception e) {
 			log.error(ProjectEquitiesServiceImpl.class.getName() + "addProjectShares",e);
 			throw new ServiceException(e);
@@ -68,9 +68,9 @@ public class ProjectEquitiesServiceImpl extends BaseServiceImpl<InformationListd
 	}
 
 	@Override
-	public void updateProjectShares(Map<String, Object> paramMap) {
+	public int updateProjectShares(Map<String, Object> paramMap) {
 		try {
-			dao.updateProjectShares(paramMap);
+			return dao.updateProjectShares(paramMap);
 		} catch (Exception e) {
 			log.error(ProjectEquitiesServiceImpl.class.getName() + "updateProjectShares",e);
 			throw new ServiceException(e);
@@ -78,9 +78,9 @@ public class ProjectEquitiesServiceImpl extends BaseServiceImpl<InformationListd
 	}
 
 	@Override
-	public void deleteProjectSharesById(Map<String, Object> paramMap) {
+	public int deleteProjectSharesById(Map<String, Object> paramMap) {
 		try {
-			dao.deleteProjectSharesById(paramMap);
+			return dao.deleteProjectSharesById(paramMap);
 		} catch (Exception e) {
 			log.error(ProjectEquitiesServiceImpl.class.getName() + "deleteProjectSharesById",e);
 			throw new ServiceException(e);

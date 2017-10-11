@@ -13,12 +13,12 @@ public interface IProjectEquitiesService extends IBaseService<InformationListdat
 
 	QPage selectProjectShares(Map<String, Object> paramMap);
 
-	void addProjectShares(Map<String, Object> paramMap);
+	int addProjectShares(Map<String, Object> paramMap);
 
 	InformationListdata selectInfoById(Map<String, Object> paramMap);
 
-	void updateProjectShares(Map<String, Object> paramMap);
+	int updateProjectShares(Map<String, Object> paramMap);
 
-	void deleteProjectSharesById(Map<String, Object> paramMap);
+	int deleteProjectSharesById(Map<String, Object> paramMap);
 
 }

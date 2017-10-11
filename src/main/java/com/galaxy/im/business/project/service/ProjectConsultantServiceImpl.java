@@ -76,9 +76,9 @@ public class ProjectConsultantServiceImpl extends BaseServiceImpl<InformationLis
 	}
 
 	@Override
-	public void addProjectPerson(Map<String, Object> paramMap) {
+	public int addProjectPerson(Map<String, Object> paramMap) {
 		try{
-			 dao.addProjectPerson(paramMap);
+			 return dao.addProjectPerson(paramMap);
 		}catch(Exception e){
 			log.error(ProjectConsultantServiceImpl.class.getName() + "addProjectPerson",e);
 			throw new ServiceException(e);
@@ -96,9 +96,9 @@ public class ProjectConsultantServiceImpl extends BaseServiceImpl<InformationLis
 	}
 
 	@Override
-	public void updateProjectPerson(Map<String, Object> paramMap) {
+	public int updateProjectPerson(Map<String, Object> paramMap) {
 		try{
-			 dao.updateProjectPerson(paramMap);
+			return dao.updateProjectPerson(paramMap);
 		}catch(Exception e){
 			log.error(ProjectConsultantServiceImpl.class.getName() + "updateProjectPerson",e);
 			throw new ServiceException(e);
@@ -106,9 +106,9 @@ public class ProjectConsultantServiceImpl extends BaseServiceImpl<InformationLis
 	}
 
 	@Override
-	public void deleteProjectPersonById(Map<String, Object> paramMap) {
+	public int deleteProjectPersonById(Map<String, Object> paramMap) {
 		try{
-			 dao.deleteProjectPersonById(paramMap);
+			 return dao.deleteProjectPersonById(paramMap);
 		}catch(Exception e){
 			log.error(ProjectConsultantServiceImpl.class.getName() + "deleteProjectPersonById",e);
 			throw new ServiceException(e);

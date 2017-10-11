@@ -48,9 +48,9 @@ public class ProjectEquitiesDaoImpl extends BaseDaoImpl<InformationListdata, Lon
 	}
 
 	@Override
-	public void addProjectShares(Map<String, Object> paramMap) {
+	public int addProjectShares(Map<String, Object> paramMap) {
 		try{
-			sqlSessionTemplate.insert(getSqlName("addProjectShares"),paramMap);
+			return sqlSessionTemplate.insert(getSqlName("addProjectShares"),paramMap);
 		}catch(Exception e){
 			log.error(ProjectEquitiesDaoImpl.class.getName() + "addProjectShares",e);
 			throw new DaoException(e);
@@ -69,9 +69,9 @@ public class ProjectEquitiesDaoImpl extends BaseDaoImpl<InformationListdata, Lon
 	}
 
 	@Override
-	public void updateProjectShares(Map<String, Object> paramMap) {
+	public int updateProjectShares(Map<String, Object> paramMap) {
 		try{
-			 sqlSessionTemplate.update(getSqlName("updateProjectShares"),paramMap);
+			return sqlSessionTemplate.update(getSqlName("updateProjectShares"),paramMap);
 		}catch(Exception e){
 			log.error(ProjectEquitiesDaoImpl.class.getName() + "updateProjectShares",e);
 			throw new DaoException(e);
@@ -80,9 +80,9 @@ public class ProjectEquitiesDaoImpl extends BaseDaoImpl<InformationListdata, Lon
 	}
 
 	@Override
-	public void deleteProjectSharesById(Map<String, Object> paramMap) {
+	public int deleteProjectSharesById(Map<String, Object> paramMap) {
 		try{
-			 sqlSessionTemplate.delete(getSqlName("deleteProjectSharesById"),paramMap);
+			return sqlSessionTemplate.delete(getSqlName("deleteProjectSharesById"),paramMap);
 		}catch(Exception e){
 			log.error(ProjectEquitiesDaoImpl.class.getName() + "deleteProjectSharesById",e);
 			throw new DaoException(e);

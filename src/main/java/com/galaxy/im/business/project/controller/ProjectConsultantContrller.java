@@ -117,7 +117,7 @@ public class ProjectConsultantContrller {
 			return resultBean;
 		}
 		SessionBean sessionBean = CUtils.get().getBeanBySession(request);
-		SopProjectBean p = iProjectService.getProjectInfoById(sessionBean.getGuserid());
+		SopProjectBean p = iProjectService.getProjectInfoById(CUtils.get().object2Long(paramMap.get("projectId")));
 		//项目创建者用户ID与当前登录人ID是否一样
 		if(p != null && sessionBean.getGuserid().doubleValue() != p.getCreateUid().doubleValue()){
 			resultBean.setMessage("没有权限修改该项目的团队成员信息!");
@@ -129,8 +129,12 @@ public class ProjectConsultantContrller {
 				paramMap.put("titleId", 1303);
 				paramMap.put("createId", sessionBean.getGuserid());
 				paramMap.put("createdTime",new Date().getTime());
-				service.addProjectPerson(paramMap);
-				resultBean.setStatus("OK");
+				int count = service.addProjectPerson(paramMap);
+				if (count>0) {
+					resultBean.setStatus("OK");
+				}else {
+					resultBean.setStatus("ERROR");
+				}
 			}else {
 				InformationListdata bean = service.selectInfoById(paramMap);
 				//验证内容是否存在
@@ -141,8 +145,12 @@ public class ProjectConsultantContrller {
 					//更新
 					paramMap.put("updateId", sessionBean.getGuserid());
 					paramMap.put("updateTime",new Date().getTime());
-					service.updateProjectPerson(paramMap);
-					resultBean.setStatus("OK");
+					int count =service.updateProjectPerson(paramMap);
+					if (count>0) {
+						resultBean.setStatus("OK");
+					}else {
+						resultBean.setStatus("ERROR");
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -164,7 +172,7 @@ public class ProjectConsultantContrller {
 			return resultBean;
 		}
 		SessionBean sessionBean = CUtils.get().getBeanBySession(request);
-		SopProjectBean p = iProjectService.getProjectInfoById(sessionBean.getGuserid());
+		SopProjectBean p = iProjectService.getProjectInfoById(CUtils.get().object2Long(paramMap.get("projectId")));
 		//项目创建者用户ID与当前登录人ID是否一样
 		if(p != null && sessionBean.getGuserid().doubleValue() != p.getCreateUid().doubleValue()){
 			resultBean.setMessage("没有权限删除该项目的团队成员信息!");
@@ -178,8 +186,12 @@ public class ProjectConsultantContrller {
 					resultBean.setMessage("当前信息不存在或已被删除,请重新操作!");
 					return resultBean;
 				}else{
-					service.deleteProjectPersonById(paramMap);
-					resultBean.setStatus("OK");
+					int count = service.deleteProjectPersonById(paramMap);
+					if (count>0) {
+						resultBean.setStatus("OK");
+					}else {
+						resultBean.setStatus("ERROR");
+					}
 				}
 			}
 		} catch (Exception e) {

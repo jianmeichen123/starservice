@@ -100,7 +100,7 @@ public class ProjectEquitiesController {
 				return resultBean;
 			}
 			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
-			SopProjectBean p = iProjectService.getProjectInfoById(sessionBean.getGuserid());
+			SopProjectBean p = iProjectService.getProjectInfoById(CUtils.get().object2Long(paramMap.get("projectId")));
 			//项目创建者用户ID与当前登录人ID是否一样
 			if(p != null && sessionBean.getGuserid().doubleValue() != p.getCreateUid().doubleValue()){
 				resultBean.setMessage("没有权限修改该项目的股权结构信息!");
@@ -112,8 +112,12 @@ public class ProjectEquitiesController {
 					paramMap.put("titleId", 1906);
 					paramMap.put("createId", sessionBean.getGuserid());
 					paramMap.put("createdTime",new Date().getTime());
-					service.addProjectShares(paramMap);
-					resultBean.setStatus("OK");
+					int count = service.addProjectShares(paramMap);
+					if (count>0) {
+						resultBean.setStatus("OK");
+					}else {
+						resultBean.setStatus("ERROR");
+					}
 				}else {
 					InformationListdata bean = service.selectInfoById(paramMap);
 					//验证内容是否存在
@@ -139,8 +143,12 @@ public class ProjectEquitiesController {
 						if(!paramMap.containsKey("sharesOwner")){
 							paramMap.put("sharesOwner", "");
 						}
-						service.updateProjectShares(paramMap);
-						resultBean.setStatus("OK");
+						int count = service.updateProjectShares(paramMap);
+						if (count>0) {
+							resultBean.setStatus("OK");
+						}else {
+							resultBean.setStatus("ERROR");
+						}
 					}
 				}
 		} catch (Exception e) {
@@ -162,7 +170,7 @@ public class ProjectEquitiesController {
 			return resultBean;
 		}
 		SessionBean sessionBean = CUtils.get().getBeanBySession(request);
-		SopProjectBean p = iProjectService.getProjectInfoById(sessionBean.getGuserid());
+		SopProjectBean p = iProjectService.getProjectInfoById(CUtils.get().object2Long(paramMap.get("projectId")));
 		//项目创建者用户ID与当前登录人ID是否一样
 		if(p != null && sessionBean.getGuserid().doubleValue() != p.getCreateUid().doubleValue()){
 			resultBean.setMessage("没有权限修删除项目的团队成员信息!");
@@ -176,8 +184,12 @@ public class ProjectEquitiesController {
 					resultBean.setMessage("当前信息不存在或已被删除,请重新操作!");
 					return resultBean;
 				}else{
-					service.deleteProjectSharesById(paramMap);
-					resultBean.setStatus("OK");
+					int count = service.deleteProjectSharesById(paramMap);
+					if (count>0) {
+						resultBean.setStatus("OK");
+					}else {
+						resultBean.setStatus("ERROR");
+					}
 				}
 			}
 		} catch (Exception e) {

@@ -77,9 +77,9 @@ private Logger log = LoggerFactory.getLogger(ProjectConsultantDaoImpl.class);
 	}
 
 	@Override
-	public void addProjectPerson(Map<String, Object> paramMap) {
+	public int addProjectPerson(Map<String, Object> paramMap) {
 		try{
-			sqlSessionTemplate.insert(getSqlName("addProjectPerson"),paramMap);
+			return sqlSessionTemplate.insert(getSqlName("addProjectPerson"),paramMap);
 		}catch(Exception e){
 			log.error(ProjectEquitiesDaoImpl.class.getName() + "addProjectPerson",e);
 			throw new DaoException(e);
@@ -97,9 +97,9 @@ private Logger log = LoggerFactory.getLogger(ProjectConsultantDaoImpl.class);
 	}
 
 	@Override
-	public void updateProjectPerson(Map<String, Object> paramMap) {
+	public int updateProjectPerson(Map<String, Object> paramMap) {
 		try{
-			sqlSessionTemplate.update(getSqlName("updateProjectPerson"),paramMap);
+			return sqlSessionTemplate.update(getSqlName("updateProjectPerson"),paramMap);
 		}catch(Exception e){
 			log.error(ProjectEquitiesDaoImpl.class.getName() + "updateProjectPerson",e);
 			throw new DaoException(e);
@@ -108,9 +108,9 @@ private Logger log = LoggerFactory.getLogger(ProjectConsultantDaoImpl.class);
 	}
 
 	@Override
-	public void deleteProjectPersonById(Map<String, Object> paramMap) {
+	public int deleteProjectPersonById(Map<String, Object> paramMap) {
 		try{
-			sqlSessionTemplate.delete(getSqlName("deleteProjectPersonById"),paramMap);
+			return sqlSessionTemplate.delete(getSqlName("deleteProjectPersonById"),paramMap);
 		}catch(Exception e){
 			log.error(ProjectEquitiesDaoImpl.class.getName() + "deleteProjectPersonById",e);
 			throw new DaoException(e);

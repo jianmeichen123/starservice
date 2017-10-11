@@ -19,12 +19,12 @@ public interface IProjectConsultantDao extends IBaseDao<InformationListdata, Lon
 
 	List<Object> queryEntrepreneurialExperience(Map<String, Object> paramMap);
 
-	void addProjectPerson(Map<String, Object> paramMap);
+	int addProjectPerson(Map<String, Object> paramMap);
 
 	InformationListdata selectInfoById(Map<String, Object> paramMap);
 
-	void updateProjectPerson(Map<String, Object> paramMap);
+	int updateProjectPerson(Map<String, Object> paramMap);
 
-	void deleteProjectPersonById(Map<String, Object> paramMap);
+	int deleteProjectPersonById(Map<String, Object> paramMap);
 
 }
