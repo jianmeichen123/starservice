@@ -423,8 +423,8 @@ public class ProjectController {
 				projectBo.setCreateUid(sessionBean.getGuserid()); //项目创建者
 			}
 			List<Order> orderList = new ArrayList<Order>();
-			orderList.add(new Order(Direction.DESC, "p.updated_time"));
-			orderList.add(new Order(Direction.DESC, "p.created_time"));			
+			orderList.add(new Order(Direction.DESC, "updated_time"));
+			orderList.add(new Order(Direction.DESC, "created_time"));			
 			Sort sort = new Sort(orderList);
 			if(projectBo.getSflag()==1){
 				//跟进中
