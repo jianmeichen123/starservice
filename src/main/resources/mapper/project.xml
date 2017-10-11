@@ -51,42 +51,77 @@
 	</resultMap>
   
   	<sql id="Base_Column_List" >
-	    id, project_name projectName, project_code projectCode, project_type projectType, 
-	    stock_transfer stockTransfer, project_careerline projectCareerline, project_departId projectDepartId,industry_own industryOwn, 
-	    project_valuations projectValuations, final_valuations finalValuations, finance_status financeStatus,
-	    project_contribution projectContribution, final_contribution finalContribution, currency_unit currencyUnit,
-	    project_share_ratio projectShareRatio, final_share_ratio finalShareRatio, service_charge serviceCharge,
-	    project_company projectCompany, formation_date formationDate, project_company_code projectCompanyCode, 
-	    company_legal companyLegal, create_uid createUid, create_uname createUname, create_uposition createUposition, 
-	    project_progress projectProgress, project_status projectStatus, updated_time updatedTime, created_time createdTime,
-	    project_describe projectDescribe, project_describe_financing projectDescribeFinancing, 
-	    project_business_model projectBusinessModel, company_location companyLocation, user_portrait userPortrait,
-	    prospect_analysis prospectAnalysis, next_financing_source nextFinancingSource,industry_analysis industryAnalysis,
-	    operational_data operationalData, idea_id ideaId, fa_flag faFlag, fa_name faName,project_time projectTime
+	    p.id, 
+	    p.project_name projectName,
+	    p.project_code projectCode, 
+	    p.project_type projectType, 
+	    p.stock_transfer stockTransfer, 
+	    p.project_careerline projectCareerline, 
+	    p.project_departId projectDepartId,
+	    p.industry_own industryOwn, 
+	    p.project_valuations projectValuations, 
+	    p.final_valuations finalValuations, 
+	    p.finance_status financeStatus,
+	    p.currency_unit currencyUnit,
+	    p.service_charge serviceCharge,
+	    p.project_company projectCompany, 
+	    p.formation_date formationDate, 
+	    p.project_company_code projectCompanyCode, 
+	    p.company_legal companyLegal, 
+	    p.create_uid createUid, 
+	    p.create_uname createUname, 
+	    p.create_uposition createUposition, 
+	    p.project_progress projectProgress, 
+	    p.project_status projectStatus, 
+	    p.updated_time updatedTime, 
+	    p.created_time createdTime,
+	    p.project_describe projectDescribe, 
+	    p.project_describe_financing projectDescribeFinancing, 
+	    p.project_business_model projectBusinessModel, 
+	    p.company_location companyLocation, 
+	    p.user_portrait userPortrait,
+	    p.prospect_analysis prospectAnalysis, 
+	    p.next_financing_source nextFinancingSource,
+	    p.industry_analysis industryAnalysis,
+	    p.operational_data operationalData, 
+	    p.idea_id ideaId, 
+	    p.fa_flag faFlag, 
+	    p.fa_name faName,
+	    p.project_time projectTime,
+	    
+	   <!--  final_contribution finalContribution, 		
+		final_share_ratio finalShareRatio, 				
+		project_contribution projectContribution,  
+		project_share_ratio projectShareRatio,  -->			
    </sql>
    
 	<!-- 查询 项目列表 变化 跟进中的时候 -->
 	<select id="selectBygjz" resultType="hashMap" parameterType="java.util.Map">
 		select 
 		<include refid="Base_Column_List" />
-		from sop_project  
+		group_concat(case when r.title_id=1916 then r.content_describe1 else null end) as projectContribution,
+		group_concat(case when r.title_id=1917 then r.content_describe1 else null end) as projectShareRatio
+		from sop_project p
+		LEFT JOIN information_result r on p.id=r.project_id  
 		where  
-			project_progress &lt;&gt; 'projectProgress:10'
-			and project_status = "projectStatus:0" 	 
-		<if test="projectType != null" > and project_type = #{projectType} </if>	
-		<if test="createUid != null" > and create_uid = #{createUid} </if>
-		<if test="projectCareerline != null" > and project_careerline = #{projectCareerline} </if>
-		<if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
+			p.project_progress &lt;&gt; 'projectProgress:10'
+			and p.project_status = "projectStatus:0"
+			and r.title_id in('1916','1917')	 
+		<if test="projectType != null" > and p.project_type = #{projectType} </if>	
+		<if test="createUid != null" > and p.create_uid = #{createUid} </if>
+		<if test="projectCareerline != null" > and p.project_careerline = #{projectCareerline} </if>
+		<if test="projectDepartid != null" > and p.project_departId = #{projectDepartid} </if>
 		<if test="deptIdList != null">
-					AND project_departId IN
+					AND p.project_departId IN
 					<foreach collection="deptIdList" index="item" item="item" open="("
 						separator="," close=")">
 						#{item}
 					</foreach>
 			  </if>
-		<if test="projectProgress != null" > and project_progress = #{projectProgress} </if>
-		<if test="financeStatus != null" > and finance_status = #{financeStatus} </if>
-		<if test="faFlag != null"> and fa_flag = #{faFlag} </if>
+		<if test="projectProgress != null" > and p.project_progress = #{projectProgress} </if>
+		<if test="financeStatus != null" > and p.finance_status = #{financeStatus} </if>
+		<if test="faFlag != null"> and p.fa_flag = #{faFlag} </if>
+		GROUP BY p.id 
 		<if test="sorting != null">order by ${sorting}</if>
 		<if test="offset != null and limit != null">
 			limit #{offset}, #{limit}
@@ -119,22 +154,28 @@
 	<select id="selectByth" resultType="hashMap" parameterType="java.util.Map">
 		select 
 			<include refid="Base_Column_List" />
-		from sop_project  where  		 
-		project_status = "projectStatus:1"
-		<if test="projectType != null" > and project_type = #{projectType} </if>	
-		<if test="projectProgress != null" > and project_progress = #{projectProgress} </if>		
-	    <if test="createUid != null" > and create_uid = #{createUid} </if>
-		<if test="projectCareerline != null" > and project_careerline = #{projectCareerline} </if>
-		<if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
+		group_concat(case when r.title_id=3004 then r.content_describe1 else null end) as finalContribution,
+		group_concat(case when r.title_id=3010 then r.content_describe1 else null end) as finalShareRatio
+		from sop_project p
+		LEFT JOIN information_result r on p.id=r.project_id 
+		where  		 
+			p.project_status = "projectStatus:1"
+			and r.title_id in('3004','3010')
+		<if test="projectType != null" > and p.project_type = #{projectType} </if>	
+		<if test="projectProgress != null" > and p.project_progress = #{projectProgress} </if>		
+	    <if test="createUid != null" > and p.create_uid = #{createUid} </if>
+		<if test="projectCareerline != null" > and p.project_careerline = #{projectCareerline} </if>
+		<if test="projectDepartid != null" > and p.project_departId = #{projectDepartid} </if>
 		<if test="deptIdList != null">
-					AND project_departId IN
+					AND p.project_departId IN
 					<foreach collection="deptIdList" index="item" item="item" open="("
 						separator="," close=")">
 						#{item}
 					</foreach>
 			  </if>
-		<if test="financeStatus != null" > and finance_status = #{financeStatus} </if>	
-		<if test="faFlag != null"> and fa_flag = #{faFlag} </if>
+		<if test="financeStatus != null" > and p.finance_status = #{financeStatus} </if>	
+		<if test="faFlag != null"> and p.fa_flag = #{faFlag} </if>
+		GROUP BY p.id
 		<if test="sorting != null">order by ${sorting}</if>
 		<if test="offset != null and limit != null">
 			limit #{offset}, #{limit}
@@ -165,22 +206,28 @@
 	<select id="selectByfj" resultType="hashMap" parameterType="java.util.Map">
 		select 
 			<include refid="Base_Column_List" />
-		from sop_project  where 		 
-		project_status = "projectStatus:2" 
-		<if test="projectType != null" > and project_type = #{projectType} </if>	
-		<if test="projectProgress != null" > and project_progress = #{projectProgress} </if>
-		<if test="financeStatus != null" > and finance_status = #{financeStatus} </if>	
-	    <if test="createUid != null" > and create_uid = #{createUid} </if>
-		<if test="projectCareerline != null" > and project_careerline = #{projectCareerline} </if>
-		<if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
+			group_concat(case when r.title_id=1916 then r.content_describe1 else null end) as projectContribution,
+			group_concat(case when r.title_id=1917 then r.content_describe1 else null end) as projectShareRatio
+		from sop_project p
+		LEFT JOIN information_result r on p.id=r.project_id
+		where 		 
+			p.project_status = "projectStatus:2" 
+			and r.title_id in('1916','1917')
+		<if test="projectType != null" > and p.project_type = #{projectType} </if>	
+		<if test="projectProgress != null" > and p.project_progress = #{projectProgress} </if>
+		<if test="financeStatus != null" > and p.finance_status = #{financeStatus} </if>	
+	    <if test="createUid != null" > and p.create_uid = #{createUid} </if>
+		<if test="projectCareerline != null" > and p.project_careerline = #{projectCareerline} </if>
+		<if test="projectDepartid != null" > and p.project_departId = #{projectDepartid} </if>
 		<if test="deptIdList != null">
-					AND project_departId IN
+					AND p.project_departId IN
 					<foreach collection="deptIdList" index="item" item="item" open="("
 						separator="," close=")">
 						#{item}
 					</foreach>
 			  </if>
-		<if test="faFlag != null"> and fa_flag = #{faFlag} </if>
+		<if test="faFlag != null"> and p.fa_flag = #{faFlag} </if>
+		GROUP BY p.id
 		<if test="sorting != null">order by ${sorting}</if>
 		<if test="offset != null and limit != null">
 			limit #{offset}, #{limit}
