@@ -4,7 +4,7 @@
 
 	<!-- 团队成员列表 -->
 	<select id="queryProjectPerson" resultType="hashmap" parameterType="hashmap">
-		SELECT il.id,il.field_1 personName,idd.name personSex,il.field_3 personSexId,il.field_4 personTelephone, id.name personDuties
+		SELECT il.id,il.field_1 personName,idd.name personSex,il.field_3 personSexId,il.field_4 personTelephone, id.name personDuties,il.field_6 otherPersonDuties
 		FROM information_listdata il 
 		LEFT JOIN information_dictionary id ON il.field_2=id.id 
 		LEFT JOIN information_dictionary idd on il.field_3=idd.id
@@ -22,7 +22,8 @@
 	
 	<!-- 个人信息-->
 	<select id="queryPersonInfo" parameterType="hashmap" resultType="hashmap">
-		SELECT il.id,il.field_1 personName,idd.name personSex,il.field_3 personSexId,il.field_4 personTelephone, id.name personDuties,il.field_2 personDutiesId,ids.name education
+		SELECT il.id,il.field_1 personName,idd.name personSex,il.field_3 personSexId,il.field_4 personTelephone, id.name personDuties,il.field_2 personDutiesId,
+		ids.name education,il.field_6 otherPersonDuties
 		FROM information_listdata il 
 		LEFT JOIN information_dictionary id ON il.field_2=id.id 
 		LEFT JOIN information_dictionary ids ON il.field_5=ids.id 
@@ -31,7 +32,7 @@
 	</select>
 	<!-- 学习经历-->
 	<select id="queryStudyExperience" parameterType="hashmap" resultType="hashmap">
-		select il.id id, il.field_1 endTime, il.field_2 GraduateSchool, il.field_3 profession, id.name education, il.field_5 startTime
+		select il.id id, il.field_1 endTime, il.field_2 GraduateSchool, il.field_3 profession, id.name education, il.field_5 startTime,il.field_6 otherPersonDuties
 		FROM information_listdata il 
 		LEFT JOIN information_dictionary id ON il.field_4=id.id 
 		WHERE il.project_id=#{projectId} AND il.code=#{code1} and il.parent_id=#{id}  
@@ -51,7 +52,7 @@
 	
 	<!-- 根据id获取团队成员信息-->
 		<select id="selectPersonInfoById" resultType="com.galaxy.im.bean.project.InformationListdata" parameterType="hashmap">
-		SELECT id,field_1 Field1,field_2 Field2,field_3 Field3,field_4 Field4, field_5 Field5
+		SELECT id,field_1 Field1,field_2 Field2,field_3 Field3,field_4 Field4, field_5 Field5, field_6 Field6
 		FROM information_listdata 
 		WHERE id=#{id}
 		</select>
@@ -92,7 +93,7 @@
 			#{personSex},
 			#{personTelephone},
 			#{education},
-			#{field6},
+			#{otherPersonDuties},
 			#{field7},
 			#{field8},
 			#{field9},
@@ -118,7 +119,7 @@
 			<if test="personSex != null"> field_3 = #{personSex }, </if>
 			<if test="personTelephone != null"> field_4 = #{personTelephone }, </if>
 			<if test="education != null"> field_5 = #{education }, </if>
-			<if test="field6 != null"> field_6 = #{field6 }, </if>
+			<if test="otherPersonDuties != null"> field_6 = #{otherPersonDuties }, </if>
 			<if test="field7 != null"> field_7 = #{field7 }, </if>
 			<if test="field8 != null"> field_8 = #{field8 }, </if>
 			<if test="field9 != null"> field_9 = #{field9 }, </if>
