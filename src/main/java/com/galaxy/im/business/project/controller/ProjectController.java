@@ -522,7 +522,7 @@ public class ProjectController {
 			 genProjectBean.setThyyCount(thyyNum);
 			 genProjectBean.setYfjCount(yfjNum);
 			if(page!=null){
-				resultBean.setStatus("ok");
+				resultBean.setStatus("OK");
 				resultBean.setMap(BeanUtils.toMap(genProjectBean));
 			}
 		} catch (Exception e) {

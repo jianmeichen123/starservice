@@ -13,7 +13,7 @@
 				<if test="projectStatus != null" > and project_status = #{projectStatus} </if>
 				<if test="projectType != null" > and project_type = #{projectType} </if>	
 				<if test="projectProgress != null" > and project_progress = #{projectProgress} </if>
-				<if test="financeStatus != null" > and tt_finance_status_code = #{financeStatus} </if>
+				<if test="financeStatus != null" > and tt_finance_status = #{financeStatus} </if>
 				<if test="faFlag != null"> and fa_flag = #{faFlag} </if>
 				<!-- 模糊查询 -->
 				<if test="keyword != null">
@@ -94,7 +94,6 @@
 	    fa_name faName,
 	    project_time projectTime,
 	    tt_finance_status financeStatus,
-		tt_finance_status_code financeStatusCode,
 		tt_final_contribution finalContribution, 		
 		tt_final_share_ratio finalShareRatio, 				
 		tt_project_contribution projectContribution,  
@@ -111,8 +110,7 @@
 					MAX(CASE t.code WHEN 'FNO1_2_3' THEN r.content_describe1 ELSE NULL END) tt_project_share_ratio,
 					MAX(CASE t.code WHEN 'FNO1_3_1' THEN r.content_describe1 ELSE NULL END) tt_final_contribution,
 					MAX(CASE t.code WHEN 'FNO1_3_3' THEN r.content_describe1 ELSE NULL END) tt_final_share_ratio,
-					MAX(CASE t.code WHEN 'FNO1_1' THEN d.code ELSE NULL END) tt_finance_status_code,
-					MAX(CASE t.code WHEN 'FNO1_1' THEN d.name ELSE NULL END) tt_finance_status
+					MAX(CASE t.code WHEN 'FNO1_1' THEN r.content_choose ELSE NULL END) tt_finance_status
 					FROM information_title_relate t 
 					INNER JOIN information_result r ON t.title_id = r.title_id AND t.report_type=4
 					LEFT JOIN information_dictionary d on d.id=r.content_choose
@@ -132,8 +130,7 @@
 					MAX(CASE t.code WHEN 'FNO1_2_3' THEN r.content_describe1 ELSE NULL END) tt_project_share_ratio,
 					MAX(CASE t.code WHEN 'FNO1_3_1' THEN r.content_describe1 ELSE NULL END) tt_final_contribution,
 					MAX(CASE t.code WHEN 'FNO1_3_3' THEN r.content_describe1 ELSE NULL END) tt_final_share_ratio,
-					MAX(CASE t.code WHEN 'FNO1_1' THEN d.code ELSE NULL END) tt_finance_status_code,
-					MAX(CASE t.code WHEN 'FNO1_1' THEN d.name ELSE NULL END) tt_finance_status
+					MAX(CASE t.code WHEN 'FNO1_1' THEN r.content_choose ELSE NULL END) tt_finance_status
 					FROM information_title_relate t 
 					INNER JOIN information_result r ON t.title_id = r.title_id AND t.report_type=4
 					LEFT JOIN information_dictionary d on d.id=r.content_choose
