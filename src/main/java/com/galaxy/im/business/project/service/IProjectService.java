@@ -38,6 +38,7 @@ public interface IProjectService extends IBaseService<ProjectBean>{
 	GeneralProjecttVO querythyyList(ProjectBo projectBo, PageRequest pageRequest);
 	//否决项目列表
 	GeneralProjecttVO queryfjList(ProjectBo projectBo, PageRequest pageRequest);*/
+	
 	//全部
 	GeneralProjecttVO queryPageList(ProjectBo projectBo, PageRequest pageable);
 	Long queryProjectgjzCount(ProjectBo projectBo);

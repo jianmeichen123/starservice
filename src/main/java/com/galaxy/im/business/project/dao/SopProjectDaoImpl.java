@@ -17,6 +17,33 @@ import com.galaxy.im.common.exception.DaoException;
 @Repository
 public class SopProjectDaoImpl extends BaseDaoImpl<ProjectBo,Long> implements ISopProjectDao{
 
+	@Override
+	public Page<SopProjectBean> queryPageList(ProjectBo query, PageRequest pageable) {
+		List<SopProjectBean> contentList = null;
+		long total = 0L;
+		try {
+			Map<String, Object> params = BeanUtils.toMap(query);
+			contentList = sqlSessionTemplate.selectList( getSqlName("selectPageList"),getParams(query, pageable));
+			total = CUtils.get().object2Long(sqlSessionTemplate.selectOne(getSqlName("selectPageListCount"),params));		
+			return new  Page<SopProjectBean>(contentList, pageable, total); 
+		} catch (Exception e) {
+			throw new DaoException(String.format("根据分页对象查询列表出错！语句:%s", getSqlName("selectPageList")), e);
+		}
+	}
+	
+	@Override
+	public Long queryCount(ProjectBo query) {
+		long total = 0L;
+		try{
+			Map<String, Object> params = BeanUtils.toMap(query);
+			total = CUtils.get().object2Long(sqlSessionTemplate.selectOne(getSqlName("selectPageListCount"),params));
+		}catch(Exception e){
+			throw new DaoException(String.format("根据项目状态统计数据量出错！语句:%s" ,  getSqlName("selectPageListCount")), e);
+		}
+		return total;
+	}
+
+	
 	/*@Override
 	public Page<SopProjectBean> querygjzProjectList(ProjectBo query, PageRequest pageable) {
 		List<SopProjectBean> contentList = null;
@@ -57,20 +84,6 @@ public class SopProjectDaoImpl extends BaseDaoImpl<ProjectBo,Long> implements IS
 		}
 	}*/
 
-	@Override
-	public Page<SopProjectBean> queryPageList(ProjectBo query, PageRequest pageable) {
-		List<SopProjectBean> contentList = null;
-		long total = 0L;
-		try {
-			Map<String, Object> params = BeanUtils.toMap(query);
-			contentList = sqlSessionTemplate.selectList( getSqlName("selectPageList"),getParams(query, pageable));
-			total = CUtils.get().object2Long(sqlSessionTemplate.selectOne(getSqlName("selectPageListCount"),params));		
-			return new  Page<SopProjectBean>(contentList, pageable, total); 
-		} catch (Exception e) {
-			throw new DaoException(String.format("根据分页对象查询列表出错！语句:%s", getSqlName("selectPageList")), e);
-		}
-	}
-
 	/*@Override
 	public Long queryCountgjz(ProjectBo query) {
 		try{
@@ -100,17 +113,5 @@ public class SopProjectDaoImpl extends BaseDaoImpl<ProjectBo,Long> implements IS
 			throw new DaoException(String.format("根据项目状态统计数据量出错！语句:%s" ,  getSqlName("selectByfjCount")), e);
 		}
 	}*/
-
-	@Override
-	public Long queryCount(ProjectBo query) {
-		long total = 0L;
-		try{
-			Map<String, Object> params = BeanUtils.toMap(query);
-			total = CUtils.get().object2Long(sqlSessionTemplate.selectOne(getSqlName("selectPageListCount"),params));
-		}catch(Exception e){
-			throw new DaoException(String.format("根据项目状态统计数据量出错！语句:%s" ,  getSqlName("selectPageListCount")), e);
-		}
-		return total;
-	}
 
 }

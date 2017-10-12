@@ -13,7 +13,7 @@
 				<if test="projectStatus != null" > and project_status = #{projectStatus} </if>
 				<if test="projectType != null" > and project_type = #{projectType} </if>	
 				<if test="projectProgress != null" > and project_progress = #{projectProgress} </if>
-				<if test="financeStatus != null" > and finance_status = #{financeStatus} </if>
+				<if test="financeStatus != null" > and tt_finance_status_code = #{financeStatus} </if>
 				<if test="faFlag != null"> and fa_flag = #{faFlag} </if>
 				<!-- 模糊查询 -->
 				<if test="keyword != null">
@@ -101,6 +101,51 @@
 		tt_project_share_ratio projectShareRatio	
    </sql>
    
+   <!-- 查询总数 -->
+	<select id="selectPageListCount" resultType="java.lang.Long" parameterType="java.util.Map">
+		SELECT count(id) 
+		FROM sop_project 
+		LEFT JOIN (
+				  SELECT r.project_id,
+					MAX(CASE t.code WHEN 'FNO1_2' THEN r.content_describe1 ELSE NULL END) tt_project_contribution,
+					MAX(CASE t.code WHEN 'FNO1_2_3' THEN r.content_describe1 ELSE NULL END) tt_project_share_ratio,
+					MAX(CASE t.code WHEN 'FNO1_3_1' THEN r.content_describe1 ELSE NULL END) tt_final_contribution,
+					MAX(CASE t.code WHEN 'FNO1_3_3' THEN r.content_describe1 ELSE NULL END) tt_final_share_ratio,
+					MAX(CASE t.code WHEN 'FNO1_1' THEN d.code ELSE NULL END) tt_finance_status_code,
+					MAX(CASE t.code WHEN 'FNO1_1' THEN d.name ELSE NULL END) tt_finance_status
+					FROM information_title_relate t 
+					INNER JOIN information_result r ON t.title_id = r.title_id AND t.report_type=4
+					LEFT JOIN information_dictionary d on d.id=r.content_choose
+					GROUP BY r.project_id
+		) tt  ON tt.project_id = sop_project.id
+		<include refid="Base_Where_Clause" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="selectPageList" resultType="hashMap" parameterType="java.util.Map">
+		SELECT 
+		<include refid="Base_Column_List" />
+		FROM sop_project 
+		LEFT JOIN (
+				  SELECT r.project_id,
+					MAX(CASE t.code WHEN 'FNO1_2' THEN r.content_describe1 ELSE NULL END) tt_project_contribution,
+					MAX(CASE t.code WHEN 'FNO1_2_3' THEN r.content_describe1 ELSE NULL END) tt_project_share_ratio,
+					MAX(CASE t.code WHEN 'FNO1_3_1' THEN r.content_describe1 ELSE NULL END) tt_final_contribution,
+					MAX(CASE t.code WHEN 'FNO1_3_3' THEN r.content_describe1 ELSE NULL END) tt_final_share_ratio,
+					MAX(CASE t.code WHEN 'FNO1_1' THEN d.code ELSE NULL END) tt_finance_status_code,
+					MAX(CASE t.code WHEN 'FNO1_1' THEN d.name ELSE NULL END) tt_finance_status
+					FROM information_title_relate t 
+					INNER JOIN information_result r ON t.title_id = r.title_id AND t.report_type=4
+					LEFT JOIN information_dictionary d on d.id=r.content_choose
+					GROUP BY r.project_id
+		) tt  ON tt.project_id = sop_project.id
+		<include refid="Base_Where_Clause" />
+	</select>
+	
+	
+	
+	
+	
 	<!-- 查询 项目列表 变化 跟进中的时候 -->
 	<select id="selectBygjz" resultType="hashMap" parameterType="java.util.Map">
 		select 
@@ -243,46 +288,5 @@
 		<if test="faFlag != null"> and fa_flag = #{faFlag} </if>			
 	</select>
 	
-	
-	<!-- 查询总数 -->
-	<select id="selectPageListCount" resultType="java.lang.Long" parameterType="java.util.Map">
-		SELECT count(id) 
-		FROM sop_project 
-		LEFT JOIN (
-				  SELECT r.project_id,
-					MAX(CASE t.code WHEN 'FNO1_2' THEN r.content_describe1 ELSE NULL END) tt_project_contribution,
-					MAX(CASE t.code WHEN 'FNO1_2_3' THEN r.content_describe1 ELSE NULL END) tt_project_share_ratio,
-					MAX(CASE t.code WHEN 'FNO1_3_1' THEN r.content_describe1 ELSE NULL END) tt_final_contribution,
-					MAX(CASE t.code WHEN 'FNO1_3_3' THEN r.content_describe1 ELSE NULL END) tt_final_share_ratio,
-					MAX(CASE t.code WHEN 'FNO1_1' THEN d.code ELSE NULL END) tt_finance_status_code,
-					MAX(CASE t.code WHEN 'FNO1_1' THEN d.name ELSE NULL END) tt_finance_status
-					FROM information_title_relate t 
-					INNER JOIN information_result r ON t.title_id = r.title_id AND t.report_type=4
-					LEFT JOIN information_dictionary d on d.id=r.content_choose
-					GROUP BY r.project_id
-		) tt  ON tt.project_id = sop_project.id
-		<include refid="Base_Where_Clause" />
-	</select>
-
-	<!-- 查询 -->
-	<select id="selectPageList" resultType="hashMap" parameterType="java.util.Map">
-		SELECT 
-		<include refid="Base_Column_List" />
-		FROM sop_project 
-		LEFT JOIN (
-				  SELECT r.project_id,
-					MAX(CASE t.code WHEN 'FNO1_2' THEN r.content_describe1 ELSE NULL END) tt_project_contribution,
-					MAX(CASE t.code WHEN 'FNO1_2_3' THEN r.content_describe1 ELSE NULL END) tt_project_share_ratio,
-					MAX(CASE t.code WHEN 'FNO1_3_1' THEN r.content_describe1 ELSE NULL END) tt_final_contribution,
-					MAX(CASE t.code WHEN 'FNO1_3_3' THEN r.content_describe1 ELSE NULL END) tt_final_share_ratio,
-					MAX(CASE t.code WHEN 'FNO1_1' THEN d.code ELSE NULL END) tt_finance_status_code,
-					MAX(CASE t.code WHEN 'FNO1_1' THEN d.name ELSE NULL END) tt_finance_status
-					FROM information_title_relate t 
-					INNER JOIN information_result r ON t.title_id = r.title_id AND t.report_type=4
-					LEFT JOIN information_dictionary d on d.id=r.content_choose
-					GROUP BY r.project_id
-		) tt  ON tt.project_id = sop_project.id
-		<include refid="Base_Where_Clause" />
-	</select>
 	
 </mapper>
