@@ -5,6 +5,18 @@
 <mapper namespace="com.galaxy.im.business.flow.ceoreview.dao.ICeoreviewDao">
 
 
+<!-- 项目是否存在通过／否决状态的会议记录 -->
+	<select id="hasPassMeeting" parameterType="hashmap" resultType="hashmap">
+		select 
+			case isnull(d1.dict_code) when 1 then 'no' else d1.dict_code end dictCode,
+			count(1) pcount
+		from sop_project p
+		left join sop_meeting_record smr on p.id=smr.project_id
+		left join dict d1 on smr.meeting_result=d1.dict_code
+		where p.id=#{projectId} and smr.meeting_type=#{meetingType}
+		group by d1.dict_code;
+	</select>
+
 
 <!-- 申请立项会排期 -->
 	<insert id="insertRovalScheduling" parameterType="hashmap">

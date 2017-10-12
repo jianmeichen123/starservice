@@ -1,5 +1,6 @@
 package com.galaxy.im.business.flow.ceoreview.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import com.galaxy.im.bean.Test;
@@ -10,5 +11,7 @@ public interface ICeoreviewDao extends IBaseDao<Test, Long>{
 	int insertRovalScheduling(Map<String, Object> paramMap);
 
 	int updateCeoScheduling(Map<String, Object> paramMap);
+
+	List<Map<String, Object>> hasPassMeeting(Map<String, Object> paramMap);
 
 }

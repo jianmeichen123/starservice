@@ -17,7 +17,6 @@ import com.galaxy.im.bean.project.MeetingScheduling;
 import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.business.flow.ceoreview.service.ICeoreviewService;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
-import com.galaxy.im.business.flow.internalreview.service.IInternalreviewService;
 import com.galaxy.im.business.operationLog.controller.ControllerUtils;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
@@ -32,8 +31,6 @@ import com.galaxy.im.common.StaticConst;
 @Controller
 @RequestMapping("/flow/ceoreview")
 public class CeoreviewController {
-	@Autowired
-	private IInternalreviewService service;
 	
 	@Autowired
 	private IFlowCommonService fcService;
@@ -55,7 +52,7 @@ public class CeoreviewController {
 		try{
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			paramMap.put("meetingType", StaticConst.MEETING_TYPE_CEO);
-			Map<String,Object> m = service.hasPassMeeting(paramMap);
+			Map<String,Object> m = icService.hasPassMeeting(paramMap);
 			if(CUtils.get().mapIsNotEmpty(m)){
 				result.setEntity(m);
 			}

@@ -11,4 +11,6 @@ public interface ICeoreviewService extends IBaseService<Test>{
 
 	int updateCeoScheduling(Map<String, Object> paramMap);
 
+	Map<String, Object> hasPassMeeting(Map<String, Object> paramMap);
+
 }

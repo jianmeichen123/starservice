@@ -1,5 +1,6 @@
 package com.galaxy.im.business.flow.ceoreview.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -16,6 +17,20 @@ public class CeoreviewDaoImpl extends BaseDaoImpl<Test, Long> implements ICeorev
 	
 	public CeoreviewDaoImpl(){
 		super.setLogger(log);
+	}
+	
+	/**
+	 * 项目是否存在通过／否决的会议记录
+	 */
+	@Override
+	public List<Map<String, Object>> hasPassMeeting(Map<String, Object> paramMap) {
+		String sqlName = "com.galaxy.im.business.flow.ceoreview.dao.ICeoreviewDao.hasPassMeeting";
+		try{
+			return sqlSessionTemplate.selectList(sqlName,paramMap);
+		}catch(Exception e){
+			log.error(String.format("查询对象总数出错！语句：%s", sqlName), e);
+			throw new DaoException(e);
+		}
 	}
 
 	@Override
