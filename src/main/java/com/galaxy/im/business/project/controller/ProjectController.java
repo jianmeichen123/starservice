@@ -454,21 +454,27 @@ public class ProjectController {
 					}
 				}
 				//777
-				if (bean.getServiceCharge()!=null && bean.getServiceCharge()!=0) {
+				if (bean.getServiceCharge()!=null) {
 					hashmap.put("titleId", 3011);
 					result = service.findResultInfoById(hashmap);
 					if (result!=null) {
 						result.setUpdatedTime(new Date().getTime());
-						result.setContentDescribe1(CUtils.get().object2String(bean.getServiceCharge()));
+						if (bean.getServiceCharge()!=0) {
+							result.setContentDescribe1(CUtils.get().object2String(bean.getServiceCharge()));
+						}else{
+							result.setContentDescribe1("");
+						}
 						list1.add(result);
 					}else{
-						result = new InformationResult();
-						result.setTitleId("3011");
-						result.setCreateId(CUtils.get().object2String(userId));
-						result.setCreatedTime(new Date().getTime());
-						result.setProjectId(CUtils.get().object2String(bean.getId()));
-						result.setContentDescribe1(CUtils.get().object2String(bean.getServiceCharge()));
-						list.add(result);
+						if (bean.getServiceCharge()!=0) {
+							result = new InformationResult();
+							result.setTitleId("3011");
+							result.setCreateId(CUtils.get().object2String(userId));
+							result.setCreatedTime(new Date().getTime());
+							result.setProjectId(CUtils.get().object2String(bean.getId()));
+							result.setContentDescribe1(CUtils.get().object2String(bean.getServiceCharge()));
+							list.add(result);
+						}
 					}
 				}
 				//
