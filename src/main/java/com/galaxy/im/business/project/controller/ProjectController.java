@@ -346,7 +346,7 @@ public class ProjectController {
 
 				InformationResult result = null;
 				//111
-				if (bean.getProjectContribution()!=null) {//
+				if (bean.getProjectContribution()!=null && bean.getProjectContribution()!=0) {//
 					hashmap.put("titleId", 1916);
 					result = service.findResultInfoById(hashmap);
 					if (result!=null) {
@@ -382,7 +382,7 @@ public class ProjectController {
 					}
 				}
 				//333
-				if (bean.getProjectShareRatio()!=null) {
+				if (bean.getProjectShareRatio()!=null && bean.getProjectShareRatio()!=0) {
 					hashmap.put("titleId", 1917);
 					result = service.findResultInfoById(hashmap);
 					if (result!=null) {
@@ -400,7 +400,7 @@ public class ProjectController {
 					}
 				}
 				//444
-				if (bean.getProjectValuations()!=null) {
+				if (bean.getProjectValuations()!=null && bean.getProjectValuations()!=0) {
 					hashmap.put("titleId", 1943);
 					result = service.findResultInfoById(hashmap);
 					if (result!=null) {
@@ -418,7 +418,7 @@ public class ProjectController {
 					}
 				}
 				//555
-				if (bean.getFinalContribution()!=null) {
+				if (bean.getFinalContribution()!=null && bean.getFinalContribution()!=0) {
 					hashmap.put("titleId", 3004);
 					result = service.findResultInfoById(hashmap);
 					if (result!=null) {
@@ -436,7 +436,7 @@ public class ProjectController {
 					}
 				}
 				//666
-				if (bean.getFinalShareRatio()!=null) {
+				if (bean.getFinalShareRatio()!=null && bean.getFinalShareRatio()!=0) {
 					hashmap.put("titleId", 3010);
 					result = service.findResultInfoById(hashmap);
 					if (result!=null) {
@@ -473,7 +473,7 @@ public class ProjectController {
 				}
 				//
 				//888
-				if (bean.getFinalValuations()!=null) {
+				if (bean.getFinalValuations()!=null && bean.getFinalValuations()!=0) {
 					hashmap.put("titleId", 3012);
 					result = service.findResultInfoById(hashmap);
 					if (result!=null) {
