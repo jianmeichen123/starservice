@@ -48,4 +48,7 @@ public interface IProjectService extends IBaseService<ProjectBean>{
 	Map<String, Object> selectBaseProjectInfo(Map<String, Object> paramMap);
 	int updateProjects(Map<String, Object> hashmap);
 	InformationResult findResultInfoById(Map<String, Object> hashmap);
+	//插入信息到全息报告表
+	int addInformationResult(List<InformationResult> list);
+	int updateInformationResult(List<InformationResult> list);
 }

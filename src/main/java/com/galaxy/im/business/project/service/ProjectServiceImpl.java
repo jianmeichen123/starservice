@@ -310,5 +310,24 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 		}
 	}
 
+	@Override
+	public int addInformationResult(List<InformationResult> list) {
+		try{
+			return dao.addInformationResult(list);
+		}catch(Exception e){
+			log.error(ProjectServiceImpl.class.getName() + "addInformationResult",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public int updateInformationResult(List<InformationResult> list) {
+		try{
+			return dao.updateInformationResult(list);
+		}catch(Exception e){
+			log.error(ProjectServiceImpl.class.getName() + "updateInformationResult",e);
+			throw new ServiceException(e);
+		}
+	}
 	
 }

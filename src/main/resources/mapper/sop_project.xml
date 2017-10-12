@@ -313,5 +313,56 @@
 		and title_id=#{titleId} 
 	</select>
 	
+	<!-- 插入信息到全息报告-->
+		<insert id="addInformationResult" useGeneratedKeys="true" parameterType="java.util.List">  
+	    <selectKey resultType="long" keyProperty="id" order="AFTER">  
+	        SELECT  
+	        LAST_INSERT_ID()  
+	    </selectKey>  
+	    	insert into information_result (
+	     	id, 
+			project_id, 
+			title_id,
+			content_choose, 
+			content_describe1,
+			content_describe2,
+			sort,
+			created_time,
+			create_id,
+			updated_time,
+			update_id
+			)
+			values 
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	        ( #{item.id}, 
+			#{item.projectId}, 
+			#{item.titleId}, 
+			#{item.contentChoose}, 
+			#{item.contentDescribe1},
+			#{item.contentDescribe2},
+			#{item.sort},
+			#{item.createdTime},
+			#{item.createId},
+			#{item.createdTime},
+			#{item.createId} )
+	    </foreach>  
+	</insert>
+	
+	<!-- 更新全息报告同步会议结论结果的数据 -->
+	<update id="updateInformationResult"  parameterType="java.util.List">  
+          <foreach collection="list" item="item" index="index" separator=";">  
+                update information_result   
+                <set>
+				<if test="item.contentChoose != null"> content_choose = #{item.contentChoose}, </if>
+				<if test="item.contentDescribe1 != null"> content_describe1 = #{item.contentDescribe1}, </if>
+				<if test="item.contentDescribe2 != null"> content_describe2 = #{item.contentDescribe2}, </if>
+				<if test="item.updatedTime != null"> updated_time = #{item.updatedTime}</if>
+				</set>  
+                where id = ${item.id}  
+         </foreach>  
+    </update>
+	
+	
+	
 
 </mapper>
