@@ -123,6 +123,9 @@ public class ProjectConsultantContrller {
 			return resultBean;
 		}
 		try {
+			if (paramMap.containsKey("otherPersionDuties")) {
+				paramMap.put("personDuties", paramMap.get("personDuties")+"-"+paramMap.get("otherPersionDuties"));
+			}
 			//添加
 			if (paramMap.get("id")==null) {
 				paramMap.put("titleId", 1303);
