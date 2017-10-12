@@ -452,6 +452,18 @@ public class ProjectController {
 				genProjectBean = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
 			}*/
 			//查询列表
+			if(projectBo.getFinanceStatus()!=null){
+				if(!projectBo.getFinanceStatus().equals("尚未获投") || projectBo.getFinanceStatus().equals("不明确")){
+					Map<String,Object> paramMap = new HashMap<String,Object>();
+					paramMap.put("parentCode", "FNO1_1");
+					List<Map<String, Object>> entityMap = dictService.getDictionaryList(paramMap);
+					for(Map<String, Object> map : entityMap){
+						if(map.containsKey("code") && map.get("code").equals(projectBo.getFinanceStatus())){
+							projectBo.setFinanceStatus(CUtils.get().object2String(map.get("id")));
+						}
+					}
+				}
+			}
 			genProjectBean = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
 			
 			Page<SopProjectBean> page = genProjectBean.getPvPage();
