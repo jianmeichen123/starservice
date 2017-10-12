@@ -4,7 +4,7 @@
 
 	<!-- 团队成员列表 -->
 	<select id="queryProjectPerson" resultType="hashmap" parameterType="hashmap">
-		SELECT il.id,il.field_1 personName,idd.name personSex,il.field_3 personSexId,il.field_4 personTelephone, id.name personDuties
+		SELECT il.id,il.field_1 personName,idd.name personSex,il.field_3 personSexId,il.field_4 personTelephone, id.name personDuties,il.field_2 personDutiesId
 		FROM information_listdata il 
 		LEFT JOIN information_dictionary id ON il.field_2=id.id 
 		LEFT JOIN information_dictionary idd on il.field_3=idd.id
