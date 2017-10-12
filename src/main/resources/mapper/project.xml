@@ -15,6 +15,39 @@
 				<if test="projectProgress != null" > and project_progress = #{projectProgress} </if>
 				<if test="financeStatus != null" > and finance_status = #{financeStatus} </if>
 				<if test="faFlag != null"> and fa_flag = #{faFlag} </if>
+				<!-- 模糊查询 -->
+				<if test="keyword != null">
+					<choose>
+						<when test="flagkeyword=='concatcode'" >
+							and (upper(project_name) like CONCAT("%",upper(#{keyword}),"%")
+							<if test="escapeChar ">
+								escape '/'
+							</if>
+							or create_uname like CONCAT("%",#{keyword},"%")
+							<if test="escapeChar ">
+								escape '/'
+							</if>
+							)
+						</when>
+						<when test="flagkeyword==null">
+							and (upper(project_name) like CONCAT("%",upper(#{keyword}),"%")
+							<if test="escapeChar ">
+								escape '/'
+							</if>
+							or upper(project_code) like CONCAT("%",upper(#{keyword}),"%")
+							<if test="escapeChar ">
+								escape '/'
+							</if>
+							)
+						</when>
+						<when test="flagkeyword=='onlyName'">
+							and upper(project_name) like CONCAT("%",upper(#{keyword}),"%")
+							<if test="escapeChar ">
+								escape '/'
+							</if>
+						</when>
+					</choose>
+				</if>
 			</trim>
 		</where>
 		<if test="sorting != null">order by ${sorting}</if>
