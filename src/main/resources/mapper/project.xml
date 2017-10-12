@@ -3,66 +3,69 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
 <mapper namespace="com.galaxy.im.bean.project.ProjectBo">
+
+  	<sql id="Base_Where_Clause">
+		<where>
+			<trim prefixOverrides="and">
+			    <if test="id != null"> and id =#{id}</if>
+				<if test="createUid != null" > and create_uid = #{createUid} </if>
+				<if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
+				<if test="projectStatus != null" > and project_status = #{projectStatus} </if>
+				<if test="projectType != null" > and project_type = #{projectType} </if>	
+				<if test="projectProgress != null" > and project_progress = #{projectProgress} </if>
+				<if test="financeStatus != null" > and finance_status = #{financeStatus} </if>
+				<if test="faFlag != null"> and fa_flag = #{faFlag} </if>
+			</trim>
+		</where>
+		<if test="sorting != null">order by ${sorting}</if>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</sql>
 	
-	<resultMap type="com.galaxy.im.bean.project.SopProjectBean" id="BaseResultMap">
-		<result column="id" property="id"/>
-		<result column="project_name" property="projectName"/>
-	    <result column="project_code" property="projectCode" />
-	    <result column="project_type" property="projectType" />
-	    <result column="stock_transfer" property="stockTransfer" />
-	    <result column="project_careerline" property="projectCareerline" />
-	    <result column="project_departId" property="projectDepartId" />    
-	    <result column="industry_own" property="industryOwn" />    
-	    
-	    <result column="project_valuations" property="projectValuations" />    
-	    <result column="final_valuations" property="finalValuations" />
-	    <result column="finance_status" property="financeStatus" />    
-	    <result column="project_contribution" property="projectContribution" />    
-	    <result column="final_contribution" property="finalContribution" />    
-	    <result column="currency_unit" property="currencyUnit" />
-	    <result column="project_share_ratio" property="projectShareRatio" />    
-	    <result column="final_share_ratio" property="finalShareRatio" />    
-	    <result column="service_charge" property="serviceCharge" />    
-	    <result column="project_company" property="projectCompany" />    
-	    <result column="formation_date" property="formationDate" />    
-	    <result column="project_company_code" property="projectCompanyCode" />   
-	    <result column="company_legal" property="companyLegal" />    
-	    <result column="create_uid" property="createUid" />
-	    <result column="create_uname" property="createUname" />
-	    <result column="create_uposition" property="createUposition" />
-	    <result column="project_progress" property="projectProgress" />    
-	    <result column="project_status" property="projectStatus" />    
-	    <result column="updated_time" property="updatedTime" />
-	    <result column="created_time" property="createdTime" />    
-	    <result column="project_describe" property="projectDescribe" />
-	    <result column="project_describe_financing" property="projectDescribeFinancing" />
-	    <result column="project_business_model" property="projectBusinessModel" />
-	    <result column="company_location" property="companyLocation" />
-	    <result column="user_portrait" property="userPortrait" />
-	    <result column="prospect_analysis" property="prospectAnalysis" />
-	    <result column="next_financing_source" property="nextFinancingSource" />
-	    <result column="industry_analysis" property="industryAnalysis" />
-	    <result column="operational_data" property="operationalData" />
-	    <result column="count" property="count" />
-	    <result column="idea_id" property="ideaId" />
-	    <result column="fa_flag" property="faFlag" />
-	    <result column="fa_name" property="faName" />
-	    <result column="project_time" property="projectTime" />
-	</resultMap>
-  
   	<sql id="Base_Column_List" >
-	    id, project_name projectName, project_code projectCode, project_type projectType, 
-	    stock_transfer stockTransfer, project_careerline projectCareerline, project_departId projectDepartId,industry_own industryOwn, 
-	    project_valuations projectValuations, final_valuations finalValuations, finance_status financeStatus,
-	    project_contribution projectContribution, final_contribution finalContribution, currency_unit currencyUnit,
-	    project_share_ratio projectShareRatio, final_share_ratio finalShareRatio, service_charge serviceCharge,
-	    project_company projectCompany, formation_date formationDate, project_company_code projectCompanyCode, 
-	    company_legal companyLegal, create_uid createUid, create_uname createUname, create_uposition createUposition, 
-	    project_progress projectProgress, project_status projectStatus, updated_time updatedTime, created_time createdTime,
-	    project_describe projectDescribe, project_describe_financing projectDescribeFinancing, 
-	    project_business_model projectBusinessModel, company_location companyLocation, user_portrait userPortrait,
-	    prospect_analysis prospectAnalysis, next_financing_source nextFinancingSource,industry_analysis industryAnalysis,
-	    operational_data operationalData, idea_id ideaId, fa_flag faFlag, fa_name faName,project_time projectTime
+	    id, 
+	    project_name projectName,
+	    project_code projectCode, 
+	    project_type projectType, 
+	    stock_transfer stockTransfer, 
+	    project_careerline projectCareerline, 
+	    project_departId projectDepartId,
+	    industry_own industryOwn, 
+	    project_valuations projectValuations, 
+	    final_valuations finalValuations, 
+	    currency_unit currencyUnit,
+	    service_charge serviceCharge,
+	    project_company projectCompany, 
+	    formation_date formationDate, 
+	    project_company_code projectCompanyCode, 
+	    company_legal companyLegal, 
+	    create_uid createUid, 
+	    create_uname createUname, 
+	    create_uposition createUposition, 
+	    project_progress projectProgress, 
+	    project_status projectStatus, 
+	    updated_time updatedTime, 
+	    created_time createdTime,
+	    project_describe projectDescribe, 
+	    project_describe_financing projectDescribeFinancing, 
+	    project_business_model projectBusinessModel, 
+	    company_location companyLocation, 
+	    user_portrait userPortrait,
+	    prospect_analysis prospectAnalysis, 
+	    next_financing_source nextFinancingSource,
+	    industry_analysis industryAnalysis,
+	    operational_data operationalData, 
+	    idea_id ideaId, 
+	    fa_flag faFlag, 
+	    fa_name faName,
+	    project_time projectTime,
+	    tt_finance_status financeStatus,
+		tt_finance_status_code financeStatusCode,
+		tt_final_contribution finalContribution, 		
+		tt_final_share_ratio finalShareRatio, 				
+		tt_project_contribution projectContribution,  
+		tt_project_share_ratio projectShareRatio	
    </sql>
    
 	<!-- 查询 项目列表 变化 跟进中的时候 -->
@@ -210,163 +213,43 @@
 	
 	<!-- 查询总数 -->
 	<select id="selectPageListCount" resultType="java.lang.Long" parameterType="java.util.Map">
-		select count(id) from sop_project
+		SELECT count(id) 
+		FROM sop_project 
+		LEFT JOIN (
+				  SELECT r.project_id,
+					MAX(CASE t.code WHEN 'FNO1_2' THEN r.content_describe1 ELSE NULL END) tt_project_contribution,
+					MAX(CASE t.code WHEN 'FNO1_2_3' THEN r.content_describe1 ELSE NULL END) tt_project_share_ratio,
+					MAX(CASE t.code WHEN 'FNO1_3_1' THEN r.content_describe1 ELSE NULL END) tt_final_contribution,
+					MAX(CASE t.code WHEN 'FNO1_3_3' THEN r.content_describe1 ELSE NULL END) tt_final_share_ratio,
+					MAX(CASE t.code WHEN 'FNO1_1' THEN d.code ELSE NULL END) tt_finance_status_code,
+					MAX(CASE t.code WHEN 'FNO1_1' THEN d.name ELSE NULL END) tt_finance_status
+					FROM information_title_relate t 
+					INNER JOIN information_result r ON t.title_id = r.title_id AND t.report_type=4
+					LEFT JOIN information_dictionary d on d.id=r.content_choose
+					GROUP BY r.project_id
+		) tt  ON tt.project_id = sop_project.id
 		<include refid="Base_Where_Clause" />
 	</select>
 
 	<!-- 查询 -->
 	<select id="selectPageList" resultType="hashMap" parameterType="java.util.Map">
-		select
+		SELECT 
 		<include refid="Base_Column_List" />
-		from sop_project
+		FROM sop_project 
+		LEFT JOIN (
+				  SELECT r.project_id,
+					MAX(CASE t.code WHEN 'FNO1_2' THEN r.content_describe1 ELSE NULL END) tt_project_contribution,
+					MAX(CASE t.code WHEN 'FNO1_2_3' THEN r.content_describe1 ELSE NULL END) tt_project_share_ratio,
+					MAX(CASE t.code WHEN 'FNO1_3_1' THEN r.content_describe1 ELSE NULL END) tt_final_contribution,
+					MAX(CASE t.code WHEN 'FNO1_3_3' THEN r.content_describe1 ELSE NULL END) tt_final_share_ratio,
+					MAX(CASE t.code WHEN 'FNO1_1' THEN d.code ELSE NULL END) tt_finance_status_code,
+					MAX(CASE t.code WHEN 'FNO1_1' THEN d.name ELSE NULL END) tt_finance_status
+					FROM information_title_relate t 
+					INNER JOIN information_result r ON t.title_id = r.title_id AND t.report_type=4
+					LEFT JOIN information_dictionary d on d.id=r.content_choose
+					GROUP BY r.project_id
+		) tt  ON tt.project_id = sop_project.id
 		<include refid="Base_Where_Clause" />
 	</select>
-	
-	
-	
-   <sql id="Base_Where_Clause">
-		<where>
-			<trim prefixOverrides="and">
-			  <if test="id != null"> and id =#{id}</if>
-			   <if test="createUid != null" > and create_uid = #{createUid} </if>
-			   <if test="projectProgress != null" > and project_progress = #{projectProgress} </if>
-			   <if test="projectType != null" > and project_type = #{projectType} </if>
-		       <if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
-			   <if test="deptIdList != null">
-					AND project_departId IN
-					<foreach collection="deptIdList" index="item" item="item" open="("
-						separator="," close=")">
-						#{item}
-					</foreach>
-			  </if>
-		      <if test="industryOwn != null" > and industry_own = #{industryOwn} </if>
-		      <if test="stockTransfer != null" > and stock_transfer = #{stockTransfer} </if>
-		      
-		      <if test="projectValuations != null" > and project_valuations = #{projectValuations} </if>
-		      <if test="finalValuations != null" > and final_valuations = #{finalValuations} </if>
-		      <if test="financeStatus != null" > and finance_status = #{financeStatus} </if>
-		     
-		      <if test="projectContribution != null" >  and project_contribution = #{projectContribution} </if>
-		      <if test="finalContribution != null" >  and final_contribution = #{finalContribution} </if>
-		      <if test="currencyUnit != null" > and currency_unit = #{currencyUnit,jdbcType=INTEGER} </if>
-		      <if test="projectShareRatio != null" > and project_share_ratio = #{projectShareRatio} </if>
-		      <if test="finalShareRatio != null" > and final_share_ratio = #{finalShareRatio} </if>
-		      <if test="serviceCharge != null" > and service_charge = #{serviceCharge} </if> 
-		      <if test="projectCareerline != null" > and project_careerline = #{projectCareerline} </if>
-		      <if test="projectCompany != null" > and project_company = #{projectCompany} </if>
-		      <if test="formationDate != null" > and formation_date = #{formationDate} </if>
-		      <if test="projectCompanyCode != null" > and project_company_code = #{projectCompanyCode} </if>
-		      <if test="companyLegal != null" > and company_legal = #{companyLegal} </if>
-		      
-		      <if test="createUposition != null" > and create_uposition = #{createUposition} </if>
-		     
-		      <if test="projectStatus != null" > and project_status = #{projectStatus} </if>
-		      <if test="updatedTime != null" > and updated_time = #{updatedTime} </if>
-		      <if test="createdTime != null" > and created_time = #{createdTime} </if>
-		      
-		      <if test="startTime != null"> <![CDATA[  and created_time >= #{startTime} ]]> </if>
-			  <if test="endTime != null"> <![CDATA[ and created_time <= #{endTime} ]]> </if>
-		      
-		      <if test="projectDescribe != null" > and project_describe = #{projectDescribe} </if>
-		      <if test="projectBusinessModel != null" > and project_business_model = #{projectBusinessModel} </if>
-		      <if test="companyLocation != null" > and company_location = #{companyLocation} </if>
-		      <if test="userPortrait != null" > and user_portrait = #{userPortrait} </if>
-		      <if test="prospectAnalysis != null" > and prospect_analysis = #{prospectAnalysis} </if>
-				
-			  <if test="projectName != null" > and project_name = #{projectName} </if>
-			  <if test="createUname != null" > and create_uname = #{createUname} </if>
-		      <if test="projectCode != null" > and project_code = #{projectCode} </if>
-				<!-- 模糊查询 -->
-				<if test="keyword != null">
-					<choose>
-						<when test="flagkeyword=='concatcode'" >
-							and (project_name like CONCAT("%",#{keyword},"%")
-							<if test="escapeChar ">
-								escape '/'
-							</if>
-							or project_name like CONCAT("%",#{ceeword},"%")
-							<if test="escapeChar ">
-								escape '/'
-							</if>
-							or create_uname like CONCAT("%",#{keyword},"%")
-							<if test="escapeChar ">
-								escape '/'
-							</if>							
-							)
-						</when>
-						<when test="flagkeyword==null">
-							and (project_name like CONCAT("%",#{keyword},"%")
-							<if test="escapeChar ">
-								escape '/'
-							</if>
-							or project_name like CONCAT("%",#{ceeword},"%")
-							<if test="escapeChar ">
-								escape '/'
-							</if>
-							or project_code like CONCAT("%",#{keyword},"%")
-							<if test="escapeChar ">
-								escape '/'
-							</if>
-							)
-						</when>
-						<when test="flagkeyword=='onlyName'">
-							and (project_name like CONCAT("%",#{keyword},"%")
-							<if test="escapeChar ">
-								escape '/'
-							</if>
-							or project_name like CONCAT("%",#{ceeword},"%")
-							<if test="escapeChar ">
-								escape '/'
-							</if>
-								)
-						</when>
-					</choose>
-				</if>
-				<!--根据计划额度查询  -->
-				<if test="rComplany != null"> 
-					<if test="aComplany != null">
-					 	and project_contribution <![CDATA[ >=]]> #{aComplany} 					 							 
-					</if> 
-					<if test="bComplany != null">
-						and project_contribution  &lt; #{bComplany} 
-					</if>								 												
-				</if>
-				
-				<!-- 过滤已关闭项目 -->
-				<if test="resultCloseFilter != null">
-					AND project_status !=  #{resultCloseFilter}
-				</if>
-				<if test="ids != null">
-					AND id IN
-					<foreach collection="ids" index="item" item="item" open="("
-	                      separator="," close=")">
-	                          #{item}
-                    </foreach>
-				</if>
-				<if test="projectProgressList != null">
-					AND project_progress IN
-					<foreach collection="projectProgressList" index="item" item="item" open="(" separator="," close=")">
-	                          #{item}
-                    </foreach>
-				</if>
-				<if test="fromIdea == true">
-					and idea_id is not null
-				</if>
-				<if test="ideaId != null">
-					and idea_id = #{ideaId}
-				</if>
-			    <if test="faFlag != null">
-					and fa_flag = #{faFlag}
-				</if>
-				<if test="faName != null">
-					and fa_name = #{faName}
-				</if>
-			</trim>
-		</where>
-		<if test="sorting != null">order by ${sorting}</if>
-		<if test="offset != null and limit != null">
-			limit #{offset}, #{limit}
-		</if>
-	</sql>
 	
 </mapper>

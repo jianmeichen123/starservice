@@ -218,7 +218,7 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 
 	/**
 	 * 跟进中项目列表
-	 */
+	 *//*
 	@Override
 	public GeneralProjecttVO querygjzProjectList(ProjectBo query, PageRequest pageable) {
 		Page<SopProjectBean> pageBean =  sopdao.querygjzProjectList(query, pageable);
@@ -228,9 +228,9 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 		return gpbean;
 	}
 
-	/**
+	*//**
 	 * 投后运营项目列表
-	 */
+	 *//*
 	@Override
 	public GeneralProjecttVO querythyyList(ProjectBo query, PageRequest pageable) {
 		Page<SopProjectBean> pageBean =  sopdao.querythyyList(query, pageable);
@@ -240,9 +240,9 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 		return gpbean;
 	}
 
-	/**
+	*//**
 	 * 否决项目列表
-	 */
+	 *//*
 	@Override
 	public GeneralProjecttVO queryfjList(ProjectBo query, PageRequest pageable) {
 		Page<SopProjectBean> pageBean =  sopdao.queryfjList(query, pageable);
@@ -250,7 +250,7 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 		pageBean.setPageable(null);
 		gpbean.setPvPage(pageBean);
 		return gpbean;
-	}
+	}*/
 
 	/**
 	 * 全部
@@ -266,15 +266,18 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 
 	//跟进中查询数目
 	public Long queryProjectgjzCount(ProjectBo query) {
-		return sopdao.queryCountgjz(query);
+		query.setProjectStatus("projectStatus:0");
+		return sopdao.queryCount(query);
 	}
 	//投后运营查询数目
 	public Long queryProjectthyyCount(ProjectBo query) {
-		return sopdao.queryCountthyy(query);
+		query.setProjectStatus("projectStatus:1");
+		return sopdao.queryCount(query);
 	}
 	//否决查询数目
 	public Long queryProjectfjCount(ProjectBo query) {
-		return sopdao.queryCountfj(query);
+		query.setProjectStatus("projectStatus:2");
+		return sopdao.queryCount(query);
 	}
 
 	@Override

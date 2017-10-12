@@ -32,17 +32,18 @@ public interface IProjectService extends IBaseService<ProjectBean>{
 	//项目是否处于接触访谈阶段
 	int projectIsInterview(Long id);
 	
-	//跟进中项目列表
+	/*//跟进中项目列表
 	GeneralProjecttVO querygjzProjectList(ProjectBo projectBo, PageRequest pageRequest);
 	//投后运营项目列表
 	GeneralProjecttVO querythyyList(ProjectBo projectBo, PageRequest pageRequest);
 	//否决项目列表
-	GeneralProjecttVO queryfjList(ProjectBo projectBo, PageRequest pageRequest);
+	GeneralProjecttVO queryfjList(ProjectBo projectBo, PageRequest pageRequest);*/
 	//全部
 	GeneralProjecttVO queryPageList(ProjectBo projectBo, PageRequest pageable);
 	Long queryProjectgjzCount(ProjectBo projectBo);
 	Long queryProjectthyyCount(ProjectBo projectBo);
 	Long queryProjectfjCount(ProjectBo projectBo);
+	
 	Map<String, Object> selectBaseProjectInfo(Map<String, Object> paramMap);
 	int updateProjects(Map<String, Object> hashmap);
 	InformationResult findResultInfoById(Map<String, Object> hashmap);

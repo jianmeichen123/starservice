@@ -419,32 +419,41 @@ public class ProjectController {
 				resultBean.setMessage("当前用户未配置任何角色，将不执行项目统计功能！");
 				return resultBean;
 			}
+			//投资经理
 			if(roleCodeList.contains(StaticConst.TZJL)&&(projectBo.getProjectDepartid()==null)&&(projectBo.getCreateUid()==null)&&(projectBo.getQuanbu()==null)&&(projectBo.getDeptIdList()==null)){//投资经理
 				projectBo.setCreateUid(sessionBean.getGuserid()); //项目创建者
 			}
+			//排序字段
 			List<Order> orderList = new ArrayList<Order>();
 			orderList.add(new Order(Direction.DESC, "updated_time"));
 			orderList.add(new Order(Direction.DESC, "created_time"));			
 			Sort sort = new Sort(orderList);
+			
 			if(projectBo.getSflag()==1){
 				//跟进中
-				genProjectBean = service.querygjzProjectList(projectBo, new PageRequest(projectBo.getPageNum(), projectBo.getPageSize() , sort));
+				projectBo.setProjectStatus("projectStatus:0");
+				//genProjectBean = service.querygjzProjectList(projectBo, new PageRequest(projectBo.getPageNum(), projectBo.getPageSize() , sort));
 			}
 			if(projectBo.getSflag()==2){
 				//投后运营
-				genProjectBean = service.querythyyList(projectBo, new PageRequest(projectBo.getPageNum(), projectBo.getPageSize() , sort));
+				projectBo.setProjectStatus("projectStatus:1");
+				//genProjectBean = service.querythyyList(projectBo, new PageRequest(projectBo.getPageNum(), projectBo.getPageSize() , sort));
 			}
 			if(projectBo.getSflag()==3){
 				//否决
-				genProjectBean = service.queryfjList(projectBo, new PageRequest(projectBo.getPageNum(), projectBo.getPageSize() , sort));
+				projectBo.setProjectStatus("projectStatus:2");
+				//genProjectBean = service.queryfjList(projectBo, new PageRequest(projectBo.getPageNum(), projectBo.getPageSize() , sort));
 			}
-			if(projectBo.getSflag()==4){
+			/*if(projectBo.getSflag()==4){
 				if(projectBo.getKeyword()!=null){
 					projectBo.setCeeword(projectBo.getKeyword().toUpperCase());
 				}
 				projectBo.setCreateUid(null);
 				genProjectBean = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
-			}
+			}*/
+			//查询列表
+			genProjectBean = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
+			
 			Page<SopProjectBean> page = genProjectBean.getPvPage();
 			List<SopProjectBean> dataList = page.getContent();
 			//内容处理
@@ -495,7 +504,8 @@ public class ProjectController {
 				}
 				//融资状态名称
 				if(StringUtils.isNotBlank(CUtils.get().object2String(map.get("financeStatus")))){
-					map.put("financeStatusName", getNameByCode(CUtils.get().object2String(map.get("financeStatus")),"financeStatus"));
+					//map.put("financeStatusName", getNameByCode(CUtils.get().object2String(map.get("financeStatus")),"financeStatus"));
+					map.put("financeStatusName", CUtils.get().object2String(map.get("financeStatus")));
 				}
 				//项目状态编码
 				if(StringUtils.isNotBlank(CUtils.get().object2String(map.get("projectStatus")))){
