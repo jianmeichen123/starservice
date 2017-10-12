@@ -340,27 +340,33 @@ public class ProjectController {
 	
 	void editInformationResult(SopProjectBean bean,Long userId){
 		List<InformationResult> list = new ArrayList<>();
-		List<InformationResult> list1 = new ArrayList<>();
+	/*	List<InformationResult> list1 = new ArrayList<>();*/
 			Map<String, Object> hashmap = new HashMap<>();
 			hashmap.put("projectId", bean.getId());
 
 				InformationResult result = null;
 				//111
-				if (bean.getProjectContribution()!=null && bean.getProjectContribution()!=0) {//
+				if (bean.getProjectContribution()!=null) {//
 					hashmap.put("titleId", 1916);
 					result = service.findResultInfoById(hashmap);
 					if (result!=null) {
 						result.setUpdatedTime(new Date().getTime());
-						result.setContentDescribe1(CUtils.get().object2String(bean.getProjectContribution()));
-						list1.add(result);
+						if (bean.getProjectContribution()!=0) {
+							result.setContentDescribe1(CUtils.get().object2String(bean.getProjectContribution()));
+						}else{
+							result.setContentDescribe1("");
+						}
+						service.updateInformationResult(result);
 					}else{
-						result = new InformationResult();
-						result.setTitleId("1916");
-						result.setCreateId(CUtils.get().object2String(userId));
-						result.setCreatedTime(new Date().getTime());
-						result.setProjectId(CUtils.get().object2String(bean.getId()));
-						result.setContentDescribe1(CUtils.get().object2String(bean.getProjectContribution()));
-						list.add(result);
+						if(bean.getProjectContribution()!=0){
+							result = new InformationResult();
+							result.setTitleId("1916");
+							result.setCreateId(CUtils.get().object2String(userId));
+							result.setCreatedTime(new Date().getTime());
+							result.setProjectId(CUtils.get().object2String(bean.getId()));
+							result.setContentDescribe1(CUtils.get().object2String(bean.getProjectContribution()));
+							list.add(result);
+						}
 					}
 				} 
 				//2222
@@ -370,7 +376,7 @@ public class ProjectController {
 					if (result!=null) {
 						result.setUpdatedTime(new Date().getTime());
 						result.setContentChoose(CUtils.get().object2String(bean.getFinanceStatus()));
-						list1.add(result);
+						service.updateInformationResult(result);
 					}else{
 						result = new InformationResult();
 						result.setTitleId("1108");
@@ -382,75 +388,99 @@ public class ProjectController {
 					}
 				}
 				//333
-				if (bean.getProjectShareRatio()!=null && bean.getProjectShareRatio()!=0) {
+				if (bean.getProjectShareRatio()!=null) {
 					hashmap.put("titleId", 1917);
 					result = service.findResultInfoById(hashmap);
 					if (result!=null) {
 						result.setUpdatedTime(new Date().getTime());
-						result.setContentDescribe1(CUtils.get().object2String(bean.getProjectShareRatio()));
-						list1.add(result);
+						if (bean.getProjectShareRatio()!=0) {
+							result.setContentDescribe1(CUtils.get().object2String(bean.getProjectShareRatio()));
+						}else{
+							result.setContentDescribe1("");
+						}
+						service.updateInformationResult(result);
 					}else{
-						result = new InformationResult();
-						result.setTitleId("1917");
-						result.setCreateId(CUtils.get().object2String(userId));
-						result.setCreatedTime(new Date().getTime());
-						result.setProjectId(CUtils.get().object2String(bean.getId()));
-						result.setContentDescribe1(CUtils.get().object2String(bean.getProjectShareRatio()));
-						list.add(result);
+						if (bean.getProjectShareRatio()!=0) {
+							result = new InformationResult();
+							result.setTitleId("1917");
+							result.setCreateId(CUtils.get().object2String(userId));
+							result.setCreatedTime(new Date().getTime());
+							result.setProjectId(CUtils.get().object2String(bean.getId()));
+							result.setContentDescribe1(CUtils.get().object2String(bean.getProjectShareRatio()));
+							list.add(result);
+						}
 					}
 				}
 				//444
-				if (bean.getProjectValuations()!=null && bean.getProjectValuations()!=0) {
+				if (bean.getProjectValuations()!=null) {
 					hashmap.put("titleId", 1943);
 					result = service.findResultInfoById(hashmap);
 					if (result!=null) {
 						result.setUpdatedTime(new Date().getTime());
-						result.setContentDescribe1(CUtils.get().object2String(bean.getProjectValuations()));
-						list1.add(result);
+						if (bean.getProjectValuations()!=0) {
+							result.setContentDescribe1(CUtils.get().object2String(bean.getProjectValuations()));
+						}else{
+							result.setContentDescribe1("");
+						}
+						service.updateInformationResult(result);
 					}else{
-						result = new InformationResult();
-						result.setTitleId("1943");
-						result.setCreateId(CUtils.get().object2String(userId));
-						result.setCreatedTime(new Date().getTime());
-						result.setProjectId(CUtils.get().object2String(bean.getId()));
-						result.setContentDescribe1(CUtils.get().object2String(bean.getProjectValuations()));
-						list.add(result);
+						if (bean.getProjectValuations()!=0) {
+							result = new InformationResult();
+							result.setTitleId("1943");
+							result.setCreateId(CUtils.get().object2String(userId));
+							result.setCreatedTime(new Date().getTime());
+							result.setProjectId(CUtils.get().object2String(bean.getId()));
+							result.setContentDescribe1(CUtils.get().object2String(bean.getProjectValuations()));
+							list.add(result);
+						}
 					}
 				}
 				//555
-				if (bean.getFinalContribution()!=null && bean.getFinalContribution()!=0) {
+				if (bean.getFinalContribution()!=null) {
 					hashmap.put("titleId", 3004);
 					result = service.findResultInfoById(hashmap);
 					if (result!=null) {
 						result.setUpdatedTime(new Date().getTime());
-						result.setContentDescribe1(CUtils.get().object2String(bean.getFinalContribution()));
-						list1.add(result);
+						if (bean.getFinalContribution()!=0) {
+							result.setContentDescribe1(CUtils.get().object2String(bean.getFinalContribution()));
+						}else{
+							result.setContentDescribe1("");
+						}
+						service.updateInformationResult(result);
 					}else{
-						result = new InformationResult();
-						result.setTitleId("3004");
-						result.setCreateId(CUtils.get().object2String(userId));
-						result.setCreatedTime(new Date().getTime());
-						result.setProjectId(CUtils.get().object2String(bean.getId()));
-						result.setContentDescribe1(CUtils.get().object2String(bean.getFinalContribution()));
-						list.add(result);
+						if (bean.getFinalContribution()!=0) {
+							result = new InformationResult();
+							result.setTitleId("3004");
+							result.setCreateId(CUtils.get().object2String(userId));
+							result.setCreatedTime(new Date().getTime());
+							result.setProjectId(CUtils.get().object2String(bean.getId()));
+							result.setContentDescribe1(CUtils.get().object2String(bean.getFinalContribution()));
+							list.add(result);
+						}
 					}
 				}
 				//666
-				if (bean.getFinalShareRatio()!=null && bean.getFinalShareRatio()!=0) {
+				if (bean.getFinalShareRatio()!=null) {
 					hashmap.put("titleId", 3010);
 					result = service.findResultInfoById(hashmap);
 					if (result!=null) {
 						result.setUpdatedTime(new Date().getTime());
-						result.setContentDescribe1(CUtils.get().object2String(bean.getFinalShareRatio()));
-						list1.add(result);
+						if (bean.getFinalShareRatio()!=0) {
+							result.setContentDescribe1(CUtils.get().object2String(bean.getFinalShareRatio()));
+						}else{
+							result.setContentDescribe1("");
+						}
+						service.updateInformationResult(result);
 					}else{
-						result = new InformationResult();
-						result.setTitleId("3010");
-						result.setCreateId(CUtils.get().object2String(userId));
-						result.setCreatedTime(new Date().getTime());
-						result.setProjectId(CUtils.get().object2String(bean.getId()));
-						result.setContentDescribe1(CUtils.get().object2String(bean.getFinalShareRatio()));
-						list.add(result);
+						if (bean.getFinalShareRatio()!=0) {
+							result = new InformationResult();
+							result.setTitleId("3010");
+							result.setCreateId(CUtils.get().object2String(userId));
+							result.setCreatedTime(new Date().getTime());
+							result.setProjectId(CUtils.get().object2String(bean.getId()));
+							result.setContentDescribe1(CUtils.get().object2String(bean.getFinalShareRatio()));
+							list.add(result);
+						}
 					}
 				}
 				//777
@@ -464,7 +494,7 @@ public class ProjectController {
 						}else{
 							result.setContentDescribe1("");
 						}
-						list1.add(result);
+						service.updateInformationResult(result);
 					}else{
 						if (bean.getServiceCharge()!=0) {
 							result = new InformationResult();
@@ -479,26 +509,32 @@ public class ProjectController {
 				}
 				//
 				//888
-				if (bean.getFinalValuations()!=null && bean.getFinalValuations()!=0) {
+				if (bean.getFinalValuations()!=null ) {
 					hashmap.put("titleId", 3012);
 					result = service.findResultInfoById(hashmap);
 					if (result!=null) {
 						result.setUpdatedTime(new Date().getTime());
-						result.setContentDescribe1(CUtils.get().object2String(bean.getFinalValuations()));
-						list1.add(result);
+						if (bean.getFinalValuations()!=0) {
+							result.setContentDescribe1(CUtils.get().object2String(bean.getFinalValuations()));
+						}else{
+							result.setContentDescribe1("");
+						}
+						service.updateInformationResult(result);
 					}else{
-						result = new InformationResult();
-						result.setTitleId("3012");
-						result.setCreateId(CUtils.get().object2String(userId));
-						result.setCreatedTime(new Date().getTime());
-						result.setProjectId(CUtils.get().object2String(bean.getId()));
-						result.setContentDescribe1(CUtils.get().object2String(bean.getFinalValuations()));
-						list.add(result);
+						if (bean.getFinalValuations()!=0) {
+							result = new InformationResult();
+							result.setTitleId("3012");
+							result.setCreateId(CUtils.get().object2String(userId));
+							result.setCreatedTime(new Date().getTime());
+							result.setProjectId(CUtils.get().object2String(bean.getId()));
+							result.setContentDescribe1(CUtils.get().object2String(bean.getFinalValuations()));
+							list.add(result);
+						}
 					}
 				}
-				if (list1.size()>0) {
+				/*if (list1.size()>0) {
 					int count1 = service.updateInformationResult(list1);
-				}
+				}*/
 				if (list.size()>0) {
 					int count = service.addInformationResult(list);
 				}

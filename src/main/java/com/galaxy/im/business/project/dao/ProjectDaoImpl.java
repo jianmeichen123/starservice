@@ -195,9 +195,9 @@ public class ProjectDaoImpl extends BaseDaoImpl<ProjectBean,Long> implements IPr
 	}
 
 	@Override
-	public int updateInformationResult(List<InformationResult> list) {
+	public int updateInformationResult(InformationResult result) {
 		try{
-			return sqlSessionTemplate.update(getSqlName("updateInformationResult"),list);
+			return sqlSessionTemplate.update(getSqlName("updateInformationResult"),result);
 		}catch(Exception e){
 			log.error(ProjectDaoImpl.class.getName() + "updateInformationResult",e);
 			throw new DaoException(e);

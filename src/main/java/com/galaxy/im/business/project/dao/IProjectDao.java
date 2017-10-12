@@ -32,6 +32,6 @@ public interface IProjectDao extends IBaseDao<ProjectBean,Long>{
 	InformationResult findResultInfoById(Map<String, Object> hashmap);
 	//添加信息到全息报告
 	int addInformationResult(List<InformationResult> list);
-	int updateInformationResult(List<InformationResult> list);
+	int updateInformationResult(InformationResult result);
 	
 }

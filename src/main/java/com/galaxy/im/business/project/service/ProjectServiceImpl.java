@@ -321,9 +321,9 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 	}
 
 	@Override
-	public int updateInformationResult(List<InformationResult> list) {
+	public int updateInformationResult(InformationResult result) {
 		try{
-			return dao.updateInformationResult(list);
+			return dao.updateInformationResult(result);
 		}catch(Exception e){
 			log.error(ProjectServiceImpl.class.getName() + "updateInformationResult",e);
 			throw new ServiceException(e);

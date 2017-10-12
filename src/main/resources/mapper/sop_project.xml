@@ -348,9 +348,9 @@
 	    </foreach>  
 	</insert>
 	
-	<!-- 更新全息报告同步会议结论结果的数据 -->
-	<update id="updateInformationResult"  parameterType="java.util.List">  
-          <foreach collection="list" item="item" index="index" separator=";">  
+	 <!-- 更新全息报告同步会议结论结果的数据 -->
+	<!-- <update id="updateInformationResult"  parameterType="java.util.List">  
+          <foreach collection="list" item="item" separator="" open="begin" close="end;"> 
                 update information_result   
                 <set>
 				<if test="item.contentChoose != null"> content_choose = #{item.contentChoose}, </if>
@@ -360,7 +360,23 @@
 				</set>  
                 where id = ${item.id}  
          </foreach>  
-    </update>
+    </update>  -->
+    
+    	<!-- 更新全息报告同步会议结论结果的数据 -->
+	<update id="updateInformationResult" parameterType="com.galaxy.im.bean.project.InformationResult">
+		update information_result
+		<set>
+			<if test="projectId != null"> project_id = #{projectId}, </if>
+			<if test="titleId != null"> title_id = #{titleId}, </if>
+			<if test="contentChoose != null"> content_choose = #{contentChoose}, </if>
+			<if test="contentDescribe1 != null"> content_describe1 = #{contentDescribe1}, </if>
+			<if test="contentDescribe2 != null"> content_describe2 = #{contentDescribe2}, </if>
+			<if test="sort != null"> sort = #{sort},</if>
+			<if test="updatedTime != null"> updated_time = #{updatedTime},</if>
+			<if test="updateId != null"> update_id = #{updateId}</if>
+		</set>
+		where id = #{id};
+	</update>
 	
 	
 	
