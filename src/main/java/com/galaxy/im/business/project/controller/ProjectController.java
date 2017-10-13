@@ -395,13 +395,13 @@ public class ProjectController {
 							list.add(result);
 					}
 				}
-				//项目估值
-				if (bean.getProjectValuations()!=null) {
+				//融资计划项目估值
+				if (bean.getFormatValuations()!=null) {
 					hashmap.put("titleId", 1943);
 					result = service.findResultInfoById(hashmap);
 					if (result!=null) {
 						result.setUpdatedTime(new Date().getTime());
-						result.setContentDescribe1(CUtils.get().object2String(bean.getProjectValuations()));
+						result.setContentDescribe1(bean.getFormatValuations());
 						service.updateInformationResult(result);
 					}else{
 							result = new InformationResult();
@@ -409,7 +409,7 @@ public class ProjectController {
 							result.setCreateId(CUtils.get().object2String(userId));
 							result.setCreatedTime(new Date().getTime());
 							result.setProjectId(CUtils.get().object2String(bean.getId()));
-							result.setContentDescribe1(CUtils.get().object2String(bean.getProjectValuations()));
+							result.setContentDescribe1(bean.getFormatValuations());
 							list.add(result);
 					}
 				}
@@ -468,13 +468,13 @@ public class ProjectController {
 					}
 				}
 				//
-				//项目估值
-				if (bean.getFinalValuations()!=null ) {
+				//实际项目估值
+				if (bean.getFormatFinalValuations()!=null ) {
 					hashmap.put("titleId", 3012);
 					result = service.findResultInfoById(hashmap);
 					if (result!=null) {
 						result.setUpdatedTime(new Date().getTime());
-						result.setContentDescribe1(CUtils.get().object2String(bean.getFinalValuations()));
+						result.setContentDescribe1(bean.getFormatFinalValuations());
 						service.updateInformationResult(result);
 					}else{
 							result = new InformationResult();
@@ -482,7 +482,7 @@ public class ProjectController {
 							result.setCreateId(CUtils.get().object2String(userId));
 							result.setCreatedTime(new Date().getTime());
 							result.setProjectId(CUtils.get().object2String(bean.getId()));
-							result.setContentDescribe1(CUtils.get().object2String(bean.getFinalValuations()));
+							result.setContentDescribe1(bean.getFormatFinalValuations());
 							list.add(result);
 					}
 				}

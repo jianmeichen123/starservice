@@ -53,8 +53,6 @@ public class ProjectConsultantContrller {
 		Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 		paramMap.put("titleId", 1303);
 		paramMap.put("code", "team-members");
-		paramMap.put("property", "id");
-		paramMap.put("direction", "desc");
 		try {
 			QPage page = service.queryProjectPerson(paramMap);
 			resultBean.setStatus("OK");

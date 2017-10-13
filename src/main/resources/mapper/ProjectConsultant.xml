@@ -9,7 +9,7 @@
 		LEFT JOIN information_dictionary id ON il.field_2=id.id 
 		LEFT JOIN information_dictionary idd on il.field_3=idd.id
 		WHERE il.project_id=#{projectId} and il.title_id=#{titleId} and il.code=#{code}
-		order by ${property} ${direction}
+		order by il.created_time ASC
 		limit #{offset},${limit};
 	</select>
 	
@@ -35,19 +35,22 @@
 		select il.id id, il.field_1 endTime, il.field_2 GraduateSchool, il.field_3 profession, id.name education, il.field_5 startTime
 		FROM information_listdata il 
 		LEFT JOIN information_dictionary id ON il.field_4=id.id 
-		WHERE il.project_id=#{projectId} AND il.code=#{code1} and il.parent_id=#{id}  
+		WHERE il.project_id=#{projectId} AND il.code=#{code1} and il.parent_id=#{id} 
+		ORDER BY il.field_1 DESC 
 	</select>
 	<!-- 工作经历 -->
 	<select id="queryWorkExperience" parameterType="hashmap" resultType="hashmap">
 		select il.id id, il.field_1 startTime, il.field_2 endTime, il.field_3 company, il.field_4 workPosition, il.field_5 content
 		FROM information_listdata il 
-		WHERE il.project_id=#{projectId} AND il.code=#{code2} and il.parent_id=#{id} 
+		WHERE il.project_id=#{projectId} AND il.code=#{code2} and il.parent_id=#{id}
+		ORDER BY il.field_2 DESC 
 	</select>
 	<!-- 创业经历 -->
 	<select id="queryEntrepreneurialExperience" parameterType="hashmap" resultType="hashmap">
 		select il.id id, il.field_1 startTime, il.field_2 endTime, il.field_3 position, il.field_4 CoreFounder, il.field_5 sharesRatio, il.field_6 workReason, il.field_7 summary
 		FROM information_listdata il 
 		WHERE il.project_id=#{projectId} AND il.code=#{code3} and il.parent_id=#{id} 
+		ORDER BY il.field_2 DESC 
 	</select>
 	
 	<!-- 根据id获取团队成员信息-->
