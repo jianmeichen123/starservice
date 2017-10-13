@@ -611,6 +611,7 @@ public class ProjectController {
 			 }
 			 page.setContent(dataList);
 			 genProjectBean.setPvPage(page);
+			 //个数
 			 Long gjzNum = service.queryProjectgjzCount(projectBo);
 			 Long thyyNum = service.queryProjectthyyCount(projectBo);
 			 Long yfjNum = service.queryProjectfjCount(projectBo);
@@ -627,7 +628,8 @@ public class ProjectController {
 		}
 		return resultBean;
 	}
-
+	
+	//根据code获取name
 	private String getNameByCode(String type,String parentCode) {
 		String code="";
 		Map<String,Object> paramMap = new HashMap<String,Object>();

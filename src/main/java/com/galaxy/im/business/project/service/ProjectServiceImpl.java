@@ -217,7 +217,7 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 	}
 
 	/**
-	 * 全部
+	 * 项目列表
 	 */
 	@Override
 	public GeneralProjecttVO queryPageList(ProjectBo query, PageRequest pageable) {
