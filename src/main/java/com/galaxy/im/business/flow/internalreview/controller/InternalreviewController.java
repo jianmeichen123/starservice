@@ -98,6 +98,8 @@ public class InternalreviewController {
 							rMap.put("flag", 1);
 							result.setMessage("否决项目成功");
 							result.setStatus("OK");
+							//全息报告数据同步
+							reportSync(p);
 							//记录操作日志
 							ControllerUtils.setRequestParamsForMessageTip(request,p.getProjectName(), p.getId(),null, false, null, null, null);
 						}else{
@@ -190,6 +192,8 @@ public class InternalreviewController {
 				choose="1142";
 			}else if(res.get("meetingResultCode").equals("meeting1Result:2")){
 				choose="1143";
+			}else if(res.get("meetingResultCode").equals("meeting1Result:4")){
+				choose="1145";
 			}
 		}
 		map.put("parentId", "7028");
