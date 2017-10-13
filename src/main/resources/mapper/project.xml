@@ -94,10 +94,10 @@
 	    fa_name faName,
 	    project_time projectTime,
 	    tt_finance_status financeStatus,
-		tt_final_contribution finalContribution, 		
-		tt_final_share_ratio finalShareRatio, 				
-		tt_project_contribution projectContribution,  
-		tt_project_share_ratio projectShareRatio	
+	    case when tt_final_contribution is null or tt_final_contribution ='' then null else tt_final_contribution end finalContribution,
+	    case when tt_final_share_ratio is null or tt_final_share_ratio ='' then null else tt_final_share_ratio end finalShareRatio,
+	    case when tt_project_contribution is null or tt_project_contribution ='' then null else tt_project_contribution end projectContribution,
+	    case when tt_project_share_ratio is null or tt_project_share_ratio ='' then null else tt_project_share_ratio end projectShareRatio
    </sql>
    
    <!-- 查询总数 -->
