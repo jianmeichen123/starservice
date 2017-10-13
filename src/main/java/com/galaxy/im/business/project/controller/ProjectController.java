@@ -342,12 +342,12 @@ public class ProjectController {
 		hashmap.put("projectId", bean.getId());
 		InformationResult result = null;
 		//融资金额
-		if (bean.getProjectContribution()!=null) {
+		if (bean.getFormatContribution()!=null) {
 			hashmap.put("titleId", 1916);
 			result = service.findResultInfoById(hashmap);
 			if (result!=null) {
 				result.setUpdatedTime(new Date().getTime());
-				result.setContentDescribe1(CUtils.get().object2String(bean.getProjectContribution()));
+				result.setContentDescribe1(CUtils.get().object2String(bean.getFormatContribution()));
 				service.updateInformationResult(result);
 			}else{
 					result = new InformationResult();
@@ -355,7 +355,7 @@ public class ProjectController {
 					result.setCreateId(CUtils.get().object2String(userId));
 					result.setCreatedTime(new Date().getTime());
 					result.setProjectId(CUtils.get().object2String(bean.getId()));
-					result.setContentDescribe1(CUtils.get().object2String(bean.getProjectContribution()));
+					result.setContentDescribe1(CUtils.get().object2String(bean.getFormatContribution()));
 					list.add(result);
 			}
 		} 
@@ -378,12 +378,12 @@ public class ProjectController {
 			}
 		}
 		//出让股份
-		if (bean.getProjectShareRatio()!=null) {
+		if (bean.getFormatShareRatio()!=null) {
 			hashmap.put("titleId", 1917);
 			result = service.findResultInfoById(hashmap);
 			if (result!=null) {
 				result.setUpdatedTime(new Date().getTime());
-				result.setContentDescribe1(CUtils.get().object2String(bean.getProjectShareRatio()));
+				result.setContentDescribe1(CUtils.get().object2String(bean.getFormatShareRatio()));
 				service.updateInformationResult(result);
 			}else{
 					result = new InformationResult();
@@ -391,7 +391,7 @@ public class ProjectController {
 					result.setCreateId(CUtils.get().object2String(userId));
 					result.setCreatedTime(new Date().getTime());
 					result.setProjectId(CUtils.get().object2String(bean.getId()));
-					result.setContentDescribe1(CUtils.get().object2String(bean.getProjectShareRatio()));
+					result.setContentDescribe1(CUtils.get().object2String(bean.getFormatShareRatio()));
 					list.add(result);
 			}
 		}
@@ -414,12 +414,12 @@ public class ProjectController {
 			}
 		}
 		//投资金额
-		if (bean.getFinalContribution()!=null) {
+		if (bean.getFormatFinalContribution()!=null) {
 			hashmap.put("titleId", 3004);
 			result = service.findResultInfoById(hashmap);
 			if (result!=null) {
 				result.setUpdatedTime(new Date().getTime());
-				result.setContentDescribe1(CUtils.get().object2String(bean.getFinalContribution()));
+				result.setContentDescribe1(CUtils.get().object2String(bean.getFormatFinalContribution()));
 				service.updateInformationResult(result);
 			}else{
 					result = new InformationResult();
@@ -427,17 +427,17 @@ public class ProjectController {
 					result.setCreateId(CUtils.get().object2String(userId));
 					result.setCreatedTime(new Date().getTime());
 					result.setProjectId(CUtils.get().object2String(bean.getId()));
-					result.setContentDescribe1(CUtils.get().object2String(bean.getFinalContribution()));
+					result.setContentDescribe1(CUtils.get().object2String(bean.getFormatFinalContribution()));
 					list.add(result);
 			}
 		}
 		//股权占比
-		if (bean.getFinalShareRatio()!=null) {
+		if (bean.getFormatFinalShareRatio()!=null) {
 			hashmap.put("titleId", 3010);
 			result = service.findResultInfoById(hashmap);
 			if (result!=null) {
 				result.setUpdatedTime(new Date().getTime());
-				result.setContentDescribe1(CUtils.get().object2String(bean.getFinalShareRatio()));
+				result.setContentDescribe1(CUtils.get().object2String(bean.getFormatFinalShareRatio()));
 				service.updateInformationResult(result);
 			}else{
 					result = new InformationResult();
@@ -445,7 +445,7 @@ public class ProjectController {
 					result.setCreateId(CUtils.get().object2String(userId));
 					result.setCreatedTime(new Date().getTime());
 					result.setProjectId(CUtils.get().object2String(bean.getId()));
-					result.setContentDescribe1(CUtils.get().object2String(bean.getFinalShareRatio()));
+					result.setContentDescribe1(CUtils.get().object2String(bean.getFormatFinalShareRatio()));
 					list.add(result);
 			}
 		}
