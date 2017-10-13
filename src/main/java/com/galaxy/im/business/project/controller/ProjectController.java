@@ -131,6 +131,7 @@ public class ProjectController {
 			paramMap.put("projectId", projectId);
 			//基础信息(数据来源 全息报告)
 			Map<String,Object> QXinfoMap = service.selectBaseProjectInfo(paramMap);
+			QXinfoMap.put("ceshi", "9999999999999.9999");
 			//基础信息(数据来源项目表)
 			Map<String,Object> infoMap = service.getBaseProjectInfo(projectId);
 			if( QXinfoMap!=null && !QXinfoMap.isEmpty()){
