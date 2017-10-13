@@ -21,6 +21,8 @@
 					case r.meeting_type
 					WHEN 'meetingType:3' THEN 'meeting3Result'
 					WHEN 'meetingType:5' THEN 'meeting5Result'
+					WHEN 'meetingType:1' THEN 'meeting1Result'
+					WHEN 'meetingType:4' THEN 'meeting4Result'
 					else 'meetingResult' 
 					end meetingResult,
 					case 
@@ -64,6 +66,8 @@
 					case r.meeting_type
 					WHEN 'meetingType:3' THEN 'meeting3Result'
 					WHEN 'meetingType:5' THEN 'meeting5Result'
+					WHEN 'meetingType:1' THEN 'meeting1Result'
+					WHEN 'meetingType:4' THEN 'meeting4Result'
 					else 'meetingResult' 
 					end meetingResult,
 					case 
@@ -118,6 +122,8 @@
 					case r.meeting_type
 					WHEN 'meetingType:3' THEN 'meeting3Result'
 					WHEN 'meetingType:5' THEN 'meeting5Result'
+					WHEN 'meetingType:1' THEN 'meeting1Result'
+					WHEN 'meetingType:4' THEN 'meeting4Result'
 					else 'meetingResult' 
 					end meetingType,
 					case 
