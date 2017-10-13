@@ -102,13 +102,13 @@
 	<!-- 项目详情 基础信息、融资计划、实际投资(来源全息报告)-->
 	<select id="selectBaseProjectInfo" parameterType="hashmap" resultType="hashmap">
 	SELECT id.name financeStatus,id.id financeStatusId,
-	group_concat(case when t.tid=#{titleId1} then CONCAT(t.result,'') else null end) as projectContribution,
-	group_concat(case when t.tid=#{titleId2} then CONCAT(t.result,'') else null end) as projectShareRatio,
-	group_concat(case when t.tid=#{titleId3} then CONCAT(t.result,'') else null end) as projectValuations,
-	group_concat(case when t.tid=#{titleId4} then CONCAT(t.result,'') else null end) as finalContribution,
-	group_concat(case when t.tid=#{titleId5} then CONCAT(t.result,'') else null end) as finalShareRatio,
-	group_concat(case when t.tid=#{titleId6} then CONCAT(t.result,'') else null end) as serviceCharge,
-	group_concat(case when t.tid=#{titleId7} then CONCAT(t.result,'') else null end) as finalValuations 
+	group_concat(case when t.tid=#{titleId1} then t.result else null end) as projectContribution,
+	group_concat(case when t.tid=#{titleId2} then t.result else null end) as projectShareRatio,
+	group_concat(case when t.tid=#{titleId3} then t.result else null end) as projectValuations,
+	group_concat(case when t.tid=#{titleId4} then t.result else null end) as finalContribution,
+	group_concat(case when t.tid=#{titleId5} then t.result else null end) as finalShareRatio,
+	group_concat(case when t.tid=#{titleId6} then t.result else null end) as serviceCharge,
+	group_concat(case when t.tid=#{titleId7} then t.result else null end) as finalValuations 
 	FROM 
 	(SELECT title_id tid, content_describe1 result, content_choose choose 
 	 FROM
