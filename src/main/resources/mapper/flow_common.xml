@@ -390,6 +390,7 @@
 		WHERE r.project_id=#{projectId} and r.meeting_type=#{meetingType} 
 		<if test="invest != null"> and r.meeting_result = #{invest}</if>
 		<if test="flash  != null"> or r.meeting_result = #{flash}</if>
+		<if test="votedown  != null"> or r.meeting_result = #{votedown}</if>
 		ORDER BY r.meeting_date DESC LIMIT 1;
 	</select>
 	

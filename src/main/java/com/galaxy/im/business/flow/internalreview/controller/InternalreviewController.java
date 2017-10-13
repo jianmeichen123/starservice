@@ -186,6 +186,7 @@ public class InternalreviewController {
 		map.put("meetingType", StaticConst.MEETING_TYPE_INTERNAL);
 		map.put("invest", "meeting1Result:2");
 		map.put("flash", "meeting1Result:1");
+		map.put("votedown", "meeting1Result:4");
 		Map<String,Object> res = fcService.getMeetingRecordInfo(map);
 		if(res.containsKey("meetingResultCode") && res.get("meetingResultCode")!=null){
 			if(res.get("meetingResultCode").equals("meeting1Result:1")){
