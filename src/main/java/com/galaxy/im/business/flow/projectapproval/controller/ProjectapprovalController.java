@@ -107,6 +107,8 @@ public class ProjectapprovalController {
 							rMap.put("flag", 1);
 							result.setMessage("否决项目成功");
 							result.setStatus("OK");
+							//全息报告数据同步
+							reportSync(p);
 							//将立项会排期的会议结果和排期结果调整为已否决
 							paramMap.put("status", StaticConst.MEETING_RESULT_3);
 							paramMap.put("scheduleStatus", 3);
@@ -198,13 +200,17 @@ public class ProjectapprovalController {
 		map.put("meetingType", StaticConst.MEETING_TYPE_APPROVAL);
 		map.put("invest", "meeting3Result:2");
 		map.put("flash", "meeting3Result:3");
+		map.put("votedown", "meeting3Result:6");
 		Map<String,Object> res = fcService.getMeetingRecordInfo(map);
 		if(res.containsKey("meetingResultCode") && res.get("meetingResultCode")!=null){
 			if(res.get("meetingResultCode").equals("meeting3Result:2")){
 				choose="1162";
 			}else if(res.get("meetingResultCode").equals("meeting3Result:3")){
 				choose="1163";
+			}else if(res.get("meetingResultCode").equals("meeting3Result:6")){
+				choose="1167";
 			}
+			
 		}
 		map.put("parentId", "7028");
 		map.put("titleId", "1113");

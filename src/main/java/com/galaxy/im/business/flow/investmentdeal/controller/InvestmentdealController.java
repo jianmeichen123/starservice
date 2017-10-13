@@ -109,6 +109,8 @@ public class InvestmentdealController {
 							rMap.put("flag", 1);
 							result.setMessage("否决项目成功");
 							result.setStatus("OK");
+							//全息报告数据同步
+							reportSync(p);
 							paramMap.put("scheduleStatus", 3);
 							paramMap.put("updatedTime", DateUtil.getMillis(new Date()));
 							iiService.updateInvestmentdeal(paramMap);  //修改投决会评审排期状态为已否决
@@ -216,10 +218,13 @@ public class InvestmentdealController {
 		map.put("projectId", sopBean.getId());
 		map.put("meetingType", StaticConst.MEETING_TYPE_INVEST);
 		map.put("invest", "meeting4Result:1");
+		map.put("votedown", "meeting4Result:3");
 		Map<String,Object> res = fcService.getMeetingRecordInfo(map);
 		if(res.containsKey("meetingResultCode") && res.get("meetingResultCode")!=null){
 			if(res.get("meetingResultCode").equals("meeting4Result:1")){
 				choose="1173";
+			}else if(res.get("meetingResultCode").equals("meeting4Result:3")){
+				choose="1177";
 			}
 		}
 		map.put("parentId", "7028");
