@@ -132,10 +132,12 @@ public class ProjectController {
 			//基础信息(数据来源 全息报告)
 			Map<String,Object> QXinfoMap = service.selectBaseProjectInfo(paramMap);
 			if(QXinfoMap.containsKey("projectValuations")){
-				QXinfoMap.put("projectValuations", CUtils.get().object2String(QXinfoMap.containsKey("projectValuations")));
+				String ss =getDealMethod(QXinfoMap.get("projectValuations"));
+				QXinfoMap.put("projectValuations", ss);
 			}
 			if(QXinfoMap.containsKey("finalValuations")){
-				QXinfoMap.put("finalValuations", CUtils.get().object2String(QXinfoMap.containsKey("finalValuations")));
+				String ss =getDealMethod(QXinfoMap.get("finalValuations"));
+				QXinfoMap.put("finalValuations", ss);
 			}
 			//基础信息(数据来源项目表)
 			Map<String,Object> infoMap = service.getBaseProjectInfo(projectId);
@@ -166,6 +168,16 @@ public class ProjectController {
 		return result;
 	}
 	
+	private String getDealMethod(Object obj) {
+		String[] dd =  CUtils.get().object2String(obj).split(".");
+		if(dd.length>=2){
+			Double aa =CUtils.get().object2Double("0."+dd[1]);
+			String[] ss =aa.toString().split(".");
+			return dd[0]+ss[1];
+		}
+		return null;
+	}
+
 	@RequestMapping("projectIsShow")
 	@ResponseBody
 	public Object isYJZ(@RequestBody String paramString){
