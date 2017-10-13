@@ -262,7 +262,6 @@ public class ProjectController {
 						bean.setIndustryOwn(null);
 					}
 					bean.setUpdatedTime(System.currentTimeMillis());
-					//bean.setCreatedTime(DateUtil.convertStringToDate(p.getCreateDate().trim(), "yyyy-MM-dd").getTime());
 					int num = service.updateProject(bean);
 					//全息报告result表数据更新
 					editInformationResult(bean,userId);
@@ -335,161 +334,162 @@ public class ProjectController {
 		}
 		return resultBean;
 	}
+	
 	//全息报告数据处理
 	void editInformationResult(SopProjectBean bean,Long userId){
 		List<InformationResult> list = new ArrayList<>();
-			Map<String, Object> hashmap = new HashMap<>();
-			hashmap.put("projectId", bean.getId());
-				InformationResult result = null;
-				//融资金额
-				if (bean.getProjectContribution()!=null) {
-					hashmap.put("titleId", 1916);
-					result = service.findResultInfoById(hashmap);
-					if (result!=null) {
-						result.setUpdatedTime(new Date().getTime());
-						result.setContentDescribe1(CUtils.get().object2String(bean.getProjectContribution()));
-						service.updateInformationResult(result);
-					}else{
-							result = new InformationResult();
-							result.setTitleId("1916");
-							result.setCreateId(CUtils.get().object2String(userId));
-							result.setCreatedTime(new Date().getTime());
-							result.setProjectId(CUtils.get().object2String(bean.getId()));
-							result.setContentDescribe1(CUtils.get().object2String(bean.getProjectContribution()));
-							list.add(result);
-					}
-				} 
-				//融资轮次
-				if (bean.getFinanceStatus()!=null) {
-					hashmap.put("titleId", 1108);
-					result = service.findResultInfoById(hashmap);
-					if (result!=null) {
-						result.setUpdatedTime(new Date().getTime());
-						result.setContentChoose(CUtils.get().object2String(bean.getFinanceStatus()));
-						service.updateInformationResult(result);
-					}else{
-						result = new InformationResult();
-						result.setTitleId("1108");
-						result.setCreateId(CUtils.get().object2String(userId));
-						result.setCreatedTime(new Date().getTime());
-						result.setProjectId(CUtils.get().object2String(bean.getId()));
-						result.setContentChoose(CUtils.get().object2String(bean.getFinanceStatus()));
-						list.add(result);
-					}
-				}
-				//出让股份
-				if (bean.getProjectShareRatio()!=null) {
-					hashmap.put("titleId", 1917);
-					result = service.findResultInfoById(hashmap);
-					if (result!=null) {
-						result.setUpdatedTime(new Date().getTime());
-						result.setContentDescribe1(CUtils.get().object2String(bean.getProjectShareRatio()));
-						service.updateInformationResult(result);
-					}else{
-							result = new InformationResult();
-							result.setTitleId("1917");
-							result.setCreateId(CUtils.get().object2String(userId));
-							result.setCreatedTime(new Date().getTime());
-							result.setProjectId(CUtils.get().object2String(bean.getId()));
-							result.setContentDescribe1(CUtils.get().object2String(bean.getProjectShareRatio()));
-							list.add(result);
-					}
-				}
-				//融资计划项目估值
-				if (bean.getFormatValuations()!=null) {
-					hashmap.put("titleId", 1943);
-					result = service.findResultInfoById(hashmap);
-					if (result!=null) {
-						result.setUpdatedTime(new Date().getTime());
-						result.setContentDescribe1(bean.getFormatValuations());
-						service.updateInformationResult(result);
-					}else{
-							result = new InformationResult();
-							result.setTitleId("1943");
-							result.setCreateId(CUtils.get().object2String(userId));
-							result.setCreatedTime(new Date().getTime());
-							result.setProjectId(CUtils.get().object2String(bean.getId()));
-							result.setContentDescribe1(bean.getFormatValuations());
-							list.add(result);
-					}
-				}
-				//投资金额
-				if (bean.getFinalContribution()!=null) {
-					hashmap.put("titleId", 3004);
-					result = service.findResultInfoById(hashmap);
-					if (result!=null) {
-						result.setUpdatedTime(new Date().getTime());
-						result.setContentDescribe1(CUtils.get().object2String(bean.getFinalContribution()));
-						service.updateInformationResult(result);
-					}else{
-							result = new InformationResult();
-							result.setTitleId("3004");
-							result.setCreateId(CUtils.get().object2String(userId));
-							result.setCreatedTime(new Date().getTime());
-							result.setProjectId(CUtils.get().object2String(bean.getId()));
-							result.setContentDescribe1(CUtils.get().object2String(bean.getFinalContribution()));
-							list.add(result);
-					}
-				}
-				//股权占比
-				if (bean.getFinalShareRatio()!=null) {
-					hashmap.put("titleId", 3010);
-					result = service.findResultInfoById(hashmap);
-					if (result!=null) {
-						result.setUpdatedTime(new Date().getTime());
-						result.setContentDescribe1(CUtils.get().object2String(bean.getFinalShareRatio()));
-						service.updateInformationResult(result);
-					}else{
-							result = new InformationResult();
-							result.setTitleId("3010");
-							result.setCreateId(CUtils.get().object2String(userId));
-							result.setCreatedTime(new Date().getTime());
-							result.setProjectId(CUtils.get().object2String(bean.getId()));
-							result.setContentDescribe1(CUtils.get().object2String(bean.getFinalShareRatio()));
-							list.add(result);
-					}
-				}
-				//加速服务费占比
-				if (bean.getServiceCharge()!=null) {
-					hashmap.put("titleId", 3011);
-					result = service.findResultInfoById(hashmap);
-					if (result!=null) {
-						result.setUpdatedTime(new Date().getTime());
-						result.setContentDescribe1(CUtils.get().object2String(bean.getServiceCharge()));
-						service.updateInformationResult(result);
-					}else{
-							result = new InformationResult();
-							result.setTitleId("3011");
-							result.setCreateId(CUtils.get().object2String(userId));
-							result.setCreatedTime(new Date().getTime());
-							result.setProjectId(CUtils.get().object2String(bean.getId()));
-							result.setContentDescribe1(CUtils.get().object2String(bean.getServiceCharge()));
-							list.add(result);
-					}
-				}
-				//
-				//实际项目估值
-				if (bean.getFormatFinalValuations()!=null ) {
-					hashmap.put("titleId", 3012);
-					result = service.findResultInfoById(hashmap);
-					if (result!=null) {
-						result.setUpdatedTime(new Date().getTime());
-						result.setContentDescribe1(bean.getFormatFinalValuations());
-						service.updateInformationResult(result);
-					}else{
-							result = new InformationResult();
-							result.setTitleId("3012");
-							result.setCreateId(CUtils.get().object2String(userId));
-							result.setCreatedTime(new Date().getTime());
-							result.setProjectId(CUtils.get().object2String(bean.getId()));
-							result.setContentDescribe1(bean.getFormatFinalValuations());
-							list.add(result);
-					}
-				}
-				if (list.size()>0) {
-				service.addInformationResult(list);
-				}
+		Map<String, Object> hashmap = new HashMap<>();
+		hashmap.put("projectId", bean.getId());
+		InformationResult result = null;
+		//融资金额
+		if (bean.getProjectContribution()!=null) {
+			hashmap.put("titleId", 1916);
+			result = service.findResultInfoById(hashmap);
+			if (result!=null) {
+				result.setUpdatedTime(new Date().getTime());
+				result.setContentDescribe1(CUtils.get().object2String(bean.getProjectContribution()));
+				service.updateInformationResult(result);
+			}else{
+					result = new InformationResult();
+					result.setTitleId("1916");
+					result.setCreateId(CUtils.get().object2String(userId));
+					result.setCreatedTime(new Date().getTime());
+					result.setProjectId(CUtils.get().object2String(bean.getId()));
+					result.setContentDescribe1(CUtils.get().object2String(bean.getProjectContribution()));
+					list.add(result);
 			}
+		} 
+		//融资轮次
+		if (bean.getFinanceStatus()!=null) {
+			hashmap.put("titleId", 1108);
+			result = service.findResultInfoById(hashmap);
+			if (result!=null) {
+				result.setUpdatedTime(new Date().getTime());
+				result.setContentChoose(CUtils.get().object2String(bean.getFinanceStatus()));
+				service.updateInformationResult(result);
+			}else{
+				result = new InformationResult();
+				result.setTitleId("1108");
+				result.setCreateId(CUtils.get().object2String(userId));
+				result.setCreatedTime(new Date().getTime());
+				result.setProjectId(CUtils.get().object2String(bean.getId()));
+				result.setContentChoose(CUtils.get().object2String(bean.getFinanceStatus()));
+				list.add(result);
+			}
+		}
+		//出让股份
+		if (bean.getProjectShareRatio()!=null) {
+			hashmap.put("titleId", 1917);
+			result = service.findResultInfoById(hashmap);
+			if (result!=null) {
+				result.setUpdatedTime(new Date().getTime());
+				result.setContentDescribe1(CUtils.get().object2String(bean.getProjectShareRatio()));
+				service.updateInformationResult(result);
+			}else{
+					result = new InformationResult();
+					result.setTitleId("1917");
+					result.setCreateId(CUtils.get().object2String(userId));
+					result.setCreatedTime(new Date().getTime());
+					result.setProjectId(CUtils.get().object2String(bean.getId()));
+					result.setContentDescribe1(CUtils.get().object2String(bean.getProjectShareRatio()));
+					list.add(result);
+			}
+		}
+		//融资计划项目估值
+		if (bean.getFormatValuations()!=null) {
+			hashmap.put("titleId", 1943);
+			result = service.findResultInfoById(hashmap);
+			if (result!=null) {
+				result.setUpdatedTime(new Date().getTime());
+				result.setContentDescribe1(bean.getFormatValuations());
+				service.updateInformationResult(result);
+			}else{
+					result = new InformationResult();
+					result.setTitleId("1943");
+					result.setCreateId(CUtils.get().object2String(userId));
+					result.setCreatedTime(new Date().getTime());
+					result.setProjectId(CUtils.get().object2String(bean.getId()));
+					result.setContentDescribe1(bean.getFormatValuations());
+					list.add(result);
+			}
+		}
+		//投资金额
+		if (bean.getFinalContribution()!=null) {
+			hashmap.put("titleId", 3004);
+			result = service.findResultInfoById(hashmap);
+			if (result!=null) {
+				result.setUpdatedTime(new Date().getTime());
+				result.setContentDescribe1(CUtils.get().object2String(bean.getFinalContribution()));
+				service.updateInformationResult(result);
+			}else{
+					result = new InformationResult();
+					result.setTitleId("3004");
+					result.setCreateId(CUtils.get().object2String(userId));
+					result.setCreatedTime(new Date().getTime());
+					result.setProjectId(CUtils.get().object2String(bean.getId()));
+					result.setContentDescribe1(CUtils.get().object2String(bean.getFinalContribution()));
+					list.add(result);
+			}
+		}
+		//股权占比
+		if (bean.getFinalShareRatio()!=null) {
+			hashmap.put("titleId", 3010);
+			result = service.findResultInfoById(hashmap);
+			if (result!=null) {
+				result.setUpdatedTime(new Date().getTime());
+				result.setContentDescribe1(CUtils.get().object2String(bean.getFinalShareRatio()));
+				service.updateInformationResult(result);
+			}else{
+					result = new InformationResult();
+					result.setTitleId("3010");
+					result.setCreateId(CUtils.get().object2String(userId));
+					result.setCreatedTime(new Date().getTime());
+					result.setProjectId(CUtils.get().object2String(bean.getId()));
+					result.setContentDescribe1(CUtils.get().object2String(bean.getFinalShareRatio()));
+					list.add(result);
+			}
+		}
+		//加速服务费占比
+		if (bean.getServiceCharge()!=null) {
+			hashmap.put("titleId", 3011);
+			result = service.findResultInfoById(hashmap);
+			if (result!=null) {
+				result.setUpdatedTime(new Date().getTime());
+				result.setContentDescribe1(CUtils.get().object2String(bean.getServiceCharge()));
+				service.updateInformationResult(result);
+			}else{
+					result = new InformationResult();
+					result.setTitleId("3011");
+					result.setCreateId(CUtils.get().object2String(userId));
+					result.setCreatedTime(new Date().getTime());
+					result.setProjectId(CUtils.get().object2String(bean.getId()));
+					result.setContentDescribe1(CUtils.get().object2String(bean.getServiceCharge()));
+					list.add(result);
+			}
+		}
+		//实际项目估值
+		if (bean.getFormatFinalValuations()!=null ) {
+			hashmap.put("titleId", 3012);
+			result = service.findResultInfoById(hashmap);
+			if (result!=null) {
+				result.setUpdatedTime(new Date().getTime());
+				result.setContentDescribe1(bean.getFormatFinalValuations());
+				service.updateInformationResult(result);
+			}else{
+					result = new InformationResult();
+					result.setTitleId("3012");
+					result.setCreateId(CUtils.get().object2String(userId));
+					result.setCreatedTime(new Date().getTime());
+					result.setProjectId(CUtils.get().object2String(bean.getId()));
+					result.setContentDescribe1(bean.getFormatFinalValuations());
+					list.add(result);
+			}
+		}
+		if (list.size()>0) {
+			service.addInformationResult(list);
+		}
+	}
+	
 	/**
 	 * 项目列表
 	 * @param 
@@ -527,25 +527,16 @@ public class ProjectController {
 			if(projectBo.getSflag()==1){
 				//跟进中
 				projectBo.setProjectStatus("projectStatus:0");
-				//genProjectBean = service.querygjzProjectList(projectBo, new PageRequest(projectBo.getPageNum(), projectBo.getPageSize() , sort));
 			}
 			if(projectBo.getSflag()==2){
 				//投后运营
 				projectBo.setProjectStatus("projectStatus:1");
-				//genProjectBean = service.querythyyList(projectBo, new PageRequest(projectBo.getPageNum(), projectBo.getPageSize() , sort));
 			}
 			if(projectBo.getSflag()==3){
 				//否决
 				projectBo.setProjectStatus("projectStatus:2");
-				//genProjectBean = service.queryfjList(projectBo, new PageRequest(projectBo.getPageNum(), projectBo.getPageSize() , sort));
 			}
-			/*if(projectBo.getSflag()==4){
-				if(projectBo.getKeyword()!=null){
-					projectBo.setCeeword(projectBo.getKeyword().toUpperCase());
-				}
-				projectBo.setCreateUid(null);
-				genProjectBean = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
-			}*/
+			
 			//查询列表
 			if(projectBo.getFinanceStatus()!=null){
 				if(!projectBo.getFinanceStatus().equals("尚未获投") || projectBo.getFinanceStatus().equals("不明确")){
@@ -611,7 +602,6 @@ public class ProjectController {
 				}
 				//融资状态名称
 				if(StringUtils.isNotBlank(CUtils.get().object2String(map.get("financeStatus")))){
-					//map.put("financeStatusName", getNameByCode(CUtils.get().object2String(map.get("financeStatus")),"financeStatus"));
 					map.put("financeStatusName", CUtils.get().object2String(map.get("financeStatus")));
 				}
 				//项目状态编码

@@ -12,6 +12,7 @@ import com.galaxy.im.common.db.PageRequest;
 import com.galaxy.im.common.db.service.IBaseService;
 
 public interface IProjectService extends IBaseService<ProjectBean>{
+	//获取项目基础信息
 	Map<String,Object> getBaseProjectInfo(Long id);
 	Map<String,Object> getProjectInoIsNull(Long id);
 	Integer projectIsYJZ(Long projectId);
@@ -32,20 +33,17 @@ public interface IProjectService extends IBaseService<ProjectBean>{
 	//项目是否处于接触访谈阶段
 	int projectIsInterview(Long id);
 	
-	/*//跟进中项目列表
-	GeneralProjecttVO querygjzProjectList(ProjectBo projectBo, PageRequest pageRequest);
-	//投后运营项目列表
-	GeneralProjecttVO querythyyList(ProjectBo projectBo, PageRequest pageRequest);
-	//否决项目列表
-	GeneralProjecttVO queryfjList(ProjectBo projectBo, PageRequest pageRequest);*/
-	
 	//全部
 	GeneralProjecttVO queryPageList(ProjectBo projectBo, PageRequest pageable);
+	//跟进中个数
 	Long queryProjectgjzCount(ProjectBo projectBo);
+	//投后运营个数
 	Long queryProjectthyyCount(ProjectBo projectBo);
+	//否决个数
 	Long queryProjectfjCount(ProjectBo projectBo);
 	
 	Map<String, Object> selectBaseProjectInfo(Map<String, Object> paramMap);
+	//更新
 	int updateProjects(Map<String, Object> hashmap);
 	InformationResult findResultInfoById(Map<String, Object> hashmap);
 	//插入信息到全息报告表

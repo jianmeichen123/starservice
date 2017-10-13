@@ -101,23 +101,21 @@
 	
 	<!-- 项目详情 基础信息、融资计划、实际投资(来源全息报告)-->
 	<select id="selectBaseProjectInfo" parameterType="hashmap" resultType="hashmap">
-	SELECT id.name financeStatus,id.id financeStatusId,
-	group_concat(case when t.tid=#{titleId1} then t.result else null end) as projectContribution,
-	group_concat(case when t.tid=#{titleId2} then t.result else null end) as projectShareRatio,
-	group_concat(case when t.tid=#{titleId3} then t.result else null end) as projectValuations,
-	group_concat(case when t.tid=#{titleId4} then t.result else null end) as finalContribution,
-	group_concat(case when t.tid=#{titleId5} then t.result else null end) as finalShareRatio,
-	group_concat(case when t.tid=#{titleId6} then t.result else null end) as serviceCharge,
-	group_concat(case when t.tid=#{titleId7} then t.result else null end) as finalValuations 
-	FROM 
-	(SELECT title_id tid, content_describe1 result, content_choose choose 
-	 FROM
-	 information_result 
-	 WHERE  project_id=#{projectId} AND title_id in(#{titleId1},#{titleId2},#{titleId3},#{titleId4},#{titleId5},#{titleId6},#{titleId7},#{titleId8})) t
-	LEFT JOIN information_dictionary id ON t.choose=id.id
-	
+		SELECT id.name financeStatus,id.id financeStatusId,
+		group_concat(case when t.tid=#{titleId1} then t.result else null end) as projectContribution,
+		group_concat(case when t.tid=#{titleId2} then t.result else null end) as projectShareRatio,
+		group_concat(case when t.tid=#{titleId3} then t.result else null end) as projectValuations,
+		group_concat(case when t.tid=#{titleId4} then t.result else null end) as finalContribution,
+		group_concat(case when t.tid=#{titleId5} then t.result else null end) as finalShareRatio,
+		group_concat(case when t.tid=#{titleId6} then t.result else null end) as serviceCharge,
+		group_concat(case when t.tid=#{titleId7} then t.result else null end) as finalValuations 
+		FROM 
+		(SELECT title_id tid, content_describe1 result, content_choose choose 
+		 FROM
+		 information_result 
+		 WHERE  project_id=#{projectId} AND title_id in(#{titleId1},#{titleId2},#{titleId3},#{titleId4},#{titleId5},#{titleId6},#{titleId7},#{titleId8})) t
+		LEFT JOIN information_dictionary id ON t.choose=id.id
 	</select>
-	
 
 	<!-- 判断用户画像等是否为空 -->
 	<select id="getProjectInoIsNull" parameterType="long" resultType="hashmap">
@@ -187,6 +185,7 @@
 		<if test="id != null" >and id = #{id}</if>
 		</where>
 	</select>
+	
 	<resultMap type="com.galaxy.im.bean.project.SopProjectBean" id="BaseResultMap">
 		<result column="id" property="id"/>
 		<result column="project_name" property="projectName"/>
@@ -231,6 +230,7 @@
 	    <result column="fa_name" property="faName" />
 	    <result column="project_time" property="projectTime" />
 	</resultMap>
+	
 	<!-- 创建项目 -->
 	<insert id="saveProject" useGeneratedKeys="true" keyProperty="id" parameterType="com.galaxy.im.bean.project.SopProjectBean" >
 	     insert into sop_project 
@@ -254,6 +254,7 @@
 	<update id="updateInvestById" parameterType="com.galaxy.im.bean.project.SopProjectBean">
 		update joint_delivery set delivery_type=#{financeMode} WHERE project_id=#{id};
 	</update>
+	
 	 <!-- 删 项目下的所有投资方的投资形式-->
 	<delete id="deleteInvestById" parameterType="com.galaxy.im.bean.project.SopProjectBean">
 		DELETE FROM joint_delivery WHERE project_id=#{id};
@@ -297,7 +298,6 @@
 		where id = #{id}
 	</update>
 	
-	
 	<!-- 根据ID查询 -->
 	<select id="getProjectInfoById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
@@ -314,7 +314,7 @@
 	</select>
 	
 	<!-- 插入信息到全息报告-->
-		<insert id="addInformationResult" useGeneratedKeys="true" parameterType="java.util.List">  
+	<insert id="addInformationResult" useGeneratedKeys="true" parameterType="java.util.List">  
 	    <selectKey resultType="long" keyProperty="id" order="AFTER">  
 	        SELECT  
 	        LAST_INSERT_ID()  
@@ -347,22 +347,8 @@
 			#{item.createId} )
 	    </foreach>  
 	</insert>
-	
-	 <!-- 更新全息报告同步会议结论结果的数据 -->
-	<!-- <update id="updateInformationResult"  parameterType="java.util.List">  
-          <foreach collection="list" item="item" separator="" open="begin" close="end;"> 
-                update information_result   
-                <set>
-				<if test="item.contentChoose != null"> content_choose = #{item.contentChoose}, </if>
-				<if test="item.contentDescribe1 != null"> content_describe1 = #{item.contentDescribe1}, </if>
-				<if test="item.contentDescribe2 != null"> content_describe2 = #{item.contentDescribe2}, </if>
-				<if test="item.updatedTime != null"> updated_time = #{item.updatedTime}</if>
-				</set>  
-                where id = ${item.id}  
-         </foreach>  
-    </update>  -->
     
-    	<!-- 更新全息报告同步会议结论结果的数据 -->
+    <!-- 更新全息报告同步会议结论结果的数据 -->
 	<update id="updateInformationResult" parameterType="com.galaxy.im.bean.project.InformationResult">
 		update information_result
 		<set>
@@ -377,8 +363,5 @@
 		</set>
 		where id = #{id};
 	</update>
-	
-	
-	
 
 </mapper>

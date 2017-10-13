@@ -217,42 +217,6 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 	}
 
 	/**
-	 * 跟进中项目列表
-	 *//*
-	@Override
-	public GeneralProjecttVO querygjzProjectList(ProjectBo query, PageRequest pageable) {
-		Page<SopProjectBean> pageBean =  sopdao.querygjzProjectList(query, pageable);
-		GeneralProjecttVO gpbean = new GeneralProjecttVO();
-		pageBean.setPageable(null);
-		gpbean.setPvPage(pageBean);
-		return gpbean;
-	}
-
-	*//**
-	 * 投后运营项目列表
-	 *//*
-	@Override
-	public GeneralProjecttVO querythyyList(ProjectBo query, PageRequest pageable) {
-		Page<SopProjectBean> pageBean =  sopdao.querythyyList(query, pageable);
-		GeneralProjecttVO gpbean = new GeneralProjecttVO();
-		pageBean.setPageable(null);
-		gpbean.setPvPage(pageBean);
-		return gpbean;
-	}
-
-	*//**
-	 * 否决项目列表
-	 *//*
-	@Override
-	public GeneralProjecttVO queryfjList(ProjectBo query, PageRequest pageable) {
-		Page<SopProjectBean> pageBean =  sopdao.queryfjList(query, pageable);
-		GeneralProjecttVO gpbean = new GeneralProjecttVO();
-		pageBean.setPageable(null);
-		gpbean.setPvPage(pageBean);
-		return gpbean;
-	}*/
-
-	/**
 	 * 全部
 	 */
 	@Override
