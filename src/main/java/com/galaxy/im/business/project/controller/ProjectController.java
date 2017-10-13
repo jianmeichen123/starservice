@@ -183,7 +183,6 @@ public class ProjectController {
 		return result;
 	}
 	
-	
 	/**
 	 * 添加/编辑项目
 	 * @param 
@@ -336,29 +335,21 @@ public class ProjectController {
 		}
 		return resultBean;
 	}
-	
-	
+	//全息报告数据处理
 	void editInformationResult(SopProjectBean bean,Long userId){
 		List<InformationResult> list = new ArrayList<>();
-	/*	List<InformationResult> list1 = new ArrayList<>();*/
 			Map<String, Object> hashmap = new HashMap<>();
 			hashmap.put("projectId", bean.getId());
-
 				InformationResult result = null;
-				//111
-				if (bean.getProjectContribution()!=null) {//
+				//融资金额
+				if (bean.getProjectContribution()!=null) {
 					hashmap.put("titleId", 1916);
 					result = service.findResultInfoById(hashmap);
 					if (result!=null) {
 						result.setUpdatedTime(new Date().getTime());
-						if (bean.getProjectContribution()!=0) {
-							result.setContentDescribe1(CUtils.get().object2String(bean.getProjectContribution()));
-						}else{
-							result.setContentDescribe1("");
-						}
+						result.setContentDescribe1(CUtils.get().object2String(bean.getProjectContribution()));
 						service.updateInformationResult(result);
 					}else{
-						if(bean.getProjectContribution()!=0){
 							result = new InformationResult();
 							result.setTitleId("1916");
 							result.setCreateId(CUtils.get().object2String(userId));
@@ -366,10 +357,9 @@ public class ProjectController {
 							result.setProjectId(CUtils.get().object2String(bean.getId()));
 							result.setContentDescribe1(CUtils.get().object2String(bean.getProjectContribution()));
 							list.add(result);
-						}
 					}
 				} 
-				//2222
+				//融资轮次
 				if (bean.getFinanceStatus()!=null) {
 					hashmap.put("titleId", 1108);
 					result = service.findResultInfoById(hashmap);
@@ -387,20 +377,15 @@ public class ProjectController {
 						list.add(result);
 					}
 				}
-				//333
+				//出让股份
 				if (bean.getProjectShareRatio()!=null) {
 					hashmap.put("titleId", 1917);
 					result = service.findResultInfoById(hashmap);
 					if (result!=null) {
 						result.setUpdatedTime(new Date().getTime());
-						if (bean.getProjectShareRatio()!=0) {
-							result.setContentDescribe1(CUtils.get().object2String(bean.getProjectShareRatio()));
-						}else{
-							result.setContentDescribe1("");
-						}
+						result.setContentDescribe1(CUtils.get().object2String(bean.getProjectShareRatio()));
 						service.updateInformationResult(result);
 					}else{
-						if (bean.getProjectShareRatio()!=0) {
 							result = new InformationResult();
 							result.setTitleId("1917");
 							result.setCreateId(CUtils.get().object2String(userId));
@@ -408,23 +393,17 @@ public class ProjectController {
 							result.setProjectId(CUtils.get().object2String(bean.getId()));
 							result.setContentDescribe1(CUtils.get().object2String(bean.getProjectShareRatio()));
 							list.add(result);
-						}
 					}
 				}
-				//444
+				//项目估值
 				if (bean.getProjectValuations()!=null) {
 					hashmap.put("titleId", 1943);
 					result = service.findResultInfoById(hashmap);
 					if (result!=null) {
 						result.setUpdatedTime(new Date().getTime());
-						if (bean.getProjectValuations()!=0) {
-							result.setContentDescribe1(CUtils.get().object2String(bean.getProjectValuations()));
-						}else{
-							result.setContentDescribe1("");
-						}
+						result.setContentDescribe1(CUtils.get().object2String(bean.getProjectValuations()));
 						service.updateInformationResult(result);
 					}else{
-						if (bean.getProjectValuations()!=0) {
 							result = new InformationResult();
 							result.setTitleId("1943");
 							result.setCreateId(CUtils.get().object2String(userId));
@@ -432,23 +411,17 @@ public class ProjectController {
 							result.setProjectId(CUtils.get().object2String(bean.getId()));
 							result.setContentDescribe1(CUtils.get().object2String(bean.getProjectValuations()));
 							list.add(result);
-						}
 					}
 				}
-				//555
+				//投资金额
 				if (bean.getFinalContribution()!=null) {
 					hashmap.put("titleId", 3004);
 					result = service.findResultInfoById(hashmap);
 					if (result!=null) {
 						result.setUpdatedTime(new Date().getTime());
-						if (bean.getFinalContribution()!=0) {
-							result.setContentDescribe1(CUtils.get().object2String(bean.getFinalContribution()));
-						}else{
-							result.setContentDescribe1("");
-						}
+						result.setContentDescribe1(CUtils.get().object2String(bean.getFinalContribution()));
 						service.updateInformationResult(result);
 					}else{
-						if (bean.getFinalContribution()!=0) {
 							result = new InformationResult();
 							result.setTitleId("3004");
 							result.setCreateId(CUtils.get().object2String(userId));
@@ -456,23 +429,17 @@ public class ProjectController {
 							result.setProjectId(CUtils.get().object2String(bean.getId()));
 							result.setContentDescribe1(CUtils.get().object2String(bean.getFinalContribution()));
 							list.add(result);
-						}
 					}
 				}
-				//666
+				//股权占比
 				if (bean.getFinalShareRatio()!=null) {
 					hashmap.put("titleId", 3010);
 					result = service.findResultInfoById(hashmap);
 					if (result!=null) {
 						result.setUpdatedTime(new Date().getTime());
-						if (bean.getFinalShareRatio()!=0) {
-							result.setContentDescribe1(CUtils.get().object2String(bean.getFinalShareRatio()));
-						}else{
-							result.setContentDescribe1("");
-						}
+						result.setContentDescribe1(CUtils.get().object2String(bean.getFinalShareRatio()));
 						service.updateInformationResult(result);
 					}else{
-						if (bean.getFinalShareRatio()!=0) {
 							result = new InformationResult();
 							result.setTitleId("3010");
 							result.setCreateId(CUtils.get().object2String(userId));
@@ -480,23 +447,17 @@ public class ProjectController {
 							result.setProjectId(CUtils.get().object2String(bean.getId()));
 							result.setContentDescribe1(CUtils.get().object2String(bean.getFinalShareRatio()));
 							list.add(result);
-						}
 					}
 				}
-				//777
+				//加速服务费占比
 				if (bean.getServiceCharge()!=null) {
 					hashmap.put("titleId", 3011);
 					result = service.findResultInfoById(hashmap);
 					if (result!=null) {
 						result.setUpdatedTime(new Date().getTime());
-						if (bean.getServiceCharge()!=0) {
-							result.setContentDescribe1(CUtils.get().object2String(bean.getServiceCharge()));
-						}else{
-							result.setContentDescribe1("");
-						}
+						result.setContentDescribe1(CUtils.get().object2String(bean.getServiceCharge()));
 						service.updateInformationResult(result);
 					}else{
-						if (bean.getServiceCharge()!=0) {
 							result = new InformationResult();
 							result.setTitleId("3011");
 							result.setCreateId(CUtils.get().object2String(userId));
@@ -504,24 +465,18 @@ public class ProjectController {
 							result.setProjectId(CUtils.get().object2String(bean.getId()));
 							result.setContentDescribe1(CUtils.get().object2String(bean.getServiceCharge()));
 							list.add(result);
-						}
 					}
 				}
 				//
-				//888
+				//项目估值
 				if (bean.getFinalValuations()!=null ) {
 					hashmap.put("titleId", 3012);
 					result = service.findResultInfoById(hashmap);
 					if (result!=null) {
 						result.setUpdatedTime(new Date().getTime());
-						if (bean.getFinalValuations()!=0) {
-							result.setContentDescribe1(CUtils.get().object2String(bean.getFinalValuations()));
-						}else{
-							result.setContentDescribe1("");
-						}
+						result.setContentDescribe1(CUtils.get().object2String(bean.getFinalValuations()));
 						service.updateInformationResult(result);
 					}else{
-						if (bean.getFinalValuations()!=0) {
 							result = new InformationResult();
 							result.setTitleId("3012");
 							result.setCreateId(CUtils.get().object2String(userId));
@@ -529,19 +484,12 @@ public class ProjectController {
 							result.setProjectId(CUtils.get().object2String(bean.getId()));
 							result.setContentDescribe1(CUtils.get().object2String(bean.getFinalValuations()));
 							list.add(result);
-						}
 					}
 				}
-				/*if (list1.size()>0) {
-					int count1 = service.updateInformationResult(list1);
-				}*/
 				if (list.size()>0) {
-					int count = service.addInformationResult(list);
+				service.addInformationResult(list);
 				}
 			}
-		
-	/*}*/
-	
 	/**
 	 * 项目列表
 	 * @param 
