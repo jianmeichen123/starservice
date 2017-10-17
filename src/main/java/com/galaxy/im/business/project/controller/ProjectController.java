@@ -536,6 +536,12 @@ public class ProjectController {
 				//否决
 				projectBo.setProjectStatus("projectStatus:2");
 			}
+			if(projectBo.getSflag()==4){
+				if(projectBo.getKeyword()!=null){
+					projectBo.setCeeword(projectBo.getKeyword().toUpperCase());
+				}
+				projectBo.setCreateUid(null);
+			}
 			
 			//查询列表
 			if(projectBo.getFinanceStatus()!=null){
