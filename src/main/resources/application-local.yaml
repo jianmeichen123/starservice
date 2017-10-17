@@ -5,9 +5,9 @@ server:
 
 datasource: 
   type: com.alibaba.druid.pool.DruidDataSource  
-  url: jdbc:mysql://localhost:3306/fx_db?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf-8
-  username: root
-  password: root
+  url: jdbc:mysql://10.9.11.232:3306/fx_db?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf-8
+  username: fxuser
+  password: fxdb_Fp9EPkG2
   driver-class-name: com.mysql.jdbc.Driver
   minIdle: 1  
   maxActive: 2  
