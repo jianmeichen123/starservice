@@ -53,7 +53,7 @@ public class InvestmentdealServiceImpl extends BaseServiceImpl<Test> implements 
 					dictCode = CUtils.get().object2String(map.get("dictCode"), "");
 					pcount = CUtils.get().object2Integer(map.get("pcount"), 0);
 					
-					if("meeting4Result:1".equals(dictCode)){//投资的会议
+					if("meeting4Result:1".equals(dictCode)){//投资的会议相当于通过
 						if(pcount>0){
 							res=true;
 						}

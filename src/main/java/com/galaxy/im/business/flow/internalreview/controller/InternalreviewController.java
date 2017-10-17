@@ -99,7 +99,7 @@ public class InternalreviewController {
 							result.setMessage("否决项目成功");
 							result.setStatus("OK");
 							//全息报告数据同步
-							reportSync(p);
+							reportSync(p,0);
 							//记录操作日志
 							ControllerUtils.setRequestParamsForMessageTip(request,p.getProjectName(), p.getId(),null, false, null, null, null);
 						}else{
@@ -158,7 +158,7 @@ public class InternalreviewController {
 							resultBean.setMap(map);
 							resultBean.setStatus("OK");
 							//全息报告数据同步
-							reportSync(sopBean);
+							reportSync(sopBean,1);
 							//记录操作日志
 							ControllerUtils.setRequestParamsForMessageTip(request, sopBean.getProjectName(), sopBean.getId(),"");
 						}else{
@@ -176,7 +176,7 @@ public class InternalreviewController {
 
 	//全息报告数据同步
 	@SuppressWarnings("unused")
-	private void reportSync(SopProjectBean sopBean) {
+	private void reportSync(SopProjectBean sopBean,int flag) {
 		InformationResult result=null;
 		Map<String,Object> map = new HashMap<String,Object>();
 		List<InformationResult> list =new ArrayList<InformationResult>();
@@ -186,17 +186,20 @@ public class InternalreviewController {
 		map.put("meetingType", StaticConst.MEETING_TYPE_INTERNAL);
 		map.put("invest", "meeting1Result:2");
 		map.put("flash", "meeting1Result:1");
-		map.put("votedown", "meeting1Result:4");
-		Map<String,Object> res = fcService.getMeetingRecordInfo(map);
-		if(res.containsKey("meetingResultCode") && res.get("meetingResultCode")!=null){
-			if(res.get("meetingResultCode").equals("meeting1Result:1")){
-				choose="1142";
-			}else if(res.get("meetingResultCode").equals("meeting1Result:2")){
-				choose="1143";
-			}else if(res.get("meetingResultCode").equals("meeting1Result:4")){
-				choose="1145";
+		
+		if(flag==0){
+			choose="1145";
+		}else{
+			Map<String,Object> res = fcService.getMeetingRecordInfo(map);
+			if(res.containsKey("meetingResultCode") && res.get("meetingResultCode")!=null){
+				if(res.get("meetingResultCode").equals("meeting1Result:1")){
+					choose="1142";
+				}else if(res.get("meetingResultCode").equals("meeting1Result:2")){
+					choose="1143";
+				}
 			}
 		}
+		
 		map.put("parentId", "7028");
 		map.put("titleId", "1111");
 		list = fcService.getReportInfo(map);

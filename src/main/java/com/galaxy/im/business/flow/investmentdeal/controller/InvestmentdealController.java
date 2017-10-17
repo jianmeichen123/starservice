@@ -110,7 +110,7 @@ public class InvestmentdealController {
 							result.setMessage("否决项目成功");
 							result.setStatus("OK");
 							//全息报告数据同步
-							reportSync(p);
+							reportSync(p,0);
 							paramMap.put("scheduleStatus", 3);
 							paramMap.put("updatedTime", DateUtil.getMillis(new Date()));
 							iiService.updateInvestmentdeal(paramMap);  //修改投决会评审排期状态为已否决
@@ -191,7 +191,7 @@ public class InvestmentdealController {
 							resultBean.setMap(map);
 							resultBean.setStatus("OK");
 							//全息报告数据同步
-							reportSync(sopBean);
+							reportSync(sopBean,1);
 							//记录操作日志
 							ControllerUtils.setRequestParamsForMessageTip(request, sopBean.getProjectName(), sopBean.getId(),"");
 						}else{
@@ -209,7 +209,7 @@ public class InvestmentdealController {
 	
 	//全息报告数据同步
 	@SuppressWarnings("unused")
-	private void reportSync(SopProjectBean sopBean) {
+	private void reportSync(SopProjectBean sopBean,int flag) {
 		InformationResult result=null;
 		Map<String,Object> map = new HashMap<String,Object>();
 		List<InformationResult> list =new ArrayList<InformationResult>();
@@ -218,15 +218,18 @@ public class InvestmentdealController {
 		map.put("projectId", sopBean.getId());
 		map.put("meetingType", StaticConst.MEETING_TYPE_INVEST);
 		map.put("invest", "meeting4Result:1");
-		map.put("votedown", "meeting4Result:3");
-		Map<String,Object> res = fcService.getMeetingRecordInfo(map);
-		if(res.containsKey("meetingResultCode") && res.get("meetingResultCode")!=null){
-			if(res.get("meetingResultCode").equals("meeting4Result:1")){
-				choose="1173";
-			}else if(res.get("meetingResultCode").equals("meeting4Result:3")){
-				choose="1177";
+	
+		if(flag==0){
+			choose="1177";
+		}else{
+			Map<String,Object> res = fcService.getMeetingRecordInfo(map);
+			if(res.containsKey("meetingResultCode") && res.get("meetingResultCode")!=null){
+				if(res.get("meetingResultCode").equals("meeting4Result:1")){
+					choose="1173";
+				}
 			}
 		}
+		
 		map.put("parentId", "7028");
 		map.put("titleId", "1114");
 		list = fcService.getReportInfo(map);
@@ -252,7 +255,7 @@ public class InvestmentdealController {
 	}
 
 	/**
-	 * 股权交割(客户端去掉，暂时不用)
+	 * 股权交割
 	 * 
 	 * @param paramString
 	 * @return
@@ -314,6 +317,8 @@ public class InvestmentdealController {
 							iiService.updateInvestmentdeal(paramMap);
 							resultBean.setMap(map);
 							resultBean.setStatus("OK");
+							//全息报告数据同步
+							reportSync(sopBean,1);
 							//记录操作日志
 							ControllerUtils.setRequestParamsForMessageTip(request, sopBean.getProjectName(), sopBean.getId(),"");
 						}else{
