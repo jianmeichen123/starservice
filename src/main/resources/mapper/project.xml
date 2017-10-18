@@ -113,7 +113,6 @@
 					MAX(CASE t.code WHEN 'FNO1_1' THEN r.content_choose ELSE NULL END) tt_finance_status
 					FROM information_title_relate t 
 					INNER JOIN information_result r ON t.title_id = r.title_id AND t.report_type=4
-					LEFT JOIN information_dictionary d on d.id=r.content_choose
 					GROUP BY r.project_id
 		) tt  ON tt.project_id = sop_project.id
 		<include refid="Base_Where_Clause" />
@@ -133,7 +132,6 @@
 					MAX(CASE t.code WHEN 'FNO1_1' THEN r.content_choose ELSE NULL END) tt_finance_status
 					FROM information_title_relate t 
 					INNER JOIN information_result r ON t.title_id = r.title_id AND t.report_type=4
-					LEFT JOIN information_dictionary d on d.id=r.content_choose
 					GROUP BY r.project_id
 		) tt  ON tt.project_id = sop_project.id
 		<include refid="Base_Where_Clause" />
