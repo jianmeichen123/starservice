@@ -137,4 +137,11 @@
 		<include refid="Base_Where_Clause" />
 	</select>
 	
+	<!-- 分别查询跟进中，投后运营，已否决的个数 -->
+	<select id="selectCount" resultType="java.lang.Long" parameterType="java.util.Map">
+		SELECT count(id) 
+		FROM sop_project 
+		<include refid="Base_Where_Clause" />
+	</select>
+	
 </mapper>
