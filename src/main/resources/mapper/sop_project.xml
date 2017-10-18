@@ -101,7 +101,9 @@
 	
 	<!-- 项目详情 基础信息、融资计划、实际投资(来源全息报告)-->
 	<select id="selectBaseProjectInfo" parameterType="hashmap" resultType="hashmap">
-		SELECT id.name financeStatus,id.id financeStatusId,
+		SELECT 
+		CASE WHEN t.choose IN('尚未获投','不明确') THEN t.choose else id.name  end financeStatus,
+		CASE WHEN t.choose IN('尚未获投','不明确') THEN t.choose else id.id end financeStatusId,
 		group_concat(case when t.tid=#{titleId1} then t.result else null end) as projectContribution,
 		group_concat(case when t.tid=#{titleId2} then t.result else null end) as projectShareRatio,
 		group_concat(case when t.tid=#{titleId3} then t.result else null end) as projectValuations,
