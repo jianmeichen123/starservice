@@ -106,11 +106,11 @@
 		FROM sop_project 
 		LEFT JOIN (
 				  SELECT r.project_id,
-					MAX(CASE t.code WHEN 'FNO1_2_1' THEN r.content_describe1 ELSE NULL END) tt_project_contribution,
-					MAX(CASE t.code WHEN 'FNO1_2_3' THEN r.content_describe1 ELSE NULL END) tt_project_share_ratio,
-					MAX(CASE t.code WHEN 'FNO1_3_1' THEN r.content_describe1 ELSE NULL END) tt_final_contribution,
-					MAX(CASE t.code WHEN 'FNO1_3_3' THEN r.content_describe1 ELSE NULL END) tt_final_share_ratio,
-					MAX(CASE t.code WHEN 'FNO1_1' THEN r.content_choose ELSE NULL END) tt_finance_status
+					CASE t.code WHEN 'FNO1_2_1' THEN r.content_describe1 ELSE NULL END tt_project_contribution,
+					CASE t.code WHEN 'FNO1_2_3' THEN r.content_describe1 ELSE NULL END tt_project_share_ratio,
+					CASE t.code WHEN 'FNO1_3_1' THEN r.content_describe1 ELSE NULL END tt_final_contribution,
+					CASE t.code WHEN 'FNO1_3_3' THEN r.content_describe1 ELSE NULL END tt_final_share_ratio,
+					CASE t.code WHEN 'FNO1_1' THEN r.content_choose ELSE NULL END tt_finance_status
 					FROM information_title_relate t 
 					INNER JOIN information_result r ON t.title_id = r.title_id AND t.report_type=4
 					GROUP BY r.project_id
@@ -125,11 +125,11 @@
 		FROM sop_project 
 		LEFT JOIN (
 				  SELECT r.project_id,
-					MAX(CASE t.code WHEN 'FNO1_2_1' THEN r.content_describe1 ELSE NULL END) tt_project_contribution,
-					MAX(CASE t.code WHEN 'FNO1_2_3' THEN r.content_describe1 ELSE NULL END) tt_project_share_ratio,
-					MAX(CASE t.code WHEN 'FNO1_3_1' THEN r.content_describe1 ELSE NULL END) tt_final_contribution,
-					MAX(CASE t.code WHEN 'FNO1_3_3' THEN r.content_describe1 ELSE NULL END) tt_final_share_ratio,
-					MAX(CASE t.code WHEN 'FNO1_1' THEN r.content_choose ELSE NULL END) tt_finance_status
+					CASE t.code WHEN 'FNO1_2_1' THEN r.content_describe1 ELSE NULL END tt_project_contribution,
+					CASE t.code WHEN 'FNO1_2_3' THEN r.content_describe1 ELSE NULL END tt_project_share_ratio,
+					CASE t.code WHEN 'FNO1_3_1' THEN r.content_describe1 ELSE NULL END tt_final_contribution,
+					CASE t.code WHEN 'FNO1_3_3' THEN r.content_describe1 ELSE NULL END tt_final_share_ratio,
+					CASE t.code WHEN 'FNO1_1' THEN r.content_choose ELSE NULL END tt_finance_status
 					FROM information_title_relate t 
 					INNER JOIN information_result r ON t.title_id = r.title_id AND t.report_type=4
 					GROUP BY r.project_id
