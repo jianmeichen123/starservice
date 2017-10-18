@@ -36,9 +36,9 @@ public class SopProjectDaoImpl extends BaseDaoImpl<ProjectBo,Long> implements IS
 		long total = 0L;
 		try{
 			Map<String, Object> params = BeanUtils.toMap(query);
-			total = CUtils.get().object2Long(sqlSessionTemplate.selectOne(getSqlName("selectPageListCount"),params));
+			total = CUtils.get().object2Long(sqlSessionTemplate.selectOne(getSqlName("selectCount"),params));
 		}catch(Exception e){
-			throw new DaoException(String.format("根据项目状态统计数据量出错！语句:%s" ,  getSqlName("selectPageListCount")), e);
+			throw new DaoException(String.format("根据项目状态统计数据量出错！语句:%s" ,  getSqlName("selectCount")), e);
 		}
 		return total;
 	}
