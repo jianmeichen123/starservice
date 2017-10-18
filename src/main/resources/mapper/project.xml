@@ -106,7 +106,7 @@
 		FROM sop_project 
 		LEFT JOIN (
 				  SELECT r.project_id,
-					MAX(CASE t.code WHEN 'FNO1_2' THEN r.content_describe1 ELSE NULL END) tt_project_contribution,
+					MAX(CASE t.code WHEN 'FNO1_2_1' THEN r.content_describe1 ELSE NULL END) tt_project_contribution,
 					MAX(CASE t.code WHEN 'FNO1_2_3' THEN r.content_describe1 ELSE NULL END) tt_project_share_ratio,
 					MAX(CASE t.code WHEN 'FNO1_3_1' THEN r.content_describe1 ELSE NULL END) tt_final_contribution,
 					MAX(CASE t.code WHEN 'FNO1_3_3' THEN r.content_describe1 ELSE NULL END) tt_final_share_ratio,
@@ -126,7 +126,7 @@
 		FROM sop_project 
 		LEFT JOIN (
 				  SELECT r.project_id,
-					MAX(CASE t.code WHEN 'FNO1_2' THEN r.content_describe1 ELSE NULL END) tt_project_contribution,
+					MAX(CASE t.code WHEN 'FNO1_2_1' THEN r.content_describe1 ELSE NULL END) tt_project_contribution,
 					MAX(CASE t.code WHEN 'FNO1_2_3' THEN r.content_describe1 ELSE NULL END) tt_project_share_ratio,
 					MAX(CASE t.code WHEN 'FNO1_3_1' THEN r.content_describe1 ELSE NULL END) tt_final_contribution,
 					MAX(CASE t.code WHEN 'FNO1_3_3' THEN r.content_describe1 ELSE NULL END) tt_final_share_ratio,
