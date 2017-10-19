@@ -198,8 +198,12 @@ public class ProjectapprovalController {
 		//会议最新信息
 		map.put("projectId", sopBean.getId());
 		map.put("meetingType", StaticConst.MEETING_TYPE_APPROVAL);
-		map.put("invest", "meeting3Result:2");
-		map.put("flash", "meeting3Result:3");
+		
+		List<String> resultList = new ArrayList<String>();
+		resultList.add("meeting3Result:2");
+		resultList.add("meeting3Result:3");
+		resultList.add("meeting3Result:5");
+		map.put("resultList", resultList);
 		
 		if(flag==0){
 			//否决
@@ -211,6 +215,8 @@ public class ProjectapprovalController {
 					choose="1162";
 				}else if(res.get("meetingResultCode").equals("meeting3Result:3")){
 					choose="1163";
+				}else if(res.get("meetingResultCode").equals("meeting3Result:5")){
+					choose="1166";
 				}
 			}
 		}

@@ -217,8 +217,11 @@ public class InvestmentdealController {
 		//会议最新信息
 		map.put("projectId", sopBean.getId());
 		map.put("meetingType", StaticConst.MEETING_TYPE_INVEST);
-		map.put("invest", "meeting4Result:1");
-	
+		
+		List<String> resultList = new ArrayList<String>();
+		resultList.add("meeting4Result:1");
+		map.put("resultList", resultList);
+		
 		if(flag==0){
 			choose="1177";
 		}else{

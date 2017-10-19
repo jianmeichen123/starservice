@@ -184,8 +184,11 @@ public class InternalreviewController {
 		//会议最新信息
 		map.put("projectId", sopBean.getId());
 		map.put("meetingType", StaticConst.MEETING_TYPE_INTERNAL);
-		map.put("invest", "meeting1Result:2");
-		map.put("flash", "meeting1Result:1");
+		
+		List<String> resultList = new ArrayList<String>();
+		resultList.add("meeting1Result:2");
+		resultList.add("meeting1Result:1");
+		map.put("resultList", resultList);
 		
 		if(flag==0){
 			choose="1145";

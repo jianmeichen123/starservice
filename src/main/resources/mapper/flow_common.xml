@@ -388,9 +388,12 @@
 		FROM sop_meeting_record r 
 		left join dict d1 on r.meeting_result=d1.dict_code
 		WHERE r.project_id=#{projectId} and r.meeting_type=#{meetingType} 
-		<if test="invest != null"> and r.meeting_result = #{invest}</if>
-		<if test="flash  != null"> or r.meeting_result = #{flash}</if>
-		<if test="votedown  != null"> or r.meeting_result = #{votedown}</if>
+		<if test="resultList != null">
+			and r.meeting_result in 
+			<foreach collection="resultList" item="res" index="index" open="(" close=")" separator=",">
+				#{res}
+			</foreach>
+		</if>
 		ORDER BY r.meeting_date DESC LIMIT 1;
 	</select>
 	
