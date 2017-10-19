@@ -13,7 +13,15 @@
 				<if test="projectStatus != null" > and project_status = #{projectStatus} </if>
 				<if test="projectType != null" > and project_type = #{projectType} </if>	
 				<if test="projectProgress != null" > and project_progress = #{projectProgress} </if>
-				<if test="financeStatus != null" > and tt_finance_status = #{financeStatus} </if>
+				<if test="financeStatus != null" >
+			      	AND EXISTS(
+					SELECT 1
+					FROM information_title_relate t
+					INNER JOIN information_result r ON t.title_id = r.title_id 
+					WHERE r.project_id = sop_project.id AND t.code = 'FNO1_1' and t.report_type=4
+					AND r.content_choose = #{financeStatus} 
+					)
+			    </if>
 				<if test="faFlag != null"> and fa_flag = #{faFlag} </if>
 				<!-- 模糊查询 -->
 				<if test="keyword != null">
