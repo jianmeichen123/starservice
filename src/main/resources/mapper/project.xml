@@ -93,29 +93,32 @@
 	    fa_flag faFlag, 
 	    fa_name faName,
 	    project_time projectTime,
-	    tt_finance_status financeStatus,
-	    case when tt_final_contribution is null or tt_final_contribution ='' then null else tt_final_contribution end finalContribution,
-	    case when tt_final_share_ratio is null or tt_final_share_ratio ='' then null else tt_final_share_ratio end finalShareRatio,
-	    case when tt_project_contribution is null or tt_project_contribution ='' then null else tt_project_contribution end projectContribution,
-	    case when tt_project_share_ratio is null or tt_project_share_ratio ='' then null else tt_project_share_ratio end projectShareRatio
+	    (SELECT r.content_choose
+				FROM information_title_relate t
+				INNER JOIN information_result r ON t.title_id = r.title_id 
+				WHERE r.project_id = sop_project.id AND t.code = 'FNO1_1' and t.report_type=4 ) AS financeStatus,
+		(SELECT case when r.content_describe1 is null or r.content_describe1 ='' then null else r.content_describe1 end content_describe1
+				FROM information_title_relate t
+				INNER JOIN information_result r ON t.title_id = r.title_id 
+				WHERE r.project_id = sop_project.id AND t.code = 'FNO1_2_1' and t.report_type=4 ) AS projectContribution ,
+		(SELECT case when r.content_describe1 is null or r.content_describe1 ='' then null else r.content_describe1 end content_describe1
+				FROM information_title_relate t
+				INNER JOIN information_result r ON t.title_id = r.title_id 
+				WHERE r.project_id = sop_project.id AND t.code = 'FNO1_2_3' and t.report_type=4 ) AS projectShareRatio ,
+		(SELECT case when r.content_describe1 is null or r.content_describe1 ='' then null else r.content_describe1 end content_describe1
+				FROM information_title_relate t
+				INNER JOIN information_result r ON t.title_id = r.title_id 
+				WHERE r.project_id = sop_project.id AND t.code = 'FNO1_3_1' and t.report_type=4 ) AS finalContribution ,
+		(SELECT case when r.content_describe1 is null or r.content_describe1 ='' then null else r.content_describe1 end content_describe1
+				FROM information_title_relate t
+				INNER JOIN information_result r ON t.title_id = r.title_id 
+				WHERE r.project_id = sop_project.id AND t.code = 'FNO1_3_3' and t.report_type=4 ) AS finalShareRatio 
    </sql>
    
    <!-- 查询总数 -->
 	<select id="selectPageListCount" resultType="java.lang.Long" parameterType="java.util.Map">
 		SELECT count(id) 
 		FROM sop_project 
-		LEFT JOIN (
-				  SELECT r.project_id,
-					MAX(CASE t.code WHEN 'FNO1_2_1' THEN r.content_describe1 ELSE NULL END) tt_project_contribution,
-					MAX(CASE t.code WHEN 'FNO1_2_3' THEN r.content_describe1 ELSE NULL END) tt_project_share_ratio,
-					MAX(CASE t.code WHEN 'FNO1_3_1' THEN r.content_describe1 ELSE NULL END) tt_final_contribution,
-					MAX(CASE t.code WHEN 'FNO1_3_3' THEN r.content_describe1 ELSE NULL END) tt_final_share_ratio,
-					MAX(CASE t.code WHEN 'FNO1_1' THEN r.content_choose ELSE NULL END) tt_finance_status
-					FROM information_title_relate t 
-					INNER JOIN information_result r ON t.title_id = r.title_id AND t.report_type=4
-					LEFT JOIN information_dictionary d on d.id=r.content_choose
-					GROUP BY r.project_id
-		) tt  ON tt.project_id = sop_project.id
 		<include refid="Base_Where_Clause" />
 	</select>
 
@@ -124,18 +127,6 @@
 		SELECT 
 		<include refid="Base_Column_List" />
 		FROM sop_project 
-		LEFT JOIN (
-				  SELECT r.project_id,
-					MAX(CASE t.code WHEN 'FNO1_2_1' THEN r.content_describe1 ELSE NULL END) tt_project_contribution,
-					MAX(CASE t.code WHEN 'FNO1_2_3' THEN r.content_describe1 ELSE NULL END) tt_project_share_ratio,
-					MAX(CASE t.code WHEN 'FNO1_3_1' THEN r.content_describe1 ELSE NULL END) tt_final_contribution,
-					MAX(CASE t.code WHEN 'FNO1_3_3' THEN r.content_describe1 ELSE NULL END) tt_final_share_ratio,
-					MAX(CASE t.code WHEN 'FNO1_1' THEN r.content_choose ELSE NULL END) tt_finance_status
-					FROM information_title_relate t 
-					INNER JOIN information_result r ON t.title_id = r.title_id AND t.report_type=4
-					LEFT JOIN information_dictionary d on d.id=r.content_choose
-					GROUP BY r.project_id
-		) tt  ON tt.project_id = sop_project.id
 		<include refid="Base_Where_Clause" />
 	</select>
 	
