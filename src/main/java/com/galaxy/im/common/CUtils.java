@@ -333,6 +333,20 @@ public class CUtils {
 		
 	}
 	
+	public String getRequestBody(BufferedReader br) {
+	   String inputLine;  
+	   String str = "";  
+	   try {  
+	     while ((inputLine = br.readLine()) != null) {  
+	      str += inputLine;  
+	     }  
+	     br.close();  
+	   } catch (IOException e) {  
+		   log.error(CUtils.class.getName() + "_getRequestBody",e);
+	   }  
+	   return str;  
+	}
+	
 	public String List2JSONString(List<Map<String,Object>> list){
 		return object2JSONString(list);
 	}
