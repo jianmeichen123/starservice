@@ -1,4 +1,4 @@
-package com.galaxy.im.business.schedule.service;
+package com.galaxy.im.business.rili.service;
 
 import java.util.List;
 import java.util.Map;
@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.galaxy.im.bean.schedule.ScheduleInfo;
-import com.galaxy.im.business.schedule.dao.IScheduleDao;
+import com.galaxy.im.business.rili.dao.IScheduleDao;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.db.IBaseDao;
 import com.galaxy.im.common.db.service.BaseServiceImpl;

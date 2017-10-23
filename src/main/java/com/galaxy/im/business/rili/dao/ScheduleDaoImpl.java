@@ -1,4 +1,4 @@
-package com.galaxy.im.business.schedule.dao;
+package com.galaxy.im.business.rili.dao;
 
 import java.util.List;
 import java.util.Map;

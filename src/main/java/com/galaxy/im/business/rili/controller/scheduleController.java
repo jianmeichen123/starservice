@@ -1,4 +1,4 @@
-package com.galaxy.im.business.schedule.controller;
+package com.galaxy.im.business.rili.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.galaxy.im.bean.common.SessionBean;
-import com.galaxy.im.business.schedule.service.IScheduleService;
+import com.galaxy.im.business.rili.service.IScheduleService;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
 

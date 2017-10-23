@@ -1,4 +1,4 @@
-package com.galaxy.im.business.schedule.service;
+package com.galaxy.im.business.rili.service;
 
 import java.util.List;
 import java.util.Map;
