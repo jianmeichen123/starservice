@@ -127,19 +127,31 @@ public class ShareController {
 	}
 	
 	/**
-	 * 共享人列表
+	 * 事业部下所有人
 	 * @param record
 	 * @return
 	 */
 	@RequestMapping("queryDeptUinfo")
 	@ResponseBody
 	public Object queryDeptUinfo(HttpServletRequest request,HttpServletResponse response,@RequestBody String paramString){
-		return paramString;
-		
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		resultBean.setStatus("error");
+		try {
+			SessionBean bean = CUtils.get().getBeanBySession(request);
+			Map<String,Object> map = CUtils.get().jsonString2map(paramString);
+			if(map.containsKey("remarkType")){
+				List<Map<String, Object>> mapList = service.queryDeptUinfo(request,response,bean.getGuserid(),map);
+				resultBean.setMapList(mapList);
+				resultBean.setStatus("OK");
+			}
+		}catch (Exception e) {
+			log.error(ShareController.class.getName() + "queryDeptUinfo",e);
+		}
+		return resultBean;
 	}
 
 	/**
-	 * 查询所有事业部下的人
+	 * 查询事业部下的人
 	 * @param record
 	 * @return
 	 */

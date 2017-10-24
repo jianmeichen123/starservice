@@ -329,4 +329,87 @@ public class ShareServiceImpl extends BaseServiceImpl<Test> implements IShareSer
 		}
 	}
 
+	/**
+	 * 事业部下所有人
+	 */
+	@Override
+	public List<Map<String, Object>> queryDeptUinfo(HttpServletRequest request, HttpServletResponse response,
+			Long guserid, Map<String, Object> map) {
+		Map<String,Object> headerMap = QHtmlClient.get().getHeaderMap(request);
+		try {
+			//返回结果
+			List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
+			//部门下的 已经选择的人员id
+			List<Long> deptCheckedUid = new ArrayList<Long>(); 
+			Map<String,Object> my = new HashMap<String,Object>();
+			my.put("createUid", guserid);
+			List<Map<String, Object>> list = dao.querySharedUsers(my);
+			for(Map<String, Object> tempU : list){
+				deptCheckedUid.add(CUtils.get().object2Long(tempU.get("toUid"))) ;
+			}
+			
+			//获取所有事业部
+			String url = env.getProperty("power.server") + StaticConst.getLeafDepartList;
+			Map<String,Object> vmap = new HashMap<String,Object>();
+			JSONArray array=null;
+			
+			String result = QHtmlClient.get().post(url, headerMap, vmap);
+			if("error".equals(result)){
+				log.error(FlowCommonServiceImpl.class.getName() + "获取信息时出错","此时服务器返回状态码非200");
+			}else{
+				JSONObject resultJson = JSONObject.parseObject(result);
+				if(resultJson!=null && resultJson.containsKey("value")){
+					array = resultJson.getJSONArray("value");
+					if(resultJson.containsKey("success") && "true".equals(resultJson.getString("success"))){
+						//操作
+						List<Map<String, Object>> arrayList =CUtils.get().jsonString2list(array);
+						for(Map<String, Object> vMap:arrayList){
+							//用户列表
+							List<Map<String, Object>> userList = new ArrayList<Map<String, Object>>();
+							vmap.put("depId", CUtils.get().object2Long(vMap.get("depId")));
+							
+							//事业部下的所有用户
+							String urlU = env.getProperty("power.server") + StaticConst.getUsersByDepId;
+							JSONArray rr=null;
+							
+							String res = QHtmlClient.get().post(urlU, headerMap, vmap);
+							if("error".equals(res)){
+								log.error(FlowCommonServiceImpl.class.getName() + "获取信息时出错","此时服务器返回状态码非200");
+							}else{
+								JSONObject json = JSONObject.parseObject(res);
+								if(json!=null && json.containsKey("value")){
+									rr = json.getJSONArray("value");
+									if(json.containsKey("success") && "true".equals(json.getString("success"))){
+										//操作
+										List<Map<String, Object>> rrList =CUtils.get().jsonString2list(rr);
+										for(Map<String, Object> pMap:rrList){
+											Map<String, Object> m =new HashMap<String, Object>();
+											m.put("departId", CUtils.get().object2Long(vMap.get("depId")));
+											m.put("id", CUtils.get().object2Long(pMap.get("userId")));
+											m.put("name", CUtils.get().object2String(pMap.get("userName")));
+											if(deptCheckedUid.contains(CUtils.get().object2Long(pMap.get("userId")))){
+												m.put("isChecked", "true");
+							 				}
+											userList.add(m);
+										}
+									}
+								}
+							}
+							Map<String, Object> deptMap =new HashMap<String, Object>();
+							deptMap.put("deptUsers", userList);
+							deptMap.put("remarkType", CUtils.get().object2Long(map.get("remarkType")));
+							deptMap.put("departmentId", CUtils.get().object2Long(vMap.get("depId")));
+							deptMap.put("deptName", CUtils.get().object2String(vMap.get("depName")));
+							resultList.add(deptMap);
+						}
+					}
+				}
+			}
+			return resultList;
+		} catch (Exception e) {
+			log.error(ShareServiceImpl.class.getName() + "queryDeptUinfo",e);
+			throw new ServiceException(e);
+		}
+	}
+
 }

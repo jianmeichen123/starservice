@@ -24,4 +24,7 @@ public interface IShareService extends IBaseService<Test>{
 	List<Map<String, Object>> queryAppPerson(HttpServletRequest request, HttpServletResponse response, Long guserid,
 			Map<String, Object> map);
 
+	List<Map<String, Object>> queryDeptUinfo(HttpServletRequest request, HttpServletResponse response, Long guserid,
+			Map<String, Object> map);
+
 }
