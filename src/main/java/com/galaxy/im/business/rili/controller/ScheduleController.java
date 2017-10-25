@@ -52,7 +52,7 @@ public class ScheduleController {
 						resultBean.setMessage("日程\""+mm.get("name")+"\"");
 					}else{
 						if(list.size()>=20){
-							resultBean.setStatus("error");
+							resultBean.setStatus("ok");
 							resultBean.setMessage("您每天最多可创建20条日程");
 						}else{
 							resultBean.setStatus("ok");
