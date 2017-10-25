@@ -64,6 +64,34 @@ public class ScheduleController {
 			log.error(ScheduleController.class.getName() + "_ctSchedule",e);
 		}
 		return resultBean;
+	}
+	
+	/**
+	 * 判断日程是否超过20条
+	 * @param record
+	 * @return
+	 */
+	@RequestMapping("getCountSchedule")
+	@ResponseBody
+	public Object getCountSchedule(HttpServletRequest request,HttpServletResponse response,@RequestBody String paramString){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		resultBean.setStatus("error");
+		try {
+			//获取登录用户信息
+			SessionBean bean = CUtils.get().getBeanBySession(request);
+			Map<String,Object> map = CUtils.get().jsonString2map(paramString);
+			map.put("createdId", bean.getGuserid());
+			String ss = service.getCountSchedule(map);
+			if(ss==null){
+				resultBean.setStatus("OK");
+			}else{
+				resultBean.setStatus("error");
+				resultBean.setMessage(ss);
+			}
+		}catch (Exception e) {
+			log.error(ScheduleController.class.getName() + "getCountSchedule",e);
+		}
+		return resultBean;
 		
 	}
 }

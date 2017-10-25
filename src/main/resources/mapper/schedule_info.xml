@@ -208,4 +208,22 @@
 			</trim>
 		</where>
 	</select>
+	
+	<!-- 判断当天日程是否超过20条 -->
+	<select id="getCountSchedule" parameterType="hashmap" resultType="hashmap">
+		select
+		id, name
+		from schedule_info
+		<where>
+			<trim prefixOverrides="and">
+				<if test="idIsNotEq != null"> and id != #{idIsNotEq} </if>
+				<if test="createdId != null" > and created_id = #{createdId} </if>
+				<if test="bqStartTime != null"> and start_time >= #{bqStartTime} </if>
+				<if test="bqEndTime != null"> and start_time &lt;= #{bqEndTime} </if>
+				<if test="eqStartTime != null"> and end_time >= #{eqStartTime} </if>
+				<if test="isDel != null" > and is_del = #{isDel}  </if>
+				<if test="isAllday != null" > and is_allday = #{isAllday} </if>
+			</trim>
+		</where>
+	</select>
 </mapper>

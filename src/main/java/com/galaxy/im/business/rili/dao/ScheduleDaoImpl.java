@@ -33,4 +33,21 @@ public class ScheduleDaoImpl extends BaseDaoImpl<ScheduleInfo, Long> implements 
 		}
 	}
 
+	/**
+	 * 判断当天日程是否超过20条
+	 */
+	@Override
+	public List<Map<String, Object>> getCountSchedule(Map<String, Object> map) {
+		try{
+			List<Map<String,Object>> list = null;
+			if(map!=null){
+				list = sqlSessionTemplate.selectList(getSqlName("getCountSchedule"),map);
+			}    
+			return list;
+		}catch(Exception e){
+			log.error(getSqlName("getCountSchedule"),e);
+			throw new DaoException(e);
+		}
+	}
+
 }
