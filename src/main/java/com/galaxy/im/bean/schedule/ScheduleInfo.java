@@ -1,8 +1,8 @@
 package com.galaxy.im.bean.schedule;
 
-import com.galaxy.im.common.db.BaseEntity;
+import com.galaxy.im.common.db.PagableEntity;
 
-public class ScheduleInfo extends BaseEntity{
+public class ScheduleInfo extends PagableEntity{
 	private static final long serialVersionUID = -6443062953917242468L;
 	private Long parentId;
 	private int type;
