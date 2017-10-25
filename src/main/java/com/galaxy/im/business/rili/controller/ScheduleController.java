@@ -51,8 +51,13 @@ public class ScheduleController {
 						resultBean.setStatus("ok");
 						resultBean.setMessage("日程\""+mm.get("name")+"\"");
 					}else{
-						resultBean.setStatus("ok");
-						resultBean.setMessage(list.size()+"个日程");
+						if(list.size()>=20){
+							resultBean.setStatus("ok");
+							resultBean.setMessage("您每天最多可创建20条日程");
+						}else{
+							resultBean.setStatus("ok");
+							resultBean.setMessage(list.size()+"个日程");
+						}
 					}
 					m.put("ctCount", list.size());
 					resultBean.setMap(m);
