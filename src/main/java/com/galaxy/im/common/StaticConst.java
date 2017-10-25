@@ -22,7 +22,7 @@ public class StaticConst {
 	
 	
 	
-	public static final String getShareUserList = "user/getShareUserList"; 				//power外部接口：获取共享列表
+	public static final String getShareUserList = "user/getShareUserList"; 				//power外部接口：获取拜访共享列表
 	public static final String getCreadIdInfo = "user/getCreadIdInfo";   				//power外部接口：获取用户名和部门名称
 	public static final String getDeptIdByDeptName = "depart/getDeptIdByDeptName";   	//power外部接口：获取部门名称
 	public static final String login = "login/userLoginForApp";							//登录
@@ -30,6 +30,12 @@ public class StaticConst {
 	public static final String getCareerLineList = "depart/getCareerLineList";			//获得事业线
 	public static final String getRoleCodeByUserId = "role/getRoleCodeByUserId";		//角色code
 	public static final String getDeptInfo = "depart/getDeptInfo";						//通过部门id获取部门名称
+	public static final String getUserByIds = "user/getUserByIds";						//通过id，获取用户名称
+	public static final String findUserByName = "user/findUserByName";					//通过用户名称获取用户信息
+	public static final String getUsersByKey = "user/getUsersByKey";					//用户名称模糊查询
+	public static final String getLeafDepartList = "depart/getLeafDepartList";			//事业部列表
+	public static final String getUsersByDepId = "user/getUsersByDepId";				//事业部下的所有用户
+	
 	//过滤器白名单
 	public static final String FILTER_WHITE_LOGIN = "userlogin/login";		//用户登录白名单
 	

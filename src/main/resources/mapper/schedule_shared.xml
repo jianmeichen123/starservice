@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.business.rili.dao.IShareDao">
+
+	<sql id="Base_Column_List">
+		id, to_uid toUid, department_id departmentId, create_uid createUid,created_time createdTime
+	</sql>
+	
+	<sql id="Base_Where_Clause">
+		<where>
+			<trim prefixOverrides="and">
+				<if test="id != null"> and id = #{id ,jdbcType=BIGINT} </if>
+				<if test="toUid != null" > and to_uid = #{toUid ,jdbcType=BIGINT}  </if>
+				<if test="departmentId != null" > and department_id = #{departmentId ,jdbcType=BIGINT}  </if>
+				<if test="createUid != null" > and create_uid = #{createUid ,jdbcType=BIGINT}  </if>
+				<if test="createdTime != null" > and created_time = #{createdTime ,jdbcType=BIGINT}  </if>
+			</trim>
+			<if test="sorting != null">order by ${sorting}</if>
+			<if test="property != null">order by ${property} ${direction}</if>
+			<if test="offset != null and limit != null">
+				limit #{offset}, #{limit}
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 删除 -->
+	<delete id="delSharedUser" parameterType="java.util.Map">
+		delete from schedule_shared
+		<include refid="Base_Where_Clause" />
+	</delete>
+	
+	<!-- 批量保存共享人 -->
+	<insert id="saveSharedUsers" useGeneratedKeys="true" parameterType="java.util.List">  
+	    <selectKey resultType="long" keyProperty="id" order="AFTER">  
+	        SELECT  
+	        LAST_INSERT_ID()  
+	    </selectKey>  
+	    	insert into schedule_shared 
+	    	(id, 
+	    	 to_uid, 
+	    	 department_id, 
+	         create_uid,
+	         created_time
+	        )
+	        values
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	        ( #{item.id},
+	          #{item.toUid}, 
+	          #{item.departmentId}, 
+	      	  #{item.createUid},
+	          #{item.createdTime} )
+	    </foreach> 
+	</insert>
+	
+	<!-- 查询 -->
+	<select id="querySharedUsers" resultType="java.util.Map" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from schedule_shared
+		<include refid="Base_Where_Clause" />
+	</select>
+	
+</mapper>
