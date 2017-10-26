@@ -21,6 +21,7 @@ public class ScheduleInfo extends PagableEntity{
 	private String userName;     // 日历创建人姓名
 	private Integer isDel;  //逻辑删除的字段(是否删除字段0:未删除,1:已删除 )
 	 private String remind;   // 提醒时间
+	 private String schedulePerson;//拜访人名称
 	
 	public Long getParentId() {
 		return parentId;
@@ -123,5 +124,11 @@ public class ScheduleInfo extends PagableEntity{
 	}
 	public void setRemind(String remind) {
 		this.remind = remind;
+	}
+	public String getSchedulePerson() {
+		return schedulePerson;
+	}
+	public void setSchedulePerson(String schedulePerson) {
+		this.schedulePerson = schedulePerson;
 	}
 }
