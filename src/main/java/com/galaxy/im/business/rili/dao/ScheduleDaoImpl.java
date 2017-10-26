@@ -50,4 +50,32 @@ public class ScheduleDaoImpl extends BaseDaoImpl<ScheduleInfo, Long> implements 
 		}
 	}
 
+	/**
+	 * 删除日程
+	 */
+	@Override
+	public int delCallonById(Map<String, Object> paramMap) {
+		try{
+			return sqlSessionTemplate.update(getSqlName("delCallonById"),paramMap);
+		}catch(Exception e){
+			log.error(getSqlName("delCallonById"),e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 根据id查询详情
+	 */
+	@Override
+	public Map<String, Object> selectOtherScheduleById(Map<String, Object> map) {
+		try{
+			return sqlSessionTemplate.selectOne(getSqlName("selectById"),map);
+		}catch(Exception e){
+			log.error(getSqlName("selectById"),e);
+			throw new DaoException(e);
+		}
+	}
+	
+
+
 }

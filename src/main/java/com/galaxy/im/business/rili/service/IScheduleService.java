@@ -12,5 +12,9 @@ public interface IScheduleService  extends IBaseService<ScheduleInfo>{
 	List<Map<String, Object>> ctSchedule(Map<String, Object> map);
 	//判断是否超过20条
 	String getCountSchedule(Map<String, Object> map);
+	//删除日程
+	boolean deleteOtherScheduleById(Map<String, Object> map);
+	//根据id查询详情
+	Map<String, Object> selectOtherScheduleById(Map<String, Object> map);
 
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.galaxy.im.bean.schedule.ScheduleInfo;
+import com.galaxy.im.business.callon.service.CallonServiceImpl;
 import com.galaxy.im.business.rili.dao.IScheduleDao;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.db.IBaseDao;
@@ -110,6 +111,32 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 			return content;
 		}catch(Exception e){
 			log.error(ScheduleServiceImpl.class.getName() + "getCountSchedule",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	/**
+	 * 删除日程
+	 */
+	@Override
+	public boolean deleteOtherScheduleById(Map<String, Object> paramMap) {
+		try{
+			return (dao.delCallonById(paramMap)>0);
+		}catch(Exception e){
+			log.error(CallonServiceImpl.class.getName() + "_",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	/**
+	 * 根据id查询详情
+	 */
+	@Override
+	public Map<String, Object> selectOtherScheduleById(Map<String, Object> map) {
+		try{
+			return dao.selectOtherScheduleById(map);
+		}catch(Exception e){
+			log.error(CallonServiceImpl.class.getName() + "_",e);
 			throw new ServiceException(e);
 		}
 	}

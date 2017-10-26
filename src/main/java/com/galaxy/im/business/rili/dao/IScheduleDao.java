@@ -12,5 +12,9 @@ public interface IScheduleDao extends IBaseDao<ScheduleInfo, Long>{
 	List<Map<String, Object>> getCTSchedule(Map<String, Object> map);
 	//判断是否超过20条
 	List<Map<String, Object>> getCountSchedule(Map<String, Object> map);
+	//删除日程
+	int delCallonById(Map<String, Object> paramMap);
+	//根据id查询详情
+	Map<String, Object> selectOtherScheduleById(Map<String, Object> map);
 
 }

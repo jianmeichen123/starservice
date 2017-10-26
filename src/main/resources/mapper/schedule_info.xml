@@ -44,7 +44,7 @@
 		WHERE id = #{id};
 	</update>
 	
-	<!-- 删除拜访计划 -->
+	<!-- 删除拜访计划/日程 -->
 	<update id="delCallonById" parameterType="hashmap">
 		update schedule_info set 
 			is_del=1,
@@ -173,27 +173,7 @@
 			</selectKey>
 </insert>
 	
-	<resultMap type="com.galaxy.im.bean.schedule.ScheduleInfo" id="departResult">
-		<id column="id" property="id"/>
-		<result column="parent_id" property="parentId"/>
-		<result column="type" property="type"/>
-		<result column="name_id" property="nameId"/>
-		<result column="name" property="name"/>
-		<result column="project_type" property="projectType"/>
-		<result column="project_id" property="projectId"/>
-		<result column="start_time" property="startTime"/>
-		<result column="end_time" property="endTime"/>
-		<result column="is_allday" property="isAllday"/>
-		<result column="wakeup_id" property="wakeupId"/>
-		<result column="remark" property="remark"/>
-		<result column="created_id" property="createdId"/>
-		<result column="updated_id" property="updatedId"/>
-		<result column="created_time" property="createdTime"/>
-		<result column="updated_time" property="updatedTime"/>
-		<result column="significance" property="significance"/>
-		<result column="callon_address" property="callonAddress"/>
-	</resultMap>
-	
+
 	<!-- 判断时间是否冲突 或 时间冲突数 -->
 	<select id="getCTSchedule" parameterType="hashmap" resultType="hashmap">
 		select id, name
@@ -226,4 +206,44 @@
 			</trim>
 		</where>
 	</select>
+	
+	<!-- 其他日程所使用的 -->
+	<sql id="Base_Column_List">
+		id, type, name_id, name, parent_id, project_type, project_id, start_time, end_time, is_allday, wakeup_id, remark, created_id, 
+    	updated_id, created_time, updated_time, is_del, callon_person
+	</sql>
+	
+		<resultMap type="hashmap" id="departResult">
+		<id column="id" property="id"/>
+		<result column="parent_id" property="parentId"/>
+		<result column="type" property="type"/>
+		<result column="name_id" property="nameId"/>
+		<result column="name" property="name"/>
+		<result column="project_type" property="projectType"/>
+		<result column="project_id" property="projectId"/>
+		<result column="start_time" property="startTime"/>
+		<result column="end_time" property="endTime"/>
+		<result column="is_allday" property="isAllday"/>
+		<result column="wakeup_id" property="wakeupId"/>
+		<result column="remark" property="remark"/>
+		<result column="created_id" property="createdId"/>
+		<result column="updated_id" property="updatedId"/>
+		<result column="created_time" property="createdTime"/>
+		<result column="updated_time" property="updatedTime"/>
+		<result column="significance" property="significance"/>
+		<result column="callon_address" property="callonAddress"/>
+	</resultMap>
+	
+		<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="departResult" parameterType="hashmap">
+		select
+		<include refid="Base_Column_List" />
+		from schedule_info 
+		where id = #{id}
+		and is_del= 0
+	</select>
+	
+	
+	
+	
 </mapper>
