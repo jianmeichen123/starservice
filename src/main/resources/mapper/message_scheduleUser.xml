@@ -129,7 +129,7 @@
 	       (#{item.id}, #{item.mid}, #{item.uid}, #{item.uname}, 
 	        #{item.typeRole}, #{item.isUse}, #{item.isSend}, 
 	        #{item.isRead}, #{item.isDel}, #{item.createdTime}, 
-	        #{item.updatedTime)
+	        #{item.updatedTime})
 	    </foreach> 
 	</insert>
 

@@ -183,6 +183,7 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 				long edate = calendar.getTimeInMillis();
 				
 				ScheduleMessageBean message = messageGenerator.process(info);
+				message.setCreatedTime(new Date().getTime());
 				if(message.getSendTime()==null){
 					return;
 				}
@@ -194,7 +195,7 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 					toU.setIsRead((byte) 0);
 					toU.setIsDel((byte) 0);
 					toU.setMid(mid);
-					
+					toU.setCreatedTime(new Date().getTime());
 					toInserts.add(toU);
 				}
 				iScheduleMessageUserDao.saveMessageUser(toInserts);
