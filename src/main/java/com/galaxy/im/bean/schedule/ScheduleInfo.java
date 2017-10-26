@@ -18,6 +18,9 @@ public class ScheduleInfo extends PagableEntity{
 	private int significance;
 	private String callonAddress;
 	private Long callonPerson;
+	private String userName;     // 日历创建人姓名
+	private Integer isDel;  //逻辑删除的字段(是否删除字段0:未删除,1:已删除 )
+	 private String remind;   // 提醒时间
 	
 	public Long getParentId() {
 		return parentId;
@@ -102,5 +105,23 @@ public class ScheduleInfo extends PagableEntity{
 	}
 	public void setCallonPerson(Long callonPerson) {
 		this.callonPerson = callonPerson;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public Integer getIsDel() {
+		return isDel;
+	}
+	public void setIsDel(Integer isDel) {
+		this.isDel = isDel;
+	}
+	public String getRemind() {
+		return remind;
+	}
+	public void setRemind(String remind) {
+		this.remind = remind;
 	}
 }
