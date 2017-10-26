@@ -21,6 +21,8 @@ import com.galaxy.im.bean.schedule.ScheduleDict;
 import com.galaxy.im.bean.schedule.ScheduleInfo;
 import com.galaxy.im.business.rili.service.IScheduleDictService;
 import com.galaxy.im.business.rili.service.IScheduleService;
+import com.galaxy.im.business.rili.util.AccountDate;
+import com.galaxy.im.business.rili.util.ScheduleUtil;
 import com.galaxy.im.common.BeanUtils;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
@@ -205,7 +207,6 @@ public class ScheduleController {
 	@RequestMapping("selectOtherScheduleById")
 	public Object selectOtherScheduleById(@RequestBody String paramString,HttpServletRequest request){
 		ResultBean<Object> resultBean = new ResultBean<Object>();
-		
 		@SuppressWarnings("unchecked")
 		RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
 		//获取登录用户信息
@@ -271,6 +272,50 @@ public class ScheduleController {
 		return resultBean;
 	}
 	
+	/**
+	 * 日程条件查询
+	 * 按条件  日、周、月      
+	 * @param query : {year:2014, month:12, day:12, createdId:111111}
+	 *                day != null ： 按日查
+	 *                month != null ： 按月查
+	 *                year != null ： 按年查
+	 *                createdId = null : 查询本人
+	*/
+	@ResponseBody
+	@RequestMapping("querySchedule")
+	public Object querySchedule(HttpServletRequest request,@RequestBody ScheduleInfo query){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		try {
+			@SuppressWarnings("unchecked")
+			RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
+			//获取登录用户信息
+			SessionBean bean = CUtils.get().getBeanBySession(request);
+			Map<String, Object> user = BeanUtils.toMap(cache.get(bean.getSessionid()));
+			
+			if(query.getYear()!=null && query.getMonth()!=null){
+				String lastMouthDay = AccountDate.getLastDayOfMonth(query.getYear(), query.getMonth());
+				query.setLastMouthDay(lastMouthDay);
+			}
+			if(query.getProperty()==null)  query.setProperty("start_time,created_time"); 
+			if(query.getDirection()==null) query.setDirection("asc");
+			if(query.getCreatedId()==null) query.setCreatedId(CUtils.get().object2Long(user.get("id")));
+			
+			Map<String,String> qtime = DateUtil.getBeginEndTimeStr(query.getYear(),query.getMonth(),query.getDay());
+			if(qtime != null){
+				query.setBqStartTime(qtime.get("beginTimeStr"));
+				query.setBqEndTime(qtime.get("endTimeStr"));
+			}
+			
+			//结果查询  封装
+			List<ScheduleUtil> qList = service.queryAndConvertList(query);
+			
+			resultBean.setEntity(qList);
+			resultBean.setStatus("OK");
+		} catch (Exception e) {
+			log.error(ScheduleController.class.getName() + "_querySchedule",e);
+		}
+		return resultBean;
+	}
 	
 	/**
 	 * 转化日期

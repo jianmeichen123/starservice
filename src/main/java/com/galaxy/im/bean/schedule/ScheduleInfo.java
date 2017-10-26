@@ -20,9 +20,23 @@ public class ScheduleInfo extends PagableEntity{
 	private Long callonPerson;
 	private String userName;     // 日历创建人姓名
 	private Integer isDel;  //逻辑删除的字段(是否删除字段0:未删除,1:已删除 )
-	 private String remind;   // 提醒时间
-	 private String schedulePerson;//拜访人名称
+	private String remind;   // 提醒时间
+	private String schedulePerson;//拜访人名称
+ 
+	private Integer year;
+	private Integer month;
+	private Integer day;
 	
+	private Long idIsNotEq;      // id != idIsNotEq
+	private String bqStartTime;  // 日程开始  起始时间     startTime  >   bqStartTime
+    private String bqEndTime;    // 日程开始  结束时间     startTime  <   bqEndTime
+    private String eqStartTime;  // 日程结束  起始时间     endTime >  eqStartTime
+	
+    private String sbTimeForAllday;    // 日程开始  起始时间     startTime  >   sbTimeForAllday
+    private String seTimeForAllday;    // 日程开始  结束时间     startTime  <   seTimeForAllday
+    private Boolean queryForMounth;    //xml 查询月视图 特标识
+    private String lastMouthDay;//当月最后一天
+
 	public Long getParentId() {
 		return parentId;
 	}
@@ -131,4 +145,71 @@ public class ScheduleInfo extends PagableEntity{
 	public void setIsAllday(byte isAllday) {
 		this.isAllday = isAllday;
 	}
+	public Integer getYear() {
+		return year;
+	}
+	public void setYear(Integer year) {
+		this.year = year;
+	}
+	public Integer getMonth() {
+		return month;
+	}
+	public void setMonth(Integer month) {
+		this.month = month;
+	}
+	public Integer getDay() {
+		return day;
+	}
+	public void setDay(Integer day) {
+		this.day = day;
+	}
+	public Long getIdIsNotEq() {
+		return idIsNotEq;
+	}
+	public void setIdIsNotEq(Long idIsNotEq) {
+		this.idIsNotEq = idIsNotEq;
+	}
+	public String getBqStartTime() {
+		return bqStartTime;
+	}
+	public void setBqStartTime(String bqStartTime) {
+		this.bqStartTime = bqStartTime;
+	}
+	public String getBqEndTime() {
+		return bqEndTime;
+	}
+	public void setBqEndTime(String bqEndTime) {
+		this.bqEndTime = bqEndTime;
+	}
+	public String getEqStartTime() {
+		return eqStartTime;
+	}
+	public void setEqStartTime(String eqStartTime) {
+		this.eqStartTime = eqStartTime;
+	}
+	public String getSbTimeForAllday() {
+		return sbTimeForAllday;
+	}
+	public void setSbTimeForAllday(String sbTimeForAllday) {
+		this.sbTimeForAllday = sbTimeForAllday;
+	}
+	public String getSeTimeForAllday() {
+		return seTimeForAllday;
+	}
+	public void setSeTimeForAllday(String seTimeForAllday) {
+		this.seTimeForAllday = seTimeForAllday;
+	}
+	public Boolean getQueryForMounth() {
+		return queryForMounth;
+	}
+	public void setQueryForMounth(Boolean queryForMounth) {
+		this.queryForMounth = queryForMounth;
+	}
+	public String getLastMouthDay() {
+		return lastMouthDay;
+	}
+	public void setLastMouthDay(String lastMouthDay) {
+		this.lastMouthDay = lastMouthDay;
+	}
+	
 }

@@ -1,9 +1,11 @@
 package com.galaxy.im.business.rili.service;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
 import com.galaxy.im.bean.schedule.ScheduleInfo;
+import com.galaxy.im.business.rili.util.ScheduleUtil;
 import com.galaxy.im.common.db.service.IBaseService;
 
 public interface IScheduleService  extends IBaseService<ScheduleInfo>{
@@ -16,5 +18,7 @@ public interface IScheduleService  extends IBaseService<ScheduleInfo>{
 	boolean deleteOtherScheduleById(Map<String, Object> map);
 	//根据id查询详情
 	Map<String, Object> selectOtherScheduleById(Map<String, Object> map);
+	//列表查询
+	List<ScheduleUtil> queryAndConvertList(ScheduleInfo query) throws ParseException;
 
 }
