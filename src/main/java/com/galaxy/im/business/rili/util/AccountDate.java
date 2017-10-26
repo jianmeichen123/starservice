@@ -151,7 +151,7 @@ public class AccountDate {
         return everyDays;
     }
     
-    public static void main(String[] args) {
+   /* public static void main(String[] args) {
     	String ss = getLastDayOfMonth(2017,4);
         List<String> list = AccountDate.getXiuEveryday("2017-04-01", "2017-05-14",ss);
     
@@ -159,7 +159,7 @@ public class AccountDate {
         	
             System.out.println(result);
         }
-    }
+    }*/
     
     
     
