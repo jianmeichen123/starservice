@@ -227,7 +227,7 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 				continue;
 			}
 			mess.setStatus((byte) 0);
-			scheduleMessageDao.updateById(mess);
+			//scheduleMessageDao.updateById(mess);
 			
 			
 			// 消息推送到移动端
