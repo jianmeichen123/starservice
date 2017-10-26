@@ -2,6 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.galaxy.im.bean.message.ScheduleMessageUserBean">
 	
+	<resultMap id="BaseResultMap" type="com.galaxy.im.bean.message.ScheduleMessageUserBean" >
+		<id 	column="id" 			property="id" 			jdbcType="BIGINT" />
+		<result column="mid" 			property="mid" 			jdbcType="BIGINT" />
+		<result column="uid" 			property="uid" 			jdbcType="BIGINT" />
+		<result column="uname" 			property="uname" 		jdbcType="VARCHAR" />
+		<result column="type_role" 		property="typeRole" 	jdbcType="TINYINT" />
+		<result column="is_use" 		property="isUse" 		jdbcType="TINYINT" />
+		<result column="is_send" 		property="isSend" 		jdbcType="TINYINT" />
+		<result column="is_read" 		property="isRead" 		jdbcType="TINYINT" />
+		<result column="is_del" 		property="isDel" 		jdbcType="TINYINT" />
+		<result column="created_time" 	property="createdTime" jdbcType="BIGINT" />
+		<result column="updated_time" 	property="updatedTime" jdbcType="BIGINT" />
+		
+		<result column="type" 			property="type" 		jdbcType="VARCHAR" />
+		<result column="remrk_id" 		property="remarkId" 	jdbcType="BIGINT" />
+		<result column="content" 		property="content" 		jdbcType="VARCHAR" />
+		<result column="send_time" 		property="sendTime" 	jdbcType="BIGINT" />
+	</resultMap>
+
+
+	<sql id="Base_Column_List">
+		id, mid, uid, uname, type_role, is_use, is_send, is_read, is_del, created_time, updated_time
+	</sql>
+	
 	<sql id="Base_Where_Clause">
 		<where>
 			<trim prefixOverrides="and">
@@ -168,11 +192,10 @@
 	</insert>
 	
 	<!-- 查询消息 -->
-	<select id="selectMessageUserList" resultType="java.util.Map" parameterType="java.util.Map">
+	<select id="selectMessageUserList" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
-			id, mid, uid, uname, type_role typeRole, is_use isUse, is_send isSend, 
-			is_read isRead, is_del isDel, created_time createdTime, updated_time updatedTime
-		from schedule_message
+		<include refid="Base_Column_List" />
+		from schedule_message_user
 		<include refid="Base_Where_Clause" />
 	</select>
 </mapper>

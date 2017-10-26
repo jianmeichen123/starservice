@@ -3,8 +3,8 @@ package com.galaxy.im.bean.message;
 import java.util.List;
 import java.util.Set;
 
-import com.galaxy.im.common.db.BaseEntity;
 import com.galaxy.im.common.db.PagableEntity;
+
 public class ScheduleMessageBean extends PagableEntity{
 	private static final long serialVersionUID = 1L;
 
