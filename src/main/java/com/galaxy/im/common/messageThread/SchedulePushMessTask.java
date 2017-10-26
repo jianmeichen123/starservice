@@ -270,7 +270,7 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 							ScheduleMessageUserBean toU = new ScheduleMessageUserBean();
 							toU.setMid(mess.getId());
 							toU.setIsSend((byte) 1);
-							scheduleMessageUserDao.updateByIdSelective(toU);
+							//scheduleMessageUserDao.updateByIdSelective(toU);
 						}
 					}
 				}
