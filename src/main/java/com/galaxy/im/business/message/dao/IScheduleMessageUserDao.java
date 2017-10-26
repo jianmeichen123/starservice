@@ -23,5 +23,7 @@ public interface IScheduleMessageUserDao  extends IBaseDao<ScheduleMessageUserBe
 
 	void saveMessageUser(List<ScheduleMessageUserBean> toInserts);
 
+	List<ScheduleMessageUserBean> selectMessageUserList(ScheduleMessageUserBean muQ);
+
 	
 }

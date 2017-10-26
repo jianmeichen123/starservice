@@ -10,6 +10,7 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.galaxy.im.common.StaticConst;
 
@@ -17,6 +18,7 @@ import com.galaxy.im.common.StaticConst;
 @ServletComponentScan
 @Configuration
 @ComponentScan
+@EnableScheduling
 public class Application extends SpringBootServletInitializer{
 	private static final Logger logger = LoggerFactory.getLogger(Application.class);
 	@Override

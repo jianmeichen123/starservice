@@ -2,6 +2,39 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.galaxy.im.bean.message.ScheduleMessageBean">
 
+	<sql id="Base_Where_Clause">
+		<where>
+			<trim prefixOverrides="and">
+				<if test="id != null"> and id = #{id ,jdbcType=BIGINT} </if>
+				<if test="ids != null">
+					and id IN
+					<foreach collection="ids" index="item" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if> 
+				<if test="category != null" > and category = #{category ,jdbcType=TINYINT}  </if>
+				<if test="type != null" > and type = #{type ,jdbcType=VARCHAR}  </if>
+				<if test="remarkId != null" > and remrk_id = #{remarkId ,jdbcType=BIGINT}  </if>
+				<if test="content != null" > and content = #{content ,jdbcType=VARCHAR}  </if>
+				<if test="remark != null" > and remark = #{remark ,jdbcType=VARCHAR}  </if>
+				<if test="sendTime != null" > and send_time = #{sendTime ,jdbcType=BIGINT}  </if>
+				<if test="sendTimeNotNull != null" > and send_time is not null  </if>
+				<if test="btime != null"> <![CDATA[ and send_time >= #{btime,jdbcType=BIGINT} ]]> </if>
+			    <if test="etime != null"> <![CDATA[ and send_time <= #{etime,jdbcType=BIGINT} ]]> </if>
+				<if test="status != null" > and status = #{status ,jdbcType=TINYINT}  </if>
+				<if test="createdUid != null" > and created_uid = #{createdUid ,jdbcType=BIGINT}  </if>
+				<if test="createdUname != null" > and created_uname = #{createdUname ,jdbcType=VARCHAR}  </if>
+				<if test="createdTime != null" > and created_time = #{createdTime ,jdbcType=BIGINT}  </if>
+				<if test="updatedTime != null" > and updated_time = #{updatedTime ,jdbcType=BIGINT}  </if>
+			</trim>
+			<!-- <if test="sorting != null">order by ${sorting}</if> -->
+			<if test="property != null">order by ${property} ${direction}</if>
+			<if test="offset != null and limit != null">
+				limit #{offset}, #{limit}
+			</if>
+		</where>
+	</sql>
+	
 	<!-- 保存消息 -->
 	<insert id="saveMessage" useGeneratedKeys="true" keyProperty="id" parameterType="com.galaxy.im.bean.message.ScheduleMessageBean">
 	    insert into schedule_message (id, category, type, remrk_id, 
@@ -13,5 +46,15 @@
 	      #{status}, #{createdUid}, #{createdUname}, 
 	      #{createdTime}, #{updatedTime})
 	</insert>
+	
+	<!-- 查询消息 -->
+	<select id="selectMessageList" resultType="java.util.Map" parameterType="java.util.Map">
+		select
+			id, category category, type type, remrk_id remarkId, content content, remark remark, 
+			send_time sendTime, status status, created_uid createdUid, created_uname createdUname, 
+	    	created_time createdTime, updated_time updatedTime
+		from schedule_message
+		<include refid="Base_Where_Clause" />
+	</select>
 
 </mapper>

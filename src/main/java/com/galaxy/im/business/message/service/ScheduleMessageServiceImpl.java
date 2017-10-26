@@ -17,6 +17,7 @@ import com.galaxy.im.bean.message.ScheduleMessageBean;
 import com.galaxy.im.bean.message.ScheduleMessageUserBean;
 import com.galaxy.im.business.message.dao.IScheduleMessageDao;
 import com.galaxy.im.business.message.dao.IScheduleMessageUserDao;
+import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.db.IBaseDao;
 import com.galaxy.im.common.db.QPage;
 import com.galaxy.im.common.db.service.BaseServiceImpl;
@@ -221,10 +222,72 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 		
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public List<ScheduleMessageBean> queryTodayMessToSend() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<ScheduleMessageBean> results = new ArrayList<ScheduleMessageBean>();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+			
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		
+		long bdate = calendar.getTimeInMillis();
+		String btime = DateUtil.longString(bdate);
+		
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+		calendar.set(Calendar.MILLISECOND, 0);
+		
+		long edate = calendar.getTimeInMillis();
+		String etime = DateUtil.longString(edate);
+		
+		// 消息内容查询
+		ScheduleMessageBean mQ = new ScheduleMessageBean();
+		//mQ.setBtime(bdate);
+		mQ.setEtime(edate);
+		//mQ.setSendTimeNotNull(true);
+		mQ.setStatus((byte) 1);
+		mQ.setProperty("send_time");
+		mQ.setDirection("asc");
+		List<ScheduleMessageBean> mess = iScheduleMessageDao.selectMessageList(mQ);
+		// 消息内容  -> 消息人 查询
+		if(mess != null && !mess.isEmpty()){
+			// 消息 ids
+			List<Long> mids = new ArrayList<Long>();
+			for(ScheduleMessageBean tempM : mess){
+				mids.add(tempM.getId());
+			}
+			// 根据消息 ids  查询 muser
+			ScheduleMessageUserBean muQ = new ScheduleMessageUserBean();
+			muQ.setIsUse((byte)0);    //0:可用    1:禁用
+			muQ.setIsSend((byte)0);   //0:未发送  1+:已发送
+			muQ.setIsDel((byte)0);    //0:未删除  1:已删除
+			muQ.setIsRead((byte)0);   //0:未读    1:已读
+			muQ.setMids(mids);
+			List<ScheduleMessageUserBean> mus = iScheduleMessageUserDao.selectMessageUserList(muQ);
+			if(mus != null && !mus.isEmpty()){
+				for(ScheduleMessageBean tempM : mess){
+					for(ScheduleMessageUserBean tempU : mus){
+						if(tempU.getMid().longValue() == tempM.getId().longValue()){
+							if(tempM.getToUsers() == null){
+								List<ScheduleMessageUserBean> tmus = new ArrayList<ScheduleMessageUserBean>();
+								tmus.add(tempU);
+								tempM.setToUsers(tmus);
+							}else{
+								tempM.getToUsers().add(tempU);
+							}
+						}
+					}
+					results.add(tempM);
+				}
+			}
+		}
+		return results;
 	}
 
 	

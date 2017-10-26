@@ -89,6 +89,13 @@ public class CallonController {
 				infoBean.setCreatedId(bean.getGuserid());
 				id = callonService.insert(infoBean);
 				//pusAddCallon(request,id,infoBean);
+				//此处需要查询数据库，取得联系人的名称再保存
+				ContractsBean contractsBean = contractsService.queryById(infoBean.getCallonPerson());
+				if(contractsBean!=null){
+					infoBean.setSchedulePerson(contractsBean.getName());
+				}else{
+					infoBean.setSchedulePerson("没有找到对应的联系人");
+				}
 				infoBean.setMessageType("1.4.1");
 				infoBean.setId(id);
 				infoBean.setUserName(CUtils.get().object2String(user.get("realName")));
@@ -301,6 +308,7 @@ public class CallonController {
 	}
 	
 	//------------------------------- 私有方法，用于新增、更新、删除拜访计划的消息推送的调用操作 --------------------------------//
+	@SuppressWarnings("unused")
 	private void pusAddCallon(HttpServletRequest request,Long callonId,ScheduleInfo infoBean){
 		//调用客户端
 		Map<String,Object> headerMap = QHtmlClient.get().getHeaderMap(request);

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.galaxy.im.bean.message.ScheduleMessageUserBean;
+import com.galaxy.im.common.BeanUtils;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.db.BaseDaoImpl;
 import com.galaxy.im.common.db.QPage;
@@ -135,6 +136,24 @@ private Logger log = LoggerFactory.getLogger(ScheduleMessageUserDaoImpl.class);
 			sqlSessionTemplate.insert(getSqlName("saveMessageUser"), list);
 		} catch (Exception e) {
 			log.error(getSqlName("saveMessageUser"),e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 查询信息
+	 */
+	@Override
+	public List<ScheduleMessageUserBean> selectMessageUserList(ScheduleMessageUserBean muQ) {
+		try {
+			Map<String, Object> params = BeanUtils.toMap(muQ);
+			List<ScheduleMessageUserBean> contentList = null;
+			if(muQ!=null){
+			 contentList = sqlSessionTemplate.selectList(getSqlName("selectMessageUserList"), params);
+			}
+			return contentList;
+		} catch (Exception e) {
+			log.error(getSqlName("selectMessageUserList"),e);
 			throw new DaoException(e);
 		}
 	}

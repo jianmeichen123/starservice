@@ -1,7 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.galaxy.im.bean.message.ScheduleMessageUserBean">
-
+	
+	<sql id="Base_Where_Clause">
+		<where>
+			<trim prefixOverrides="and">
+				<if test="id != null"> and id = #{id ,jdbcType=BIGINT} </if>
+				<if test="ids != null">
+					and id IN
+					<foreach collection="ids" index="atem" item="atem" open="(" separator="," close=")">
+						#{atem}
+					</foreach>
+				</if> 
+				<if test="mid != null" > and mid = #{mid ,jdbcType=BIGINT}  </if>
+				<if test="mids != null">
+					and mid IN
+					<foreach collection="mids" index="item" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if> 
+				<if test="uid != null" > and uid = #{uid ,jdbcType=BIGINT}  </if>
+				<if test="uname != null" > and uname = #{uname ,jdbcType=VARCHAR}  </if>
+				<if test="typeRole != null" > and type_role = #{typeRole ,jdbcType=TINYINT}  </if>
+				<if test="isUse != null" > and is_use = #{isUse ,jdbcType=TINYINT}  </if>
+				<if test="isSend != null" > and is_send = #{isSend ,jdbcType=TINYINT}  </if>
+				<if test="isRead != null" > and is_read = #{isRead ,jdbcType=TINYINT}  </if>
+				<if test="isDel != null" > and is_del = #{isDel ,jdbcType=TINYINT}  </if>
+				<if test="createdTime != null" > and created_time = #{createdTime ,jdbcType=BIGINT}  </if>
+				<if test="updatedTime != null" > and updated_time = #{updatedTime ,jdbcType=BIGINT}  </if>
+			</trim>
+			<if test="sorting != null">order by ${sorting}</if>
+			<if test="offset != null and limit != null">
+				limit #{offset}, #{limit}
+			</if>
+		</where>
+	</sql>
+	
 	<!-- 查询列表 -->
 	<select id="selectMuserAndMcontentList" parameterType="hashmap"
 		resultType="hashmap">
@@ -132,5 +166,13 @@
 	        #{item.updatedTime})
 	    </foreach> 
 	</insert>
-
+	
+	<!-- 查询消息 -->
+	<select id="selectMessageUserList" resultType="java.util.Map" parameterType="java.util.Map">
+		select
+			id, mid, uid, uname, type_role typeRole, is_use isUse, is_send isSend, 
+			is_read isRead, is_del isDel, created_time createdTime, updated_time updatedTime
+		from schedule_message
+		<include refid="Base_Where_Clause" />
+	</select>
 </mapper>

@@ -21,7 +21,7 @@ import com.tencent.xinge.XGPush;
 /**
  * 每 30 秒调用，发送消息
  */
-@Service(value = "com.galaxyinternet.rili.mesSchedule.SchedulePushMessTask")
+@Service
 public class SchedulePushMessTask extends BaseGalaxyTask {
 
 	//private final static Logger logger = LoggerFactory.getLogger(SchedulePushMessTask.class);

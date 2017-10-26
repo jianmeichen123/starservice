@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.galaxy.im.common.db.BaseEntity;
-public class ScheduleMessageBean extends BaseEntity{
+import com.galaxy.im.common.db.PagableEntity;
+public class ScheduleMessageBean extends PagableEntity{
 	private static final long serialVersionUID = 1L;
 
 	private byte category; //0:操作消息 1:系统消息
