@@ -21,5 +21,7 @@ public interface IScheduleMessageUserDao  extends IBaseDao<ScheduleMessageUserBe
 
 	Integer selectMuserAndMcontentCount(Map<String, Object> paramMap);
 
+	void saveMessageUser(List<ScheduleMessageUserBean> toInserts);
+
 	
 }

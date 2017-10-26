@@ -5,6 +5,8 @@ import com.galaxy.im.common.db.IBaseDao;
 
 public interface IScheduleMessageDao extends IBaseDao<ScheduleMessageBean, Long>{
 
+	Long saveMessage(ScheduleMessageBean message);
+
 
 
 }

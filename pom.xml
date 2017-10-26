@@ -87,7 +87,7 @@
    	<version>1.5.2.RELEASE</version>
   </parent>
   
-    <dependencies>
+ <dependencies>
 	<dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-web</artifactId>
@@ -208,6 +208,14 @@
 		<artifactId>jodd-core</artifactId>  
 		<version>3.4.8</version>  
 	</dependency>
+	
+	<!-- 信鸽推送 -->
+	<dependency>
+		<groupId>com.galaxyinternet</groupId>
+		<artifactId>xingePush</artifactId>
+		<version>[1.0.0,)</version>
+	</dependency>
+	
 	
   </dependencies>
   

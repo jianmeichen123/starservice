@@ -112,10 +112,25 @@
 			</trim>
 		</where>
 	</update>
-
-
-
-
-
+	
+	<!-- 批量保存消息信息 -->
+	<insert id="saveMessageUser" useGeneratedKeys="true" parameterType="java.util.List">  
+	    <selectKey resultType="long" keyProperty="id" order="AFTER">  
+	        SELECT  
+	        LAST_INSERT_ID()  
+	    </selectKey>  
+	    	insert into schedule_message_user 
+	    	(id, mid, uid, uname, 
+	        type_role, is_use, is_send, 
+	        is_read, is_del, created_time, 
+	        updated_time)
+	        values
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	       (#{item.id}, #{item.mid}, #{item.uid}, #{item.uname}, 
+	        #{item.typeRole}, #{item.isUse}, #{item.isSend}, 
+	        #{item.isRead}, #{item.isDel}, #{item.createdTime}, 
+	        #{item.updatedTime)
+	    </foreach> 
+	</insert>
 
 </mapper>

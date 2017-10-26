@@ -27,11 +27,14 @@ import com.galaxy.im.bean.schedule.ScheduleInfo;
 import com.galaxy.im.business.callon.service.ICallonDetailService;
 import com.galaxy.im.business.callon.service.ICallonService;
 import com.galaxy.im.business.contracts.service.IContractsService;
+import com.galaxy.im.business.message.service.IScheduleMessageService;
 import com.galaxy.im.business.project.service.IProjectService;
+import com.galaxy.im.common.BeanUtils;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
+import com.galaxy.im.common.cache.redis.RedisCacheImpl;
 import com.galaxy.im.common.db.QPage;
 import com.galaxy.im.common.html.QHtmlClient;
 
@@ -56,6 +59,9 @@ public class CallonController {
 	@Autowired
 	IProjectService projectService;
 
+	@Autowired
+	IScheduleMessageService messageService;
+	
 	/**
 	 * 保存/编辑拜访计划
 	 * @param paramString
@@ -67,9 +73,12 @@ public class CallonController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		try{
+			@SuppressWarnings("unchecked")
+			RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
+			SessionBean bean = CUtils.get().getBeanBySession(request);
+			Map<String, Object> user = BeanUtils.toMap(cache.get(bean.getSessionid()));
 			int updateCount = 0;
 			Long id = 0L;
-			SessionBean bean = CUtils.get().getBeanBySession(request);
 			if(infoBean!=null && infoBean.getId()!=null && infoBean.getId()!=0){
 				//保存用户ID
 				infoBean.setUpdatedId(bean.getGuserid());
@@ -79,7 +88,11 @@ public class CallonController {
 				//保存用户ID
 				infoBean.setCreatedId(bean.getGuserid());
 				id = callonService.insert(infoBean);
-				pusAddCallon(request,id,infoBean);
+				//pusAddCallon(request,id,infoBean);
+				infoBean.setMessageType("1.4.1");
+				infoBean.setId(id);
+				infoBean.setUserName(CUtils.get().object2String(user.get("realName")));
+				messageService.operateMessageBySaveInfo(infoBean);
 			}
 			if(updateCount!=0 || id!=0L){
 				resultBean.setFlag(1);

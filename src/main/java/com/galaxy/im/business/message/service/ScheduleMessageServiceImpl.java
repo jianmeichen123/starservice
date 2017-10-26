@@ -1,10 +1,12 @@
 package com.galaxy.im.business.message.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,14 +21,24 @@ import com.galaxy.im.common.db.IBaseDao;
 import com.galaxy.im.common.db.QPage;
 import com.galaxy.im.common.db.service.BaseServiceImpl;
 import com.galaxy.im.common.exception.ServiceException;
+import com.galaxy.im.common.messageThread.GalaxyThreadPool;
+import com.galaxy.im.common.messageThread.ScheduleMessageGenerator;
+import com.galaxy.im.common.messageThread.SchedulePushMessTask;
 @Service
 public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageBean>implements IScheduleMessageService {
 	private Logger log = LoggerFactory.getLogger(ScheduleMessageServiceImpl.class);
+	
 	@Autowired
 	private IScheduleMessageDao iScheduleMessageDao;
 	
 	@Autowired
 	private IScheduleMessageUserDao iScheduleMessageUserDao;
+	
+	@Autowired
+	ScheduleMessageGenerator messageGenerator;
+	
+	@Autowired
+	SchedulePushMessTask schedulePushMessTask;
 	
 	@Override
 	protected IBaseDao<ScheduleMessageBean, Long> getBaseDao() {
@@ -147,6 +159,71 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 			throw new ServiceException(e);
 		}
 		return count;
+	}
+
+	/**
+	 * 新增（日程 、、 拜访）操作完成后
+	 * 生成对应消息
+	 * ScheduleMessage    ScheduleMessageUser
+     */
+	@Override
+	public void operateMessageBySaveInfo(Object scheduleInfo) {
+		final Object info = scheduleInfo;
+		
+		GalaxyThreadPool.getExecutorService().execute(new Runnable() {
+			@Override
+			public void run() {
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+				calendar.set(Calendar.HOUR_OF_DAY, 23);
+				calendar.set(Calendar.MINUTE, 59);
+				calendar.set(Calendar.SECOND, 59);
+				calendar.set(Calendar.MILLISECOND, 0);
+				
+				long edate = calendar.getTimeInMillis();
+				
+				ScheduleMessageBean message = messageGenerator.process(info);
+				if(message.getSendTime()==null){
+					return;
+				}
+				Long mid = iScheduleMessageDao.saveMessage(message);
+				
+				List<ScheduleMessageUserBean> toInserts = new ArrayList<ScheduleMessageUserBean>();
+				for(ScheduleMessageUserBean toU : message.getToUsers()){
+					toU.setIsSend((byte) 0);
+					toU.setIsRead((byte) 0);
+					toU.setIsDel((byte) 0);
+					toU.setMid(mid);
+					
+					toInserts.add(toU);
+				}
+				iScheduleMessageUserDao.saveMessageUser(toInserts);
+				
+				//通知消息 ：  已经添加新的消息
+				if(message.getSendTime().longValue() <= edate){
+					message.setToUsers(toInserts);
+					schedulePushMessTask.setHasSaved(message);
+				}
+			}
+		});
+	}
+
+	@Override
+	public void operateMessageByDeleteInfo(Object scheduleInfo, String messageType) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void operateMessageByUpdateInfo(Object scheduleInfo, String messageType) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<ScheduleMessageBean> queryTodayMessToSend() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

@@ -126,6 +126,19 @@ private Logger log = LoggerFactory.getLogger(ScheduleMessageUserDaoImpl.class);
 		return count;
 	}
 
+	/**
+	 * 保存消息
+	 */
+	@Override
+	public void saveMessageUser(List<ScheduleMessageUserBean> list) {
+		try {
+			sqlSessionTemplate.insert(getSqlName("saveMessageUser"), list);
+		} catch (Exception e) {
+			log.error(getSqlName("saveMessageUser"),e);
+			throw new DaoException(e);
+		}
+	}
+
 	
 	
 }

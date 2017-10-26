@@ -12,7 +12,7 @@ public class ScheduleInfo extends PagableEntity{
 	private Long projectId;
 	private String startTime;
 	private String endTime;
-	private String isAllday;
+	private byte isAllday;
 	private long wakeupId;
 	private String remark;
 	private int significance;
@@ -71,12 +71,6 @@ public class ScheduleInfo extends PagableEntity{
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
 	}
-	public String getIsAllday() {
-		return isAllday;
-	}
-	public void setIsAllday(String isAllday) {
-		this.isAllday = isAllday;
-	}
 	public long getWakeupId() {
 		return wakeupId;
 	}
@@ -130,5 +124,11 @@ public class ScheduleInfo extends PagableEntity{
 	}
 	public void setSchedulePerson(String schedulePerson) {
 		this.schedulePerson = schedulePerson;
+	}
+	public byte getIsAllday() {
+		return isAllday;
+	}
+	public void setIsAllday(byte isAllday) {
+		this.isAllday = isAllday;
 	}
 }
