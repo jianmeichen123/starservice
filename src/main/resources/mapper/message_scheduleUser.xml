@@ -198,4 +198,23 @@
 		from schedule_message_user
 		<include refid="Base_Where_Clause" />
 	</select>
+	
+	<!-- 通过ID更新 -->
+	<update id="updateMessageUserById" parameterType="com.galaxy.im.bean.message.ScheduleMessageUserBean">
+		update schedule_message_user
+		<set>
+			<if test="mid != null" > mid = #{mid,jdbcType=BIGINT}, </if>
+			<if test="uid != null" > uid = #{uid,jdbcType=BIGINT}, </if>
+			<if test="uname != null" > uname = #{uname,jdbcType=VARCHAR}, </if>
+			<if test="typeRole != null" > type_role = #{typeRole,jdbcType=TINYINT}, </if>
+			<if test="isUse != null" > is_use = #{isUse,jdbcType=TINYINT}, </if>
+			<if test="isSend != null" > is_send = #{isSend,jdbcType=TINYINT}, </if>
+			<if test="isRead != null" > is_read = #{isRead,jdbcType=TINYINT}, </if>
+			<if test="isDel != null" > is_del = #{isDel,jdbcType=TINYINT}, </if>
+			<if test="createdTime != null" > created_time = #{createdTime,jdbcType=BIGINT}, </if>
+			<if test="updatedTime != null" > updated_time = #{updatedTime,jdbcType=BIGINT}, </if>
+		</set>
+		where id = #{id}
+	</update>
+	
 </mapper>

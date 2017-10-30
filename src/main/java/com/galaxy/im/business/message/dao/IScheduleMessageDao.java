@@ -11,6 +11,8 @@ public interface IScheduleMessageDao extends IBaseDao<ScheduleMessageBean, Long>
 
 	List<ScheduleMessageBean> selectMessageList(ScheduleMessageBean mQ);
 
+	void updateMessageById(ScheduleMessageBean mess);
+
 
 
 }

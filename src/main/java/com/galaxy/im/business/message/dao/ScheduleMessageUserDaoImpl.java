@@ -158,6 +158,19 @@ private Logger log = LoggerFactory.getLogger(ScheduleMessageUserDaoImpl.class);
 		}
 	}
 
+	/**
+	 * 更新消息
+	 */
+	@Override
+	public void updateMessageUserById(ScheduleMessageUserBean bean) {
+		try {
+			sqlSessionTemplate.update(getSqlName("updateMessageUserById"), bean);
+		} catch (Exception e) {
+			log.error(getSqlName("updateMessageUserById"),e);
+			throw new DaoException(e);
+		}
+	}
+
 	
 	
 }

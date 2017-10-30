@@ -74,5 +74,25 @@
 		from schedule_message
 		<include refid="Base_Where_Clause" />
 	</select>
+	
+	<!-- 通过ID更新 -->
+	<update id="updateMessageById" parameterType="com.galaxy.im.bean.message.ScheduleMessageBean">
+		update schedule_message
+		<set>
+			<if test="category != null" > category = #{category,jdbcType=TINYINT}, </if>
+			<if test="type != null" > type = #{type,jdbcType=VARCHAR}, </if>
+			<if test="remarkId != null" > remrk_id = #{remarkId,jdbcType=BIGINT}, </if>
+			<if test="content != null" > content = #{content,jdbcType=VARCHAR}, </if>
+			<if test="remark != null" > remark = #{remark,jdbcType=VARCHAR}, </if>
+			<if test="sendTime != null" > send_time = #{sendTime,jdbcType=BIGINT}, </if>
+			<if test="status != null" > status = #{status,jdbcType=TINYINT}, </if>
+			<if test="createdUid != null" > created_uid = #{createdUid,jdbcType=BIGINT}, </if>
+			<if test="createdUname != null" > created_uname = #{createdUname,jdbcType=VARCHAR}, </if>
+			<if test="createdTime != null" > created_time = #{createdTime,jdbcType=BIGINT}, </if>
+			<if test="updatedTime != null" > updated_time = #{updatedTime,jdbcType=BIGINT}, </if>
+
+		</set>
+		where id = #{id}
+	</update>
 
 </mapper>

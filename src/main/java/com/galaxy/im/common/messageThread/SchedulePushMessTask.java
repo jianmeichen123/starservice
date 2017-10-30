@@ -23,7 +23,6 @@ import com.tencent.xinge.XGPush;
  */
 @Service
 public class SchedulePushMessTask extends BaseGalaxyTask {
-
 	//private final static Logger logger = LoggerFactory.getLogger(SchedulePushMessTask.class);
 	
 	public static List<ScheduleMessageBean> messForCache = new ArrayList<ScheduleMessageBean>();
@@ -36,7 +35,7 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 	/**
 	 * 定义消息 可以延后发送的时间， 00:1分钟发送 + 延后 5分钟
 	 */
-	private static final long TO_LAZY_TIME_BY_MESSAGE = (long) 5 * 60 * 1000;
+	private static final long TO_LAZY_TIME_BY_MESSAGE = (long) 95 * 60 * 1000;
 	
 	/**
 	 * 服务 是否正在在检测   
@@ -227,7 +226,7 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 				continue;
 			}
 			mess.setStatus((byte) 0);
-			//scheduleMessageDao.updateById(mess);
+			scheduleMessageDao.updateMessageById(mess);
 			
 			
 			// 消息推送到移动端
@@ -252,11 +251,8 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 					// 消息内容
 					String conts = UtilOper.getMessContent(mess);
 					
-					
-					
 					// 消息发送
 					org.json.JSONObject result = xinge.pushAccountList(uIds, mesTitle, conts);
-					
 
 					// 消息发送结果
 					if (result != null) {
@@ -270,7 +266,7 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 							ScheduleMessageUserBean toU = new ScheduleMessageUserBean();
 							toU.setMid(mess.getId());
 							toU.setIsSend((byte) 1);
-							//scheduleMessageUserDao.updateByIdSelective(toU);
+							scheduleMessageUserDao.updateMessageUserById(toU);
 						}
 					}
 				}
