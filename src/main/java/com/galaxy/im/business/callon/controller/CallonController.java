@@ -84,7 +84,7 @@ public class CallonController {
 				infoBean.setUpdatedId(bean.getGuserid());
 				updateCount = callonService.updateById(infoBean);
 				//pushUpdateCallon(request,infoBean);
-				//推送消息
+				//更新推送消息
 				infoBean.setVisitType("1.4");
 				infoBean.setMessageType("1.4.2");
 				ContractsBean contractsBean = contractsService.queryById(infoBean.getCallonPerson());
@@ -101,7 +101,7 @@ public class CallonController {
 				infoBean.setCreatedId(bean.getGuserid());
 				id = callonService.insert(infoBean);
 				//pusAddCallon(request,id,infoBean);
-				//推送消息
+				//添加推送消息
 				ContractsBean contractsBean = contractsService.queryById(infoBean.getCallonPerson());
 				if(contractsBean!=null){
 					infoBean.setSchedulePerson(contractsBean.getName());
@@ -135,6 +135,9 @@ public class CallonController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		try{
+			@SuppressWarnings("unchecked")
+			RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
+			SessionBean bean = CUtils.get().getBeanBySession(request);
 			Map<String,Object> map = CUtils.get().jsonString2map(paramString);
 			//long planId = CUtils.get().object2Long(map.get("id"), 0L);
 			if(map!=null){
@@ -145,7 +148,15 @@ public class CallonController {
 				
 				Long id = CUtils.get().object2Long(map.get("id"), 0L);
 				if(id!=0){
-					pushDeleteCallon(request, id);
+					//pushDeleteCallon(request, id);
+					ScheduleInfo infoBean = new ScheduleInfo();
+					infoBean.setCreatedId(bean.getGuserid());
+					Map<String, Object> user = BeanUtils.toMap(cache.get(bean.getSessionid()));
+					infoBean.setUserName(CUtils.get().object2String(user.get("realName")));
+					infoBean.setId(id);
+					infoBean.setVisitType("1.4");
+					infoBean.setMessageType("1.4.3");
+					messageService.operateMessageByDeleteInfo(infoBean, infoBean.getVisitType());
 				}
 				
 				if(flag){
@@ -397,6 +408,7 @@ public class CallonController {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private void pushDeleteCallon(HttpServletRequest request,Long callonId){
 		//调用客户端
 		Map<String,Object> headerMap = QHtmlClient.get().getHeaderMap(request);
