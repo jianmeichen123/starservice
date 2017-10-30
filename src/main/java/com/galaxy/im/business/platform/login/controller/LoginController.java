@@ -1,5 +1,7 @@
 package com.galaxy.im.business.platform.login.controller;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
+import com.galaxy.im.business.platform.login.service.ILoginService;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
@@ -26,10 +29,11 @@ import com.galaxy.im.common.TokenGenerator;
 import com.galaxy.im.common.cache.redis.IRedisCache;
 import com.galaxy.im.common.html.QHtmlClient;
 import com.galaxyinternet.model.user.User;
+import com.galaxyinternet.model.user.UserLogonHis;
 
 @Controller
 @ResponseBody
-public class loginController {
+public class LoginController {
 	
 	@Autowired
 	private Environment env;
@@ -38,6 +42,8 @@ public class loginController {
 	private IRedisCache<String, Object> cache;
 	@Autowired
 	private IFlowCommonService fcService;
+	@Autowired
+	ILoginService service;
 	
 	/**
 	 * 登录
@@ -50,6 +56,7 @@ public class loginController {
 		User user = new User();
 		Map<String, Object> map = null;
 		try{
+			String aclient = request.getHeader("gt");
 			String url = env.getProperty("power.server") + StaticConst.login;
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			String htmlString = QHtmlClient.get().post(url, null, paramMap);
@@ -73,9 +80,23 @@ public class loginController {
 						user.setRole(CUtils.get().object2String(map.get("roleName")));
 						user.setSessionId(sessionId);
 						cache.put(sessionId, user); 
-						//request.getSession().setAttribute(StaticConst.SESSION_USER_KEY, user);
-						// 将sessionId存入cache
-						//cache.put(sessionId, resultJson);
+						
+						//记录登陆历史信息
+						UserLogonHis userLogonHis = new UserLogonHis();	
+						if(aclient.equals("android") || aclient.equals("Android")){
+							userLogonHis.setAccessClient(aclient);
+						}else{
+							userLogonHis.setAccessClient("ios");
+						}
+						userLogonHis.setLoginDate(new Date());
+						userLogonHis.setUserId(user.getId());
+						userLogonHis.setNickName(user.getNickName());
+						Date date = new Date();       
+					    Timestamp initdate = new Timestamp(date.getTime()); 
+					    userLogonHis.setLoginDate(date);
+						userLogonHis.setInitLogonTime(initdate);
+						userLogonHis.setLogonTimes(1);					
+						service.saveLogonHis(userLogonHis);
 					}else{
 						result.setMessage(resultJson.getString("message"));
 					}

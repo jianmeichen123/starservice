@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.business.platform.login.dao.ILoginDao">
+
+	<insert id="saveLogonHis"  parameterType="com.galaxyinternet.model.user.UserLogonHis"  useGeneratedKeys="true"  keyProperty="id">
+	     INSERT INTO app_user_login_his (
+			   id ,
+			   access_client ,
+			   user_id ,
+			   nick_name ,
+			   login_date ,
+			   init_logon_time ,
+			   last_logon_time ,
+			   logon_times ,
+			   app_version ,
+			   android_version ,
+			   android_client
+			) 
+		VALUES
+			  (
+			    #{id} ,
+			    #{accessClient} , 
+			    #{userId} ,
+			    #{nickName} ,
+			    #{loginDate} ,
+			    #{initLogonTime} ,
+			    #{lastLogonTime} ,
+			    #{logonTimes} ,
+			    #{appVersion} ,
+			    #{androidVersion} ,
+			    #{androidClient}
+			  )
+    </insert>
+    
+</mapper>
