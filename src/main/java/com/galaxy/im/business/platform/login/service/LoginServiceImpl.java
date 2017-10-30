@@ -1,5 +1,7 @@
 package com.galaxy.im.business.platform.login.service;
 
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,32 @@ public class LoginServiceImpl extends BaseServiceImpl<Test> implements ILoginSer
 			dao.saveLogonHis(bean);
 		}catch(Exception e){
 			log.error(LoginServiceImpl.class.getName() + "saveLogonHis",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	/**
+	 * 客户端，用户，日期是否登陆
+	 */
+	@Override
+	public UserLogonHis findUserLogonHis(Map<String, Object> paramMap) {
+		try{
+			return dao.findUserLogonHis(paramMap);
+		}catch(Exception e){
+			log.error(LoginServiceImpl.class.getName() + "findUserLogonHis",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	/**
+	 * 更新
+	 */
+	@Override
+	public void updateLogonHis(UserLogonHis his) {
+		try{
+			dao.updateLogonHis(his);
+		}catch(Exception e){
+			log.error(LoginServiceImpl.class.getName() + "updateLogonHis",e);
 			throw new ServiceException(e);
 		}
 	}

@@ -1,6 +1,7 @@
 package com.galaxy.im.business.platform.login.controller;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,8 @@ import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
@@ -34,6 +37,8 @@ import com.galaxyinternet.model.user.UserLogonHis;
 @Controller
 @ResponseBody
 public class LoginController {
+	
+	private Logger log = LoggerFactory.getLogger(LoginController.class);
 	
 	@Autowired
 	private Environment env;
@@ -82,27 +87,46 @@ public class LoginController {
 						cache.put(sessionId, user); 
 						
 						//记录登陆历史信息
-						UserLogonHis userLogonHis = new UserLogonHis();	
-						if(aclient.equals("android") || aclient.equals("Android")){
-							userLogonHis.setAccessClient(aclient);
-						}else{
-							userLogonHis.setAccessClient("ios");
-						}
-						userLogonHis.setLoginDate(new Date());
-						userLogonHis.setUserId(user.getId());
-						userLogonHis.setNickName(user.getNickName());
 						Date date = new Date();       
-					    Timestamp initdate = new Timestamp(date.getTime()); 
-					    userLogonHis.setLoginDate(date);
-						userLogonHis.setInitLogonTime(initdate);
-						userLogonHis.setLogonTimes(1);					
-						service.saveLogonHis(userLogonHis);
+					    Timestamp initdate = new Timestamp(date.getTime());
+						SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
+						if(aclient!=null && (aclient.equals("android") || aclient.equals("Android"))){
+							paramMap.put("accessClient", aclient);
+						}else{
+							paramMap.put("accessClient", "ios");
+						}
+						paramMap.put("userId", user.getId());
+						paramMap.put("loginDate", format.format(date));
+					     
+						UserLogonHis his = service.findUserLogonHis(paramMap);
+						if(his!=null){
+							//更新
+							his.setLogonTimes(his.getLogonTimes()+1);
+							his.setLastLogonTime(initdate);
+							service.updateLogonHis(his);
+						}else{
+							//保存
+							UserLogonHis userLogonHis = new UserLogonHis();	
+							if(aclient!=null && (aclient.equals("android") || aclient.equals("Android"))){
+								userLogonHis.setAccessClient(aclient);
+							}else{
+								userLogonHis.setAccessClient("ios");
+							}
+							userLogonHis.setUserId(user.getId());
+							userLogonHis.setNickName(user.getNickName());
+							
+						    userLogonHis.setLoginDate(date);
+							userLogonHis.setInitLogonTime(initdate);
+							userLogonHis.setLogonTimes(1);					
+							service.saveLogonHis(userLogonHis);
+						}
 					}else{
 						result.setMessage(resultJson.getString("message"));
 					}
 				}
 			}
 		}catch(Exception e){
+			log.error(LoginController.class.getName() + "login",e);
 		}
 		return result;
 	}
