@@ -2,12 +2,12 @@ package com.galaxy.im.bean.message;
 
 import java.util.List;
 
-import com.galaxy.im.common.db.BaseEntity;
+import com.galaxy.im.common.db.PagableEntity;
 
 /**
  * 消息-user 关联
  */
-public class ScheduleMessageUserBean extends BaseEntity	{
+public class ScheduleMessageUserBean extends PagableEntity	{
 	private static final long serialVersionUID = 1L;
 
 	private Long mid; // 消息 id

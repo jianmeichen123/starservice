@@ -18,7 +18,7 @@ import com.galaxy.im.common.StaticConst;
 @ServletComponentScan
 @Configuration
 @ComponentScan
-@EnableScheduling
+@EnableScheduling  //定时器
 public class Application extends SpringBootServletInitializer{
 	private static final Logger logger = LoggerFactory.getLogger(Application.class);
 	@Override

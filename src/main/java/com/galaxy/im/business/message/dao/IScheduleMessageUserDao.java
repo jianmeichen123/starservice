@@ -27,5 +27,7 @@ public interface IScheduleMessageUserDao  extends IBaseDao<ScheduleMessageUserBe
 
 	void updateMessageUserById(ScheduleMessageUserBean toU);
 
+	void deleteMessageUser(ScheduleMessageUserBean scheduleMessageUser);
+
 	
 }

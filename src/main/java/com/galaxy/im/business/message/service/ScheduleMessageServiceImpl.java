@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.galaxy.im.bean.message.ScheduleMessageBean;
 import com.galaxy.im.bean.message.ScheduleMessageUserBean;
+import com.galaxy.im.bean.schedule.ScheduleInfo;
 import com.galaxy.im.business.message.dao.IScheduleMessageDao;
 import com.galaxy.im.business.message.dao.IScheduleMessageUserDao;
 import com.galaxy.im.common.DateUtil;
@@ -216,10 +217,136 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 		
 	}
 
+	/**
+	 * 修改（日程 、、 拜访）操作完成后
+	 * 生成对应消息
+	 * ScheduleMessage    ScheduleMessageUser
+     */
 	@Override
 	public void operateMessageByUpdateInfo(Object scheduleInfo, String messageType) {
-		// TODO Auto-generated method stub
+		final Object info = scheduleInfo;
+		final String mType = messageType;
 		
+		GalaxyThreadPool.getExecutorService().execute(new Runnable() {
+			@Override
+			public void run() {
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+				calendar.set(Calendar.HOUR_OF_DAY, 23);
+				calendar.set(Calendar.MINUTE, 59);
+				calendar.set(Calendar.SECOND, 59);
+				calendar.set(Calendar.MILLISECOND, 0);
+				long edate = calendar.getTimeInMillis();
+				
+				if(mType.startsWith("1")){//日程
+					
+					ScheduleInfo info_model = (ScheduleInfo) info;
+					
+					// 消息内容
+					ScheduleMessageBean mq = new ScheduleMessageBean();
+					mq.setStatus((byte) 1);
+					mq.setType(mType);
+					mq.setRemarkId(info_model.getId());
+					
+					List<ScheduleMessageBean> messagelist =iScheduleMessageDao.selectMessageList(mq);
+					
+					if(messagelist!=null && messagelist.size()>0){
+						ScheduleMessageBean message = messagelist.get(0);
+						if( message!= null){
+							
+							if(message.getStatus().intValue() == 1){
+								//主从判断
+								Long info_pid = info_model.getParentId();
+								if(info_pid != null){
+									ScheduleMessageUserBean scheduleMessageUser = new ScheduleMessageUserBean();
+									scheduleMessageUser.setMid(message.getId());
+									scheduleMessageUser.setUid(info_model.getCreatedId());
+									iScheduleMessageUserDao.deleteMessageUser(scheduleMessageUser);
+									
+									//通知消息 ：  已经添加新的消息
+									if(message.getSendTime().longValue() <= edate){
+										Map<String, List<Long>> delMap = new HashMap<String, List<Long>>();
+										
+										List<Long> mids = new ArrayList<Long>();
+										mids.add(message.getId());
+										
+										List<Long> muids = new ArrayList<Long>();
+										muids.add(info_model.getCreatedId());
+										
+										delMap.put(SchedulePushMessTask.DEL_MAP_KEY_MID, mids);
+										delMap.put(SchedulePushMessTask.DEL_MAP_KEY_MUID, muids);
+										
+										schedulePushMessTask.setHasDeled(delMap);
+									}
+								}else{
+									iScheduleMessageDao.deleteMessageById(message.getId());
+									
+									ScheduleMessageUserBean scheduleMessageUser = new ScheduleMessageUserBean();
+									scheduleMessageUser.setMid(message.getId());
+									iScheduleMessageUserDao.deleteMessageUser(scheduleMessageUser);
+									
+									
+									//通知消息 ：  已经添加新的消息
+									if(message.getSendTime().longValue() <= edate){
+										Map<String, List<Long>> delMap = new HashMap<String, List<Long>>();
+										
+										List<Long> mids = new ArrayList<Long>();
+										mids.add(message.getId());
+										
+										delMap.put(SchedulePushMessTask.DEL_MAP_KEY_MID, mids);
+										
+										schedulePushMessTask.setHasDeled(delMap);
+									}
+								}
+								
+								//新增消息
+								ScheduleMessageBean messageAdd = messageGenerator.process(info);
+								messageAdd.setCreatedTime(new Date().getTime());
+								Long mid = iScheduleMessageDao.saveMessage(messageAdd);
+								
+								List<ScheduleMessageUserBean> toInserts = new ArrayList<ScheduleMessageUserBean>();
+								for(ScheduleMessageUserBean toU : messageAdd.getToUsers()){
+									toU.setIsSend((byte) 0);
+									toU.setIsRead((byte) 0);
+									toU.setIsDel((byte) 0);
+									toU.setMid(mid);
+									toU.setCreatedTime(new Date().getTime());
+									toInserts.add(toU);
+								}
+								iScheduleMessageUserDao.saveMessageUser(toInserts);
+								//通知消息 ：  已经添加新的消息
+								if(messageAdd.getSendTime().longValue() <= edate){
+									messageAdd.setToUsers(toInserts);
+									schedulePushMessTask.setHasSaved(messageAdd);
+								}
+							}
+						}
+					}else{
+						//新增消息
+						ScheduleMessageBean messageAdd = messageGenerator.process(info);
+						messageAdd.setCreatedTime(new Date().getTime());
+						Long mid = iScheduleMessageDao.saveMessage(messageAdd);
+						
+						List<ScheduleMessageUserBean> toInserts = new ArrayList<ScheduleMessageUserBean>();
+						for(ScheduleMessageUserBean toU : messageAdd.getToUsers()){
+							toU.setIsSend((byte) 0);
+							toU.setIsRead((byte) 0);
+							toU.setIsDel((byte) 0);
+							toU.setMid(mid);
+							toU.setCreatedTime(new Date().getTime());
+							toInserts.add(toU);
+						}
+						iScheduleMessageUserDao.saveMessageUser(toInserts);
+						
+						//通知消息 ：  已经添加新的消息
+						if(messageAdd.getSendTime().longValue() <= edate){
+							messageAdd.setToUsers(toInserts);
+							schedulePushMessTask.setHasSaved(messageAdd);
+						}
+					}
+				}
+			}
+		});
 	}
 
 	@SuppressWarnings("unused")

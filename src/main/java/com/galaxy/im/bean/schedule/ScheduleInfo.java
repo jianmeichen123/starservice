@@ -19,6 +19,7 @@ public class ScheduleInfo extends PagableEntity{
 	private String callonAddress;
 	private Long callonPerson;
 	private String userName;     // 日历创建人姓名
+	private String visitType;  //用来对应消息列表的type(拜访1.4)
 	private Integer isDel;  //逻辑删除的字段(是否删除字段0:未删除,1:已删除 )
 	private String remind;   // 提醒时间
 	private String schedulePerson;//拜访人名称
@@ -210,6 +211,12 @@ public class ScheduleInfo extends PagableEntity{
 	}
 	public void setLastMouthDay(String lastMouthDay) {
 		this.lastMouthDay = lastMouthDay;
+	}
+	public String getVisitType() {
+		return visitType;
+	}
+	public void setVisitType(String visitType) {
+		this.visitType = visitType;
 	}
 	
 }

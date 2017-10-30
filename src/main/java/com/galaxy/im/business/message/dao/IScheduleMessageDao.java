@@ -13,6 +13,8 @@ public interface IScheduleMessageDao extends IBaseDao<ScheduleMessageBean, Long>
 
 	void updateMessageById(ScheduleMessageBean mess);
 
+	void deleteMessageById(Long id);
+
 
 
 }

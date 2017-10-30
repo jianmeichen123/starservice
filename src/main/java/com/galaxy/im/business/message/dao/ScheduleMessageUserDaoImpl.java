@@ -171,6 +171,20 @@ private Logger log = LoggerFactory.getLogger(ScheduleMessageUserDaoImpl.class);
 		}
 	}
 
+	/**
+	 * 删除
+	 */
+	@Override
+	public void deleteMessageUser(ScheduleMessageUserBean bean) {
+		try {
+			sqlSessionTemplate.delete(getSqlName("deleteMessageUser"), bean.getMid());
+		} catch (Exception e) {
+			log.error(getSqlName("deleteMessageUser"),e);
+			throw new DaoException(e);
+		}
+		
+	}
+
 	
 	
 }

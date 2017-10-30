@@ -65,5 +65,18 @@ private Logger log = LoggerFactory.getLogger(ScheduleMessageDaoImpl.class);
 		}
 	}
 
+	/**
+	 * 删除
+	 */
+	@Override
+	public void deleteMessageById(Long id) {
+		try {
+			sqlSessionTemplate.delete(getSqlName("deleteMessageById"), id);
+		} catch (Exception e) {
+			log.error(getSqlName("deleteMessageById"),e);
+			throw new DaoException(e);
+		}
+	}
+
 
 }

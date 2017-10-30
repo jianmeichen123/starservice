@@ -83,13 +83,25 @@ public class CallonController {
 				//保存用户ID
 				infoBean.setUpdatedId(bean.getGuserid());
 				updateCount = callonService.updateById(infoBean);
-				pushUpdateCallon(request,infoBean);
+				//pushUpdateCallon(request,infoBean);
+				//推送消息
+				infoBean.setVisitType("1.4");
+				infoBean.setMessageType("1.4.2");
+				ContractsBean contractsBean = contractsService.queryById(infoBean.getCallonPerson());
+				if(contractsBean!=null){
+					infoBean.setSchedulePerson(contractsBean.getName());
+				}else{
+					infoBean.setSchedulePerson("没有找到对应的联系人");
+				}
+				infoBean.setCreatedId(bean.getGuserid());
+				infoBean.setUserName(CUtils.get().object2String(user.get("realName")));
+				messageService.operateMessageByUpdateInfo(infoBean, infoBean.getVisitType());
 			}else{
 				//保存用户ID
 				infoBean.setCreatedId(bean.getGuserid());
 				id = callonService.insert(infoBean);
 				//pusAddCallon(request,id,infoBean);
-				//此处需要查询数据库，取得联系人的名称再保存
+				//推送消息
 				ContractsBean contractsBean = contractsService.queryById(infoBean.getCallonPerson());
 				if(contractsBean!=null){
 					infoBean.setSchedulePerson(contractsBean.getName());
@@ -346,6 +358,7 @@ public class CallonController {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private void pushUpdateCallon(HttpServletRequest request,ScheduleInfo infoBean){
 		//调用客户端
 		Map<String,Object> headerMap = QHtmlClient.get().getHeaderMap(request);

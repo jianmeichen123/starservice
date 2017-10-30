@@ -27,20 +27,20 @@
 						#{item}
 					</foreach>
 				</if> 
-				<if test="category != null" > and category = #{category ,jdbcType=TINYINT}  </if>
-				<if test="type != null" > and type = #{type ,jdbcType=VARCHAR}  </if>
-				<if test="remarkId != null" > and remrk_id = #{remarkId ,jdbcType=BIGINT}  </if>
-				<if test="content != null" > and content = #{content ,jdbcType=VARCHAR}  </if>
-				<if test="remark != null" > and remark = #{remark ,jdbcType=VARCHAR}  </if>
-				<if test="sendTime != null" > and send_time = #{sendTime ,jdbcType=BIGINT}  </if>
+				<if test="category != null" > and category = #{category}  </if>
+				<if test="type != null" > and type = #{type}  </if>
+				<if test="remarkId != null" > and remrk_id = #{remarkId}  </if>
+				<if test="content != null" > and content = #{content}  </if>
+				<if test="remark != null" > and remark = #{remark}  </if>
+				<if test="sendTime != null" > and send_time = #{sendTime}  </if>
 				<if test="sendTimeNotNull != null" > and send_time is not null  </if>
-				<if test="btime != null"> <![CDATA[ and send_time >= #{btime,jdbcType=BIGINT} ]]> </if>
-			    <if test="etime != null"> <![CDATA[ and send_time <= #{etime,jdbcType=BIGINT} ]]> </if>
-				<if test="status != null" > and status = #{status ,jdbcType=TINYINT}  </if>
-				<if test="createdUid != null" > and created_uid = #{createdUid ,jdbcType=BIGINT}  </if>
-				<if test="createdUname != null" > and created_uname = #{createdUname ,jdbcType=VARCHAR}  </if>
-				<if test="createdTime != null" > and created_time = #{createdTime ,jdbcType=BIGINT}  </if>
-				<if test="updatedTime != null" > and updated_time = #{updatedTime ,jdbcType=BIGINT}  </if>
+				<if test="btime != null"> and send_time >= #{btime} </if>
+			    <if test="etime != null"> and send_time &lt;= #{etime}  </if>
+				<if test="status != null" > and status = #{status}  </if>
+				<if test="createdUid != null" > and created_uid = #{createdUid}  </if>
+				<if test="createdUname != null" > and created_uname = #{createdUname}  </if>
+				<if test="createdTime != null" > and created_time = #{createdTime}  </if>
+				<if test="updatedTime != null" > and updated_time = #{updatedTime}  </if>
 			</trim>
 			<!-- <if test="sorting != null">order by ${sorting}</if> -->
 			<if test="property != null">order by ${property} ${direction}</if>
@@ -79,20 +79,26 @@
 	<update id="updateMessageById" parameterType="com.galaxy.im.bean.message.ScheduleMessageBean">
 		update schedule_message
 		<set>
-			<if test="category != null" > category = #{category,jdbcType=TINYINT}, </if>
-			<if test="type != null" > type = #{type,jdbcType=VARCHAR}, </if>
-			<if test="remarkId != null" > remrk_id = #{remarkId,jdbcType=BIGINT}, </if>
-			<if test="content != null" > content = #{content,jdbcType=VARCHAR}, </if>
-			<if test="remark != null" > remark = #{remark,jdbcType=VARCHAR}, </if>
-			<if test="sendTime != null" > send_time = #{sendTime,jdbcType=BIGINT}, </if>
-			<if test="status != null" > status = #{status,jdbcType=TINYINT}, </if>
-			<if test="createdUid != null" > created_uid = #{createdUid,jdbcType=BIGINT}, </if>
-			<if test="createdUname != null" > created_uname = #{createdUname,jdbcType=VARCHAR}, </if>
-			<if test="createdTime != null" > created_time = #{createdTime,jdbcType=BIGINT}, </if>
-			<if test="updatedTime != null" > updated_time = #{updatedTime,jdbcType=BIGINT}, </if>
+			<if test="category != null" > category = #{category}, </if>
+			<if test="type != null" > type = #{type}, </if>
+			<if test="remarkId != null" > remrk_id = #{remarkId}, </if>
+			<if test="content != null" > content = #{content}, </if>
+			<if test="remark != null" > remark = #{remark}, </if>
+			<if test="sendTime != null" > send_time = #{sendTime}, </if>
+			<if test="status != null" > status = #{status}, </if>
+			<if test="createdUid != null" > created_uid = #{createdUid}, </if>
+			<if test="createdUname != null" > created_uname = #{createdUname}, </if>
+			<if test="createdTime != null" > created_time = #{createdTime}, </if>
+			<if test="updatedTime != null" > updated_time = #{updatedTime}, </if>
 
 		</set>
 		where id = #{id}
 	</update>
+	
+	<!-- 根据ID删除 -->
+	<delete id="deleteMessageById" parameterType="java.lang.Long">
+		delete from schedule_message
+		where id = #{id}
+	</delete>
 
 </mapper>

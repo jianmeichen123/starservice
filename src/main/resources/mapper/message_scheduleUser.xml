@@ -14,7 +14,6 @@
 		<result column="is_del" 		property="isDel" 		jdbcType="TINYINT" />
 		<result column="created_time" 	property="createdTime" jdbcType="BIGINT" />
 		<result column="updated_time" 	property="updatedTime" jdbcType="BIGINT" />
-		
 		<result column="type" 			property="type" 		jdbcType="VARCHAR" />
 		<result column="remrk_id" 		property="remarkId" 	jdbcType="BIGINT" />
 		<result column="content" 		property="content" 		jdbcType="VARCHAR" />
@@ -29,31 +28,31 @@
 	<sql id="Base_Where_Clause">
 		<where>
 			<trim prefixOverrides="and">
-				<if test="id != null"> and id = #{id ,jdbcType=BIGINT} </if>
+				<if test="id != null"> and id = #{id} </if>
 				<if test="ids != null">
 					and id IN
 					<foreach collection="ids" index="atem" item="atem" open="(" separator="," close=")">
 						#{atem}
 					</foreach>
 				</if> 
-				<if test="mid != null" > and mid = #{mid ,jdbcType=BIGINT}  </if>
+				<if test="mid != null" > and mid = #{mid}  </if>
 				<if test="mids != null">
 					and mid IN
 					<foreach collection="mids" index="item" item="item" open="(" separator="," close=")">
 						#{item}
 					</foreach>
 				</if> 
-				<if test="uid != null" > and uid = #{uid ,jdbcType=BIGINT}  </if>
-				<if test="uname != null" > and uname = #{uname ,jdbcType=VARCHAR}  </if>
-				<if test="typeRole != null" > and type_role = #{typeRole ,jdbcType=TINYINT}  </if>
-				<if test="isUse != null" > and is_use = #{isUse ,jdbcType=TINYINT}  </if>
-				<if test="isSend != null" > and is_send = #{isSend ,jdbcType=TINYINT}  </if>
-				<if test="isRead != null" > and is_read = #{isRead ,jdbcType=TINYINT}  </if>
-				<if test="isDel != null" > and is_del = #{isDel ,jdbcType=TINYINT}  </if>
-				<if test="createdTime != null" > and created_time = #{createdTime ,jdbcType=BIGINT}  </if>
-				<if test="updatedTime != null" > and updated_time = #{updatedTime ,jdbcType=BIGINT}  </if>
+				<if test="uid != null" > and uid = #{uid}  </if>
+				<if test="uname != null" > and uname = #{uname}  </if>
+				<if test="typeRole != null" > and type_role = #{typeRole}  </if>
+				<if test="isUse != null" > and is_use = #{isUse}  </if>
+				<if test="isSend != null" > and is_send = #{isSend}  </if>
+				<if test="isRead != null" > and is_read = #{isRead}  </if>
+				<if test="isDel != null" > and is_del = #{isDel}  </if>
+				<if test="createdTime != null" > and created_time = #{createdTime}  </if>
+				<if test="updatedTime != null" > and updated_time = #{updatedTime}  </if>
 			</trim>
-			<if test="sorting != null">order by ${sorting}</if>
+			<if test="property != null">order by ${property} ${direction}</if>
 			<if test="offset != null and limit != null">
 				limit #{offset}, #{limit}
 			</if>
@@ -203,18 +202,24 @@
 	<update id="updateMessageUserById" parameterType="com.galaxy.im.bean.message.ScheduleMessageUserBean">
 		update schedule_message_user
 		<set>
-			<if test="mid != null" > mid = #{mid,jdbcType=BIGINT}, </if>
-			<if test="uid != null" > uid = #{uid,jdbcType=BIGINT}, </if>
-			<if test="uname != null" > uname = #{uname,jdbcType=VARCHAR}, </if>
-			<if test="typeRole != null" > type_role = #{typeRole,jdbcType=TINYINT}, </if>
-			<if test="isUse != null" > is_use = #{isUse,jdbcType=TINYINT}, </if>
-			<if test="isSend != null" > is_send = #{isSend,jdbcType=TINYINT}, </if>
-			<if test="isRead != null" > is_read = #{isRead,jdbcType=TINYINT}, </if>
-			<if test="isDel != null" > is_del = #{isDel,jdbcType=TINYINT}, </if>
-			<if test="createdTime != null" > created_time = #{createdTime,jdbcType=BIGINT}, </if>
-			<if test="updatedTime != null" > updated_time = #{updatedTime,jdbcType=BIGINT}, </if>
+			<if test="mid != null" > mid = #{mid}, </if>
+			<if test="uid != null" > uid = #{uid}, </if>
+			<if test="uname != null" > uname = #{uname}, </if>
+			<if test="typeRole != null" > type_role = #{typeRole}, </if>
+			<if test="isUse != null" > is_use = #{isUse}, </if>
+			<if test="isSend != null" > is_send = #{isSend}, </if>
+			<if test="isRead != null" > is_read = #{isRead}, </if>
+			<if test="isDel != null" > is_del = #{isDel}, </if>
+			<if test="createdTime != null" > created_time = #{createdTime}, </if>
+			<if test="updatedTime != null" > updated_time = #{updatedTime}, </if>
 		</set>
 		where id = #{id}
 	</update>
+	
+	<!-- 删除 -->
+	<delete id="deleteMessageUser" parameterType="java.lang.Long">
+		delete from schedule_message_user
+		where mid = #{id}
+	</delete>
 	
 </mapper>
