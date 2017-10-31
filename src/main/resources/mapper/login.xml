@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.business.platform.login.dao.ILoginDao">
+
+	<!--  保存 -->
+	<insert id="saveLogonHis"  parameterType="com.galaxyinternet.model.user.UserLogonHis"  useGeneratedKeys="true"  keyProperty="id">
+	     INSERT INTO app_user_login_his (
+			   id ,
+			   access_client ,
+			   user_id ,
+			   nick_name ,
+			   login_date ,
+			   init_logon_time ,
+			   last_logon_time ,
+			   logon_times ,
+			   app_version ,
+			   android_version ,
+			   android_client
+			) 
+		VALUES
+			  (
+			    #{id} ,
+			    #{accessClient} , 
+			    #{userId} ,
+			    #{nickName} ,
+			    #{loginDate} ,
+			    #{initLogonTime} ,
+			    #{lastLogonTime} ,
+			    #{logonTimes} ,
+			    #{appVersion} ,
+			    #{androidVersion} ,
+			    #{androidClient}
+			  )
+    </insert>
+    
+    <!-- 查询 -->
+    <select id="findUserLogonHis" parameterType="hashmap" resultType="com.galaxyinternet.model.user.UserLogonHis">
+	     SELECT 
+			   id,
+			   access_client  accessClient ,
+			   user_id  userId,
+			   nick_name   nickName,
+			   login_date    loginDate ,
+			   init_logon_time  initLogonTime ,
+			   last_logon_time    lastLogonTime ,
+			   logon_times    logonTimes,
+			   app_version  appVersion,
+			   android_version  androidVersion,
+			   android_client  androidClient	
+			FROM app_user_login_his  
+		 <where>
+			<trim prefixOverrides="and">
+				 <if test="userId != null">  and user_id =#{userId} </if>
+				 <if test="accessClient != null" > and access_client = #{accessClient} </if>
+		         <if test="loginDate != null" > and login_date = #{loginDate} </if>
+          	</trim>
+		</where>
+	</select>
+	
+	<!-- 更新 -->
+	<update id="updateLogonHis"   parameterType="com.galaxyinternet.model.user.UserLogonHis" >
+	    UPDATE app_user_login_his
+	    <set>
+			  <if test="logonTimes != null" >  logon_times = #{logonTimes}, </if>
+		      <if test="lastLogonTime != null" >  last_logon_time = #{lastLogonTime}</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+    
+</mapper>
