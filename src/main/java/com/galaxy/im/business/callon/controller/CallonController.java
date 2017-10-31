@@ -149,6 +149,7 @@ public class CallonController {
 				Long id = CUtils.get().object2Long(map.get("id"), 0L);
 				if(id!=0){
 					//pushDeleteCallon(request, id);
+					//删除推送消息
 					ScheduleInfo infoBean = new ScheduleInfo();
 					infoBean.setCreatedId(bean.getGuserid());
 					Map<String, Object> user = BeanUtils.toMap(cache.get(bean.getSessionid()));
