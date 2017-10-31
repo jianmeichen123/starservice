@@ -104,23 +104,23 @@
 	    (SELECT r.content_choose
 				FROM information_title_relate t
 				INNER JOIN information_result r ON t.title_id = r.title_id 
-				WHERE r.project_id = sop_project.id AND t.code = 'FNO1_1' and t.report_type=4 ) AS financeStatus,
+				WHERE r.project_id = sop_project.id AND t.code = 'FNO1_1' and t.report_type=4 and r.is_valid=0) AS financeStatus,
 		(SELECT case when r.content_describe1 is null or r.content_describe1 ='' then null else r.content_describe1 end content_describe1
 				FROM information_title_relate t
 				INNER JOIN information_result r ON t.title_id = r.title_id 
-				WHERE r.project_id = sop_project.id AND t.code = 'FNO1_2_1' and t.report_type=4 ) AS projectContribution ,
+				WHERE r.project_id = sop_project.id AND t.code = 'FNO1_2_1' and t.report_type=4 and r.is_valid=0) AS projectContribution ,
 		(SELECT case when r.content_describe1 is null or r.content_describe1 ='' then null else r.content_describe1 end content_describe1
 				FROM information_title_relate t
 				INNER JOIN information_result r ON t.title_id = r.title_id 
-				WHERE r.project_id = sop_project.id AND t.code = 'FNO1_2_3' and t.report_type=4 ) AS projectShareRatio ,
+				WHERE r.project_id = sop_project.id AND t.code = 'FNO1_2_3' and t.report_type=4 and r.is_valid=0) AS projectShareRatio ,
 		(SELECT case when r.content_describe1 is null or r.content_describe1 ='' then null else r.content_describe1 end content_describe1
 				FROM information_title_relate t
 				INNER JOIN information_result r ON t.title_id = r.title_id 
-				WHERE r.project_id = sop_project.id AND t.code = 'FNO1_3_1' and t.report_type=4 ) AS finalContribution ,
+				WHERE r.project_id = sop_project.id AND t.code = 'FNO1_3_1' and t.report_type=4 and r.is_valid=0) AS finalContribution ,
 		(SELECT case when r.content_describe1 is null or r.content_describe1 ='' then null else r.content_describe1 end content_describe1
 				FROM information_title_relate t
 				INNER JOIN information_result r ON t.title_id = r.title_id 
-				WHERE r.project_id = sop_project.id AND t.code = 'FNO1_3_3' and t.report_type=4 ) AS finalShareRatio 
+				WHERE r.project_id = sop_project.id AND t.code = 'FNO1_3_3' and t.report_type=4 and r.is_valid=0) AS finalShareRatio 
    </sql>
    
    <!-- 查询总数 -->
