@@ -243,6 +243,12 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 		query.setProjectStatus("projectStatus:2");
 		return sopdao.queryCount(query);
 	}
+	//项目总个数
+	@Override
+	public Long queryProjectSumCount(ProjectBo query) {
+		query.setProjectStatus(null);
+		return sopdao.queryCount(query);
+	}
 
 	@Override
 	public Map<String, Object> selectBaseProjectInfo(Map<String, Object> paramMap) {
@@ -293,5 +299,6 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 			throw new ServiceException(e);
 		}
 	}
+	
 	
 }

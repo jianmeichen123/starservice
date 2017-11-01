@@ -35,6 +35,7 @@ import com.galaxy.im.business.common.dict.service.IDictService;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.project.service.IFinanceHistoryService;
 import com.galaxy.im.business.project.service.IProjectService;
+import com.galaxy.im.business.rili.service.IScheduleService;
 import com.galaxy.im.common.BeanUtils;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
@@ -61,6 +62,9 @@ public class ProjectController {
 	
 	@Autowired
 	private IDictService dictService;
+	
+	@Autowired
+	IScheduleService schService;
 	
 	
 	/**
@@ -648,5 +652,50 @@ public class ProjectController {
 		}
 		return code;
 	}
+	
+	/**
+	 * 项目总个数，跟进中，投后运营以及日程消息未读个数
+	 */
+	@RequestMapping("showProjectCount")
+	@ResponseBody
+	public Object showProjectCount(HttpServletRequest request,HttpServletResponse response,@RequestBody ProjectBo projectBo){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		try{
+			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
+			if(sessionBean==null){
+				resultBean.setMessage("User用户信息在Session中不存在，无法执行项目列表查询！");
+				return resultBean;
+			}
+			//获取用户角色code
+			List<String> roleCodeList = fcService.selectRoleCodeByUserId(sessionBean.getGuserid(), request, response);
+			if(roleCodeList==null || roleCodeList.size()==0){
+				resultBean.setMessage("当前用户未配置任何角色，将不执行项目统计功能！");
+				return resultBean;
+			}
+			//投资经理
+			if(roleCodeList.contains(StaticConst.TZJL)&&(projectBo.getProjectDepartid()==null)&&(projectBo.getCreateUid()==null)&&(projectBo.getQuanbu()==null)&&(projectBo.getDeptIdList()==null)){//投资经理
+				projectBo.setCreateUid(sessionBean.getGuserid()); //项目创建者
+			}
+			
+			//个数
+			Long gjzNum = service.queryProjectgjzCount(projectBo);
+			Long thyyNum = service.queryProjectthyyCount(projectBo);
+			Long sumNum = service.queryProjectSumCount(projectBo);
+			//日程消息未读个数
+			Long scheduleNum = schService.queryProjectScheduleCount(projectBo.getuId());
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("sumNum", sumNum);
+			map.put("gjzNum", gjzNum);
+			map.put("thyyNum", thyyNum);
+			map.put("scheduleNum", scheduleNum);
+			resultBean.setMap(map);
+			resultBean.setStatus("OK");
+			
+		}catch(Exception e){
+			log.error(ProjectController.class.getName() + "showProjectCount",e);
+		}
+		return resultBean;
+	}
+	
 
 }

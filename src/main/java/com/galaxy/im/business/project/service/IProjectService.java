@@ -41,6 +41,8 @@ public interface IProjectService extends IBaseService<ProjectBean>{
 	Long queryProjectthyyCount(ProjectBo projectBo);
 	//否决个数
 	Long queryProjectfjCount(ProjectBo projectBo);
+	//项目总个数
+	Long queryProjectSumCount(ProjectBo projectBo);
 	
 	Map<String, Object> selectBaseProjectInfo(Map<String, Object> paramMap);
 	//更新
@@ -49,4 +51,5 @@ public interface IProjectService extends IBaseService<ProjectBean>{
 	//插入信息到全息报告表
 	int addInformationResult(List<InformationResult> list);
 	int updateInformationResult(InformationResult result);
+	
 }

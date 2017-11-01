@@ -43,6 +43,8 @@ public class ProjectBo extends SopProjectBean {
 	
 	private Integer sflag;
 	
+	private Long uId;
+	
 	/**
 	 * 新增投资经理查询全部项目
 	 */
@@ -223,6 +225,14 @@ public class ProjectBo extends SopProjectBean {
 
 	public void setQuanbu(String quanbu) {
 		this.quanbu = quanbu;
+	}
+
+	public Long getuId() {
+		return uId;
+	}
+
+	public void setuId(Long uId) {
+		this.uId = uId;
 	}
 	
 	

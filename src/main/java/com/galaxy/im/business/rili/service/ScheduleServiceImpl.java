@@ -441,6 +441,19 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 			throw new ServiceException(e);
 		}
 	}
+
+	/**
+	 * 日程消息未读个数
+	 */
+	@Override
+	public Long queryProjectScheduleCount(Long uid) {
+		try {
+			return dao.queryProjectScheduleCount(uid);
+		} catch (Exception e) {
+			log.error(ScheduleServiceImpl.class.getName() + "queryProjectScheduleCount",e);
+			throw new ServiceException(e);
+		}
+	}
 	
 
 }

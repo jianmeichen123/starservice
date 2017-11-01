@@ -22,5 +22,7 @@ public interface IScheduleService  extends IBaseService<ScheduleInfo>{
 	List<ScheduleUtil> queryAndConvertList(ScheduleInfo query) throws ParseException;
 	//搜索拜访对象/其他日程
 	List<ScheduleInfo> getList(Map<String, Object> map);
+	//日程消息未读个数
+	Long queryProjectScheduleCount(Long getuId);
 
 }

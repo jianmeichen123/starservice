@@ -339,17 +339,21 @@
 	</select>
 	
 	<!-- 连表查询获取拜访对象 -->
-		<select id="selectVisitNameById"   resultType ="com.galaxy.im.bean.schedule.ScheduleInfo" parameterType="java.lang.Long">
+	<select id="selectVisitNameById"   resultType ="com.galaxy.im.bean.schedule.ScheduleInfo" parameterType="java.lang.Long">
 		SELECT con.name as schedulePerson ,
 				sc.id as id
-				FROM 
-				schedule_info sc 
-				LEFT JOIN schedule_contacts con ON sc.callon_person=con.id
-				WHERE sc.id=#{id};
+		FROM schedule_info sc 
+		LEFT JOIN schedule_contacts con ON sc.callon_person=con.id
+		WHERE sc.id=#{id};
 	</select>
 	
 	
-	
+	<!-- 日程消息未读个数 -->
+	<select id="queryProjectScheduleCount" resultType="java.lang.Long" parameterType="java.lang.Long">
+		SELECT COUNT(1) 
+		FROM schedule_message_user 
+		WHERE uid=#{uid} and is_read=0;
+	</select>
 	
 	
 </mapper>

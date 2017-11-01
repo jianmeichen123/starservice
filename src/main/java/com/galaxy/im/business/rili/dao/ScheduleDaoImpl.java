@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.galaxy.im.bean.schedule.ScheduleInfo;
 import com.galaxy.im.common.BeanUtils;
+import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.db.BaseDaoImpl;
 import com.galaxy.im.common.exception.DaoException;
 
@@ -115,6 +116,20 @@ public class ScheduleDaoImpl extends BaseDaoImpl<ScheduleInfo, Long> implements 
 			log.error(getSqlName("getList"),e);
 			throw new DaoException(e);
 		}
+	}
+
+	/**
+	 * 日程消息未读个数
+	 */
+	@Override
+	public Long queryProjectScheduleCount(Long uid) {
+		long total = 0L;
+		try{
+			total = CUtils.get().object2Long(sqlSessionTemplate.selectOne(getSqlName("queryProjectScheduleCount"),uid));
+		}catch(Exception e){
+			throw new DaoException(String.format("根据项目状态统计数据量出错！语句:%s" ,  getSqlName("queryProjectScheduleCount")), e);
+		}
+		return total;
 	}
 	
 
