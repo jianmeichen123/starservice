@@ -2,8 +2,10 @@ package com.galaxy.im.common.db;
 
 
 import org.springframework.data.annotation.Transient;
-import com.galaxy.im.common.CUtils;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.galaxy.im.common.CUtils;
+@JsonInclude(value=JsonInclude.Include.NON_NULL)
 public class BaseEntity extends PrimaryKeyObject<Long>{
 
 	private static final long serialVersionUID = 1L;

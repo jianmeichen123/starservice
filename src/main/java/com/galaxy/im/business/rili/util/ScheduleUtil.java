@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.galaxy.im.bean.schedule.ScheduleInfo;
-import com.galaxyinternet.framework.core.model.PagableEntity;
+import com.galaxy.im.common.db.PagableEntity;
 
 
 public class ScheduleUtil extends PagableEntity{

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.schedule.ScheduleDict;
 import com.galaxy.im.bean.schedule.ScheduleInfo;
+import com.galaxy.im.business.message.service.IScheduleMessageService;
 import com.galaxy.im.business.rili.service.IScheduleDictService;
 import com.galaxy.im.business.rili.service.IScheduleService;
 import com.galaxy.im.business.rili.util.AccountDate;
@@ -42,6 +43,8 @@ public class ScheduleController {
 	@Autowired
 	private IScheduleDictService scheduleDictService;
 	
+	@Autowired
+	IScheduleMessageService messageService;
 	
 	/**
 	 * 时间是否冲突 或 时间冲突数
@@ -120,11 +123,11 @@ public class ScheduleController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		
-		//@SuppressWarnings("unchecked")
-		//RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
+		@SuppressWarnings("unchecked")
+		RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
 		//获取登录用户信息
 		SessionBean bean = CUtils.get().getBeanBySession(request);
-		//Map<String, Object> user = BeanUtils.toMap(cache.get(bean.getSessionid()));
+		Map<String, Object> user = BeanUtils.toMap(cache.get(bean.getSessionid()));
 		if(scheduleInfo.getName()==null){
 			resultBean.setMessage("日程名称不能为空");
 			return resultBean;
@@ -136,22 +139,30 @@ public class ScheduleController {
 				//更新其他日程
 				scheduleInfo.setUpdatedId(bean.getGuserid());
 				updateCount = service.updateById(scheduleInfo);
+				if(updateCount!=0){
+					resultBean.setFlag(1);
+					resultBean.setStatus("OK");
+				}
+				//更新其他日程后发消息
+				scheduleInfo.setCreatedId(bean.getGuserid());
+				scheduleInfo.setUserName(CUtils.get().object2String(user.get("realName")));
+				scheduleInfo.setMessageType("1.3.2");
+				messageService.operateMessageByUpdateInfo(scheduleInfo, "1.3");
 			}else{
 				//保存其他日程
 				scheduleInfo.setCreatedId(bean.getGuserid());
 				id = service.insert(scheduleInfo);
-				//scheduleInfo.setMessageType("1.3.1");
-				//scheduleInfo.setId(id);
-				//scheduleInfo.setUserName(user.get("realName").toString());
-				//返给客户端id和状态
-				//resultBean.setId(id);
+				if(id!=0L){
+					resultBean.setFlag(1);
+					resultBean.setStatus("OK");
+				}
 				//创建其他日程后发消息
-				//messageService.operateMessageBySaveInfo(scheduleInfo);
+				scheduleInfo.setMessageType("1.3.1");
+				scheduleInfo.setId(id);
+				scheduleInfo.setUserName(CUtils.get().object2String(user.get("realName")));
+				messageService.operateMessageBySaveInfo(scheduleInfo);
 			}
-			if(updateCount!=0 || id!=0L){
-				resultBean.setFlag(1);
-			}
-			resultBean.setStatus("OK");
+		
 		} catch (Exception e) {
 			log.error(ScheduleController.class.getName() + "_saveOtherSchedule",e);
 		}
@@ -163,11 +174,12 @@ public class ScheduleController {
 	 */
 	@ResponseBody
 	@RequestMapping("deleteOtherScheduleById")
-	public Object deleteOtherSchedule(@RequestBody String paramString,HttpServletRequest request){
+	public Object deleteOtherSchedule(@RequestBody String id,HttpServletRequest request){
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		try {
-			Map<String,Object> map = CUtils.get().jsonString2map(paramString);
+			Map<String,Object> map = CUtils.get().jsonString2map(id);
+			ScheduleInfo sInfo = service.queryById(CUtils.get().object2Long(map.get("id")));
 			Map<String, Object> ss = service.selectOtherScheduleById(map);
 			if(ss!=null){
 				//判断是否过期
@@ -184,16 +196,14 @@ public class ScheduleController {
 				map.put("updatedId", sessionBean.getGuserid());
 				boolean flag = service.deleteOtherScheduleById(map);
 				
-				Long id = CUtils.get().object2Long(map.get("id"), 0L);
-				/*if(id!=0){
-					pushDeleteCallon(request, id);
-				}*/
-				
 				if(flag){
 					resultBean.setFlag(1);
+					resultBean.setStatus("OK");
 				}
+				//逻辑删除后发消息
+				sInfo.setIsDel(1);
+				messageService.operateMessageByDeleteInfo(ss, "1.3");
 			}
-			resultBean.setStatus("OK");
 		} catch (Exception e) {
 			log.error(ScheduleController.class.getName() + "_deleteOtherSchedule",e);
 		}
@@ -299,18 +309,36 @@ public class ScheduleController {
 			if(query.getProperty()==null)  query.setProperty("start_time,created_time"); 
 			if(query.getDirection()==null) query.setDirection("asc");
 			if(query.getCreatedId()==null) query.setCreatedId(CUtils.get().object2Long(user.get("id")));
-			
 			Map<String,String> qtime = DateUtil.getBeginEndTimeStr(query.getYear(),query.getMonth(),query.getDay());
 			if(qtime != null){
 				query.setBqStartTime(qtime.get("beginTimeStr"));
 				query.setBqEndTime(qtime.get("endTimeStr"));
 			}
 			
-			//结果查询  封装
-			List<ScheduleUtil> qList = service.queryAndConvertList(query);
-			
-			resultBean.setEntity(qList);
-			resultBean.setStatus("OK");
+			//搜索
+			if (query.getName()!=null) {
+				Map<String,Object> map = new HashMap<>();
+				map.put("name", "%"+query.getName()+"%");
+				map.put("isDel", 0);
+				if(query.getCreatedId()==null){
+					query.setCreatedId(CUtils.get().object2Long(user.get("id")));
+				}
+				map.put("createdId", query.getCreatedId());
+				List<ScheduleInfo> list = service.getList(map);
+				if (list!=null && list.size()>0) {
+					resultBean.setEntity(list);
+					resultBean.setStatus("OK");
+				}else{
+					resultBean.setMessage("暂无数据");
+					resultBean.setStatus("OK");
+				}
+				
+			}else{
+				//结果查询  封装
+				List<ScheduleUtil> qList = service.queryAndConvertList(query);
+				resultBean.setEntity(qList);
+				resultBean.setStatus("OK");
+			}
 		} catch (Exception e) {
 			log.error(ScheduleController.class.getName() + "_querySchedule",e);
 		}

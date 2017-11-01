@@ -16,5 +16,11 @@ public interface IScheduleDao extends IBaseDao<ScheduleInfo, Long>{
 	int delCallonById(Map<String, Object> paramMap);
 	//根据id查询详情
 	Map<String, Object> selectOtherScheduleById(Map<String, Object> map);
+	//查询拜访对象
+	ScheduleInfo selectVisitNameById(Long id);
+	//查询列表
+	List<ScheduleInfo> selectLists(ScheduleInfo toQ);
+	//搜索拜访对象/其他日程
+	List<ScheduleInfo> getList(Map<String, Object> map);
 
 }

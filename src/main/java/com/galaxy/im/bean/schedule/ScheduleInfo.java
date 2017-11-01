@@ -1,7 +1,8 @@
 package com.galaxy.im.bean.schedule;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.galaxy.im.common.db.PagableEntity;
-
+@JsonInclude(value=JsonInclude.Include.NON_NULL) 
 public class ScheduleInfo extends PagableEntity{
 	private static final long serialVersionUID = -6443062953917242468L;
 	private Long parentId;
@@ -35,7 +36,7 @@ public class ScheduleInfo extends PagableEntity{
 	
     private String sbTimeForAllday;    // 日程开始  起始时间     startTime  >   sbTimeForAllday
     private String seTimeForAllday;    // 日程开始  结束时间     startTime  <   seTimeForAllday
-    private Boolean queryForMounth;    //xml 查询月视图 特标识
+    private String queryForMounth;    //xml 查询月视图 特标识
     private String lastMouthDay;//当月最后一天
 
 	public Long getParentId() {
@@ -200,12 +201,7 @@ public class ScheduleInfo extends PagableEntity{
 	public void setSeTimeForAllday(String seTimeForAllday) {
 		this.seTimeForAllday = seTimeForAllday;
 	}
-	public Boolean getQueryForMounth() {
-		return queryForMounth;
-	}
-	public void setQueryForMounth(Boolean queryForMounth) {
-		this.queryForMounth = queryForMounth;
-	}
+	
 	public String getLastMouthDay() {
 		return lastMouthDay;
 	}
@@ -217,6 +213,12 @@ public class ScheduleInfo extends PagableEntity{
 	}
 	public void setVisitType(String visitType) {
 		this.visitType = visitType;
+	}
+	public String getQueryForMounth() {
+		return queryForMounth;
+	}
+	public void setQueryForMounth(String queryForMounth) {
+		this.queryForMounth = queryForMounth;
 	}
 	
 }

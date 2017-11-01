@@ -213,7 +213,7 @@
     	updated_id, created_time, updated_time, is_del, callon_person
 	</sql>
 	
-		<resultMap type="hashmap" id="departResult">
+	<resultMap type="hashmap" id="departResult">
 		<id column="id" property="id"/>
 		<result column="parent_id" property="parentId"/>
 		<result column="type" property="type"/>
@@ -234,14 +234,120 @@
 		<result column="callon_address" property="callonAddress"/>
 	</resultMap>
 	
-		<!-- 根据ID查询 -->
-	<select id="selectById" resultMap="departResult" parameterType="hashmap">
+	<sql id="Base_Where_Clause">
+		<where>
+			<trim prefixOverrides="and">
+				<if test="name != null" > and name = #{name} </if>
+				
+				<if test="startTime != null" > and start_time = #{startTime} </if>
+				<if test="endTime != null" > and end_time = #{endTime} </if>
+				<if test="isDel != null" > and is_del = #{isDel}  </if>
+				<if test="queryForMounth == null">
+					<if test="bqStartTime != null"> <![CDATA[  and start_time >= #{bqStartTime} ]]> </if>
+				    <if test="bqEndTime != null"> <![CDATA[ and start_time <= #{bqEndTime} ]]> </if>
+				    <if test="eqStartTime != null"> <![CDATA[  and end_time >= #{eqStartTime} ]]> </if>
+			    </if>
+			    
+			    <if test="queryForMounth != null">
+				    <![CDATA[ and (start_time <= #{bqEndTime} ]]>
+				    <![CDATA[  and end_time >= #{eqStartTime} ]]>
+					and is_allday = 0
+					or (
+						<![CDATA[  start_time >= #{sbTimeForAllday} ]]>
+					    <![CDATA[  and start_time <= #{seTimeForAllday} ]]>
+						and is_allday = 1 
+						)
+					)
+			    </if>
+				<!-- <if test="schedulePerson != null" > and schedulePerson = #{schedulePerson} </if> -->
+				<if test="createdId != null" > and created_id = #{createdId} </if>
+				<if test="updatedId != null" > and updated_id = #{updatedId} </if>
+				<if test="createdTime != null" > and created_time = #{createdTime} </if>
+				<if test="updatedTime != null" > and updated_time = #{updatedTime} </if>
+				<if test="callonPerson != null" > and callon_person = #{callonPerson} </if>
+				
+				
+			</trim>
+			<if test="property != null">order by ${property} ${direction}</if>
+		</where>
+	</sql>
+	
+	<!-- 根据ID查询详情 -->
+	<select id="selectOtherScheduleById" resultMap="departResult" parameterType="hashmap">
 		select
 		<include refid="Base_Column_List" />
 		from schedule_info 
 		where id = #{id}
 		and is_del= 0
 	</select>
+	
+	<!-- 根据ID查询-->
+	<select id="selectById" resultType="com.galaxy.im.bean.schedule.ScheduleInfo" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from schedule_info 
+		where id = #{id}
+		and is_del= 0
+	</select>
+	
+	
+	<!-- 查询列表-->
+	<select id="selectLists" resultType="com.galaxy.im.bean.schedule.ScheduleInfo" parameterType="hashmap">
+		select
+		id id, type type, name_id nameId, name name, parent_id parentId, project_type projectType,project_id projectId, start_time startTime,
+		end_time endTime, is_allday isAllDay, wakeup_id wakeupId, remark, created_id createdId, 
+    	updated_id updatedId, created_time createdTime, updated_time updatedTime, is_del isDel, callon_person callonPerson
+		from schedule_info
+		<where>
+			<trim prefixOverrides="and">
+				<if test="isDel != null" > and is_del = #{isDel}  </if>
+				<if test="createdId != null" > and created_id = #{createdId} </if>
+				<if test="queryForMounth != null">
+				and (start_time &gt;= #{eqStartTime} AND start_time &lt;= #{bqEndTime} AND end_time &gt;= start_time and is_allday = 0 or is_allday = 1)
+				</if>
+				<if test="queryForMounth == null">
+				AND (start_time &gt;= #{eqStartTime} and end_time &lt;= #{bqEndTime} AND end_time &gt;= start_time AND is_allday=0
+				OR start_time = #{eqStartTime} AND is_allday=1)
+				</if>
+				<if test="name != null" > and name like #{name} </if>
+			</trim>
+				<if test="property != null">order by ${property} ${direction}</if>
+		</where>
+	</select>
+	<!-- 搜索 -->
+	<select id="getList" resultType="com.galaxy.im.bean.schedule.ScheduleInfo" parameterType="hashmap">
+		select
+		id id, type type, name_id nameId, name name, parent_id parentId, project_type projectType,project_id projectId, start_time startTime,
+		end_time endTime, is_allday isAllDay, wakeup_id wakeupId, remark, created_id createdId, 
+    	updated_id updatedId, created_time createdTime, updated_time updatedTime, is_del isDel, callon_person callonPerson
+		from schedule_info
+		<where>
+			<trim prefixOverrides="and">
+				<if test="isDel != null" > and is_del = #{isDel}  </if>
+				<if test="createdId != null" > and created_id = #{createdId} </if>
+				<if test="name != null" > and (name like #{name} or type=2)</if>
+				AND end_time >=start_time
+			</trim>
+		</where>
+	</select>
+	
+	
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long" parameterType="java.util.Map">
+		select count(id) from schedule_info
+		<include refid="Base_Where_Clause" />
+	</select>
+	
+	<!-- 连表查询获取拜访对象 -->
+		<select id="selectVisitNameById"   resultType ="com.galaxy.im.bean.schedule.ScheduleInfo" parameterType="java.lang.Long">
+		SELECT con.name as schedulePerson ,
+				sc.id as id
+				FROM 
+				schedule_info sc 
+				LEFT JOIN schedule_contacts con ON sc.callon_person=con.id
+				WHERE sc.id=#{id};
+	</select>
+	
 	
 	
 	

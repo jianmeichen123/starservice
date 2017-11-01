@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.galaxy.im.bean.schedule.ScheduleInfo;
+import com.galaxy.im.common.BeanUtils;
 import com.galaxy.im.common.db.BaseDaoImpl;
 import com.galaxy.im.common.exception.DaoException;
 
@@ -69,9 +70,49 @@ public class ScheduleDaoImpl extends BaseDaoImpl<ScheduleInfo, Long> implements 
 	@Override
 	public Map<String, Object> selectOtherScheduleById(Map<String, Object> map) {
 		try{
-			return sqlSessionTemplate.selectOne(getSqlName("selectById"),map);
+			return sqlSessionTemplate.selectOne(getSqlName("selectOtherScheduleById"),map);
 		}catch(Exception e){
-			log.error(getSqlName("selectById"),e);
+			log.error(getSqlName("selectOtherScheduleById"),e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 获取拜访对象名称
+	 */
+	@Override
+	public ScheduleInfo selectVisitNameById(Long id) {
+		try{
+			return sqlSessionTemplate.selectOne(getSqlName("selectVisitNameById"),id);
+		}catch(Exception e){
+			log.error(getSqlName("selectVisitNameById"),e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 查询列表
+	 */
+	@Override
+	public List<ScheduleInfo> selectLists(ScheduleInfo toQ) {
+		try{
+			Map<String, Object> params = BeanUtils.toMap(toQ);
+			return sqlSessionTemplate.selectList(getSqlName("selectLists"),params);
+		}catch(Exception e){
+			log.error(getSqlName("selectLists"),e);
+			throw new DaoException(e);
+		}
+	}
+	
+	/**
+	 * 搜索拜访对象/其他日程
+	 */
+	@Override
+	public List<ScheduleInfo> getList(Map<String, Object> map) {
+		try{
+			return sqlSessionTemplate.selectList(getSqlName("getList"),map);
+		}catch(Exception e){
+			log.error(getSqlName("getList"),e);
 			throw new DaoException(e);
 		}
 	}

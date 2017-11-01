@@ -163,9 +163,11 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 	@Override
 	public List<ScheduleUtil> queryAndConvertList(ScheduleInfo query) throws ParseException {
 		List<ScheduleUtil> resultList = new ArrayList<ScheduleUtil>();
+	
 		
 		//结果查询  封装
 		List<ScheduleInfo> qList = null;
+		
 
 		//有隔日的日程list
 		List<ScheduleInfo> scheduleInfoList = new ArrayList<ScheduleInfo>();
@@ -175,9 +177,9 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 			
 			String bqEndTime = query.getBqEndTime();
 			String eqStartTime = query.getBqStartTime();
-			
 			ScheduleInfo toQ = new ScheduleInfo();
-			toQ.setQueryForMounth(true);
+			
+			toQ.setQueryForMounth("1");
 			toQ.setBqEndTime(bqEndTime);
 			toQ.setEqStartTime(eqStartTime);
 			
@@ -189,7 +191,8 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 			toQ.setDirection(query.getDirection());
 			//增加判断是否删除
 			toQ.setIsDel(0);
-			qList = dao.selectList(toQ);//--------------------------------------------------------------
+			
+			qList = dao.selectLists(toQ);//--------------------------------------------------------------
 			if(qList!=null && !qList.isEmpty()){
 				ScheduleInfo sinfo ;
 				for(ScheduleInfo temp : qList){	
@@ -274,7 +277,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 			scheduleInfo.setProperty(query.getProperty());
 			scheduleInfo.setDirection(query.getDirection());
 			
-			qList = dao.selectList(scheduleInfo);//-----------------------------------------------------------
+			qList = dao.selectLists(scheduleInfo);//-----------------------------------------------------------
 			
 			sInfo.setBqEndTime(bqEndTime);
 			sInfo.setBqStartTime(eqStartTime);
@@ -283,7 +286,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 			//增加判断是否删除
 			sInfo.setIsDel(0);
 			//----------------------------------------------------------------------------------------
-			scheduleInfoList=dao.selectList(sInfo);
+			scheduleInfoList=dao.selectLists(sInfo);
 			
 			
 			String sd = query.getBqEndTime().substring(0, 10);
@@ -327,7 +330,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 				Long  t3_b = t2_b + _time ;
 				Long  t4_b = t3_b + _time ;
 				
-				Long group[] = { t4_b, t3_b, t2_b, t1_b };
+				//Long group[] = { t4_b, t3_b, t2_b, t1_b };
 				
 				String code = null;
 				
@@ -335,7 +338,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 					//2017/5/11为了 获取访谈对象得名称
 					if(temp.getType()==2){
 						//---------------------------------------------------------------
-						ScheduleInfo ss = null;//dao.selectVisitNameById(temp.getId());
+						ScheduleInfo ss = dao.selectVisitNameById(temp.getId());
 						if(ss!=null && ss.getSchedulePerson()!=null){
 							temp.setSchedulePerson(ss.getSchedulePerson());
 						}
@@ -379,7 +382,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 					//2017/5/11为了 获取访谈对象得名称
 					if(temp.getType()==2){
 						
-						ScheduleInfo ss = null;//dao.selectVisitNameById(temp.getId());
+						ScheduleInfo ss =dao.selectVisitNameById(temp.getId());
 						
 						if(ss!=null && ss.getSchedulePerson()!=null){
 							temp.setSchedulePerson(ss.getSchedulePerson());
@@ -409,8 +412,34 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 				resultList.add(au);
 			}
 		}
-		
+
 		return resultList;
+	}
+
+	/**
+	 * 搜索拜访对象/其他日程
+	 */
+	@Override
+	public List<ScheduleInfo> getList(Map<String, Object> map) {
+		try{
+			List<ScheduleInfo> list =  dao.getList(map);
+			List<ScheduleInfo> list2 = new ArrayList<>();
+			if (list!=null && list.size()>0) {
+				for(ScheduleInfo temp : list){
+					ScheduleInfo sInfo =dao.selectVisitNameById(temp.getId());
+						if(sInfo!=null && sInfo.getSchedulePerson()!=null 
+								&& sInfo.getSchedulePerson().contains(CUtils.get().object2String(map.get("name")))){
+							temp.setSchedulePerson(sInfo.getSchedulePerson());
+							list2.add(temp);
+					}
+				}
+				list.addAll(list2);
+			}
+			return list;
+		}catch(Exception e){
+			log.error(ScheduleServiceImpl.class.getName() + "_",e);
+			throw new ServiceException(e);
+		}
 	}
 	
 
