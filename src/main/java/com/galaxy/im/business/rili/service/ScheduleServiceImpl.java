@@ -422,20 +422,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 	@Override
 	public List<ScheduleInfo> getList(Map<String, Object> map) {
 		try{
-			List<ScheduleInfo> list =  dao.getList(map);
-			List<ScheduleInfo> list2 = new ArrayList<>();
-			if (list!=null && list.size()>0) {
-				for(ScheduleInfo temp : list){
-					ScheduleInfo sInfo =dao.selectVisitNameById(temp.getId());
-						if(sInfo!=null && sInfo.getSchedulePerson()!=null 
-								&& sInfo.getSchedulePerson().contains(CUtils.get().object2String(map.get("name")))){
-							temp.setSchedulePerson(sInfo.getSchedulePerson());
-							list2.add(temp);
-					}
-				}
-				list.addAll(list2);
-			}
-			return list;
+			return dao.getList(map);
 		}catch(Exception e){
 			log.error(ScheduleServiceImpl.class.getName() + "_",e);
 			throw new ServiceException(e);
