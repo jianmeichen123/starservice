@@ -2,7 +2,10 @@ package com.galaxy.im.common.webconfig;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -58,6 +61,18 @@ public class WebConfiguration extends WebMvcConfigurerAdapter{
 ////		registrationBean.setOrder(1);
 //		return registrationBean;
 //	}
+	
+	
+	@Bean
+	public EmbeddedServletContainerCustomizer embeddedServletContainerCustomizer() {
+	    return new EmbeddedServletContainerCustomizer() {
+	        @Override 
+	        public void customize(ConfigurableEmbeddedServletContainer container) {
+	            container.setSessionTimeout(3, TimeUnit.SECONDS);
+	        	  //container.setSessionTimeout(30);//单位为S
+	        }
+	    };
+	}
 
 
 }
