@@ -68,8 +68,8 @@ public class WebConfiguration extends WebMvcConfigurerAdapter{
 	    return new EmbeddedServletContainerCustomizer() {
 	        @Override 
 	        public void customize(ConfigurableEmbeddedServletContainer container) {
-	            //container.setSessionTimeout(3, TimeUnit.SECONDS);
-	        	  container.setSessionTimeout(3);//单位为S
+	            container.setSessionTimeout(1, TimeUnit.MINUTES);
+	        	  //container.setSessionTimeout(3);//单位为S
 	        }
 	    };
 	}
