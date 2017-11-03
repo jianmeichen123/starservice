@@ -85,6 +85,7 @@ public class LoginController {
 						user.setRole(CUtils.get().object2String(map.get("roleName")));
 						user.setSessionId(sessionId);
 						cache.put(sessionId, user); 
+						request.getSession().setAttribute(StaticConst.SESSION_USER_KEY, user);
 						
 						//记录登陆历史信息
 						Date date = new Date();       

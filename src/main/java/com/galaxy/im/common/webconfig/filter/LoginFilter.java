@@ -32,6 +32,14 @@ public class LoginFilter implements Filter{
 		@SuppressWarnings("unchecked")
 		RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
 		
+		//其他访问
+		String sessionId = request.getHeader(StaticConst.CONST_SESSION_ID_KEY);
+		
+		Object userObj = request.getSession().getAttribute(StaticConst.SESSION_USER_KEY);
+		if (userObj == null) {
+			cache.remove(sessionId);
+		}
+		
 		boolean flag = false;
 		ServletRequest requestWrapper = null;  
         if(request instanceof HttpServletRequest) {  
@@ -48,8 +56,6 @@ public class LoginFilter implements Filter{
 			}
 			filterChain.doFilter(requestWrapper, resp);
 		}else{
-			//其他访问
-			String sessionId = request.getHeader(StaticConst.CONST_SESSION_ID_KEY);
 			if(cache.hasKey(sessionId)){
 				if(CUtils.get().stringIsNotEmpty(cache.get(sessionId))){
 					flag = true;
