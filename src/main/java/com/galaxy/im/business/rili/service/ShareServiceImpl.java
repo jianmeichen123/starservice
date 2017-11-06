@@ -337,6 +337,8 @@ public class ShareServiceImpl extends BaseServiceImpl<Test> implements IShareSer
 			Long guserid, Map<String, Object> map) {
 		Map<String,Object> headerMap = QHtmlClient.get().getHeaderMap(request);
 		try {
+			//是否选中
+			Boolean isChecked=false;
 			//返回结果
 			List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
 			//部门下的 已经选择的人员id
@@ -388,7 +390,8 @@ public class ShareServiceImpl extends BaseServiceImpl<Test> implements IShareSer
 											m.put("id", CUtils.get().object2Long(pMap.get("userId")));
 											m.put("name", CUtils.get().object2String(pMap.get("userName")));
 											if(deptCheckedUid.contains(CUtils.get().object2Long(pMap.get("userId")))){
-												m.put("isChecked", "true");
+												isChecked=true;
+												m.put("isChecked", isChecked);
 							 				}
 											userList.add(m);
 										}
