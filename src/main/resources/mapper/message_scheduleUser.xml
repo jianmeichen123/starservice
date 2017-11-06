@@ -202,18 +202,19 @@
 	<update id="updateMessageUserById" parameterType="com.galaxy.im.bean.message.ScheduleMessageUserBean">
 		update schedule_message_user
 		<set>
-			<if test="mid != null" > mid = #{mid}, </if>
-			<if test="uid != null" > uid = #{uid}, </if>
-			<if test="uname != null" > uname = #{uname}, </if>
-			<if test="typeRole != null" > type_role = #{typeRole}, </if>
 			<if test="isUse != null" > is_use = #{isUse}, </if>
 			<if test="isSend != null" > is_send = #{isSend}, </if>
 			<if test="isRead != null" > is_read = #{isRead}, </if>
 			<if test="isDel != null" > is_del = #{isDel}, </if>
-			<if test="createdTime != null" > created_time = #{createdTime}, </if>
 			<if test="updatedTime != null" > updated_time = #{updatedTime}, </if>
 		</set>
-		where id = #{id}
+		<where>
+			<trim prefixOverrides="and">
+				<if test="id != null"> and id = #{id} </if>
+				<if test="mid != null" > and mid = #{mid}  </if>
+				<if test="uid != null" > and uid = #{uid}  </if>
+			</trim>
+		</where>
 	</update>
 	
 	<!-- 删除 -->
