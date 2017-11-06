@@ -2,10 +2,7 @@ package com.galaxy.im.common.webconfig;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -62,8 +59,8 @@ public class WebConfiguration extends WebMvcConfigurerAdapter{
 //		return registrationBean;
 //	}
 	
-	
-	@Bean
+	//session 过期设置
+	/*@Bean
 	public EmbeddedServletContainerCustomizer embeddedServletContainerCustomizer() {
 	    return new EmbeddedServletContainerCustomizer() {
 	        @Override 
@@ -72,7 +69,7 @@ public class WebConfiguration extends WebMvcConfigurerAdapter{
 	        	  //container.setSessionTimeout(3);//单位为S
 	        }
 	    };
-	}
+	}*/
 
 
 }

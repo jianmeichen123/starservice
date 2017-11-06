@@ -35,10 +35,11 @@ public class LoginFilter implements Filter{
 		//其他访问
 		String sessionId = request.getHeader(StaticConst.CONST_SESSION_ID_KEY);
 		
-		Object userObj = request.getSession().getAttribute(StaticConst.SESSION_USER_KEY);
+		//session过期判断
+		/*Object userObj = request.getSession().getAttribute(StaticConst.SESSION_USER_KEY);
 		if (userObj == null) {
 			cache.remove(sessionId);
-		}
+		}*/
 		
 		boolean flag = false;
 		ServletRequest requestWrapper = null;  
