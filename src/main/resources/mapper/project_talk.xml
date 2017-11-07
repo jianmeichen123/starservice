@@ -8,13 +8,16 @@
 	<select id="getProjectTalkList" parameterType="hashmap" resultType="hashmap">
 		SELECT 	tt.id,
 				date_format(tt.view_date,'%Y/%m/%d %H:%i') viewDateStr,
-				tt.view_target viewTarget,
 				tt.view_notes viewNotes,
 				dct1.dict_value interviewResultId,
 				dct1.`name` interviewResult,
 				dct2.dict_value resultReasonId,
 				dct2.`name` resultReason,
-				tt.reason_other reasonOther
+				tt.reason_other reasonOther,
+				case tt.schedule_id
+				WHEN 0 THEN tt.view_target
+				else tt.name
+				end viewTarget
 		FROM(SELECT r.id,
 					 r.view_date,
 					 r.view_target,
@@ -27,8 +30,11 @@
 					end resultReason,
 					r.result_reason,
 					r.view_notes,
-					r.reason_other
+					r.reason_other,
+					con.name,
+					r.schedule_id
 				FROM sop_interview_record r
+				LEFT JOIN schedule_contacts con on r.view_target=con.id
 				WHERE r.project_id=#{projectId}
 			ORDER BY r.view_date desc) tt
 		LEFT JOIN dict dct1 ON dct1.parent_code='meetingResult' and dct1.dict_code=tt.interview_result
@@ -52,8 +58,11 @@
 					end resultReason,
 					r.result_reason,
 					r.view_notes,
-					r.reason_other
+					r.reason_other,
+					con.name,
+					r.schedule_id
 				FROM sop_interview_record r
+				LEFT JOIN schedule_contacts con on r.view_target=con.id
 				WHERE r.project_id=#{projectId}
 			ORDER BY r.view_date desc) tt
 		LEFT JOIN dict dct1 ON dct1.parent_code='meetingResult' and dct1.dict_code=tt.interview_result
@@ -64,7 +73,6 @@
 	<select id="selectById" resultType="com.galaxy.im.bean.talk.ProjectTalkBean" parameterType="java.lang.Long" resultMap="detailMap">
 		SELECT  tt.id,
 				date_format(tt.view_date,'%Y/%m/%d %H:%i') viewDateStr,
-				tt.view_target viewTarget,
 				tt.view_notes viewNotes,
 				tt.file_key fileKey,
 				tt.file_length fileLength,
@@ -76,7 +84,11 @@
 				dct2.dict_value resultReasonId,
 				dct2.dict_code resultReasonCode,
 				dct2.`name` resultReason,
-				tt.reason_other reasonOther
+				tt.reason_other reasonOther,
+				case tt.schedule_id
+				WHEN 0 THEN tt.view_target
+				else tt.name
+				end viewTarget
 		FROM(
 			SELECT  r.id,	
 					r.view_date,
@@ -94,8 +106,11 @@
 					else ''
 					end resultReason,
 					r.result_reason,
-					r.reason_other
+					r.reason_other,
+					con.name,
+					r.schedule_id
 				FROM sop_interview_record r 
+				LEFT JOIN schedule_contacts con on r.view_target=con.id
 				left join sop_file sf on sf.id=r.file_id
 				WHERE r.id=#{talkRecordId} )tt
 		LEFT JOIN dict dct1 ON dct1.parent_code='meetingResult' and dct1.dict_code=tt.interview_result
@@ -137,7 +152,6 @@
 		update sop_interview_record
 		<set>
 		  <if test="fileId != 0" > file_id = #{fileId}, </if>
-	      <if test="viewTarget != null" > view_target = #{viewTarget}, </if>
 	      <if test="viewNotes != null" > view_notes = #{viewNotes}, </if>
 	      <if test="viewNotesText != null" > view_notes_text = #{viewNotesText}, </if>
 	      <if test="interviewResult != null" > interview_result = #{interviewResult}, </if>
