@@ -152,7 +152,6 @@
 		update sop_interview_record
 		<set>
 		  <if test="fileId != 0" > file_id = #{fileId}, </if>
-	      <if test="viewTarget != null" > view_target = #{viewTarget}, </if>
 	      <if test="viewNotes != null" > view_notes = #{viewNotes}, </if>
 	      <if test="viewNotesText != null" > view_notes_text = #{viewNotesText}, </if>
 	      <if test="interviewResult != null" > interview_result = #{interviewResult}, </if>
