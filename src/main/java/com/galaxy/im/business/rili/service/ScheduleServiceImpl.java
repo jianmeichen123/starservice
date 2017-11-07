@@ -197,7 +197,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 				ScheduleInfo sinfo ;
 				for(ScheduleInfo temp : qList){	
 					if(temp.getStartTime()!=null && temp.getEndTime()!=null && !AccountDate.get(temp.getStartTime(),temp.getEndTime())){														
-						String mouths = "0"+ query.getMonth();
+						String mouths = CUtils.get().object2JSONString(query.getMonth());
 						//跨日日程的操作
 						List<String> sss = AccountDate.getXiuEveryday(temp.getStartTime().substring(0, 10),temp.getEndTime().substring(0, 10), query.getLastMouthDay());
 						for(String ss:sss){
