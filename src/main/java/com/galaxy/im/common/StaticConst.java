@@ -12,8 +12,8 @@ public class StaticConst {
 	
 	public static final String transfer_projects_key = "transfer_projects_key";		//项目移交key
 	
-	public static final String TEST_USERNAME = "jingjinghan1";		//测试账号
-	public static final String TEST_REALNAME = "韩晶晶1";				//测试账号
+	public static final String TEST_USERNAME = "jingjinghan";		//测试账号
+	public static final String TEST_REALNAME = "韩晶晶";				//测试账号
 	
 	
 	public static final String pushAddSchedule = "galaxy/scheduleInfo/pushAddSchedule";
