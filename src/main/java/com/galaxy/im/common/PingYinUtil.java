@@ -96,7 +96,7 @@ public class PingYinUtil {
             return pybf.toString();   
     }  
      
-    public static void main(String[] as){
+    /*public static void main(String[] as){
         System.out.println(getPingYin("k     l"));
-    }
+    }*/
 }  
