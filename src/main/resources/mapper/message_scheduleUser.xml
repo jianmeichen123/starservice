@@ -69,14 +69,13 @@
 		from
 		schedule_message_user mu left join schedule_message me on mu.mid =
 		me.id
-		<where>
-		<if test="userId != null" > mu.uid = #{userId}</if>
-		<if test="isUse != null" >and mu.is_use = #{isUse}</if>
-		<if test="isDel != null" >and mu.is_del = #{isDel}</if>
-		<if test="isRead != null" >and mu.is_read = #{isRead}</if>
-		<if test="isSend != null" >and mu.is_send = #{isSend}</if>
-		<if test="status != null" >and me.status = #{status}</if>
-		</where>
+		where
+		mu.uid = #{userId}
+		and mu.is_use = 0
+		and mu.is_del = 0
+		and mu.is_read = 0
+		and mu.is_send = 1
+		and me.status = 0
 		order by ${property} ${direction}
 		limit #{offset},${limit};
 
@@ -89,14 +88,13 @@
 		count(mu.id)
 		from
 		schedule_message_user mu left join schedule_message me on mu.mid = me.id
-		<where>
-		<if test="userId != null" > mu.uid = #{userId}</if>
-		<if test="isUse != null" >and mu.is_use = #{isUse}</if>
-		<if test="isDel != null" >and mu.is_del = #{isDel}</if>
-		<if test="isRead != null" >and mu.is_read = #{isRead}</if>
-		<if test="isSend != null" >and mu.is_send = #{isSend}</if>
-		<if test="status != null" >and me.status = #{status}</if>
-		</where>
+		where
+		mu.uid = #{userId}
+		and mu.is_use = 0
+		and mu.is_del = 0
+		and mu.is_read = 0
+		and mu.is_send = 1
+		and me.status = 0
 	</select>
 
 	<!-- 单条已读 -->
