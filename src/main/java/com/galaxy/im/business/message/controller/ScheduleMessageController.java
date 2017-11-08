@@ -50,6 +50,7 @@ public class ScheduleMessageController {
 			paramMap.put("isUse", 0);
 			paramMap.put("isDel", 0);
 			paramMap.put("status", 0);
+			paramMap.put("isSend", 1);
 			paramMap.put("direction", "desc");
 			QPage page = service.queryPerMessAndConvertPage(paramMap);
 			
@@ -57,6 +58,7 @@ public class ScheduleMessageController {
 			paramMap.put("userId", sessionBean.getGuserid());
 			paramMap.put("isDel", 0);
 			paramMap.put("isRead", 0);//未读
+			paramMap.put("isSend", 1);
 			Integer count = service.selectMuserAndMcontentCount(paramMap);
 			if(count!=null && count !=0){
 				//代表是 有未读的
