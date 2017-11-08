@@ -14,6 +14,7 @@ public class ContractsBean extends BaseEntity{
 	private String address;
 	private String firstpinyin;
 	private int isDel;
+	private Long uId;
 	
 	public String getName() {
 		return name;
@@ -74,5 +75,11 @@ public class ContractsBean extends BaseEntity{
 	}
 	public void setIsDel(int isDel) {
 		this.isDel = isDel;
+	}
+	public Long getuId() {
+		return uId;
+	}
+	public void setuId(Long uId) {
+		this.uId = uId;
 	}
 }

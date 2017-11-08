@@ -4,16 +4,87 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
 <mapper namespace="com.galaxy.im.bean.contracts.ContractsBean">
 
+	<resultMap id="BaseResultMap" type="com.galaxy.im.bean.contracts.ContractsBean">
+	    <id column="id" property="id"/>
+	    <result column="name" property="name"/>
+	    <result column="phone1" property="phone1"/>
+	    <result column="phone2" property="phone2" />
+	    <result column="phone3" property="phone3" />
+	    <result column="email" property="email" />
+	    <result column="post" property="post"/>
+	    <result column="company" property="company" />
+	    <result column="address" property="address"/>
+	    <result column="created_time" property="createdTime" />
+	    <result column="created_id" property="createdId"/>
+	    <result column="updated_time" property="updatedTime"/>
+	    <result column="updated_id" property="updatedId"/>
+	    <result column="firstpinyin" property="firstpinyin"/>
+	    <result column="is_del" property="isDel"/>
+    </resultMap>
+  
+	<sql id="Base_Column_List" >
+    	id, name, phone1, phone2, phone3, email, post, company, address, created_time, created_id, 
+    	updated_time, updated_id, firstpinyin, is_del
+    </sql>
 	
+	<sql id="Base_Where_Clause">
+		<where>
+			<trim prefixOverrides="and">
+				<if test="id != null"> and id =#{id}</if>
+				<if test="name != null"> and name = #{name} </if>
+				<if test="phone1 != null"> and phone1 = #{phone1} </if>			
+				<if test="phone2 != null"> and phone2 = #{phone2} </if>
+				<if test="phone3 != null"> and phone3 = #{phone3} </if>
+				<if test="email != null"> and email = #{email} </if>
+				<if test="post != null"> and post = #{post} </if>		
+				<if test="company != null"> and company = #{company} </if>	
+				<if test="address != null"> and address = #{address} </if>
+				<if test="createdTime != null"> and created_time = #{createdTime} </if>
+				<if test="createdId != null"> and created_id = #{createdId} </if>
+				<if test="updatedTime != null"> and updated_time = #{updatedTime} </if>
+				<if test="updatedId != null"> and updated_id = #{updatedId} </if>
+				<if test="firstpinyin != null"> and firstpinyin = #{firstpinyin} </if>
+				<if test="isDel != null" > and is_del = #{isDel}  </if>
+				
+				<if test="keyword != null">
+					and upper(name) like CONCAT("%",upper(#{keyword}),"%")
+						 		
+				</if>
+			</trim>
+		</where>
+		<if test="sorting != null">order by ${sorting}</if>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</sql>
+	
+	<!-- 通id查联系人信息 -->
 	<select id="selectById" parameterType="long" resultType="com.galaxy.im.bean.contracts.ContractsBean">
 		select * 
 			from schedule_contacts con
 			where con.id=#{id};
 	</select>
 	
+	<!-- 查询联系人是否存在 -->
+	<select id="selectPersonByName" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from schedule_contacts
+		<include refid="Base_Where_Clause" />
+	</select>
 	
-	
-	
-	
+	<!-- 保存联系人 -->
+	<insert id="savePerson"  useGeneratedKeys="true" keyProperty="id" parameterType="com.galaxy.im.bean.contracts.ContractsBean">
+		insert into schedule_contacts (id, name, phone1, 
+		      phone2, phone3, email, 
+		      post, company, address, 
+		      created_time, created_id, updated_time, 
+		      updated_id, firstpinyin, is_del)
+	    values (#{id}, #{name}, #{phone1}, 
+	      #{phone2}, #{phone3}, #{email}, 
+	      #{post}, #{company}, #{address}, 
+	      #{createdTime}, #{createdId}, #{updatedTime}, 
+	      #{updatedId}, #{firstpinyin}, #{isDel})
+	</insert>
 
 </mapper>

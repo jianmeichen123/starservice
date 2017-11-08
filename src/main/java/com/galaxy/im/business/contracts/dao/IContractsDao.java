@@ -5,4 +5,8 @@ import com.galaxy.im.common.db.IBaseDao;
 
 public interface IContractsDao extends IBaseDao<ContractsBean, Long>{
 
+	ContractsBean selectPersonByName(ContractsBean bean);
+
+	Long savePerson(ContractsBean bean);
+
 }

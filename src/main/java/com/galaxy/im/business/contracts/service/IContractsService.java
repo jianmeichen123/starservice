@@ -5,4 +5,8 @@ import com.galaxy.im.common.db.service.IBaseService;
 
 public interface IContractsService extends IBaseService<ContractsBean>{
 
+	ContractsBean selectPersonByName(ContractsBean bean);
+
+	Long savePerson(ContractsBean bean);
+
 }
