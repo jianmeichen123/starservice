@@ -310,8 +310,10 @@
 				 AND date_format(end_time,'%y-%m') &gt;= date_format(#{date},'%y-%m')
 				</if>
 				<if test="queryForMounth == null">
-				AND (start_time &gt;= #{eqStartTime} and end_time &lt;= #{bqEndTime} AND end_time &gt;= start_time AND is_allday=0
-				OR start_time = #{eqStartTime} AND is_allday=1)
+				<!-- AND (start_time &gt;= #{eqStartTime} and end_time &lt;= #{bqEndTime} AND end_time &gt;= start_time AND is_allday=0
+				OR start_time = #{eqStartTime} AND is_allday=1) -->
+				and date_format(#{date},'%y-%m-%d') &gt;= date_format(start_time,'%y-%m-%d')
+				 AND date_format(end_time,'%y-%m-%d') &gt;= date_format(#{date},'%y-%m-%d')
 				</if>
 			</trim>
 				<if test="property != null">order by ${property} ${direction}</if>
