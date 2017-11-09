@@ -202,7 +202,7 @@ public class ScheduleController {
 				}
 				//逻辑删除后发消息
 				sInfo.setIsDel(1);
-				messageService.operateMessageByDeleteInfo(ss, "1.3");
+				messageService.operateMessageByDeleteInfo(sInfo, "1.3");
 			}
 		} catch (Exception e) {
 			log.error(ScheduleController.class.getName() + "_deleteOtherSchedule",e);
