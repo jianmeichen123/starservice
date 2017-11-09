@@ -52,9 +52,11 @@
 				</if>
 			</trim>
 		</where>
-		<if test="sorting != null">order by ${sorting}</if>
-		<if test="offset != null and limit != null">
-			limit #{offset}, #{limit}
+		<if test="property != null and direction != null">
+			order by ${property} ${direction}
+		</if>
+		<if test="pageNum != null and pageSize != null">
+			limit #{pageNum}, #{pageSize}
 		</if>
 	</sql>
 	
@@ -86,5 +88,27 @@
 	      #{createdTime}, #{createdId}, #{updatedTime}, 
 	      #{updatedId}, #{firstpinyin}, #{isDel})
 	</insert>
+	
+	<!-- 更新 -->
+	<update id="updatePerson" parameterType="com.galaxy.im.bean.contracts.ContractsBean">
+		update schedule_contacts
+		<set>
+			 email = #{email},
+			 post = #{post}, 
+			 company = #{company}, 
+			 address = #{address},
+			<if test="name != null">  name = #{name}, </if>
+			<if test="phone1 != null">  phone1 = #{phone1}, </if>
+			<if test="phone2 != null"> phone2 = #{phone2}, </if>
+			<if test="phone3 != null"> phone3 = #{phone3}, </if>
+			<if test="createdTime != null"> created_time = #{createdTime}, </if>
+			<if test="createdId != null"> created_id = #{createdId}, </if>
+			<if test="updatedTime != null"> updated_time = #{updatedTime}, </if>
+			<if test="updatedId != null">  updated_id = #{updatedId}, </if>
+			<if test="firstpinyin != null">  firstpinyin = #{firstpinyin}, </if>
+			<if test="isDel != null" > is_del = #{isDel} </if>
+		</set>
+		where id = #{id}
+	</update>
 
 </mapper>

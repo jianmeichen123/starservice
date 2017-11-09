@@ -1,8 +1,8 @@
 package com.galaxy.im.bean.contracts;
 
-import com.galaxy.im.common.db.BaseEntity;
+import com.galaxy.im.common.db.PagableEntity;
 
-public class ContractsBean extends BaseEntity{
+public class ContractsBean extends PagableEntity{
 	private static final long serialVersionUID = 1887839691660971786L;
 	private String name;
 	private String phone1;

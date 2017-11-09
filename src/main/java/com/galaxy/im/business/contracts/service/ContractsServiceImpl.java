@@ -1,5 +1,7 @@
 package com.galaxy.im.business.contracts.service;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,32 @@ public class ContractsServiceImpl extends BaseServiceImpl<ContractsBean> impleme
 			return dao.savePerson(bean);
 		}catch(Exception e){
 			log.error(ContractsServiceImpl.class.getName() + "savePerson",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	/**
+	 * 更新联系人
+	 */
+	@Override
+	public Long updatePerson(ContractsBean bean) {
+		try{
+			return dao.updatePerson(bean);
+		}catch(Exception e){
+			log.error(ContractsServiceImpl.class.getName() + "updatePerson",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	/**
+	 * 联系人列表
+	 */
+	@Override
+	public List<ContractsBean> selectPersonList(ContractsBean bean) {
+		try{
+			return dao.selectPersonList(bean);
+		}catch(Exception e){
+			log.error(ContractsServiceImpl.class.getName() + "selectPersonList",e);
 			throw new ServiceException(e);
 		}
 	}

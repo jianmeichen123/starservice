@@ -1,5 +1,6 @@
 package com.galaxy.im.business.contracts.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -43,6 +44,34 @@ public class ContractsDaoImapl extends BaseDaoImpl<ContractsBean, Long> implemen
 			return bean.getId();
 		}catch(Exception e){
 			log.error(getSqlName("savePerson"),e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 更新联系人
+	 */
+	@Override
+	public Long updatePerson(ContractsBean bean) {
+		try{
+			sqlSessionTemplate.update(getSqlName("updatePerson"),bean);
+			return bean.getId();
+		}catch(Exception e){
+			log.error(getSqlName("updatePerson"),e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 联系人列表
+	 */
+	@Override
+	public List<ContractsBean> selectPersonList(ContractsBean bean) {
+		try{
+			Map<String, Object> map = BeanUtils.toMap(bean);
+			return sqlSessionTemplate.selectList(getSqlName("selectPersonByName"),map);
+		}catch(Exception e){
+			log.error(getSqlName("selectPersonList"),e);
 			throw new DaoException(e);
 		}
 	}

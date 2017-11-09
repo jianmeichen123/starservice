@@ -2,6 +2,7 @@ package com.galaxy.im.business.contracts.controller;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -78,28 +79,124 @@ public class ContractController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setStatus("error");
 		try {
-			if(bean.getName()==null){
-				resultBean.setMessage("添加联系人失败参数缺失");
-				return resultBean;
-			}
+			Long uid=0L;
+			Long id=0L;
+			Map<String,Object> map = new HashMap<String,Object>();
+			
 			if(bean.getName()!=null){
 				String pn = PingYinUtil.getPingYin(bean.getName());
 				bean.setFirstpinyin(pn);
 			}
 			
 			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
-			bean.setCreatedId(sessionBean.getGuserid());
-			bean.setIsDel(0);
-			bean.setCreatedTime(new Date().getTime());
-			Long id = service.savePerson(bean);	
-			if(id>0){
-				resultBean.setStatus("OK");
-				Map<String,Object> map = new HashMap<String,Object>();
-				map.put("id", id);
-				resultBean.setMap(map);
+			
+			if(bean.getId()!=null && bean.getId()!=0){
+				//编辑
+				bean.setUpdatedTime(new Date().getTime());
+				bean.setUpdatedId(sessionBean.getGuserid());
+				uid = service.updatePerson(bean);	
+				if(uid>0){
+					resultBean.setStatus("OK");
+					map.put("id", uid);
+					resultBean.setMap(map);
+				}
+			}else{
+				//添加
+				bean.setCreatedId(sessionBean.getGuserid());
+				bean.setIsDel(0);
+				bean.setCreatedTime(new Date().getTime());
+				id = service.savePerson(bean);	
+				if(id>0){
+					resultBean.setStatus("OK");
+					map.put("id", id);
+					resultBean.setMap(map);
+				}
 			}
 		}catch (Exception e) {
 			log.error(ContractController.class.getName() + "savePerson",e);
+		}
+		return resultBean;
+	}
+	
+	/**
+	 * 分页的联系人列表查询
+	 * @param request
+	 * @param response
+	 * @param bean
+	 * @return
+	 */
+	@RequestMapping("selectPersonList")
+	@ResponseBody
+	public Object selectPersonList(HttpServletRequest request,HttpServletResponse response,@RequestBody ContractsBean bean){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		resultBean.setStatus("error");
+		try {
+			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
+			bean.setCreatedId(sessionBean.getGuserid());
+			bean.setDirection("ASC");
+			bean.setProperty("firstpinyin");
+			bean.setIsDel(0);
+			List<ContractsBean> list = service.selectPersonList(bean);
+			if(list.size()>0){
+				resultBean.setStatus("OK");
+				resultBean.setEntity(list);
+			}
+		}catch (Exception e) {
+			log.error(ContractController.class.getName() + "savePerson",e);
+		}
+		return resultBean;
+	}
+	
+	/**
+	 * 联系人详情
+	 * @param request
+	 * @param response
+	 * @param bean
+	 * @return
+	 */
+	@RequestMapping("selectById")
+	@ResponseBody
+	public Object selectById(HttpServletRequest request,HttpServletResponse response,@RequestBody ContractsBean bean){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		resultBean.setStatus("error");
+		try {
+			ContractsBean contractsBean = service.queryById(bean.getId());
+			if(contractsBean!=null){
+				resultBean.setEntity(contractsBean);
+				resultBean.setStatus("OK");
+			}
+		}catch (Exception e) {
+			log.error(ContractController.class.getName() + "selectById",e);
+		}
+		return resultBean;
+	}
+	
+	/**
+	 * 删除联系人
+	 * @param request
+	 * @param response
+	 * @param bean
+	 * @return
+	 */
+	@RequestMapping("deleteById")
+	@ResponseBody
+	public Object deleteById(HttpServletRequest request,HttpServletResponse response,@RequestBody ContractsBean bean){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		resultBean.setStatus("error");
+		try {
+			ContractsBean contractsBean = service.queryById(bean.getId());
+			if(contractsBean!=null){
+				contractsBean.setIsDel(1);
+				Long id = service.updatePerson(contractsBean);
+				if(id>0){
+					resultBean.setStatus("OK");
+					resultBean.setMessage("删除联系人成功");
+				}
+			}else{
+				resultBean.setMessage("该联系人不存在");
+			}
+		}catch (Exception e) {
+			log.error(ContractController.class.getName() + "selectById",e);
 		}
 		return resultBean;
 	}
