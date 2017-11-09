@@ -271,6 +271,8 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 			
 			String bqEndTime = query.getBqEndTime();
 			String eqStartTime = query.getBqStartTime();
+			
+			scheduleInfo.setDate(DateUtil.convertStringToDate(bqEndTime));
 
 			scheduleInfo.setBqEndTime(bqEndTime);
 			scheduleInfo.setEqStartTime(eqStartTime);
