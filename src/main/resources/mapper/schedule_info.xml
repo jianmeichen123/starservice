@@ -303,8 +303,11 @@
 				<if test="isDel != null" > and is_del = #{isDel}  </if>
 				<if test="createdId != null" > and created_id = #{createdId} </if>
 				<if test="queryForMounth != null">
-				and (start_time &gt;= #{eqStartTime} AND end_time &lt;= #{bqEndTime} AND end_time &gt;= start_time and is_allday = 0
-				or start_time &gt;= #{eqStartTime} AND start_time &lt;= #{bqEndTime} AND is_allday = 1)
+				<!-- and (start_time &gt;= #{eqStartTime} AND end_time &lt;= #{bqEndTime} AND end_time &gt;= start_time and is_allday = 0
+				or start_time &gt;= #{eqStartTime} AND start_time &lt;= #{bqEndTime} AND is_allday = 1) -->
+				
+				and date_format(#{date},'%y-%m') &gt;= date_format(start_time,'%y-%m')
+				 AND date_format(end_time,'%y-%m') &gt;= date_format(#{date},'%y-%m')
 				</if>
 				<if test="queryForMounth == null">
 				AND (start_time &gt;= #{eqStartTime} and end_time &lt;= #{bqEndTime} AND end_time &gt;= start_time AND is_allday=0

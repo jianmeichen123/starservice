@@ -181,7 +181,10 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 			
 			toQ.setQueryForMounth("1");
 			toQ.setBqEndTime(bqEndTime);
-			toQ.setEqStartTime(eqStartTime);
+			toQ.setEqStartTime( eqStartTime);
+			
+			
+			toQ.setDate(DateUtil.convertStringToDate(bqEndTime));
 			
 			toQ.setSbTimeForAllday(eqStartTime.substring(0, 10));
 			toQ.setSeTimeForAllday(bqEndTime.substring(0, 10));

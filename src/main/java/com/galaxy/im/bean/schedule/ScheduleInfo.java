@@ -1,5 +1,9 @@
 package com.galaxy.im.bean.schedule;
 
+
+
+import java.util.Date;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.galaxy.im.common.db.PagableEntity;
 @JsonInclude(value=JsonInclude.Include.NON_NULL) 
@@ -23,7 +27,9 @@ public class ScheduleInfo extends PagableEntity{
 	private String visitType;  //用来对应消息列表的type(拜访1.4)
 	private Integer isDel;  //逻辑删除的字段(是否删除字段0:未删除,1:已删除 )
 	private String remind;   // 提醒时间
-	private String schedulePerson;//拜访人名称
+	private String schedulePerson;//拜访人名称]
+	
+	private Date date ;//处理后的日期
  
 	private Integer year;
 	private Integer month;
@@ -219,6 +225,12 @@ public class ScheduleInfo extends PagableEntity{
 	}
 	public void setQueryForMounth(String queryForMounth) {
 		this.queryForMounth = queryForMounth;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
 	}
 	
 }
