@@ -108,6 +108,7 @@ public class ProjectConsultantContrller {
 	public Object editProjectPerson(@RequestBody String paramString,HttpServletRequest request){
 		ResultBean<Object> resultBean = new ResultBean<>();
 		Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
+		paramMap.put("personName", CUtils.get().object2String(paramMap.get("personName")).trim());
 		paramMap.put("code", "team-members");
 		if(paramMap.get("projectId")==null){
 			resultBean.setMessage("必要的参数丢失");
