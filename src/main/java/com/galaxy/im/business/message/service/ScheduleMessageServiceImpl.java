@@ -101,20 +101,18 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 		paramMap.put("isUse", 0);
 		paramMap.put("isDel", 0);
 		paramMap.put("status", 0);
-		paramMap.put("isRead", 0);
 		paramMap.put("isSend", 1);
 		try {
 			List<ScheduleMessageUserBean> mus = iScheduleMessageUserDao.selectMessageList(paramMap);//查出满足条件的未读消息列表
-			Long mid =0L;
+			Long id =0L;
 			List<Long> ids = new ArrayList<Long>();
 			if(mus != null && !mus.isEmpty()){
 				for(ScheduleMessageUserBean bean:mus){
-					 mid = bean.getMid();
-					 ids.add(mid);//将未读消息id存入list集合
+					 id = bean.getId();
+					 ids.add(id);//将未读消息id存入list集合
 				}
 			
 			paramMap.clear();
-			paramMap.put("isRead", 1);
 			paramMap.put("userId", guserid);
 			paramMap.put("ids", ids);
 			paramMap.put("updatedTime", new Date().getTime());
@@ -141,12 +139,12 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 		paramMap.put("isSend", 1);
 		try {
 			List<ScheduleMessageUserBean> mus = iScheduleMessageUserDao.selectMessageList(paramMap);//查出满足条件的消息列表
-			Long mid =0L;
+			Long id =0L;
 			List<Long> ids = new ArrayList<Long>();
 			if(mus != null && !mus.isEmpty()){
 				for(ScheduleMessageUserBean bean:mus){
-					 mid = bean.getMid();
-					 ids.add(mid);//将未读消息id存入list集合
+					id = bean.getId();
+					 ids.add(id);//将未读消息id存入list集合
 				}
 			
 			paramMap.clear();

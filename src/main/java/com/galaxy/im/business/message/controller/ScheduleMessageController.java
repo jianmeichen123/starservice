@@ -1,7 +1,6 @@
 package com.galaxy.im.business.message.controller;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,14 +49,10 @@ public class ScheduleMessageController {
 			paramMap.put("direction", "desc");
 			QPage page = service.queryPerMessAndConvertPage(paramMap);
 			Integer count = service.selectMuserAndMcontentCount(paramMap);
-			if(count!=null && count !=0){
-				//代表是 有未读的
-				Map<String, Object> map = new HashMap<>();
-				map.put("messageisRead", 0);
-				resultBean.setMap(map);
+			if (count>0 && page!=null) {
+				resultBean.setStatus("OK");
+				resultBean.setEntity(page);
 			}
-			resultBean.setStatus("OK");
-			resultBean.setEntity(page);
 		} catch (Exception e) {
 			log.error(ScheduleMessageController.class.getName() + "：querySchedule",e);
 		}
@@ -75,8 +70,10 @@ public class ScheduleMessageController {
 		try {
 			paramMap.put("isRead", 1);
 			paramMap.put("updatedTime", new Date().getTime());
-			service.updateToRead(paramMap);
-			resultBean.setStatus("OK");
+			long count = service.updateToRead(paramMap);
+			if (count>0) {
+				resultBean.setStatus("OK");
+			}
 		} catch (Exception e) {
 			log.error(ScheduleMessageController.class.getName() + "：toRead",e);
 		}
@@ -97,8 +94,10 @@ public class ScheduleMessageController {
 			 * 从session中获取用户信息
 			 */
 			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
-			service.perMessageToRead(sessionBean.getGuserid());
-			resultBean.setStatus("OK");
+			int count = service.perMessageToRead(sessionBean.getGuserid());
+			if (count>0) {
+				resultBean.setStatus("OK");
+			}
 		} catch (Exception e) {
 			log.error(ScheduleMessageController.class.getName() + "：perMessageToRead",e);
 		}
@@ -119,8 +118,12 @@ public class ScheduleMessageController {
 			 * 从session中获取用户信息
 			 */
 			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
-			service.perMessageToClear(sessionBean.getGuserid());
-			resultBean.setStatus("OK");
+			int count = service.perMessageToClear(sessionBean.getGuserid());
+			if (count>0) {
+				resultBean.setStatus("OK");
+			}else{
+				resultBean.setMessage("没有可清除的消息!");
+			}
 		} catch (Exception e) {
 			log.error(ScheduleMessageController.class.getName() + "：perMessageToClear",e);
 		}

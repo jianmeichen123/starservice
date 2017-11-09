@@ -73,7 +73,6 @@
 		mu.uid = #{userId}
 		and mu.is_use = 0
 		and mu.is_del = 0
-		and mu.is_read = 0
 		and mu.is_send = 1
 		and me.status = 0
 		order by ${property} ${direction}
@@ -92,7 +91,6 @@
 		mu.uid = #{userId}
 		and mu.is_use = 0
 		and mu.is_del = 0
-		and mu.is_read = 0
 		and mu.is_send = 1
 		and me.status = 0
 	</select>
@@ -104,7 +102,7 @@
 		<if test="isRead != null" >is_read = #{isRead},</if>
 		<if test="updatedTime != null" >updated_time = #{updatedTime}</if>
 		</set>
-		where mid=#{mid};
+		where id=#{id};
 	</update>
 	
 	
@@ -138,7 +136,7 @@
 		 <where>
 			<trim prefixOverrides="and">
 				<if test="ids != null">
-					and mid IN
+					and id IN
 					<foreach collection="ids" index="atem" item="atem" open="(" separator="," close=")">
 						#{atem}
 					</foreach>
@@ -151,14 +149,13 @@
 	<!-- 全部清空-->
 	<update id="perMessageToClear" parameterType="hashmap">
 		update schedule_message_user 
-		<set>
-		<if test="isDel != null" >is_del = #{isDel},</if>
-		<if test="updatedTime != null" >updated_time = #{updatedTime}</if>
-		</set>
+		set
+		is_del = #{isDel},
+		updated_time = #{updatedTime}
 		<where>
 			<trim prefixOverrides="and">
 				<if test="ids != null">
-					and mid IN
+					and id IN
 					<foreach collection="ids" index="atem" item="atem" open="(" separator="," close=")">
 						#{atem}
 					</foreach>
