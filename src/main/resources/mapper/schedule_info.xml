@@ -316,8 +316,7 @@
 				OR start_time = #{eqStartTime} AND is_allday=1) -->
 				and (date_format(#{date},'%y-%m-%d') &gt;= date_format(start_time,'%y-%m-%d')
 				 AND date_format(end_time,'%y-%m-%d') &gt;= date_format(#{date},'%y-%m-%d') and is_allday=0)
-				 or(date_format(#{date},'%y-%m-%d') &lt;= date_format(start_time,'%y-%m-%d')
-				 AND date_format(start_time,'%y-%m-%d') &gt;= date_format(#{date},'%y-%m-%d' ) and is_allday=1 )
+				 or(date_format(#{date},'%y-%m-%d') = date_format(start_time,'%y-%m-%d') and is_allday=1 )
 				</if>
 			</trim>
 				<if test="property != null">order by ${property} ${direction}</if>
