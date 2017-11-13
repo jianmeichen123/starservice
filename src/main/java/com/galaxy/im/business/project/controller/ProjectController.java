@@ -346,7 +346,7 @@ public class ProjectController {
 		hashmap.put("projectId", bean.getId());
 		InformationResult result = null;
 		//融资金额
-		if (bean.getFormatContribution()!=null) {
+		if (bean.getFormatContribution()!=null && !bean.getFormatContribution().equals("")) {
 			hashmap.put("titleId", 1916);
 			result = service.findResultInfoById(hashmap);
 			if (result!=null) {
@@ -364,7 +364,7 @@ public class ProjectController {
 			}
 		} 
 		//融资轮次
-		if (bean.getFinanceStatus()!=null) {
+		if (bean.getFinanceStatus()!=null && !bean.getFinanceStatus().equals("")) {
 			hashmap.put("titleId", 1108);
 			result = service.findResultInfoById(hashmap);
 			if (result!=null) {
@@ -382,7 +382,7 @@ public class ProjectController {
 			}
 		}
 		//出让股份
-		if (bean.getFormatShareRatio()!=null) {
+		if (bean.getFormatShareRatio()!=null && !bean.getFormatShareRatio().equals("")) {
 			hashmap.put("titleId", 1917);
 			result = service.findResultInfoById(hashmap);
 			if (result!=null) {
@@ -400,7 +400,7 @@ public class ProjectController {
 			}
 		}
 		//融资计划项目估值
-		if (bean.getFormatValuations()!=null) {
+		if (bean.getFormatValuations()!=null && !bean.getFormatValuations().equals("")) {
 			hashmap.put("titleId", 1943);
 			result = service.findResultInfoById(hashmap);
 			if (result!=null) {
@@ -418,7 +418,7 @@ public class ProjectController {
 			}
 		}
 		//投资金额
-		if (bean.getFormatFinalContribution()!=null) {
+		if (bean.getFormatFinalContribution()!=null && !bean.getFormatFinalContribution().equals("")) {
 			hashmap.put("titleId", 3004);
 			result = service.findResultInfoById(hashmap);
 			if (result!=null) {
@@ -436,7 +436,7 @@ public class ProjectController {
 			}
 		}
 		//股权占比
-		if (bean.getFormatFinalShareRatio()!=null) {
+		if (bean.getFormatFinalShareRatio()!=null && !bean.getFormatFinalShareRatio().equals("")) {
 			hashmap.put("titleId", 3010);
 			result = service.findResultInfoById(hashmap);
 			if (result!=null) {
@@ -454,7 +454,7 @@ public class ProjectController {
 			}
 		}
 		//加速服务费占比
-		if (bean.getServiceCharge()!=null) {
+		if (bean.getServiceCharge()!=null && !bean.getServiceCharge().equals("")) {
 			hashmap.put("titleId", 3011);
 			result = service.findResultInfoById(hashmap);
 			if (result!=null) {
@@ -472,7 +472,7 @@ public class ProjectController {
 			}
 		}
 		//实际项目估值
-		if (bean.getFormatFinalValuations()!=null ) {
+		if (bean.getFormatFinalValuations()!=null && !bean.getFormatFinalValuations().equals("")) {
 			hashmap.put("titleId", 3012);
 			result = service.findResultInfoById(hashmap);
 			if (result!=null) {
