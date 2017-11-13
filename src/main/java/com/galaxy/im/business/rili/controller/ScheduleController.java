@@ -230,7 +230,7 @@ public class ScheduleController {
 				return resultBean;
 			}
 			//为了防止共享的人查看详情
-			if(mapList.get("createdId")!=CUtils.get().object2Long(user.get("id"))){
+			if(!mapList.get("createdId").equals(user.get("id"))){
 				resultBean.setMessage("没有查看权限");
 				return resultBean;				
 			}
