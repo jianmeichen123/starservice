@@ -48,8 +48,7 @@ public class ScheduleMessageController {
 			paramMap.put("userId", sessionBean.getGuserid());
 			paramMap.put("direction", "desc");
 			QPage page = service.queryPerMessAndConvertPage(paramMap);
-			Integer count = service.selectMuserAndMcontentCount(paramMap);
-			if (count>0 && page!=null) {
+			if ( page!=null) {
 				resultBean.setStatus("OK");
 				resultBean.setEntity(page);
 			}
