@@ -114,6 +114,7 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 			
 			paramMap.clear();
 			paramMap.put("userId", guserid);
+			paramMap.put("isRead", 1);
 			paramMap.put("ids", ids);
 			paramMap.put("updatedTime", new Date().getTime());
 			count = iScheduleMessageUserDao.perMessageToRead(paramMap);
