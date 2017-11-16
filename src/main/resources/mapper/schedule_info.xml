@@ -330,7 +330,8 @@
 			   sc.project_id projectId, sc.start_time startTime, sc.end_time endTime, sc.is_allday isAllday,sc.wakeup_id wakeupId, sc.remark remark, 
 			   sc.created_id createdId, sc.updated_id updatedId, sc.created_time createdTime, sc.updated_time updatedTime, sc.is_del isDel, sc.callon_person callonPerson
 		FROM schedule_info sc LEFT JOIN schedule_contacts con ON sc.callon_person=con.id 
-		WHERE sc.is_del=#{isDel} AND sc.created_id =#{createdId} and (sc.name like #{name} OR con.name LIKE #{name})
+		WHERE sc.is_del=#{isDel} AND sc.created_id =#{createdId} and 
+		(upper(sc.name) like CONCAT('%',upper(#{name}),'%') OR upper(con.name) LIKE CONCAT('%',upper(#{name}),'%'))
 		order by sc.start_time asc
 	</select>
 	
