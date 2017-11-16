@@ -220,6 +220,12 @@ public class ShareServiceImpl extends BaseServiceImpl<Test> implements IShareSer
 						}
 					}
 				}
+				//去除列表中的自己
+				for(int i = 0; i<list.size(); i++){
+					if (list.get(i).get("toUid").equals(guserid)) {
+						list.remove(i);
+					}
+				}
 				return list;
 			}else{
 				List<Map<String, Object>> list = dao.querySharedUsers(my);
@@ -271,6 +277,12 @@ public class ShareServiceImpl extends BaseServiceImpl<Test> implements IShareSer
 					list = dao.querySharedUsers(my);
 					for(Map<String, Object> tempU : list){
 						tempU.put("toUname", name.get(tempU.get("toUid")));
+					}
+				}
+				//去除列表中的自己
+				for(int i = 0; i<list.size(); i++){
+					if (list.get(i).get("toUid").equals(guserid)) {
+						list.remove(i);
 					}
 				}
 				return list ;
@@ -386,13 +398,16 @@ public class ShareServiceImpl extends BaseServiceImpl<Test> implements IShareSer
 										List<Map<String, Object>> rrList =CUtils.get().jsonString2list(rr);
 										for(Map<String, Object> pMap:rrList){
 											Map<String, Object> m =new HashMap<String, Object>();
-											m.put("departId", CUtils.get().object2Long(vMap.get("depId")));
-											m.put("id", CUtils.get().object2Long(pMap.get("userId")));
-											m.put("name", CUtils.get().object2String(pMap.get("userName")));
-											if(deptCheckedUid.contains(CUtils.get().object2Long(pMap.get("userId")))){
-												isChecked=true;
-												m.put("isChecked", isChecked);
-							 				}
+											//去除列表中的本人
+											if (!CUtils.get().object2Long(pMap.get("userId")).equals(guserid)) {
+												m.put("departId", CUtils.get().object2Long(vMap.get("depId")));
+												m.put("id", CUtils.get().object2Long(pMap.get("userId")));
+												m.put("name", CUtils.get().object2String(pMap.get("userName")));
+												if(deptCheckedUid.contains(CUtils.get().object2Long(pMap.get("userId")))){
+													isChecked=true;
+													m.put("isChecked", isChecked);
+								 				}
+											}
 											userList.add(m);
 										}
 									}
