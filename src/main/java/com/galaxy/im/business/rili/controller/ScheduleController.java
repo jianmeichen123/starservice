@@ -320,7 +320,7 @@ public class ScheduleController {
 			//搜索
 			if (query.getName()!=null) {
 				Map<String,Object> map = new HashMap<>();
-				map.put("name", "%"+query.getName()+"%");
+				map.put("name",query.getName());
 				map.put("isDel", 0);
 				if(query.getCreatedId()==null){
 					query.setCreatedId(CUtils.get().object2Long(user.get("id")));
