@@ -190,7 +190,7 @@ public class ShareServiceImpl extends BaseServiceImpl<Test> implements IShareSer
 			my.put("createUid", guserid);
 			//列表
 			if(toUname!=null){
-				List<Map<String, Object>> list=null;
+				List<Map<String, Object>> list= new ArrayList<Map<String, Object>>();
 				//权限系统通过用户id，获取用户名称
 				String url = env.getProperty("power.server") + StaticConst.findUserByName;
 				Map<String,Object> vmap = new HashMap<String,Object>();
@@ -211,10 +211,11 @@ public class ShareServiceImpl extends BaseServiceImpl<Test> implements IShareSer
 								for(Map<String, Object> vMap:arrayList){
 									my.put("toUid", CUtils.get().object2String(vMap.get("userId")));
 									//查询
-									list = dao.querySharedUsers(my);
-									for(Map<String, Object> tempU : list){
+									List<Map<String, Object>> shareList = dao.querySharedUsers(my);
+									for(Map<String, Object> tempU : shareList){
 										tempU.put("toUname", CUtils.get().object2String(vMap.get("userName")));
 									}
+									list.addAll(shareList);
 								}
 							}
 						}

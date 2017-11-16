@@ -103,9 +103,11 @@ public class ScheduleController {
 			String ss = service.getCountSchedule(map);
 			if(ss==null){
 				resultBean.setStatus("OK");
+				resultBean.setFlag(0); //未超过20条
 			}else{
-				resultBean.setStatus("error");
-				resultBean.setMessage(ss);
+				resultBean.setStatus("OK");
+				resultBean.setFlag(1);
+				resultBean.setMessage(ss); //已超过20条
 			}
 		}catch (Exception e) {
 			log.error(ScheduleController.class.getName() + "getCountSchedule",e);
