@@ -398,9 +398,9 @@ public class ShareServiceImpl extends BaseServiceImpl<Test> implements IShareSer
 										//操作
 										List<Map<String, Object>> rrList =CUtils.get().jsonString2list(rr);
 										for(Map<String, Object> pMap:rrList){
-											Map<String, Object> m =new HashMap<String, Object>();
 											//去除列表中的本人
 											if (!CUtils.get().object2Long(pMap.get("userId")).equals(guserid)) {
+												Map<String, Object> m =new HashMap<String, Object>();
 												m.put("departId", CUtils.get().object2Long(vMap.get("depId")));
 												m.put("id", CUtils.get().object2Long(pMap.get("userId")));
 												m.put("name", CUtils.get().object2String(pMap.get("userName")));
@@ -408,8 +408,8 @@ public class ShareServiceImpl extends BaseServiceImpl<Test> implements IShareSer
 													isChecked=true;
 													m.put("isChecked", isChecked);
 								 				}
-											}
 											userList.add(m);
+											}
 										}
 									}
 								}
