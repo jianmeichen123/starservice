@@ -150,6 +150,13 @@ public class StaticConst {
 	public static final String CEOMS = "CEOMS";
 	public static final String DSZ = "DSZ";
 	public static final String DMS = "DMS";
+	
+	public static final String HRZJ = "HRZJ";
+	public static final String HRJL = "HRJL";
+	public static final String FWZJ = "FWZJ";
+	public static final String FWJL = "FWJL";
+	public static final String CWZJ = "CWZJ";
+	public static final String CWJL = "CWJL";
 
 	
 	
