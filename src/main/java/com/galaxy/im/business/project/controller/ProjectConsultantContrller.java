@@ -122,7 +122,7 @@ public class ProjectConsultantContrller {
 			return resultBean;
 		}
 		try {
-			if (paramMap.containsKey("otherPersonDuties")) {
+			if (paramMap.containsKey("otherPersonDuties")&&( paramMap.get("otherPersonDuties")!=null || !paramMap.get("otherPersonDuties").equals(""))) {
 				paramMap.put("personDuties", paramMap.get("personDuties")+"-"+paramMap.get("otherPersonDuties"));
 			}
 			//添加
