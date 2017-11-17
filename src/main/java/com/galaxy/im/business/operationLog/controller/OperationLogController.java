@@ -28,7 +28,7 @@ public class OperationLogController {
 	IOperationLogsService service;
 	
 	/**
-	 * 获取操作日志信息列表
+	 * 获取操作日志信息列表（代办任务）
 	 * @param paramString
 	 * @return
 	 */

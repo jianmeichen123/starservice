@@ -28,11 +28,11 @@ public class SopFileServiceImpl extends BaseServiceImpl<Test> implements ISopFil
 	}
 
 	@Override
-	public Map<String, Object> getBusinessPlanFile(Map<String, Object> paramMap) {
+	public Map<String, Object> getSopFileInfo(Map<String, Object> paramMap) {
 		try{
-			return dao.getBusinessPlanFile(paramMap);
+			return dao.getSopFileInfo(paramMap);
 		}catch(Exception e){
-			log.error(SopFileServiceImpl.class.getName() + "getBusinessPlanFile",e);
+			log.error(SopFileServiceImpl.class.getName() + "getSopFileInfo",e);
 			throw new ServiceException(e);
 		}
 	}

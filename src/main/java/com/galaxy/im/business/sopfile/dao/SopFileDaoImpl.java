@@ -16,13 +16,13 @@ public class SopFileDaoImpl extends BaseDaoImpl<Test, Long> implements ISopFileD
 	private Logger log = LoggerFactory.getLogger(SopFileDaoImpl.class);
 	
 	@Override
-	public Map<String, Object> getBusinessPlanFile(Map<String, Object> paramMap) {
+	public Map<String, Object> getSopFileInfo(Map<String, Object> paramMap) {
 		try{
-			String sqlName = "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.getBusinessPlanFile";
+			String sqlName = "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.getSopFileInfo";
 			Map<String, Object> map =sqlSessionTemplate.selectOne(sqlName,paramMap);
 			return map;
 		}catch(Exception e){
-			log.error(SopFileDaoImpl.class.getName() + "getBusinessPlanFile",e);
+			log.error(SopFileDaoImpl.class.getName() + "getSopFileInfo",e);
 			throw new DaoException(e);
 		}
 	}

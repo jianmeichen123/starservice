@@ -397,8 +397,8 @@
 		ORDER BY r.meeting_date DESC LIMIT 1;
 	</select>
 	
-	<!-- 商业计划书-->
-	<select id="getBusinessPlanFile" parameterType="hashmap" resultType="hashmap">
+	<!-- 商业计划书，报告等信息-->
+	<select id="getSopFileInfo" parameterType="hashmap" resultType="hashmap">
 		SELECT  
 				f.id, f.project_id projectId,
 			    f.project_progress projectProgress,
@@ -433,7 +433,7 @@
 		LEFT JOIN dict d4 on f.file_status=d4.dict_code
 		LEFT JOIN v_user u on u.id=f.file_uid
 		LEFT JOIN v_department d on f.career_line=d.id
-		WHERE f.project_id=#{projectId} and f.file_worktype=#{fileWorkType}
+		WHERE f.project_id=#{projectId} and f.file_worktype=#{fileWorkType} and f.file_valid=1
 		ORDER BY f.created_time DESC LIMIT 1;
 	</select>
 	

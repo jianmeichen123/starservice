@@ -29,8 +29,8 @@
 			date_format(from_unixtime(created_time/1000),'%Y/%m/%d') createdTime, 
 			reason
 		FROM sop_operation_logs 
-		WHERE uid=#{uid}
-		ORDER BY created_time ${direction}
+		WHERE record_type=2 and uid=#{uid} and record_id=#{recordId}
+		ORDER BY created_time DESC
 		LIMIT #{offset},${limit};
 	</select>
 	
@@ -38,7 +38,7 @@
 	<select id="countOperationLogList" parameterType="hashmap" resultType="integer">
 		SELECT count(1) 
 		FROM sop_operation_logs 
-		WHERE uid=#{uid};
+		WHERE record_type=2 and uid=#{uid} and record_id=#{recordId};
 	</select>
     
 </mapper>

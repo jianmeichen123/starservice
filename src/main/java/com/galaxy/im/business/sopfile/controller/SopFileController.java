@@ -40,15 +40,15 @@ public class SopFileController {
 	private IFlowCommonService fcService;
 	
 	/**
-	 * 获取商业计划书
+	 * 获取商业计划书,报告等详情信息
 	 * @param request
 	 * @param response
 	 * @param paramString
 	 * @return
 	 */
-	@RequestMapping("getBusinessPlanFile")
+	@RequestMapping("getSopFileInfo")
 	@ResponseBody
-	public Object getBusinessPlanFile(HttpServletRequest request,HttpServletResponse response,@RequestBody String paramString){
+	public Object getSopFileInfo(HttpServletRequest request,HttpServletResponse response,@RequestBody String paramString){
 		ResultBean<ProjectBean> resultBean = new ResultBean<ProjectBean>();
 		resultBean.setStatus("error");
 		try{
@@ -56,9 +56,9 @@ public class SopFileController {
 			if(!paramMap.containsKey("projectId")){
 				resultBean.setMessage("传入的projectId为空");
 			}
-			paramMap.put("fileWorkType", StaticConst.FILE_WORKTYPE_12);
+			//paramMap.put("fileWorkType", StaticConst.FILE_WORKTYPE_12);
 			
-			Map<String,Object> map = service.getBusinessPlanFile(paramMap);
+			Map<String,Object> map = service.getSopFileInfo(paramMap);
 			if(map!=null && map.containsKey("createdTime")){
 				map.put("createDate", DateUtil.longToString(CUtils.get().object2Long(map.get("createdTime"))));
 			}
