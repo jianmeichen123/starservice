@@ -123,7 +123,9 @@ public class ProjectConsultantContrller {
 		}
 		try {
 			if (paramMap.containsKey("otherPersonDuties")) {
-				paramMap.put("personDuties", paramMap.get("personDuties")+"-"+paramMap.get("otherPersonDuties"));
+				if(!CUtils.get().object2String(paramMap.get("otherPersonDuties")).equals("") && CUtils.get().object2String(paramMap.get("otherPersonDuties"))!=null){
+					paramMap.put("personDuties", paramMap.get("personDuties")+"-"+paramMap.get("otherPersonDuties"));
+				}
 			}
 			//添加
 			if (paramMap.get("id")==null) {
