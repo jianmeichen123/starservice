@@ -122,8 +122,10 @@ public class ProjectConsultantContrller {
 			return resultBean;
 		}
 		try {
-			if (paramMap.containsKey("otherPersonDuties")&&( paramMap.get("otherPersonDuties")!=null || !paramMap.get("otherPersonDuties").equals(""))) {
-				paramMap.put("personDuties", paramMap.get("personDuties")+"-"+paramMap.get("otherPersonDuties"));
+			if (paramMap.containsKey("otherPersonDuties")) {
+				if(!CUtils.get().object2String(paramMap.get("otherPersonDuties")).equals("") && CUtils.get().object2String(paramMap.get("otherPersonDuties"))!=null){
+					paramMap.put("personDuties", paramMap.get("personDuties")+"-"+paramMap.get("otherPersonDuties"));
+				}
 			}
 			//添加
 			if (paramMap.get("id")==null) {
