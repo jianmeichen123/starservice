@@ -19,6 +19,8 @@ public class SopTask extends PagableEntity{
 	private Long assignUid;			//认领人id
 	private String taskStatus;		//任务状态
 	private String remark;			//备注
+	private String userName;     	//用户名
+	private String projectName;     //项目名称
      
 	public Long getProjectId() {
 		return projectId;
@@ -79,6 +81,18 @@ public class SopTask extends PagableEntity{
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getProjectName() {
+		return projectName;
+	}
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
     
 }

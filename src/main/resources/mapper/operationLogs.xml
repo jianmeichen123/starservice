@@ -20,4 +20,25 @@
 		</selectKey>
     </insert>
     
+    <!-- 操作日志列表 -->
+	<select id="getOperationLogList" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			uid uId,
+			uname uName,
+			operation_content operationContent,
+			date_format(from_unixtime(created_time/1000),'%Y/%m/%d') createdTime, 
+			reason
+		FROM sop_operation_logs 
+		WHERE uid=#{uid}
+		ORDER BY created_time ${direction}
+		LIMIT #{offset},${limit};
+	</select>
+	
+	<!-- 操作日志列表个数 -->
+	<select id="countOperationLogList" parameterType="hashmap" resultType="integer">
+		SELECT count(1) 
+		FROM sop_operation_logs 
+		WHERE uid=#{uid};
+	</select>
+    
 </mapper>
