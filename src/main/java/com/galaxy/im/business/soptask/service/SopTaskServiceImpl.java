@@ -46,6 +46,17 @@ public class SopTaskServiceImpl extends BaseServiceImpl<SopTask> implements ISop
 			throw new ServiceException(e);
 		}
 	}
+
+	//待办任务详情
+	@Override
+	public Object taskInfo(Map<String, Object> paramMap) {
+		try{
+			return dao.taskInfo(paramMap);
+		}catch(Exception e){
+			log.error(SopTaskServiceImpl.class.getName() + "_",e);
+			throw new ServiceException(e);
+		}
+	}
 	
 	
 	

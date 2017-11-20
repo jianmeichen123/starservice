@@ -53,8 +53,6 @@ public class SopTaskController {
 			paramMap.put("direction", "desc");
 			paramMap.put("depId", depId);
 			if (paramMap.get("flag")!=null && !paramMap.get("flag").equals("")) {
-				
-			
 			//待认领
 			if (paramMap.get("flag").equals("1")) {
 				paramMap.put("taskStatus", "taskStatus:1");
@@ -88,6 +86,27 @@ public class SopTaskController {
 		
 	}
 	
+	/**
+	 * 待办任务详情
+	 */
+	@ResponseBody
+	@RequestMapping("taskInfo")
+	public Object taskInfo(@RequestBody String paramString,HttpServletRequest request){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		Map<String, Object> paramMap = CUtils.get().jsonString2map(paramString);
+		try {
+			Object object = service.taskInfo(paramMap);
+			if (object!=null) {
+				resultBean.setEntity(object);
+				resultBean.setStatus("OK");
+			}
+		} catch (Exception e) {
+			log.error(SopTaskController.class.getName() + "taskInfo",e);
+		}
+		return resultBean;
+	}
+	
+	//
 	
 	
 	

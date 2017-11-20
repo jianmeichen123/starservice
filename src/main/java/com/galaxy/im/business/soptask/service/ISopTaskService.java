@@ -13,4 +13,7 @@ public interface ISopTaskService extends IBaseService<SopTask>{
 	//获取部门id
 	long getDepId(Long object2Long);
 
+	//待办任务详情
+	Object taskInfo(Map<String, Object> paramMap);
+
 }

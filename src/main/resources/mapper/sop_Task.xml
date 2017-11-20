@@ -8,10 +8,12 @@
 		resultType="hashmap">
 		SELECT st.id,st.task_name taskName, d.name  taskType,
 		st.task_flag taskFlag,st.created_time createdTime, st.task_status status,
-		sp.create_uname createdUname,sp.project_name projectName,sp.id projectId
+		sp.create_uname createdUname,sp.project_name projectName,sp.id projectId,
+		p.user_name assignUserName
 		FROM sop_task st 
 		LEFT JOIN sop_project sp ON st.project_id = sp.id
 		LEFT JOIN dict d on st.task_type = d.dict_code
+		LEFT JOIN power.user p ON st.assign_uid = p.id
 		WHERE  
 		st.department_id=#{depId}
 		<if test="taskStatus != null" > and st.task_status = #{taskStatus}</if>
@@ -49,6 +51,28 @@
 		resultType="long">
 		SELECT dep_id depID from power.rel_dep_user WHERE user_id = #{id}
 	</select>
+	
+	<!-- 待办任务详情 -->
+	<select id="taskInfo" parameterType="hashmap"
+		resultType="hashmap">
+		SELECT p4.*,st.task_name taskName
+		FROM sop_task st LEFT JOIN
+		(
+		SELECT p3.*,u1.user_name partner
+		from
+		(SELECT p2.*,d.dep_manager depManager
+		from
+		(
+		SELECT p1.id,p1.project_careerline projectCareerline,u.user_name userName,
+		 p1.project_name projectName,dd.name projectType, p1.project_code projectCode,p1.created_time createdTime, 
+		 p1.project_company projectCompany
+		FROM sop_project p1 LEFT JOIN power.user u ON p1.create_uid = u.id
+		LEFT JOIN dict dd ON dd.dict_code =p1.project_type
+		WHERE p1.id = #{projectId}) p2  LEFT JOIN power.department d ON p2.projectCareerline = d.dep_name) p3
+		LEFT JOIN power.user u1 ON p3.depManager = u1.id) p4 ON st.project_id = p4.id 
+		WHERE st.id =#{id}
+	</select>
+	
 
 	
 	
