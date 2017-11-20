@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.galaxy.im.bean.soptask.SopTask">
+	
+	
+	<!-- 查询列表 -->
+	<select id="taskListByRole" parameterType="hashmap"
+		resultType="hashmap">
+		SELECT st.id,st.task_name taskName, d.name  taskType,
+		st.task_flag taskFlag,st.created_time createdTime, st.task_status status,
+		sp.create_uname createdUname,sp.project_name projectName,sp.id projectId
+		FROM sop_task st 
+		LEFT JOIN sop_project sp ON st.project_id = sp.id
+		LEFT JOIN dict d on st.task_type = d.dict_code
+		WHERE  
+		st.department_id=#{depId}
+		<if test="taskStatus != null" > and st.task_status = #{taskStatus}</if>
+		<if test="assignUid != null" > and st.assign_uid = #{assignUid}</if>
+		<if test="keyWord != null" > and 
+		(upper(sp.project_name) like CONCAT('%',upper(#{keyWord}),'%') OR upper(sp.create_uname) LIKE CONCAT('%',upper(#{keyWord}),'%'))
+		</if>
+		<if test="property != null" >
+		order by ${property} ${direction}
+		</if>
+		<if test="offset != null" >
+		limit #{offset},${limit};
+		</if>
+
+	</select>
+
+	<!-- 列表记录个数 -->
+	<select id="taskListCount" parameterType="hashmap"
+		resultType="integer">
+		select
+		count(1)
+		FROM sop_task st 
+		LEFT JOIN sop_project sp ON st.project_id = sp.id
+		WHERE  
+		st.department_id=#{depId}
+		<if test="taskStatus != null" > and st.task_status = #{taskStatus}</if>
+		<if test="assignUid != null" > and st.assign_uid = #{assignUid}</if>
+		<if test="keyWord != null" > and 
+		(upper(sp.project_name) like CONCAT('%',upper(#{keyWord}),'%') OR upper(sp.create_uname) LIKE CONCAT('%',upper(#{keyWord}),'%'))
+		</if>
+	</select>
+	
+	<!-- 部门id -->
+	<select id="selectDeptId" parameterType="hashmap"
+		resultType="long">
+		SELECT dep_id depID from power.rel_dep_user WHERE user_id = #{id}
+	</select>
+
+	
+	
+</mapper>
