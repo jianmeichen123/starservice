@@ -21,6 +21,7 @@ public class SopTask extends PagableEntity{
 	private String remark;			//备注
 	private String userName;     	//用户名
 	private String projectName;     //项目名称
+	private int flag;     //1代表移交 2 代表指派
      
 	public Long getProjectId() {
 		return projectId;
@@ -93,6 +94,12 @@ public class SopTask extends PagableEntity{
 	}
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
+	}
+	public int getFlag() {
+		return flag;
+	}
+	public void setFlag(int flag) {
+		this.flag = flag;
 	}
     
 }

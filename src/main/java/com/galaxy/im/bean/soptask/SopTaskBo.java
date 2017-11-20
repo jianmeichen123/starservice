@@ -21,7 +21,6 @@ public class SopTaskBo extends  SopTask{
 	private String flagUrl;
 	private String concatcode;
 	private String assignUidName; //认领人的名字(配合APP端)
-	private Integer flag;//标识类型:1 待认领 2待完工 3已完工
 	
 	/**
 	 * 任务列表的已认领和待认领数字
@@ -173,13 +172,7 @@ public class SopTaskBo extends  SopTask{
 		this.rwyCount = rwyCount;
 	}
 
-	public Integer getFlag() {
-		return flag;
-	}
 
-	public void setFlag(Integer flag) {
-		this.flag = flag;
-	}
 	
 	
 }

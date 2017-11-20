@@ -62,6 +62,17 @@ public class SopTaskDaoImpl extends BaseDaoImpl<SopTask, Long> implements ISopTa
 			throw new DaoException(e);
 		}
 	}
+
+	//认领
+	@Override
+	public int applyTask(SopTask sopTask) {
+		try {
+			return sqlSessionTemplate.update(getSqlName("applyTask"),sopTask);
+		} catch (Exception e) {
+			log.error(getSqlName("applyTask"),e);
+			throw new DaoException(e);
+		}
+	}
 	
 
 }

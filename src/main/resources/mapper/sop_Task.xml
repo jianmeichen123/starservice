@@ -73,6 +73,24 @@
 		WHERE st.id =#{id}
 	</select>
 	
+	<!-- 修改项目状态 为认领-->
+	<update id="applyTask" parameterType="com.galaxy.im.bean.soptask.SopTask">
+		update sop_task 
+		<set>
+			<if test="assignUid != null">  assign_uid =#{assignUid},</if>
+			<if test="taskStatus != null">  task_status =#{taskStatus},</if>
+			<if test="updatedTime != null">  updated_time =#{updatedTime}</if>
+		</set>
+		<where>
+			<trim prefixOverrides="and">
+				<if test="id != null"> and id =#{id}</if>
+				<if test="projectId != null"> and project_id =#{projectId}</if>
+				<if test="taskType != null"> and task_type =#{taskType}</if>
+				<if test="taskFlag != null"> and task_flag =#{taskFlag}</if>
+			</trim>
+		</where>
+	</update>
+	
 
 	
 	

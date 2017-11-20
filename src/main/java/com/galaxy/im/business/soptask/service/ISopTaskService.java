@@ -16,4 +16,8 @@ public interface ISopTaskService extends IBaseService<SopTask>{
 	//待办任务详情
 	Object taskInfo(Map<String, Object> paramMap);
 
+	//认领
+	int applyTask(SopTask sopTask);
+
+
 }
