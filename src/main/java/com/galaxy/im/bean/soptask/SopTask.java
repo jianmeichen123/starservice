@@ -1,6 +1,7 @@
 package com.galaxy.im.bean.soptask;
 
 import java.util.Date;
+import java.util.List;
 
 import com.galaxy.im.common.db.PagableEntity;
 
@@ -17,10 +18,13 @@ public class SopTask extends PagableEntity{
 	private Date taskDeadline;		//完成日期
 	private Long departmentId;		//所属部门id
 	private Long assignUid;			//认领人id
+	private String assignUname;		//认领人名称
 	private String taskStatus;		//任务状态
 	private String remark;			//备注
 	private String userName;     	//用户名
 	private String projectName;     //项目名称
+	private List<Long> projectCreatedId;  //项目创建人
+	private List<String> projectCreatedName;//项目创建人名称
 	private int flag;     			//1代表移交 2 代表指派
 	
      
@@ -101,6 +105,25 @@ public class SopTask extends PagableEntity{
 	}
 	public void setFlag(int flag) {
 		this.flag = flag;
+	}
+	
+	public String getAssignUname() {
+		return assignUname;
+	}
+	public void setAssignUname(String assignUname) {
+		this.assignUname = assignUname;
+	}
+	public List<Long> getProjectCreatedId() {
+		return projectCreatedId;
+	}
+	public void setProjectCreatedId(List<Long> projectCreatedId) {
+		this.projectCreatedId = projectCreatedId;
+	}
+	public List<String> getProjectCreatedName() {
+		return projectCreatedName;
+	}
+	public void setProjectCreatedName(List<String> projectCreatedName) {
+		this.projectCreatedName = projectCreatedName;
 	}
     
 }

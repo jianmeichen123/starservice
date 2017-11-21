@@ -54,7 +54,7 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 		StringBuffer con = new StringBuffer();
 		if(model.getMessageType().equals(sop_task_1)){
 			//认领
-			ScheduleMessageBean message =getScheduleMessageInfo(model);
+			ScheduleMessageBean message =getScheduleMessageInfo(model,0);
 			content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
 			content.append("认领了");
 			content.append("\"").append("<pname>").append(model.getProjectName()).append("</pname>\"");
@@ -65,7 +65,7 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 		}else if(model.getMessageType().equals(sop_task_2)){
 			//移交
 			//该任务的接收人
-			ScheduleMessageBean message1 =getScheduleMessageInfo(model);
+			ScheduleMessageBean message1 =getScheduleMessageInfo(model,0);
 			content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
 			content.append("向您移交了将");
 			content.append("\"").append("<pname>").append(model.getProjectName()).append("</pname>\"");
@@ -73,7 +73,7 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 			message1.setSendTime(sendTime);
 			message1.setContent(content.toString());
 			//该项目的投资经理
-			ScheduleMessageBean message2 =getScheduleMessageInfo(model);
+			ScheduleMessageBean message2 =getScheduleMessageInfo(model,1);
 			con.append("\"<pname>").append(model.getUserName()).append("</pname>\"");
 			con.append("的").append(model.getTaskName()).append("负责人变更为");
 			con.append("\"").append("<uname>").append(model.getProjectName()).append("</uname>\"");
@@ -83,7 +83,7 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 			list.add(message2);
 		}else if(model.getMessageType().equals(sop_task_3)){
 			//放弃
-			ScheduleMessageBean message =getScheduleMessageInfo(model);
+			ScheduleMessageBean message =getScheduleMessageInfo(model,0);
 			content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
 			content.append("放弃了");
 			content.append("\"").append("<pname>").append(model.getProjectName()).append("</pname>\"");
@@ -94,7 +94,7 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 		}else if(model.getMessageType().equals(sop_task_4)){
 			//指派
 			//该任务的接收人（被指派人）
-			ScheduleMessageBean message1 =getScheduleMessageInfo(model);
+			ScheduleMessageBean message1 =getScheduleMessageInfo(model,0);
 			content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
 			content.append("向您指派了将");
 			content.append("\"").append("<pname>").append(model.getProjectName()).append("</pname>\"");
@@ -102,7 +102,7 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 			message1.setSendTime(sendTime);
 			message1.setContent(content.toString());
 			//该项目的投资经理
-			ScheduleMessageBean message2 =getScheduleMessageInfo(model);
+			ScheduleMessageBean message2 =getScheduleMessageInfo(model,1);
 			con.append("\"<pname>").append(model.getUserName()).append("</pname>\"");
 			con.append("的").append(model.getTaskName()).append("负责人为");
 			con.append("\"").append("<uname>").append(model.getProjectName()).append("</uname>\"");
@@ -115,7 +115,7 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 
 	
 	//初始化消息公用部分
-	private ScheduleMessageBean getScheduleMessageInfo(SopTask model) {
+	private ScheduleMessageBean getScheduleMessageInfo(SopTask model,int flag) {
 		ScheduleMessageBean message = new ScheduleMessageBean();
 		Long info_id = model.getId();
 		
@@ -128,12 +128,24 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 		message.setCreatedUid(model.getCreatedId());
 		message.setCreatedUname(model.getUserName());
 		
-		//消息接收人
 		List<ScheduleMessageUserBean> toUsers = new ArrayList<ScheduleMessageUserBean>();
-		ScheduleMessageUserBean toU = new ScheduleMessageUserBean();
-		toU.setUid(message.getCreatedUid());
-		toU.setUname(message.getCreatedUname());
-		toUsers.add(toU);
+		
+		if(flag==0){
+			//接收人
+			ScheduleMessageUserBean toU = new ScheduleMessageUserBean();
+			toU.setUid(model.getAssignUid());
+			toU.setUname(model.getAssignUname());
+			toUsers.add(toU);
+		}else if(flag==1){
+			//项目创建人
+			for(int i=0;i<model.getProjectCreatedId().size();i++){
+				ScheduleMessageUserBean toU = new ScheduleMessageUserBean();
+				toU.setUid(model.getProjectCreatedId().get(i));
+				toU.setUname(model.getProjectCreatedName().get(i));
+				toUsers.add(toU);
+			}
+		}
+		//消息接收人
 		message.setToUsers(toUsers);
 		return message;
 	}
