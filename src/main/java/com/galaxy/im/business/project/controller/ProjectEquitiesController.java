@@ -196,18 +196,5 @@ public class ProjectEquitiesController {
 		}
 		return resultBean;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +26,7 @@ import com.galaxy.im.common.ResultBean;
 @Controller
 @RequestMapping("/flow/investmentoperate")
 public class InvestmentoperateController {
-
+	private Logger log = LoggerFactory.getLogger(InvestmentoperateController.class);
 	@Autowired
 	IInvestmentoperateService service;
 	@Autowired
@@ -67,6 +69,7 @@ public class InvestmentoperateController {
 			}
 			result.setStatus("OK");
 		}catch(Exception e){
+			log.error(InvestmentoperateController.class.getName() + "projectOperateStatus",e);
 		}
 		return result;
 	}

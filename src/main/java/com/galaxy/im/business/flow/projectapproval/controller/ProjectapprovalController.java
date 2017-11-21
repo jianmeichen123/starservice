@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,7 +38,7 @@ import com.galaxy.im.common.webconfig.interceptor.operationLog.UrlNumber;
 @Controller
 @RequestMapping("/flow/projectapproval")
 public class ProjectapprovalController {
-	
+	private Logger log = LoggerFactory.getLogger(ProjectapprovalController.class);
 	@Autowired
 	IProjectapprovalService service;
 	@Autowired
@@ -76,6 +78,7 @@ public class ProjectapprovalController {
 
 			result.setStatus("OK");
 		}catch(Exception e){
+			log.error(ProjectapprovalController.class.getName() + "projectOperateStatus",e);
 		}
 		return result;
 	}
@@ -128,6 +131,7 @@ public class ProjectapprovalController {
 			}
 			result.setEntity(rMap);
 		}catch(Exception e){
+			log.error(ProjectapprovalController.class.getName() + "votedown",e);
 		}
 		return result;
 	}
@@ -184,6 +188,7 @@ public class ProjectapprovalController {
 				}
 			}
 		}catch(Exception e){
+			log.error(ProjectapprovalController.class.getName() + "startBusinessNegotiation",e);
 		}
 		return resultBean;
 	}
@@ -326,6 +331,7 @@ public class ProjectapprovalController {
 				}
 			}
 		}catch(Exception e){
+			log.error(ProjectapprovalController.class.getName() + "uploadApprovalReport",e);
 		}
 		return resultBean;
 	}
@@ -351,6 +357,7 @@ public class ProjectapprovalController {
 			resultBean.setMapList(list);
 			resultBean.setStatus("ok");
 		}catch(Exception e){
+			log.error(ProjectapprovalController.class.getName() + "approvalReportList",e);
 		}
 		return resultBean;
 	}

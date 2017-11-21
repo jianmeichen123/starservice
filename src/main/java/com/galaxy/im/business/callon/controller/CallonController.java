@@ -119,7 +119,7 @@ public class CallonController {
 			resultBean.setStatus("OK");
 			
 		}catch(Exception e){
-			e.printStackTrace();
+			log.error(CallonController.class.getName() + "save",e);
 		}
 		return resultBean;
 	}
@@ -166,6 +166,7 @@ public class CallonController {
 			}
 			resultBean.setStatus("OK");
 		}catch(Exception e){
+			log.error(CallonController.class.getName() + "deletePlan",e);
 		}
 		return resultBean;
 	}
@@ -190,6 +191,7 @@ public class CallonController {
 				}
 			}
 		}catch(Exception e){
+			log.error(CallonController.class.getName() + "callonEnableEditOrDel",e);
 		}
 		return resultBean;
 	}
@@ -218,6 +220,7 @@ public class CallonController {
 			resultBean.setEntity(page);
 			
 		}catch(Exception e){
+			log.error(CallonController.class.getName() + "_getCallonList",e);
 		}
 		return resultBean;
 	}

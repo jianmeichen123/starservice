@@ -160,6 +160,7 @@ public class ProjectController {
 			result.setStatus("OK");
 			
 		}catch(Exception e){
+			log.error(ProjectController.class.getName() + "getBaseProjectInfo",e);
 		}
 		return result;
 	}
@@ -183,6 +184,7 @@ public class ProjectController {
 				}
 			}
 		}catch(Exception e){
+			log.error(ProjectController.class.getName() + "isYJZ",e);
 		}
 		return result;
 	}

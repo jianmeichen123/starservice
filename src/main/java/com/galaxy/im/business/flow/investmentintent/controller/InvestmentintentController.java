@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,7 +37,7 @@ import com.galaxy.im.common.webconfig.interceptor.operationLog.UrlNumber;
 @Controller
 @RequestMapping("/flow/investmentintent")
 public class InvestmentintentController{
-	
+	private Logger log = LoggerFactory.getLogger(InvestmentintentController.class);
 	@Autowired
 	IInvestmentintentService service;
 	@Autowired
@@ -72,6 +74,7 @@ public class InvestmentintentController{
 			}
 			result.setStatus("OK");
 		}catch(Exception e){
+			log.error(InvestmentintentController.class.getName() + "projectOperateStatus",e);
 		}
 		return result;
 	}
@@ -183,6 +186,7 @@ public class InvestmentintentController{
 				}
 			}
 		}catch(Exception e){
+			log.error(InvestmentintentController.class.getName() + "startDuediligence",e);
 		}
 		return resultBean;
 	}
@@ -208,6 +212,7 @@ public class InvestmentintentController{
 			resultBean.setMapList(list);
 			resultBean.setStatus("ok");
 		}catch(Exception e){
+			log.error(InvestmentintentController.class.getName() + "investmentintentList",e);
 		}
 		return resultBean;
 	}
@@ -305,6 +310,7 @@ public class InvestmentintentController{
 				}
 			}
 		}catch(Exception e){
+			log.error(InvestmentintentController.class.getName() + "uploadInvestmentintent",e);
 		}
 		return resultBean;
 	}

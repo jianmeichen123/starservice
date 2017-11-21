@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +29,7 @@ import com.galaxy.im.common.StaticConst;
 @Controller
 @RequestMapping("/flow/interview")
 public class InterviewController {
+	private Logger log = LoggerFactory.getLogger(InterviewController.class);
 	@Autowired
 	private IInterviewService service;
 	
@@ -60,6 +63,7 @@ public class InterviewController {
 			}
 			result.setStatus("OK");
 		}catch(Exception e){
+			log.error(InterviewController.class.getName() + "projectOperateStatus",e);
 		}
 		return result;
 	}
@@ -104,6 +108,7 @@ public class InterviewController {
 			}
 			result.setEntity(rMap);
 		}catch(Exception e){
+			log.error(InterviewController.class.getName() + "votedown",e);
 		}
 		return result;
 	}
@@ -151,6 +156,7 @@ public class InterviewController {
 				}
 			}
 		} catch (Exception e) {
+			log.error(InterviewController.class.getName() + "startCeoReview",e);
 		}
 		return resultBean;
 	}

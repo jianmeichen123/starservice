@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,7 +37,7 @@ import com.galaxy.im.common.webconfig.interceptor.operationLog.UrlNumber;
 @Controller
 @RequestMapping("/flow/investmentPolicy")
 public class InvestmentPolicyController {
-
+	private Logger log = LoggerFactory.getLogger(InvestmentPolicyController.class);
 	@Autowired
 	private IFlowCommonService fcService;
 
@@ -75,6 +77,7 @@ public class InvestmentPolicyController {
 			}
 			result.setStatus("OK");
 		} catch (Exception e) {
+			log.error(InvestmentPolicyController.class.getName() + "projectOperateStatus",e);
 		}
 		return result;
 	}
@@ -185,6 +188,7 @@ public class InvestmentPolicyController {
 				}
 			}
 		} catch (Exception e) {
+			log.error(InvestmentPolicyController.class.getName() + "startDuediligence",e);
 		}
 		return resultBean;
 	}
@@ -260,6 +264,7 @@ public class InvestmentPolicyController {
 				}
 			}
 		} catch (Exception e) {
+			log.error(InvestmentPolicyController.class.getName() + "startStockequity",e);
 		}
 		return resultBean;
 	}
@@ -286,6 +291,7 @@ public class InvestmentPolicyController {
 			resultBean.setMapList(list);
 			resultBean.setStatus("ok");
 		}catch(Exception e){
+			log.error(InvestmentPolicyController.class.getName() + "investmentPolicyList",e);
 		}
 		return resultBean;
 	}
@@ -386,6 +392,7 @@ public class InvestmentPolicyController {
 				}
 			}
 		}catch(Exception e){
+			log.error(InvestmentPolicyController.class.getName() + "uploadInvestmentPolicy",e);
 		}
 		return resultBean;
 	}

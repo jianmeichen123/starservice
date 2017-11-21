@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,6 +38,7 @@ import com.galaxy.im.common.webconfig.interceptor.operationLog.UrlNumber;
 @Controller
 @RequestMapping("/flow/stockequity")
 public class StockequityController {
+	private Logger log = LoggerFactory.getLogger(StockequityController.class);
 	@Autowired
 	private IFlowCommonService fcService;
 
@@ -76,6 +79,7 @@ public class StockequityController {
 			}
 			result.setStatus("OK");
 		} catch (Exception e) {
+			log.error(StockequityController.class.getName() + "projectOperateStatus",e);
 		}
 		return result;
 	}
@@ -125,6 +129,7 @@ public class StockequityController {
 				}
 			}
 		} catch (Exception e) {
+			log.error(StockequityController.class.getName() + "startIntervestoperate",e);
 		}
 		return resultBean;
 	}
@@ -175,6 +180,7 @@ public class StockequityController {
 			resultBean.setMap(resultMap);
 			resultBean.setStatus("ok");
 		}catch(Exception e){
+			log.error(StockequityController.class.getName() + "stockequityList",e);
 		}
 		return resultBean;
 	}
@@ -278,6 +284,7 @@ public class StockequityController {
 				}
 			}
 		}catch(Exception e){
+			log.error(StockequityController.class.getName() + "uploadStockequity",e);
 		}
 		return resultBean;
 	}

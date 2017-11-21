@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +22,7 @@ import com.galaxy.im.common.ResultBean;
 @Controller
 @RequestMapping("/financehistory")
 public class FinanceHistoryController {
+	private Logger log = LoggerFactory.getLogger(FinanceHistoryController.class);
 	@Autowired
 	private IFinanceHistoryService service;
 	
@@ -52,6 +55,7 @@ public class FinanceHistoryController {
 			}
 			result.setStatus("OK");
 		}catch(Exception e){
+			log.error(FinanceHistoryController.class.getName() + "getFinanceHistoryList",e);
 		}
 		return result;
 	}
@@ -84,6 +88,7 @@ public class FinanceHistoryController {
 			}
 			result.setStatus("OK");
 		}catch(Exception e){
+			log.error(FinanceHistoryController.class.getName() + "getFinanceHistoryDetails",e);
 		}
 		return result;
 	}
@@ -119,6 +124,7 @@ public class FinanceHistoryController {
 				}
 			}
 		}catch(Exception e){
+			log.error(FinanceHistoryController.class.getName() + "saveFinanceHistory",e);
 		}
 		return result;
 	}
@@ -139,6 +145,7 @@ public class FinanceHistoryController {
 				}
 			}
 		}catch(Exception e){
+			log.error(FinanceHistoryController.class.getName() + "delFinanceHistory",e);
 		}
 		return result;
 	}

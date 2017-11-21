@@ -9,6 +9,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,6 +36,7 @@ import com.galaxy.im.common.StaticConst;
 @Controller
 @RequestMapping("/flow/internalreview")
 public class InternalreviewController {
+	private Logger log = LoggerFactory.getLogger(InternalreviewController.class);
 	@Autowired
 	private IInternalreviewService service;
 	
@@ -69,6 +72,7 @@ public class InternalreviewController {
 			}
 			result.setStatus("OK");
 		}catch(Exception e){
+			log.error(InternalreviewController.class.getName() + "projectOperateStatus",e);
 		}
 		return result;
 	}
@@ -113,6 +117,7 @@ public class InternalreviewController {
 			}
 			result.setEntity(rMap);
 		}catch(Exception e){
+			log.error(InternalreviewController.class.getName() + "votedown",e);
 		}
 		return result;
 	}
@@ -170,6 +175,7 @@ public class InternalreviewController {
 				}
 			}
 		} catch (Exception e) {
+			log.error(InternalreviewController.class.getName() + "startCeoReview",e);
 		}
 		return resultBean;
 	}

@@ -202,13 +202,5 @@ public class ProjectConsultantContrller {
 		}
 		return resultBean;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }
