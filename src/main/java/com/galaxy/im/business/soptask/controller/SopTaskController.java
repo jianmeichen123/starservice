@@ -24,7 +24,7 @@ import com.galaxy.im.common.cache.redis.RedisCacheImpl;
 import com.galaxy.im.common.db.QPage;
 
 @Controller
-@RequestMapping("/galaxy/soptask")
+@RequestMapping("/soptask")
 public class SopTaskController {
 	private Logger log = LoggerFactory.getLogger(SopTaskController.class);
 	
@@ -161,6 +161,7 @@ public class SopTaskController {
 		try {
 			//根据标识 flag=1代表移交 flag=2代表指派
 			if (sopTask.getFlag()==1) {
+				
 				
 			}
 			sopTask.setAssignUid(CUtils.get().object2Long(user.get("id")));
