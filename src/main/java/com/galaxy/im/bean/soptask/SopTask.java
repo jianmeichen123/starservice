@@ -2,6 +2,7 @@ package com.galaxy.im.bean.soptask;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.galaxy.im.common.db.PagableEntity;
 
@@ -10,24 +11,25 @@ public class SopTask extends PagableEntity{
 
 	private static final long serialVersionUID = -1972208554227527130L;
 	
-	private Long projectId;			//项目id
-	private String taskName;		//任务名称
-	private String taskType;		//任务类型
-	private Integer taskFlag;		//任务标识
-	private Integer taskOrder;		//任务优先级
-	private Date taskDeadline;		//完成日期
-	private Long departmentId;		//所属部门id
-	private Long assignUid;			//认领人id
-	private String assignUname;		//认领人名称
-	private String taskStatus;		//任务状态
-	private String remark;			//备注
-	private String userName;     	//用户名
-	private String projectName;     //项目名称
-	private List<Long> projectCreatedId;  //项目创建人
-	private List<String> projectCreatedName;//项目创建人名称
-	private int flag;     			//1代表移交 2 代表指派
+	private Long projectId;						//项目id
+	private String taskName;					//任务名称
+	private String taskType;					//任务类型
+	private Integer taskFlag;					//任务标识
+	private Integer taskOrder;					//任务优先级
+	private Date taskDeadline;					//完成日期
+	private Long departmentId;					//所属部门id
+	private Long assignUid;						//认领人id
+	private String assignUname;					//认领人名称
+	private String taskStatus;					//任务状态
+	private String remark;						//备注
+	private String userName;     				//用户名
+	private String projectName;     			//项目名称
+	private int flag;     						//1代表移交 2 代表指派
 	
-	private List<Long> taskIds;  //待办任务id
+	private List<Long> taskIds;  				//待办任务id
+	
+	private List<Map<String, Object>> projects;	//项目创建人，创建人名称
+	private List<Map<String, Object>> users;    //部门下所有人，名称
 	
      
 	public Long getProjectId() {
@@ -115,23 +117,24 @@ public class SopTask extends PagableEntity{
 	public void setAssignUname(String assignUname) {
 		this.assignUname = assignUname;
 	}
-	public List<Long> getProjectCreatedId() {
-		return projectCreatedId;
-	}
-	public void setProjectCreatedId(List<Long> projectCreatedId) {
-		this.projectCreatedId = projectCreatedId;
-	}
-	public List<String> getProjectCreatedName() {
-		return projectCreatedName;
-	}
-	public void setProjectCreatedName(List<String> projectCreatedName) {
-		this.projectCreatedName = projectCreatedName;
-	}
+	
 	public List<Long> getTaskIds() {
 		return taskIds;
 	}
 	public void setTaskIds(List<Long> taskIds) {
 		this.taskIds = taskIds;
+	}
+	public List<Map<String, Object>> getUsers() {
+		return users;
+	}
+	public void setUsers(List<Map<String, Object>> users) {
+		this.users = users;
+	}
+	public List<Map<String, Object>> getProjects() {
+		return projects;
+	}
+	public void setProjects(List<Map<String, Object>> projects) {
+		this.projects = projects;
 	}
     
 }

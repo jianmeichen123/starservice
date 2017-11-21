@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.galaxy.im.bean.message.ScheduleMessageBean;
 import com.galaxy.im.bean.message.ScheduleMessageUserBean;
 import com.galaxy.im.bean.soptask.SopTask;
+import com.galaxy.im.common.CUtils;
 
 @Component
 public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
@@ -83,14 +84,20 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 			list.add(message2);
 		}else if(model.getMessageType().equals(sop_task_3)){
 			//放弃
-			ScheduleMessageBean message =getScheduleMessageInfo(model,0);
 			content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
 			content.append("放弃了");
 			content.append("\"").append("<pname>").append(model.getProjectName()).append("</pname>\"");
 			content.append("的").append(model.getTaskName());
-			message.setSendTime(sendTime);
-			message.setContent(content.toString());
-			list.add(message);
+			//该项目的投资经理
+			ScheduleMessageBean message1 =getScheduleMessageInfo(model,1);
+			message1.setSendTime(sendTime);
+			message1.setContent(content.toString());
+			//所有人（按部门识别）
+			ScheduleMessageBean message2 =getScheduleMessageInfo(model,2);
+			message2.setSendTime(sendTime);
+			message2.setContent(content.toString());
+			list.add(message1);
+			list.add(message2);
 		}else if(model.getMessageType().equals(sop_task_4)){
 			//指派
 			//该任务的接收人（被指派人）
@@ -138,10 +145,18 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 			toUsers.add(toU);
 		}else if(flag==1){
 			//项目创建人
-			for(int i=0;i<model.getProjectCreatedId().size();i++){
+			for(Map<String, Object> map:model.getProjects()){
 				ScheduleMessageUserBean toU = new ScheduleMessageUserBean();
-				toU.setUid(model.getProjectCreatedId().get(i));
-				toU.setUname(model.getProjectCreatedName().get(i));
+				toU.setUid(CUtils.get().object2Long(map.get("projectCreatedId")));
+				toU.setUname(CUtils.get().object2String(map.get("projectCreatedName")));
+				toUsers.add(toU);
+			}
+		}else if(flag==2){
+			//所有人（按部门识别）
+			for(Map<String, Object> map:model.getUsers()){
+				ScheduleMessageUserBean toU = new ScheduleMessageUserBean();
+				toU.setUid(CUtils.get().object2Long(map.get("userId")));
+				toU.setUname(CUtils.get().object2String(map.get("userName")));
 				toUsers.add(toU);
 			}
 		}
