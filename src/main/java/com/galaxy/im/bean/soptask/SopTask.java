@@ -26,7 +26,7 @@ public class SopTask extends PagableEntity{
 	private String projectName;     			//项目名称
 	private int flag;     						//1代表移交 2 代表指派
 	
-	private List<Long> taskIds;  				//待办任务id
+	private List<Map<String, Object>> taskIds;  				//待办任务id 和项目id
 	
 	private List<Map<String, Object>> projects;	//项目创建人，创建人名称
 	private List<Map<String, Object>> users;    //部门下所有人，名称
@@ -118,12 +118,7 @@ public class SopTask extends PagableEntity{
 		this.assignUname = assignUname;
 	}
 	
-	public List<Long> getTaskIds() {
-		return taskIds;
-	}
-	public void setTaskIds(List<Long> taskIds) {
-		this.taskIds = taskIds;
-	}
+	
 	public List<Map<String, Object>> getUsers() {
 		return users;
 	}
@@ -135,6 +130,12 @@ public class SopTask extends PagableEntity{
 	}
 	public void setProjects(List<Map<String, Object>> projects) {
 		this.projects = projects;
+	}
+	public List<Map<String, Object>> getTaskIds() {
+		return taskIds;
+	}
+	public void setTaskIds(List<Map<String, Object>> taskIds) {
+		this.taskIds = taskIds;
 	}
     
 }
