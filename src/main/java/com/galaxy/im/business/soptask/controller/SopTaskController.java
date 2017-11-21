@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.soptask.SopTask;
+import com.galaxy.im.business.message.service.IScheduleMessageService;
 import com.galaxy.im.business.soptask.service.ISopTaskService;
 import com.galaxy.im.common.BeanUtils;
 import com.galaxy.im.common.CUtils;
@@ -30,6 +31,8 @@ public class SopTaskController {
 	
 	@Autowired
 	private ISopTaskService service;
+	@Autowired
+	IScheduleMessageService messageService;
 	
 	/**
 	 * 待办任务列表
@@ -134,7 +137,10 @@ public class SopTaskController {
 			}
 			
 			//发消息
-			
+			sopTask.setMessageType("1.2.1");
+			sopTask.setCreatedId(bean.getGuserid());
+			sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
+			messageService.operateMessageSopTaskInfo(sopTask);
 		} catch (Exception e) {
 			log.error(SopTaskController.class.getName() + "applyTask",e);
 		}

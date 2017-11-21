@@ -1,6 +1,7 @@
 package com.galaxy.im.common.messageThread;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,13 +45,13 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 		
 		SopTask model = (SopTask) info;
 		
-		long sendTime = model.getCreatedTime();
-		if(sendTime<System.currentTimeMillis()){
+		long sendTime = new Date().getTime();
+		/*if(sendTime<System.currentTimeMillis()){
 			return;
-		}
+		}*/
 		
 		StringBuffer content = new StringBuffer();
-		//StringBuffer content1 = new StringBuffer();
+		StringBuffer con = new StringBuffer();
 		if(model.getMessageType().equals(sop_task_1)){
 			//认领
 			ScheduleMessageBean message =getScheduleMessageInfo(model);
@@ -63,23 +64,57 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 			list.add(message);
 		}else if(model.getMessageType().equals(sop_task_2)){
 			//移交
+			//该任务的接收人
 			ScheduleMessageBean message1 =getScheduleMessageInfo(model);
 			content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
-			content.append("认领了");
+			content.append("向您移交了将");
 			content.append("\"").append("<pname>").append(model.getProjectName()).append("</pname>\"");
-			content.append("的尽调任务");
+			content.append("的").append(model.getTaskName());
 			message1.setSendTime(sendTime);
 			message1.setContent(content.toString());
+			//该项目的投资经理
+			ScheduleMessageBean message2 =getScheduleMessageInfo(model);
+			con.append("\"<pname>").append(model.getUserName()).append("</pname>\"");
+			con.append("的").append(model.getTaskName()).append("负责人变更为");
+			con.append("\"").append("<uname>").append(model.getProjectName()).append("</uname>\"");
+			message2.setSendTime(sendTime);
+			message2.setContent(con.toString());
 			list.add(message1);
+			list.add(message2);
 		}else if(model.getMessageType().equals(sop_task_3)){
 			//放弃
+			ScheduleMessageBean message =getScheduleMessageInfo(model);
+			content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
+			content.append("放弃了");
+			content.append("\"").append("<pname>").append(model.getProjectName()).append("</pname>\"");
+			content.append("的").append(model.getTaskName());
+			message.setSendTime(sendTime);
+			message.setContent(content.toString());
+			list.add(message);
 		}else if(model.getMessageType().equals(sop_task_4)){
 			//指派
+			//该任务的接收人（被指派人）
+			ScheduleMessageBean message1 =getScheduleMessageInfo(model);
+			content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
+			content.append("向您指派了将");
+			content.append("\"").append("<pname>").append(model.getProjectName()).append("</pname>\"");
+			content.append("的").append(model.getTaskName());
+			message1.setSendTime(sendTime);
+			message1.setContent(content.toString());
+			//该项目的投资经理
+			ScheduleMessageBean message2 =getScheduleMessageInfo(model);
+			con.append("\"<pname>").append(model.getUserName()).append("</pname>\"");
+			con.append("的").append(model.getTaskName()).append("负责人为");
+			con.append("\"").append("<uname>").append(model.getProjectName()).append("</uname>\"");
+			message2.setSendTime(sendTime);
+			message2.setContent(con.toString());
+			list.add(message1);
+			list.add(message2);
 		}
 	}
 
 	
-
+	//初始化消息公用部分
 	private ScheduleMessageBean getScheduleMessageInfo(SopTask model) {
 		ScheduleMessageBean message = new ScheduleMessageBean();
 		Long info_id = model.getId();

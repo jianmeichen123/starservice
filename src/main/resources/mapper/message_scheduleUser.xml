@@ -65,7 +65,7 @@
 		select
 		mu.id, mu.mid, mu.uid, mu.type_role typeRole, mu.is_read isRead,mu.is_use
 		isUse,
-		me.type, me.remrk_id remarkId, me.content , me.send_time sendTime
+		me.type, me.remrk_id remarkId, me.content , me.send_time sendTime,me.category
 		from
 		schedule_message_user mu left join schedule_message me on mu.mid =
 		me.id
