@@ -19,6 +19,7 @@ public class ScheduleMessageGenerator implements InitializingBean,ApplicationCon
 {
 	private ApplicationContext context;
 	private List<ScheduleMessageHandler> handlers;
+	private List<SopTaskScheduleMessageHandler> handler;
 	
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException
@@ -35,6 +36,11 @@ public class ScheduleMessageGenerator implements InitializingBean,ApplicationCon
 			 handlers = new ArrayList<ScheduleMessageHandler>(map.values());
 			 //OrderComparator.sort(handlers);
 		 }
+		 Map<String, SopTaskScheduleMessageHandler> map1 = BeanFactoryUtils.beansOfTypeIncludingAncestors(context, SopTaskScheduleMessageHandler.class, true, false);
+		 if(map != null)
+		 {
+			 handler = new ArrayList<SopTaskScheduleMessageHandler>(map1.values());
+		 }
 	}
 
 	public ScheduleMessageBean process(Object info)
@@ -46,6 +52,20 @@ public class ScheduleMessageGenerator implements InitializingBean,ApplicationCon
 					message.setStatus((byte) 1);    // 0:可用 1:禁用  2:删除
 					handler.handle(message,info);
 					return message;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public List<ScheduleMessageBean> processTask(Object info)
+	{
+		if(handler != null) {
+			for(SopTaskScheduleMessageHandler handler : handler) {
+				if(handler.support(info)) {
+					List<ScheduleMessageBean> list= new ArrayList<ScheduleMessageBean>();
+					handler.handle(list,info);
+					return list;
 				}
 			}
 		}

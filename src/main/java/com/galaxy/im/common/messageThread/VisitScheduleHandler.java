@@ -96,8 +96,6 @@ public class VisitScheduleHandler implements ScheduleMessageHandler
 		
 		message.setToUsers(toUsers);
 	}
-	
-	
 
 }
 

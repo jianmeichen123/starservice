@@ -491,6 +491,57 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 		}
 		return results;
 	}
+	
+	
+	/**
+	 * 代办任务消息推送
+	 * 生成对应消息
+	 * ScheduleMessage    ScheduleMessageUser
+     */
+	@Override
+	public void operateMessageSopTaskInfo(Object sopTask) {
+		final Object info = sopTask;
+		
+		GalaxyThreadPool.getExecutorService().execute(new Runnable() {
+			@Override
+			public void run() {
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+				calendar.set(Calendar.HOUR_OF_DAY, 23);
+				calendar.set(Calendar.MINUTE, 59);
+				calendar.set(Calendar.SECOND, 59);
+				calendar.set(Calendar.MILLISECOND, 0);
+				
+				long edate = calendar.getTimeInMillis();
+				
+				List<ScheduleMessageBean> list = messageGenerator.processTask(info);
+				for(ScheduleMessageBean message:list){
+					message.setCreatedTime(new Date().getTime());
+					if(message.getSendTime()==null){
+						return;
+					}
+					Long mid = iScheduleMessageDao.saveMessage(message);
+					
+					List<ScheduleMessageUserBean> toInserts = new ArrayList<ScheduleMessageUserBean>();
+					for(ScheduleMessageUserBean toU : message.getToUsers()){
+						toU.setIsSend((byte) 0);
+						toU.setIsRead((byte) 0);
+						toU.setIsDel((byte) 0);
+						toU.setMid(mid);
+						toU.setCreatedTime(new Date().getTime());
+						toInserts.add(toU);
+					}
+					iScheduleMessageUserDao.saveMessageUser(toInserts);
+					
+					//通知消息 ：  已经添加新的消息
+					if(message.getSendTime().longValue() <= edate){
+						message.setToUsers(toInserts);
+						schedulePushMessTask.setHasSaved(message);
+					}
+				}
+			}
+		});
+	}
 
 	
 

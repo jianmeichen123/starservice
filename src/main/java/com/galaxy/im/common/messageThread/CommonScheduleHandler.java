@@ -94,8 +94,6 @@ public class CommonScheduleHandler implements ScheduleMessageHandler
 		
 		message.setToUsers(toUsers);
 	}
-	
-	
 
 }
 
