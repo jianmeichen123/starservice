@@ -139,7 +139,7 @@ public class SopTaskController {
 			//发消息
 			sopTask.setTaskName("人事尽调任务");
 			sopTask.setMessageType("1.2.2");
-			sopTask.setAssignUid(5L);
+			sopTask.setAssignUid(38L);
 			sopTask.setAssignUname("xxxx");
 			sopTask.setCreatedId(bean.getGuserid());
 			sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
