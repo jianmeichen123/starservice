@@ -171,4 +171,18 @@ public class ControllerUtils {
 		params.put(PlatformConst.REQUEST_SCOPE_MESSAGE_BATCH, mapList);
 		request.setAttribute(PlatformConst.REQUEST_SCOPE_MESSAGE_TIP, params);
 	}
+	
+	//代办任务重写方法
+	public static void setRequestParamsForMessageTip(HttpServletRequest request, 
+			String projectName,Long projectId,String projectProgress, Long taskId,
+			int taskType,String reason) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put(PlatformConst.REQUEST_SCOPE_PROJECT_NAME, projectName);
+		params.put(PlatformConst.REQUEST_SCOPE_PROJECT_ID, projectId);
+		params.put(PlatformConst.REQUEST_SCOPE_PROJECT_PROGRESS, projectProgress);
+		params.put(PlatformConst.TASK_ID, taskId);
+		params.put(PlatformConst.TASK_TYPE, taskType);
+		params.put(PlatformConst.REQUEST_SCOPE_MESSAGE_REASON, reason);
+		request.setAttribute(PlatformConst.REQUEST_SCOPE_MESSAGE_TIP, params);
+	}
 }

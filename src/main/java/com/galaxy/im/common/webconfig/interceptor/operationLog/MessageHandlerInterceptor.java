@@ -44,6 +44,7 @@ public class MessageHandlerInterceptor extends HandlerInterceptorAdapter {
 			@SuppressWarnings("unused")
 			Logger logger = method.getAnnotation(Logger.class);
 			final User user = new User();
+			final RecordType recordType;
 			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 			
 			final Map<String, Object> map = (Map<String, Object>) request.getAttribute(PlatformConst.REQUEST_SCOPE_MESSAGE_TIP);
@@ -62,7 +63,12 @@ public class MessageHandlerInterceptor extends HandlerInterceptorAdapter {
 							user.setDepartmentName(CUtils.get().object2String(vMap.get("deptName")));
 						}
 					}
-					final RecordType recordType = RecordType.PROJECT;
+					if(map.containsKey(PlatformConst.TASK_TYPE) && CUtils.get().object2String(map.get(PlatformConst.TASK_TYPE)).equals("4")){
+						recordType = RecordType.TASK;
+					}else{
+						recordType = RecordType.PROJECT;
+					}
+					
 					//线程池执行
 					GalaxyThreadPool.getExecutorService().execute(new Runnable() {
 						@Override
@@ -121,6 +127,9 @@ public class MessageHandlerInterceptor extends HandlerInterceptorAdapter {
 		}
 		entity.setReason(String.valueOf(map.get(PlatformConst.REQUEST_SCOPE_MESSAGE_REASON)));
 		entity.setRecordType(recordType.getType());
+		if(map.containsKey(PlatformConst.TASK_ID)&& map.get(PlatformConst.TASK_ID)!=null){
+			entity.setRecordId(CUtils.get().object2Long(map.get(PlatformConst.TASK_ID)));
+		}
 		
 		return entity;
 	}

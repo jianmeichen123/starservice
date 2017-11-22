@@ -109,8 +109,13 @@ public enum OperationLogType {
 	P4_BREAK_PROJECT("/flow/duediligence/votedown", OperType.BREAK.getOperationType(), null,"否决项目"),
 	P5_BREAK_PROJECT("/flow/internalreview/votedown", OperType.BREAK.getOperationType(), null,"否决项目"),
 	P6_BREAK_PROJECT("/flow/investmentdeal/votedown", OperType.BREAK.getOperationType(), null,"否决项目"),
-	P7_BREAK_PROJECT("/flow/projectapproval/votedown", OperType.BREAK.getOperationType(), null,"否决项目");
+	P7_BREAK_PROJECT("/flow/projectapproval/votedown", OperType.BREAK.getOperationType(), null,"否决项目"),
 	
+	//代办任务（领取，移交，指派，放弃）
+	CLAIMT_TASK("/soptask/applyTask", OperType.CLAIMT.getOperationType(), "领取任务",null),
+	APPLY_TASK("/soptask/applyTask", OperType.APPLY.getOperationType(), "移交任务",null),
+	GIVEUP_TASK("/soptask/applyTask", OperType.GIVEUP.getOperationType(), "放弃任务",null),
+	ASSIGNED_TASK("/soptask/applyTask", OperType.ASSIGNED.getOperationType(), "指派任务",null);
 	
 	
 	//-------------------------------------------操作部分-----------------------------------------------------------------

@@ -9,11 +9,11 @@
 	    insert into sop_operation_logs (uid, uname, 
 	      user_roleId, user_role, user_departId, 
 	      depart_name, operation_type, project_id, 
-	      project_name, sop_stage, operation_content, created_time,record_type,reason
+	      project_name, sop_stage, operation_content, created_time,record_type,record_id,reason
 	      )
 	    values (#{uid}, #{uname}, #{userRoleid}, #{userRole}, #{userDepartid}, 
 	      #{departName}, #{operationType}, #{projectId}, #{projectName}, #{sopstage},
-	      #{operationContent},#{createdTime},#{recordType}, #{reason}
+	      #{operationContent},#{createdTime},#{recordType},#{recordId}, #{reason}
 	      )
 	    <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
 			SELECT LAST_INSERT_ID() AS id

@@ -10,6 +10,7 @@ public class PlatformConst {
 	public static final String REQUEST_SCOPE_URL_NUMBER = "galaxy_url_number";
 	public static final String PROJECT_TYPE = "项目";
 	public static final String TASK_TYPE = "任务";
+	public static final String TASK_ID = "任务ID";
 	public static final String SCHEDULING_TYPE = "排期";
 	public static final String IDEA_ZIXUN_TYPE = "创意资讯";
 	public static final String OPERATION_DATA = "运营记录";

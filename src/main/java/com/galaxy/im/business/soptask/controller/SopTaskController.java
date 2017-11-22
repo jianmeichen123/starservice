@@ -19,6 +19,7 @@ import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.soptask.SopTaskRecord;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.message.service.IScheduleMessageService;
+import com.galaxy.im.business.operationLog.controller.ControllerUtils;
 import com.galaxy.im.business.soptask.service.ISopTaskService;
 import com.galaxy.im.common.BeanUtils;
 import com.galaxy.im.common.CUtils;
@@ -147,6 +148,13 @@ public class SopTaskController {
 			sopTask.setCreatedId(bean.getGuserid());
 			sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
 			messageService.operateMessageSopTaskInfo(sopTask);
+			
+			for(Map<String, Object> map:sopTask.getProjects()){
+				//记录操作日志(项目名称，项目id，项目阶段，任务id，任务类型：4，原因)
+				ControllerUtils.setRequestParamsForMessageTip(request,
+						CUtils.get().object2String(map.get("projectName")), 
+						CUtils.get().object2Long(map.get("projectId")),"接触访谈", 7L, 4, "原因");
+			}
 		} catch (Exception e) {
 			log.error(SopTaskController.class.getName() + "applyTask",e);
 		}
