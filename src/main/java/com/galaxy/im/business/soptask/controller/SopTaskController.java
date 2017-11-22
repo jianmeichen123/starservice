@@ -1,6 +1,7 @@
 package com.galaxy.im.business.soptask.controller;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.soptask.SopTask;
+import com.galaxy.im.bean.soptask.SopTaskRecord;
+import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.message.service.IScheduleMessageService;
 import com.galaxy.im.business.soptask.service.ISopTaskService;
 import com.galaxy.im.common.BeanUtils;
@@ -157,7 +160,7 @@ public class SopTaskController {
 	 */
 	@ResponseBody
 	@RequestMapping("taskTransfer")
-	public Object taskTransfer(@RequestBody SopTask sopTask,HttpServletRequest request){
+	public Object taskTransfer(@RequestBody SopTaskRecord sopTaskRecord,HttpServletRequest request){
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		@SuppressWarnings("unchecked")
 		RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
@@ -165,25 +168,121 @@ public class SopTaskController {
 		SessionBean bean = CUtils.get().getBeanBySession(request);
 		if (bean==null) {
 			resultBean.setMessage("获取用户信息失败");
+			return resultBean;
 		}
 		Map<String, Object> user = BeanUtils.toMap(cache.get(bean.getSessionid()));
 		try {
 			//根据标识 flag=1代表移交 flag=2代表指派
-			if (sopTask.getFlag()==1) {
-				
-				
-			}
-			sopTask.setAssignUid(CUtils.get().object2Long(user.get("id")));
-			sopTask.setUpdatedTime(new Date().getTime());
-			//把任务状态变为待完成
-			sopTask.setTaskStatus("taskType:2");
-			int count = service.applyTask(sopTask);
-			if (count>0) {
-				resultBean.setStatus("OK");
-			}
-			
-			//发消息
-			
+			int count = 0;
+			int updateCount = 0;
+			if (sopTaskRecord.getFlag()==1) {
+					List<Map<String, Object>> taskIds = sopTaskRecord.getTaskIds();
+					if (taskIds!=null) {
+						for(Map<String, Object> map : taskIds){
+							if (map.get("taskId")!=null&&user.get("id")!=null&&map.get("projectId")!=null) {
+							sopTaskRecord.setTaskId(CUtils.get().object2Long(map.get("taskId")));
+							sopTaskRecord.setBeforeUid(CUtils.get().object2Long(user.get("id")));
+							//获取部门id
+							long depId = service.getDepId(CUtils.get().object2Long(user.get("id")));
+							sopTaskRecord.setBeforeDepartmentId(depId);
+							sopTaskRecord.setRecordType(sopTaskRecord.getFlag());
+							sopTaskRecord.setCreatedTime(new Date().getTime());
+							sopTaskRecord.setIsDel(0);
+							//防止重复移交
+							SopTaskRecord sRecord = service.selectRecord(sopTaskRecord);
+							if (sRecord==null) {
+								//保存移交内容
+								 count = service.taskTransfer(sopTaskRecord);
+							}
+							
+							
+							//修改待办任务的信息
+							SopTask sopTask = new SopTask();
+							sopTask.setId(CUtils.get().object2Long(map.get("taskId")));
+							sopTask.setUpdatedTime(new Date().getTime());
+							sopTask.setAssignUid(sopTaskRecord.getAfterUid());
+							 updateCount = service.updateTask(sopTask);
+							
+							//查询人事经理A是否已上传了人事/财务/法务尽调报告
+							SopFileBean sopFileBean = new SopFileBean();
+							sopFileBean.setProjectId( CUtils.get().object2Long(map.get("projectId")));
+							//fileWorktype=2人事 fileWorktype=3法务 fileWorktype=4财务
+							sopFileBean.setFileWorkType(sopTaskRecord.getFileWorktype());
+							sopFileBean.setFileUid(CUtils.get().object2Long(user.get("id")));
+							SopFileBean bean2 = service.isUpload(sopFileBean);
+							//A将报告移交给B
+							if (bean2!=null&&!bean2.equals("")) {
+								//修改文件的认领人为B
+								sopFileBean.setBelongUid(sopTaskRecord.getAfterUid());
+								sopFileBean.setId(bean2.getId());
+								service.updateFile(sopFileBean);
+							}
+						}
+						
+						}
+					}
+					if (count>0 && updateCount>0) {
+						resultBean.setStatus("OK");
+					}
+					//发消息
+					
+					
+				}else{
+					List<Map<String, Object>> taskIds = sopTaskRecord.getTaskIds();
+					if (taskIds!=null) {
+						for(Map<String, Object> map : taskIds){
+							if (map.get("taskId")!=null&&user.get("id")!=null&&map.get("projectId")!=null) {
+							sopTaskRecord.setTaskId(CUtils.get().object2Long(map.get("taskId")));
+							sopTaskRecord.setBeforeUid(CUtils.get().object2Long(user.get("id")));
+							//获取部门id
+							long depId = service.getDepId(CUtils.get().object2Long(user.get("id")));
+							sopTaskRecord.setBeforeDepartmentId(depId);
+							sopTaskRecord.setRecordType(sopTaskRecord.getFlag());
+							sopTaskRecord.setCreatedTime(new Date().getTime());
+							sopTaskRecord.setIsDel(0);
+							//防止重复指派
+							SopTaskRecord sRecord = service.selectRecord(sopTaskRecord);
+							if (sRecord==null) {
+								//保存指派内容
+								 count = service.taskTransfer(sopTaskRecord);
+							}
+							//修改待办任务的信息
+							SopTask sopTask = new SopTask();
+							sopTask.setId(CUtils.get().object2Long(map.get("taskId")));
+							sopTask.setUpdatedTime(new Date().getTime());
+							sopTask.setAssignUid(sopTaskRecord.getAfterUid());
+							sopTask.setTaskStatus("taskStatus:2");//将任务状态都变成待完工
+							 updateCount = service.updateTask(sopTask);
+							
+							//查询人事经理A是否已上传了人事/财务/法务尽调报告
+							SopFileBean sopFileBean = new SopFileBean();
+							sopFileBean.setProjectId( CUtils.get().object2Long(map.get("projectId")));
+							//fileWorktype=2人事 fileWorktype=3法务 fileWorktype=4财务
+							sopFileBean.setFileWorkType(sopTaskRecord.getFileWorktype());
+							sopFileBean.setFileUid(CUtils.get().object2Long(user.get("id")));
+							SopFileBean bean2 = service.isUpload(sopFileBean);
+							//A将报告移交给B
+							if (bean2!=null&&!bean2.equals("")) {
+								//修改文件的认领人为B
+								sopFileBean.setBelongUid(sopTaskRecord.getAfterUid());
+								sopFileBean.setId(bean2.getId());
+								service.updateFile(sopFileBean);
+							}
+							
+						}
+						}
+					}
+					
+						resultBean.setStatus("OK");
+					
+					//发消息
+					
+					
+					
+					
+	
+				}
+
 		} catch (Exception e) {
 			log.error(SopTaskController.class.getName() + "applyTask",e);
 		}

@@ -9,7 +9,7 @@
 		SELECT st.id,st.task_name taskName, d.name  taskType,
 		st.task_flag taskFlag,st.created_time createdTime, st.task_status status,
 		sp.create_uname createdUname,sp.project_name projectName,sp.id projectId,
-		p.user_name assignUserName
+		p.user_name assignUserName,st.assign_uid assignUid
 		FROM sop_task st 
 		LEFT JOIN sop_project sp ON st.project_id = sp.id
 		LEFT JOIN dict d on st.task_type = d.dict_code
@@ -55,7 +55,7 @@
 	<!-- 待办任务详情 -->
 	<select id="taskInfo" parameterType="hashmap"
 		resultType="hashmap">
-		SELECT p4.*,st.task_name taskName
+		SELECT p4.*,st.task_name taskName,st.assign_uid assignUid
 		FROM sop_task st LEFT JOIN
 		(
 		SELECT p3.*,u1.user_name partner
@@ -63,7 +63,7 @@
 		(SELECT p2.*,d.dep_manager depManager
 		from
 		(
-		SELECT p1.id,p1.project_careerline projectCareerline,u.user_name userName,
+		SELECT p1.id,p1.project_careerline projectCareerline,u.user_name projectCreatedName,p1.create_uid projectCreatedId,
 		 p1.project_name projectName,dd.name projectType, p1.project_code projectCode,p1.created_time createdTime, 
 		 p1.project_company projectCompany
 		FROM sop_project p1 LEFT JOIN power.user u ON p1.create_uid = u.id
@@ -91,6 +91,68 @@
 		</where>
 	</update>
 	
+	<!-- 指派/移交 -->
+	<insert id="taskTransfer" parameterType="com.galaxy.im.bean.soptask.SopTaskRecord">
+		insert into sop_task_record(
+			task_id,
+			before_uid,
+			before_department_id,
+			after_uid,
+			after_department_id,
+			reason,
+			record_type,
+			is_del,
+			created_uid,
+			updated_uid,
+			created_time
+		)values (
+        	#{taskId},
+			#{beforeUid},
+			#{beforeDepartmentId},
+			#{afterUid},
+			#{afterDepartmentId},
+			#{reason},
+			#{recordType},
+			#{isDel},
+			#{createdUid},
+			#{updatedUid},
+			#{createdTime}
+   		)
+		<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+				SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+	</insert>
+	
+	<!-- 更新待办任务 -->
+	<update id="updateTask" parameterType="com.galaxy.im.bean.soptask.SopTask">
+		update sop_task set
+			<if test="assignUid != null" > assign_uid = #{assignUid},</if>
+			<if test="updatedId != null" > updated_id = #{updatedId},</if>
+			<if test="updatedTime != null" >updated_time = #{updatedTime},</if>
+			<if test="taskStatus != null" >task_status = #{taskStatus}</if>
+		where id = #{id}
+	</update>
+	
+	<!-- 人事/财务/法务是否上传报告 -->
+	<select id="isUpload" parameterType="com.galaxy.im.bean.talk.SopFileBean"
+		resultType="com.galaxy.im.bean.talk.SopFileBean">
+		SELECT id FROM sop_file WHERE project_id=#{projectId} 
+		AND file_valid=1 AND file_uid =#{fileUid} and file_worktype=#{fileWorkType}
+	</select>
+	
+	<!-- 更新文件信息 -->
+	<update id="updateFile" parameterType="com.galaxy.im.bean.soptask.SopTask">
+		update sop_file set
+		belong_uid = #{belongUid}
+		where id = #{id}
+	</update>
+	
+	<!-- 查询是否已经移交/指派-->
+	<select id="selectRecord" parameterType="com.galaxy.im.bean.soptask.SopTaskRecord"
+		resultType="com.galaxy.im.bean.soptask.SopTaskRecord">
+		SELECT * FROM sop_task_record WHERE task_id=#{taskId} 
+		AND after_uid =#{afterUid} and before_uid=#{beforeUid}
+	</select>
 
 	
 	

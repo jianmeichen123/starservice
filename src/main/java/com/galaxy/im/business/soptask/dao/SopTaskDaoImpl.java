@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.galaxy.im.bean.soptask.SopTask;
+import com.galaxy.im.bean.soptask.SopTaskRecord;
+import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.db.BaseDaoImpl;
 import com.galaxy.im.common.db.QPage;
@@ -54,7 +56,7 @@ public class SopTaskDaoImpl extends BaseDaoImpl<SopTask, Long> implements ISopTa
 
 	//待办任务详情
 	@Override
-	public Object taskInfo(Map<String, Object> paramMap) {
+	public SopTask taskInfo(Map<String, Object> paramMap) {
 		try {
 			return sqlSessionTemplate.selectOne(getSqlName("taskInfo"),paramMap);
 		} catch (Exception e) {
@@ -70,6 +72,61 @@ public class SopTaskDaoImpl extends BaseDaoImpl<SopTask, Long> implements ISopTa
 			return sqlSessionTemplate.update(getSqlName("applyTask"),sopTask);
 		} catch (Exception e) {
 			log.error(getSqlName("applyTask"),e);
+			throw new DaoException(e);
+		}
+	}
+
+	//指派/移交
+	@Override
+	public int taskTransfer(SopTaskRecord sopTaskRecord) {
+		try {
+			return sqlSessionTemplate.insert(getSqlName("taskTransfer"),sopTaskRecord);
+		} catch (Exception e) {
+			log.error(getSqlName("taskTransfer"),e);
+			throw new DaoException(e);
+		}
+	}
+
+	//修改待办任务
+	@Override
+	public int updateTask(SopTask sopTask) {
+		try {
+			return sqlSessionTemplate.update(getSqlName("updateTask"),sopTask);
+		} catch (Exception e) {
+			log.error(getSqlName("updateTask"),e);
+			throw new DaoException(e);
+		}
+	}
+
+	//A是否上传报告
+	@Override
+	public SopFileBean isUpload(SopFileBean sopFileBean) {
+		try {
+			return sqlSessionTemplate.selectOne(getSqlName("isUpload"),sopFileBean);
+		} catch (Exception e) {
+			log.error(getSqlName("isUpload"),e);
+			throw new DaoException(e);
+		}
+	}
+
+	//更新文件信息
+	@Override
+	public int updateFile(SopFileBean sopFileBean) {
+		try {
+			return sqlSessionTemplate.update(getSqlName("updateFile"),sopFileBean);
+		} catch (Exception e) {
+			log.error(getSqlName("updateFile"),e);
+			throw new DaoException(e);
+		}
+	}
+
+	//防止重复移交
+	@Override
+	public SopTaskRecord selectRecord(SopTaskRecord sopTaskRecord) {
+		try {
+			return sqlSessionTemplate.selectOne(getSqlName("selectRecord"),sopTaskRecord);
+		} catch (Exception e) {
+			log.error(getSqlName("selectRecord"),e);
 			throw new DaoException(e);
 		}
 	}

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.galaxy.im.bean.soptask.SopTask;
+import com.galaxy.im.bean.soptask.SopTaskRecord;
+import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.soptask.dao.ISopTaskDao;
 import com.galaxy.im.common.db.IBaseDao;
 import com.galaxy.im.common.db.QPage;
@@ -49,7 +51,7 @@ public class SopTaskServiceImpl extends BaseServiceImpl<SopTask> implements ISop
 
 	//待办任务详情
 	@Override
-	public Object taskInfo(Map<String, Object> paramMap) {
+	public SopTask taskInfo(Map<String, Object> paramMap) {
 		try{
 			return dao.taskInfo(paramMap);
 		}catch(Exception e){
@@ -63,6 +65,61 @@ public class SopTaskServiceImpl extends BaseServiceImpl<SopTask> implements ISop
 	public int applyTask(SopTask sopTask) {
 		try{
 			return dao.applyTask(sopTask);
+		}catch(Exception e){
+			log.error(SopTaskServiceImpl.class.getName() + "_",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	//指派/移交
+	@Override
+	public int taskTransfer(SopTaskRecord sopTaskRecord) {
+		try{
+			return dao.taskTransfer(sopTaskRecord);
+		}catch(Exception e){
+			log.error(SopTaskServiceImpl.class.getName() + "_",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	//修改待办任务信息
+	@Override
+	public int updateTask(SopTask sopTask) {
+		try{
+			return dao.updateTask(sopTask);
+		}catch(Exception e){
+			log.error(SopTaskServiceImpl.class.getName() + "_",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	//是否上传报告
+	@Override
+	public SopFileBean isUpload(SopFileBean sopFileBean) {
+		try{
+			return dao.isUpload(sopFileBean);
+		}catch(Exception e){
+			log.error(SopTaskServiceImpl.class.getName() + "_",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	//更新文件信息
+	@Override
+	public int updateFile(SopFileBean sopFileBean) {
+		try{
+			return dao.updateFile(sopFileBean);
+		}catch(Exception e){
+			log.error(SopTaskServiceImpl.class.getName() + "_",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	//防止重复移交
+	@Override
+	public SopTaskRecord selectRecord(SopTaskRecord sopTaskRecord) {
+		try{
+			return dao.selectRecord(sopTaskRecord);
 		}catch(Exception e){
 			log.error(SopTaskServiceImpl.class.getName() + "_",e);
 			throw new ServiceException(e);
