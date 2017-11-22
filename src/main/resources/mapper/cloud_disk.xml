@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.bean.clouddisk.CloudDiskFiles">
+	
+	<!-- 向云盘添加文件 -->
+	<insert id="insertFileInfo" useGeneratedKeys="true" keyProperty="id" parameterType="hashmap">
+		INSERT INTO cloud_disk_files(
+			original_name,
+			targe_name,
+			file_size,
+			ext_name,
+			own_user,
+			file_sign,
+			file_type,
+			oss_key,
+			bucker_name,
+			is_del,
+			upload_time,
+			upload_user
+		)values(
+			#{originalName},
+			#{targeName},
+			#{fileSize},
+			#{extName},
+			#{ownUser},
+			#{fileSign},
+			#{fileType},
+			#{ossKey},
+			#{buckerName},
+			#{isDel},
+			#{uploadTime},
+			#{uploadUser}
+		)
+	</insert>
+	
+	<!-- 获取对应用户的云端信息 -->
+	<select id="getPersonCloudInfo" parameterType="hashmap" resultType="hashmap">
+		select 
+		    1 fileType,
+			count(1) fileTypeCount,
+		    ifnull(sum(t.file_size),0) usedFileSize 
+		 from cloud_disk_files t 
+		 where
+		    t.own_user=#{ownUser} 
+			and t.is_del=0
+		    and t.file_type = 1
+		union
+		select 
+		    2 fileType,
+			count(1) fileTypeCount,
+		    ifnull(sum(t.file_size),0) usedFileSize 
+		 from cloud_disk_files t 
+		 where
+		    t.own_user=#{ownUser} 
+			and t.is_del=0
+		    and t.file_type = 2
+		union
+		select 
+		    3 fileType,
+			count(1) fileTypeCount,
+		    ifnull(sum(t.file_size),0) usedFileSize 
+		 from cloud_disk_files t 
+		 where
+		    t.own_user=#{ownUser} 
+			and t.is_del=0
+		    and t.file_type = 3
+	</select>
+	
+	<!-- 云端文件更名 -->
+	<update id="renameCloudFile" parameterType="hashmap">
+		update cloud_disk_files t
+			set t.targe_name=#{targeName} 
+			where t.own_user=#{ownUser} 
+			and t.id=#{id};
+	</update>
+	
+	<!-- 删除云端文件 -->
+	<update id="deleteCloudFile" parameterType="hashmap">
+		update cloud_disk_files t
+			set t.is_del=1 
+			where t.own_user=#{ownUser} 
+			and t.id=#{id};
+	</update>
+	
+	<!-- 获取云端已经使用的容量大小 -->
+	<select id="getUsedVolumes" parameterType="hashmap" resultType="hashmap">
+		select sum(t.file_size) fileSize
+			from cloud_disk_files t
+			where t.own_user=#{ownUser};
+	</select>
+	
+	<!-- 获取云端文件列表 -->
+	<select id="select" parameterType="hashMap" resultType="hashmap">
+		select * from cloud_disk_files t
+			where t.own_user=#{ownUser}
+			and t.is_del=0
+			<if test="fileType != null">and t.file_type=#{fileType}</if>
+		limit #{offset}, #{limit};
+	</select>
+	
+	<select id="selectCount" parameterType="hashMap" resultType="long">
+		select count(1) from cloud_disk_files t
+			where t.own_user=#{ownUser}
+			and t.is_del=0;
+	</select>
+	
+	
+	
+	
+
+</mapper>

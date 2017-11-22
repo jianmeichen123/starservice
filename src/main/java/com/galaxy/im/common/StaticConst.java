@@ -20,6 +20,8 @@ public class StaticConst {
 	public static final String pushUpdateSchedule = "galaxy/scheduleInfo/pushUpdateSchedule";
 	public static final String pushDeleteSchedule = "galaxy/scheduleInfo/pushDeleteSchedule";
 	
+	public static final Long CLOUD_VOLUME_DOSE = 5*1024*1024*1024L;
+	
 	
 	
 	public static final String getShareUserList = "user/getShareUserList"; 				//power外部接口：获取拜访共享列表
