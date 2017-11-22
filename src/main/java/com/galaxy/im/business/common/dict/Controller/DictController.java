@@ -207,9 +207,11 @@ public class DictController {
 	 */
 	@RequestMapping("selectSendPersion")
 	@ResponseBody
-	public Object selectSendPersion(HttpServletRequest request,HttpServletResponse response){
+	public Object selectSendPersion(@RequestBody String paramString,HttpServletRequest request,HttpServletResponse response){
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		try{
+			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);	
+			
 			Map<String,Object> headerMap = QHtmlClient.get().getHeaderMap(request);
 			long deptId=0l;
 			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
@@ -243,10 +245,27 @@ public class DictController {
 					if(json.containsKey("success") && "true".equals(json.getString("success"))){
 						//操作
 						List<Map<String, Object>> uList =CUtils.get().jsonString2list(rr);
-						for(Map<String, Object> pMap:uList){
-							//去除列表中的本人
-							if (!CUtils.get().object2Long(pMap.get("userId")).equals(sessionBean.getGuserid())) {
-								userList.add(pMap);
+						if(paramMap.containsKey("type") && CUtils.get().object2String(paramMap.get("type")).equals("0")){
+							//移交
+							for(Map<String, Object> pMap:uList){
+								//去除列表中的本人
+								if (!CUtils.get().object2Long(pMap.get("userId")).equals(sessionBean.getGuserid())) {
+									userList.add(pMap);
+								}
+							}
+						}else if(paramMap.containsKey("type") && CUtils.get().object2String(paramMap.get("type")).equals("1")){
+							//指派
+							if(paramMap.containsKey("flag") && CUtils.get().object2String(paramMap.get("flag")).equals("0")){
+								//部门下所有人
+								userList.addAll(uList);
+							}else if(paramMap.containsKey("flag") && CUtils.get().object2String(paramMap.get("flag")).equals("1")){
+								//部门下去掉自己的所有人
+								for(Map<String, Object> pMap:uList){
+									//去除列表中的本人
+									if (!CUtils.get().object2Long(pMap.get("userId")).equals(sessionBean.getGuserid())) {
+										userList.add(pMap);
+									}
+								}
 							}
 						}
 					}
