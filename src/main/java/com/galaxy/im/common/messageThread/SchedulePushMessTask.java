@@ -245,7 +245,7 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 
 					List<ScheduleMessageUserBean> toUsers = mess.getToUsers();
 					for (ScheduleMessageUserBean tempU : toUsers) {
-						uIds.add("xinge"+String.valueOf(tempU.getUid()));
+						uIds.add("fxXinGe"+String.valueOf(tempU.getUid()));
 					}
 					
 					// 消息内容
