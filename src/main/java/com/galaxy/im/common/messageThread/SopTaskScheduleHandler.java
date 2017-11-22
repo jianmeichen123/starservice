@@ -87,8 +87,8 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 			}
 		}else if(model.getMessageType().equals(sop_task_3)){
 			//放弃
-			StringBuffer content = new StringBuffer();
 			for(Map<String, Object> map:model.getProjects()){
+				StringBuffer content = new StringBuffer();
 				content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
 				content.append("放弃了").append("\"");
 				content.append("<pname>").append(CUtils.get().object2String(map.get("projectName"))).append("</pname>\"");
@@ -106,9 +106,9 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 			}
 		}else if(model.getMessageType().equals(sop_task_4)){
 			//指派
-			StringBuffer content = new StringBuffer();
-			StringBuffer con = new StringBuffer();
 			for(Map<String, Object> map:model.getProjects()){
+				StringBuffer content = new StringBuffer();
+				StringBuffer con = new StringBuffer();
 				//该任务的接收人（被指派人）
 				ScheduleMessageBean message1 =getScheduleMessageInfo(model,0,map);
 				content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
