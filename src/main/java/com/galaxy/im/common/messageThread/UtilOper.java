@@ -19,16 +19,22 @@ public class UtilOper {
 		String content = mess.getContent();
 				
 		try {
-			//String dataMark = content.substring(content.indexOf("<id>"), content.length());
-			String timeMark = content.substring(content.indexOf("<time>"), content.indexOf("</time>")+"</time>".length());
-			String nameMark = content.substring(content.indexOf("<name>"), content.indexOf("</name>")+"</name>".length());
-			
-			String nameStr = nameMark.substring(nameMark.indexOf("<name>")+"<name>".length(), nameMark.indexOf("</name>"));
-			
-			String beginTimeStr = timeMark.substring(timeMark.indexOf("<time>")+"<time>".length(), timeMark.indexOf("</time>"));
-			String timeFormat = DateUtil.convertTimeForSuchDay(beginTimeStr);
-			
-			content = content.replace(timeMark, timeFormat).replace(nameMark, nameStr);
+			if(content.contains("time")){
+				String timeMark = content.substring(content.indexOf("<time>"), content.indexOf("</time>")+"</time>".length());
+				String nameMark = content.substring(content.indexOf("<name>"), content.indexOf("</name>")+"</name>".length());
+				
+				String nameStr = nameMark.substring(nameMark.indexOf("<name>")+"<name>".length(), nameMark.indexOf("</name>"));
+				String beginTimeStr = timeMark.substring(timeMark.indexOf("<time>")+"<time>".length(), timeMark.indexOf("</time>"));
+				String timeFormat = DateUtil.convertTimeForSuchDay(beginTimeStr);
+				content = content.replace(timeMark, timeFormat).replace(nameMark, nameStr);
+			}else{
+				String uNameMark = content.substring(content.indexOf("<uname>"), content.indexOf("</uname>")+"</uname>".length());
+				String pNameMark = content.substring(content.indexOf("<pname>"), content.indexOf("</pname>")+"</pname>".length());
+				
+				String uNameStr = uNameMark.substring(uNameMark.indexOf("<uname>")+"<uname>".length(), uNameMark.indexOf("</uname>"));
+				String pNameStr = pNameMark.substring(pNameMark.indexOf("<pname>")+"<pname>".length(), pNameMark.indexOf("</pname>"));
+				content = content.replace(uNameMark, uNameStr).replace(pNameMark, pNameStr);
+			}
 		} catch (Exception e) {
 			return mess.getContent();
 		}
