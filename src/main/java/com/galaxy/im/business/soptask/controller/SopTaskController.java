@@ -1,6 +1,7 @@
 package com.galaxy.im.business.soptask.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.galaxy.im.bean.common.SessionBean;
+import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.soptask.SopTaskRecord;
 import com.galaxy.im.bean.talk.SopFileBean;
+import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.message.service.IScheduleMessageService;
 import com.galaxy.im.business.operationLog.controller.ControllerUtils;
 import com.galaxy.im.business.soptask.service.ISopTaskService;
@@ -37,6 +40,8 @@ public class SopTaskController {
 	private ISopTaskService service;
 	@Autowired
 	IScheduleMessageService messageService;
+	@Autowired
+	private IFlowCommonService fcService;
 	
 	/**
 	 * 待办任务列表
@@ -129,6 +134,7 @@ public class SopTaskController {
 		if (bean==null) {
 			resultBean.setMessage("获取用户信息失败");
 		}
+		Map<String,Object> paramMap = new HashMap<String,Object>();
 		Map<String, Object> user = BeanUtils.toMap(cache.get(bean.getSessionid()));
 		try {
 			sopTask.setAssignUid(CUtils.get().object2Long(user.get("id")));
@@ -150,10 +156,11 @@ public class SopTaskController {
 			messageService.operateMessageSopTaskInfo(sopTask);
 			
 			for(Map<String, Object> map:sopTask.getProjects()){
+				SopProjectBean sopBean = fcService.getSopProjectInfo(paramMap);
 				//记录操作日志(项目名称，项目id，项目阶段，任务id，任务类型：4，原因)
 				ControllerUtils.setRequestParamsForMessageTip(request,
 						CUtils.get().object2String(map.get("projectName")), 
-						CUtils.get().object2Long(map.get("projectId")),"接触访谈", 7L, 4, "原因");
+						CUtils.get().object2Long(map.get("projectId")),sopBean.getProjectProgressName(), sopTask.getId(), 4, null);
 			}
 		} catch (Exception e) {
 			log.error(SopTaskController.class.getName() + "applyTask",e);
