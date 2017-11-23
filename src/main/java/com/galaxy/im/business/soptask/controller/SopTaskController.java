@@ -244,6 +244,7 @@ public class SopTaskController {
 							//A将报告移交给B
 							if (bean2!=null&&!bean2.equals("")) {
 								//修改文件的认领人为B
+								bean2.setFileValid(1);
 								bean2.setBelongUid(sopTaskRecord.getAfterUid());
 								bean2.setId(bean2.getId());
 								bean2.setUpdatedTime(new Date().getTime());
@@ -296,6 +297,7 @@ public class SopTaskController {
 							//A将报告移交给B
 							if (bean2!=null&&!bean2.equals("")) {
 								//修改文件的认领人为B
+								bean2.setFileValid(1);
 								bean2.setBelongUid(sopTaskRecord.getAfterUid());
 								bean2.setId(bean2.getId());
 								bean2.setUpdatedTime(new Date().getTime());
