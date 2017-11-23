@@ -63,7 +63,7 @@
 		(SELECT p2.*,d.dep_manager depManager
 		from
 		(
-		SELECT p1.projectId,p1.project_careerline projectCareerline,u.user_name projectCreatedName,p1.create_uid projectCreatedId,
+		SELECT p1.id projectId,p1.project_careerline projectCareerline,u.user_name projectCreatedName,p1.create_uid projectCreatedId,
 		 p1.project_name projectName,dd.name projectType, p1.project_code projectCode,p1.created_time createdTime, 
 		 p1.project_company projectCompany
 		FROM sop_project p1 LEFT JOIN power.user u ON p1.create_uid = u.id

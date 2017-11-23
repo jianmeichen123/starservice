@@ -56,7 +56,7 @@ public class SopTaskDaoImpl extends BaseDaoImpl<SopTask, Long> implements ISopTa
 
 	//待办任务详情
 	@Override
-	public SopTask taskInfo(Map<String, Object> paramMap) {
+	public Map<String, Object> taskInfo(Map<String, Object> paramMap) {
 		try {
 			return sqlSessionTemplate.selectOne(getSqlName("taskInfo"),paramMap);
 		} catch (Exception e) {

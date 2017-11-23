@@ -119,9 +119,9 @@ public class SopTaskController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		Map<String, Object> paramMap = CUtils.get().jsonString2map(paramString);
 		try {
-			Object object = service.taskInfo(paramMap);
-			if (object!=null) {
-				resultBean.setEntity(object);
+			Map<String, Object> map= service.taskInfo(paramMap);
+			if (map!=null) {
+				resultBean.setEntity(map);
 				resultBean.setStatus("OK");
 			}
 		} catch (Exception e) {
