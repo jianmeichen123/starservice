@@ -75,7 +75,7 @@ public class MessageHandlerInterceptor extends HandlerInterceptorAdapter {
 			//批量
 			final Map<String, Object> batchMap = (Map<String, Object>) request.getAttribute(PlatformConst.REQUEST_SCOPE_MESSAGE_BATCH);
 			if (null != batchMap && !batchMap.isEmpty()) {
-				String uniqueKey = getUniqueKey(request, map);
+				String uniqueKey = getUniqueKeys(request, batchMap);
 				final OperationLogType operLogType = OperationLogType.getObject(uniqueKey);
 				if (operLogType != null) {
 					final RecordType recordType = RecordType.TASK;
@@ -93,7 +93,22 @@ public class MessageHandlerInterceptor extends HandlerInterceptorAdapter {
 		super.afterCompletion(request, response, handler, ex);
 	}
 	
-	
+	//批量
+	private String getUniqueKeys(HttpServletRequest request, Map<String, Object> map) {
+		String uniqueKey = request.getRequestURL().toString();
+		if (null != map && !map.isEmpty()) {
+			@SuppressWarnings("unchecked")
+			List<Map<String, Object>> mapList = (List<Map<String, Object>>) map.get(PlatformConst.REQUEST_SCOPE_MESSAGE_BATCH);
+			Map<String, Object> m =mapList.get(0);
+			
+			if (m.containsKey("nums")) {
+				uniqueKey = uniqueKey + "/" + CUtils.get().object2String(m.get("nums"));
+			}
+		}
+		return uniqueKey;
+	}
+
+
 	//批量保存多条日志
 	protected void batchOperationLog(List<OperationLogs> list) {
 		try {

@@ -31,6 +31,7 @@ import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
 import com.galaxy.im.common.cache.redis.RedisCacheImpl;
 import com.galaxy.im.common.db.QPage;
+import com.galaxy.im.common.webconfig.interceptor.operationLog.UrlNumber;
 
 @Controller
 @RequestMapping("/soptask")
@@ -163,6 +164,7 @@ public class SopTaskController {
 				SopProjectBean sopBean = fcService.getSopProjectInfo(paramMap);
 				map.put("recordId", 2306);
 				map.put("projectProgressName", sopBean.getProjectProgressName());
+				map.put("nums", UrlNumber.one);
 				mapList.add(map);
 			}
 			ControllerUtils.setRequestBatchParamsForMessageTip(request,mapList);
