@@ -125,7 +125,7 @@
 	
 	<!-- 更新待办任务 -->
 	<update id="updateTask" parameterType="com.galaxy.im.bean.soptask.SopTask">
-		update sop_task set
+		update sop_task
 			<trim prefix="set" suffixOverrides=",">
 			<if test="assignUid != null" >assign_uid = #{assignUid},</if>
 			<if test="updatedId != null" > updated_id = #{updatedId},</if>
@@ -138,7 +138,7 @@
 	<!-- 人事/财务/法务是否上传报告 -->
 	<select id="isUpload" parameterType="com.galaxy.im.bean.talk.SopFileBean"
 		resultType="com.galaxy.im.bean.talk.SopFileBean">
-		SELECT id,belong_uid belongUid,file_uid,fileUid FROM sop_file WHERE project_id=#{projectId} 
+		SELECT id,belong_uid belongUid,file_uid fileUid FROM sop_file WHERE project_id=#{projectId} 
 		AND file_valid=1 AND file_uid =#{fileUid} and file_worktype=#{fileWorkType}
 	</select>
 	

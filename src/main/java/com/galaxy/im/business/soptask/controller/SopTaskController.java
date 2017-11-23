@@ -305,7 +305,6 @@ public class SopTaskController {
 						}
 						}
 					}
-					
 					if (count>0&&updateCount>0) {
 						resultBean.setStatus("OK");
 					}
