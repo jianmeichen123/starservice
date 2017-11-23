@@ -152,8 +152,8 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 		if(flag==0){
 			//接收人
 			ScheduleMessageUserBean toU = new ScheduleMessageUserBean();
-			toU.setUid(CUtils.get().object2Long(map.get("assignUid")));
-			toU.setUname(CUtils.get().object2String(map.get("assignUname")));
+			toU.setUid(model.getAssignUid());
+			toU.setUname(model.getAssignUname());
 			toUsers.add(toU);
 		}else if(flag==1){
 			//项目创建人

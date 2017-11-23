@@ -244,7 +244,7 @@ public class SopTaskController {
 							//A将报告移交给B
 							if (bean2!=null&&!bean2.equals("")) {
 								//修改文件的认领人为B
-								bean2.setBelongUid(sopTaskRecord.getAssignUid());
+								bean2.setBelongUid(sopTaskRecord.getAfterUid());
 								bean2.setId(bean2.getId());
 								bean2.setUpdatedTime(new Date().getTime());
 								service.updateFile(bean2);
@@ -296,7 +296,7 @@ public class SopTaskController {
 							//A将报告移交给B
 							if (bean2!=null&&!bean2.equals("")) {
 								//修改文件的认领人为B
-								bean2.setBelongUid(sopTaskRecord.getAssignUid());
+								bean2.setBelongUid(sopTaskRecord.getAfterUid());
 								bean2.setId(bean2.getId());
 								bean2.setUpdatedTime(new Date().getTime());
 								service.updateFile(bean2);
@@ -330,7 +330,8 @@ public class SopTaskController {
 			sopTask.setMessageType("1.2.4");
 			uNum = UrlNumber.two;
 		}
-		sopTask.setAssignUname(CUtils.get().object2String(user.get("userName")));
+		sopTask.setAssignUname(sopTaskRecord.getAssignUname());
+		sopTask.setAssignUid(sopTaskRecord.getAfterUid());
 		sopTask.setCreatedId(bean.getGuserid());
 		sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
 		messageService.operateMessageSopTaskInfo(sopTask);
