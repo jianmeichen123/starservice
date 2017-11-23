@@ -37,6 +37,7 @@ import com.galaxy.im.common.StaticConst;
 import com.galaxy.im.common.cache.redis.RedisCacheImpl;
 import com.galaxy.im.common.db.QPage;
 import com.galaxy.im.common.html.QHtmlClient;
+import com.galaxy.im.common.webconfig.interceptor.operationLog.UrlNumber;
 
 @Controller
 @RequestMapping("/soptask")
@@ -255,10 +256,10 @@ public class SopTaskController {
 					if (count>0 && updateCount>0) {
 						resultBean.setStatus("OK");
 					}
-					//发消息
 					
-					
-				}else{
+					//推送消息，记录操作日志
+					operateMethod(sopTaskRecord,user,bean,request,1);
+				}else if(sopTaskRecord.getFlag()==2){
 					List<Map<String, Object>> taskIds = sopTaskRecord.getTaskIds();
 					if (taskIds!=null) {
 						for(Map<String, Object> map : taskIds){
@@ -308,21 +309,52 @@ public class SopTaskController {
 					if (count>0&&updateCount>0) {
 						resultBean.setStatus("OK");
 					}
-					
-					//发消息
-					
-					
-					
-					
-	
+					//推送消息，记录操作日志
+					operateMethod(sopTaskRecord,user,bean,request,2);
 				}
-
 		} catch (Exception e) {
 			log.error(SopTaskController.class.getName() + "taskTransfer",e);
 		}
 		return resultBean;
 	}
 	
+	private void operateMethod(SopTaskRecord sopTaskRecord, Map<String, Object> user,
+			SessionBean bean, HttpServletRequest request, int flag) {
+		//发消息
+		UrlNumber uNum = null;
+		SopTask sopTask =new SopTask();
+		sopTask.setProjects(sopTaskRecord.getTaskIds());
+		if(flag==1){
+			sopTask.setMessageType("1.2.2");
+			uNum = UrlNumber.one;
+		}else if(flag==2){
+			sopTask.setMessageType("1.2.4");
+			uNum = UrlNumber.two;
+		}
+		sopTask.setAssignUname(CUtils.get().object2String(user.get("userName")));
+		sopTask.setCreatedId(bean.getGuserid());
+		sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
+		messageService.operateMessageSopTaskInfo(sopTask);
+		
+		//记录操作日志，项目名称，项目id，项目阶段，任务id，原因
+		List<Map<String, Object>> mapList= new ArrayList<Map<String, Object>>();
+		
+		for(Map<String, Object> m:sopTask.getProjects()){
+			SopProjectBean sopBean = fcService.getSopProjectInfo(m);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("projectId", sopBean.getId());
+			map.put("projectName", sopBean.getProjectName());
+			map.put("projectProgressName", sopBean.getProjectProgressName());
+			if(m.containsKey("taskId") && m.get("taskId")!=null){
+				map.put("recordId", m.get("taskId"));
+			}
+			map.put("nums", uNum);
+			map.put("reason", sopTaskRecord.getReason());
+			mapList.add(map);
+		}
+		ControllerUtils.setRequestBatchParamsForMessageTip(request,mapList);
+	}
+
 	/**
 	 * 放弃待办任务
 	 */
