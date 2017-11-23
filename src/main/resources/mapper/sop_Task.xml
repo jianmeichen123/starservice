@@ -8,8 +8,8 @@
 		resultType="hashmap">
 		SELECT st.id,st.task_name taskName, d.name  taskType,
 		st.task_flag taskFlag,st.created_time createdTime, st.task_status status,
-		sp.create_uname createdUname,sp.project_name projectName,sp.id projectId,
-		p.user_name assignUserName,st.assign_uid assignUid
+		sp.create_uname projectCreatedName,sp.project_name projectName,sp.id projectId,
+		p.user_name assignUserName,st.assign_uid assignUid,sp.create_uid projectCreatedId
 		FROM sop_task st 
 		LEFT JOIN sop_project sp ON st.project_id = sp.id
 		LEFT JOIN dict d on st.task_type = d.dict_code
