@@ -1,5 +1,6 @@
 package com.galaxy.im.business.soptask.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -148,20 +149,23 @@ public class SopTaskController {
 			
 			//发消息
 			sopTask.setTaskName("人事尽调任务");
-			sopTask.setMessageType("1.2.3");
+			sopTask.setMessageType("1.2.1");
 			sopTask.setAssignUid(5L);
 			sopTask.setAssignUname("xxxx");
 			sopTask.setCreatedId(bean.getGuserid());
 			sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
 			messageService.operateMessageSopTaskInfo(sopTask);
 			
+			//记录操作日志，项目名称，项目id，项目阶段，任务类型，任务id，原因
+			List<Map<String, Object>> mapList= new ArrayList<Map<String, Object>>();
 			for(Map<String, Object> map:sopTask.getProjects()){
+				paramMap.put("projectId", map.get("projectId"));
 				SopProjectBean sopBean = fcService.getSopProjectInfo(paramMap);
-				//记录操作日志(项目名称，项目id，项目阶段，任务id，任务类型：4，原因)
-				ControllerUtils.setRequestParamsForMessageTip(request,
-						CUtils.get().object2String(map.get("projectName")), 
-						CUtils.get().object2Long(map.get("projectId")),sopBean.getProjectProgressName(), sopTask.getId(), 4, null);
+				map.put("recordId", 2306);
+				map.put("projectProgressName", sopBean.getProjectProgressName());
+				mapList.add(map);
 			}
+			ControllerUtils.setRequestBatchParamsForMessageTip(request,mapList);
 		} catch (Exception e) {
 			log.error(SopTaskController.class.getName() + "applyTask",e);
 		}

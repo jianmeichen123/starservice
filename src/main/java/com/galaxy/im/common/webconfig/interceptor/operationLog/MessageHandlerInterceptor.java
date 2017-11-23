@@ -1,6 +1,7 @@
 package com.galaxy.im.common.webconfig.interceptor.operationLog;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -44,31 +45,24 @@ public class MessageHandlerInterceptor extends HandlerInterceptorAdapter {
 			@SuppressWarnings("unused")
 			Logger logger = method.getAnnotation(Logger.class);
 			final User user = new User();
-			final RecordType recordType;
 			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
-			
+			//通过用户id获取一些信息
+			List<Map<String, Object>> list = fcService.getDeptId(sessionBean.getGuserid(),request,response);
+			if(list!=null){
+				for(Map<String, Object> vMap:list){
+					user.setId(CUtils.get().object2Long(vMap.get("uId")));
+					user.setRealName(CUtils.get().object2String(vMap.get("userName")));
+					user.setDepartmentId(CUtils.get().object2Long(vMap.get("deptId")));
+					user.setDepartmentName(CUtils.get().object2String(vMap.get("deptName")));
+				}
+			}
+			//一条
 			final Map<String, Object> map = (Map<String, Object>) request.getAttribute(PlatformConst.REQUEST_SCOPE_MESSAGE_TIP);
 			if (null != map && !map.isEmpty()) {
 				String uniqueKey = getUniqueKey(request, map);
-				//OperationType type = OperationType.getObject(uniqueKey);
 				final OperationLogType operLogType = OperationLogType.getObject(uniqueKey);
 				if (operLogType != null) {
-					//通过用户id获取一些信息
-					List<Map<String, Object>> list = fcService.getDeptId(sessionBean.getGuserid(),request,response);
-					if(list!=null){
-						for(Map<String, Object> vMap:list){
-							user.setId(CUtils.get().object2Long(vMap.get("uId")));
-							user.setRealName(CUtils.get().object2String(vMap.get("userName")));
-							user.setDepartmentId(CUtils.get().object2Long(vMap.get("deptId")));
-							user.setDepartmentName(CUtils.get().object2String(vMap.get("deptName")));
-						}
-					}
-					if(map.containsKey(PlatformConst.TASK_TYPE) && CUtils.get().object2String(map.get(PlatformConst.TASK_TYPE)).equals("4")){
-						recordType = RecordType.TASK;
-					}else{
-						recordType = RecordType.PROJECT;
-					}
-					
+					final RecordType recordType = RecordType.PROJECT;
 					//线程池执行
 					GalaxyThreadPool.getExecutorService().execute(new Runnable() {
 						@Override
@@ -78,11 +72,69 @@ public class MessageHandlerInterceptor extends HandlerInterceptorAdapter {
 					});
 				}
 			}
+			//批量
+			final Map<String, Object> batchMap = (Map<String, Object>) request.getAttribute(PlatformConst.REQUEST_SCOPE_MESSAGE_BATCH);
+			if (null != batchMap && !batchMap.isEmpty()) {
+				String uniqueKey = getUniqueKey(request, map);
+				final OperationLogType operLogType = OperationLogType.getObject(uniqueKey);
+				if (operLogType != null) {
+					final RecordType recordType = RecordType.TASK;
+					//线程池执行
+					GalaxyThreadPool.getExecutorService().execute(new Runnable() {
+						@Override
+						public void run() {
+							batchOperationLog(batchOperationLog(operLogType, user, batchMap, recordType));
+						}
+					});
+				}
+			
+			}
 		}
 		super.afterCompletion(request, response, handler, ex);
 	}
 	
-	//保存操作日志
+	
+	//批量保存多条日志
+	protected void batchOperationLog(List<OperationLogs> list) {
+		try {
+			for(OperationLogs operationLog : list){
+				@SuppressWarnings("unused")
+				long id =service.saveOperationLog(operationLog);
+			}
+		} catch (Exception e3) {
+			loger.error("操作日志异常"+"batchOperationLog" ,e3);
+		}
+	}
+	
+	//封装多条操作日志信息
+	protected List<OperationLogs> batchOperationLog(OperationLogType type, User user, Map<String, Object> map,
+			RecordType recordType) {
+		List<OperationLogs> list = new ArrayList<OperationLogs>();
+		
+		@SuppressWarnings("unchecked")
+		List<Map<String, Object>> mapList = (List<Map<String, Object>>) map.get(PlatformConst.REQUEST_SCOPE_MESSAGE_BATCH);
+		for(Map<String, Object> m: mapList){
+			OperationLogs entity = new OperationLogs();
+			entity.setOperationContent(type.getContent());
+			entity.setOperationType(type.getType());
+			entity.setUid(user.getId());
+			entity.setUname(user.getRealName());
+			entity.setDepartName(user.getDepartmentName());
+			entity.setUserDepartid(user.getDepartmentId());
+			entity.setCreatedTime(new Date().getTime());
+			
+			entity.setProjectName(CUtils.get().object2String(m.get("projectName")));
+			entity.setProjectId(CUtils.get().object2Long(m.get("projectId")));
+			entity.setSopstage(CUtils.get().object2String(m.get("projectProgressName")));
+			entity.setReason(CUtils.get().object2String(m.get("reason")));
+			entity.setRecordType(recordType.getType());
+			entity.setRecordId(CUtils.get().object2Long(m.get("recordId")));
+			list.add(entity);
+		}
+		return list;
+	}
+
+	//保存操作日志(一条)
 	private void insertOperationLog(OperationLogs operationLog) {
 		try {
 			@SuppressWarnings("unused")
@@ -92,7 +144,7 @@ public class MessageHandlerInterceptor extends HandlerInterceptorAdapter {
 		}
 	}
 	
-	//获取操作日志内容
+	//获取操作日志内容(一条)
 	private OperationLogs populateOperationLog(OperationLogType type, User user, Map<String, Object> map,
 			com.galaxy.im.common.webconfig.interceptor.operationLog.RecordType recordType) {
 		OperationLogs entity = new OperationLogs();
@@ -127,9 +179,6 @@ public class MessageHandlerInterceptor extends HandlerInterceptorAdapter {
 		}
 		entity.setReason(String.valueOf(map.get(PlatformConst.REQUEST_SCOPE_MESSAGE_REASON)));
 		entity.setRecordType(recordType.getType());
-		if(map.containsKey(PlatformConst.TASK_ID)&& map.get(PlatformConst.TASK_ID)!=null){
-			entity.setRecordId(CUtils.get().object2Long(map.get(PlatformConst.TASK_ID)));
-		}
 		
 		return entity;
 	}
@@ -144,18 +193,4 @@ public class MessageHandlerInterceptor extends HandlerInterceptorAdapter {
 			}
 		return uniqueKey;
 	}
-
-	/*@Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-            throws Exception {
-        System.out.println("在请求处理之前进行调用（Controller方法调用之前）");
-
-        return true;// 只有返回true才会继续向下执行，返回false取消当前请求
-    }
-
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-            ModelAndView modelAndView) throws Exception {
-        System.out.println("请求处理之后进行调用，但是在视图被渲染之前（Controller方法调用之后）");
-    }*/
 }
