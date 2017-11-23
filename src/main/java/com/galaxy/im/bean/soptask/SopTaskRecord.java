@@ -23,7 +23,7 @@ public class SopTaskRecord extends PagableEntity{
 	private Long updatedUid;				//更新人id
 	private int flag;     //1代表移交 2 代表指派
 	private String fileWorktype; //fileWorktype=2人事 fileWorktype=3法务 fileWorktype=4财务
-	private Long assignUname;			//移交/指派给此人
+	private String assignUname;			//移交/指派给此人
 	private Long assignUid;				//id
 	
 	
@@ -107,10 +107,10 @@ public class SopTaskRecord extends PagableEntity{
 	public void setTaskIds(List<Map<String, Object>> taskIds) {
 		this.taskIds = taskIds;
 	}
-	public Long getAssignUname() {
+	public String getAssignUname() {
 		return assignUname;
 	}
-	public void setAssignUname(Long assignUname) {
+	public void setAssignUname(String assignUname) {
 		this.assignUname = assignUname;
 	}
 	public Long getAssignUid() {
