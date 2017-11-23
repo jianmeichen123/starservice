@@ -55,7 +55,7 @@
 	<!-- 待办任务详情 -->
 	<select id="taskInfo" parameterType="hashmap"
 		resultType="hashmap">
-		SELECT p4.*,st.task_name taskName,st.assign_uid assignUid
+		SELECT p4.*,st.task_name taskName,st.assign_uid assignUid,st.id taskId
 		FROM sop_task st LEFT JOIN
 		(
 		SELECT p3.*,u1.user_name partner
@@ -63,13 +63,13 @@
 		(SELECT p2.*,d.dep_manager depManager
 		from
 		(
-		SELECT p1.id,p1.project_careerline projectCareerline,u.user_name projectCreatedName,p1.create_uid projectCreatedId,
+		SELECT p1.projectId,p1.project_careerline projectCareerline,u.user_name projectCreatedName,p1.create_uid projectCreatedId,
 		 p1.project_name projectName,dd.name projectType, p1.project_code projectCode,p1.created_time createdTime, 
 		 p1.project_company projectCompany
 		FROM sop_project p1 LEFT JOIN power.user u ON p1.create_uid = u.id
 		LEFT JOIN dict dd ON dd.dict_code =p1.project_type
 		WHERE p1.id = #{projectId}) p2  LEFT JOIN power.department d ON p2.projectCareerline = d.dep_name) p3
-		LEFT JOIN power.user u1 ON p3.depManager = u1.id) p4 ON st.project_id = p4.id 
+		LEFT JOIN power.user u1 ON p3.depManager = u1.id) p4 ON st.project_id = p4.projectId 
 		WHERE st.id =#{id}
 	</select>
 	
@@ -126,7 +126,7 @@
 	<!-- 更新待办任务 -->
 	<update id="updateTask" parameterType="com.galaxy.im.bean.soptask.SopTask">
 		update sop_task set
-			<if test="assignUid != null" > assign_uid = #{assignUid},</if>
+			assign_uid = #{assignUid},
 			<if test="updatedId != null" > updated_id = #{updatedId},</if>
 			<if test="updatedTime != null" >updated_time = #{updatedTime},</if>
 			<if test="taskStatus != null" >task_status = #{taskStatus}</if>
@@ -143,7 +143,8 @@
 	<!-- 更新文件信息 -->
 	<update id="updateFile" parameterType="com.galaxy.im.bean.soptask.SopTask">
 		update sop_file set
-		belong_uid = #{belongUid}
+		<if test="belongUid != null" >belong_uid = #{belongUid},</if>
+		<if test="fileValid != null" >file_valid = #{fileValid}</if>
 		where id = #{id}
 	</update>
 	

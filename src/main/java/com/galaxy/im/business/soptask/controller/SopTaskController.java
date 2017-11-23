@@ -288,7 +288,9 @@ public class SopTaskController {
 						}
 					}
 					
+					if (count>0&&updateCount>0) {
 						resultBean.setStatus("OK");
+					}
 					
 					//发消息
 					
@@ -299,7 +301,85 @@ public class SopTaskController {
 				}
 
 		} catch (Exception e) {
-			log.error(SopTaskController.class.getName() + "applyTask",e);
+			log.error(SopTaskController.class.getName() + "taskTransfer",e);
+		}
+		return resultBean;
+	}
+	
+	/**
+	 * 放弃待办任务
+	 */
+	@ResponseBody
+	@RequestMapping("abandonTask")
+	public Object abandonTask(@RequestBody SopTaskRecord sopTaskRecord,HttpServletRequest request){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		@SuppressWarnings("unchecked")
+		RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
+		//获取登录用户信息
+		SessionBean bean = CUtils.get().getBeanBySession(request);
+		if (bean==null) {
+			resultBean.setMessage("获取用户信息失败");
+			return resultBean;
+		}
+		Map<String, Object> user = BeanUtils.toMap(cache.get(bean.getSessionid()));
+		int count =0;
+		int updateCount = 0;
+		try {
+			if (sopTaskRecord.getFlag()==0) {
+			List<Map<String, Object>> taskIds = sopTaskRecord.getTaskIds();
+				for(Map<String, Object> map : taskIds){
+					if (map.get("taskId")!=null&&user.get("id")!=null&&map.get("projectId")!=null) {
+						sopTaskRecord.setTaskId(CUtils.get().object2Long(map.get("taskId")));
+						sopTaskRecord.setBeforeUid(CUtils.get().object2Long(user.get("id")));
+						//获取部门id
+						long depId = service.getDepId(CUtils.get().object2Long(user.get("id")));
+						sopTaskRecord.setBeforeDepartmentId(depId);
+						sopTaskRecord.setRecordType(sopTaskRecord.getFlag());
+						sopTaskRecord.setCreatedTime(new Date().getTime());
+						sopTaskRecord.setIsDel(0);
+						//防止重复放弃
+						SopTaskRecord sRecord = service.selectRecord(sopTaskRecord);
+						if (sRecord==null) {
+							//保存放弃内容
+							 count = service.taskTransfer(sopTaskRecord);
+						}
+						//修改待办任务的信息
+						SopTask sopTask = new SopTask();
+						sopTask.setId(CUtils.get().object2Long(map.get("taskId")));
+						sopTask.setUpdatedTime(new Date().getTime());
+						sopTask.setAssignUid(null);
+						sopTask.setTaskStatus("taskStatus:1");//将任务状态都变成待认领
+						 updateCount = service.updateTask(sopTask);
+						
+						 
+						//查询人事经理A是否已上传了人事/财务/法务尽调报告
+						SopFileBean sopFileBean = new SopFileBean();
+						sopFileBean.setProjectId( CUtils.get().object2Long(map.get("projectId")));
+						//fileWorktype=2人事 fileWorktype=3法务 fileWorktype=4财务
+						sopFileBean.setFileWorkType(sopTaskRecord.getFileWorktype());
+						sopFileBean.setFileUid(CUtils.get().object2Long(user.get("id")));
+						SopFileBean bean2 = service.isUpload(sopFileBean);
+						//A将报告移交给B
+						if (bean2!=null&&!bean2.equals("")) {
+							//将此报告设为无用
+							sopFileBean.setFileValid(0);
+							sopFileBean.setId(bean2.getId());
+							service.updateFile(sopFileBean);
+						}
+						
+					}
+					
+				}
+			}
+			if (count>0&&updateCount>0) {
+				resultBean.setStatus("OK");
+			}
+				
+				
+				//发消息
+			
+		} catch (Exception e) {
+			log.error(SopTaskController.class.getName() + "abandonTask",e);
 		}
 		return resultBean;
 	}
