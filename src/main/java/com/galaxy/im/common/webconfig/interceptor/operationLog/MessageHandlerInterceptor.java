@@ -137,13 +137,22 @@ public class MessageHandlerInterceptor extends HandlerInterceptorAdapter {
 			entity.setDepartName(user.getDepartmentName());
 			entity.setUserDepartid(user.getDepartmentId());
 			entity.setCreatedTime(new Date().getTime());
-			
-			entity.setProjectName(CUtils.get().object2String(m.get("projectName")));
-			entity.setProjectId(CUtils.get().object2Long(m.get("projectId")));
-			entity.setSopstage(CUtils.get().object2String(m.get("projectProgressName")));
-			entity.setReason(CUtils.get().object2String(m.get("reason")));
+			if(m.containsKey("projectName")){
+				entity.setProjectName(CUtils.get().object2String(m.get("projectName")));
+			}
+			if(m.containsKey("projectId")){
+				entity.setProjectId(CUtils.get().object2Long(m.get("projectId")));
+			}
+			if(m.containsKey("projectProgressName")){
+				entity.setSopstage(CUtils.get().object2String(m.get("projectProgressName")));
+			}
+			if(m.containsKey("reason")){
+				entity.setReason(CUtils.get().object2String(m.get("reason")));
+			}
+			if(m.containsKey("recordId")){
+				entity.setRecordId(CUtils.get().object2Long(m.get("recordId")));
+			}
 			entity.setRecordType(recordType.getType());
-			entity.setRecordId(CUtils.get().object2Long(m.get("recordId")));
 			list.add(entity);
 		}
 		return list;

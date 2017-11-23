@@ -141,10 +141,11 @@
 	</select>
 	
 	<!-- 更新文件信息 -->
-	<update id="updateFile" parameterType="com.galaxy.im.bean.soptask.SopTask">
+	<update id="updateFile" parameterType="com.galaxy.im.bean.talk.SopFileBean">
 		update sop_file set
 		<if test="belongUid != null" >belong_uid = #{belongUid},</if>
-		<if test="fileValid != null" >file_valid = #{fileValid}</if>
+		<if test="fileValid != null" >file_valid = #{fileValid},</if>
+		<if test="updatedTime != null" >updated_time= #{updatedTime}</if>
 		where id = #{id}
 	</update>
 	

@@ -53,15 +53,17 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 		
 		if(model.getMessageType().equals(sop_task_1)){
 			//认领
-			StringBuffer content = new StringBuffer();
-			ScheduleMessageBean message =getScheduleMessageInfo(model,0,null);
-			content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
-			content.append("认领了");
-			content.append("\"").append("<pname>").append(model.getProjectName()).append("</pname>\"");
-			content.append("的尽调任务");
-			message.setSendTime(sendTime);
-			message.setContent(content.toString());
-			list.add(message);
+			for(Map<String, Object> map:model.getProjects()){
+				StringBuffer content = new StringBuffer();
+				ScheduleMessageBean message =getScheduleMessageInfo(model,1,map);
+				content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
+				content.append("认领了");
+				content.append("\"").append("<pname>").append(model.getProjectName()).append("</pname>\"");
+				content.append("的尽调任务");
+				message.setSendTime(sendTime);
+				message.setContent(content.toString());
+				list.add(message);
+			}
 		}else if(model.getMessageType().equals(sop_task_2)){
 			//移交
 			for(Map<String, Object> map:model.getProjects()){
@@ -72,13 +74,13 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 				content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
 				content.append("向您移交了将").append("\"");
 				content.append("<pname>").append(CUtils.get().object2String(map.get("projectName"))).append("</pname>\"");
-				content.append("的").append(model.getTaskName());
+				content.append("的").append(CUtils.get().object2String(map.get("taskName")));
 				message1.setSendTime(sendTime);
 				message1.setContent(content.toString());
 				//该项目的投资经理
 				ScheduleMessageBean message2 =getScheduleMessageInfo(model,1,map);
 				con.append("\"<pname>").append(CUtils.get().object2String(map.get("projectName"))).append("</pname>\"");
-				con.append("的").append(model.getTaskName()).append("负责人变更为").append("\"");
+				con.append("的").append(CUtils.get().object2String(map.get("taskName"))).append("负责人变更为").append("\"");
 				con.append("<uname>").append(model.getUserName()).append("</uname>\"");
 				message2.setSendTime(sendTime);
 				message2.setContent(con.toString());
@@ -92,7 +94,7 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 				content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
 				content.append("放弃了").append("\"");
 				content.append("<pname>").append(CUtils.get().object2String(map.get("projectName"))).append("</pname>\"");
-				content.append("的").append(model.getTaskName());
+				content.append("的").append(CUtils.get().object2String(map.get("taskName")));
 				//该项目的投资经理
 				ScheduleMessageBean message1 =getScheduleMessageInfo(model,1,map);
 				message1.setSendTime(sendTime);
@@ -114,13 +116,13 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 				content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
 				content.append("向您指派了将").append("\"");
 				content.append("<pname>").append(CUtils.get().object2String(map.get("projectName"))).append("</pname>\"");
-				content.append("的").append(model.getTaskName());
+				content.append("的").append(CUtils.get().object2String(map.get("taskName")));
 				message1.setSendTime(sendTime);
 				message1.setContent(content.toString());
 				//该项目的投资经理
 				ScheduleMessageBean message2 =getScheduleMessageInfo(model,1,map);
 				con.append("\"<pname>").append(CUtils.get().object2String(map.get("projectName"))).append("</pname>\"");
-				con.append("的").append(model.getTaskName()).append("负责人为").append("\"");
+				con.append("的").append(CUtils.get().object2String(map.get("taskName"))).append("负责人为").append("\"");
 				con.append("<uname>").append(model.getUserName()).append("</uname>\"");
 				message2.setSendTime(sendTime);
 				message2.setContent(con.toString());

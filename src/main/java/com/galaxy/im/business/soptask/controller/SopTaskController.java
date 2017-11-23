@@ -7,20 +7,25 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.soptask.SopTaskRecord;
 import com.galaxy.im.bean.talk.SopFileBean;
+import com.galaxy.im.business.flow.common.service.FlowCommonServiceImpl;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.message.service.IScheduleMessageService;
 import com.galaxy.im.business.operationLog.controller.ControllerUtils;
@@ -31,7 +36,7 @@ import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
 import com.galaxy.im.common.cache.redis.RedisCacheImpl;
 import com.galaxy.im.common.db.QPage;
-import com.galaxy.im.common.webconfig.interceptor.operationLog.UrlNumber;
+import com.galaxy.im.common.html.QHtmlClient;
 
 @Controller
 @RequestMapping("/soptask")
@@ -44,6 +49,8 @@ public class SopTaskController {
 	IScheduleMessageService messageService;
 	@Autowired
 	private IFlowCommonService fcService;
+	@Autowired
+	private Environment env;
 	
 	/**
 	 * 待办任务列表
@@ -142,31 +149,33 @@ public class SopTaskController {
 			sopTask.setAssignUid(CUtils.get().object2Long(user.get("id")));
 			sopTask.setUpdatedTime(new Date().getTime());
 			//把任务状态变为待完成
-			sopTask.setTaskStatus("taskType:2");
+			sopTask.setTaskStatus("taskStatus:2");
 			int count = service.applyTask(sopTask);
 			if (count>0) {
 				resultBean.setStatus("OK");
 			}
 			
 			//发消息
-			sopTask.setTaskName("人事尽调任务");
+			paramMap.put("projectId", sopTask.getProjectId());
+			SopProjectBean sopBean = fcService.getSopProjectInfo(paramMap);
+			
 			sopTask.setMessageType("1.2.1");
-			sopTask.setAssignUid(5L);
-			sopTask.setAssignUname("xxxx");
+			sopTask.setAssignUname(CUtils.get().object2String(user.get("userName")));
 			sopTask.setCreatedId(bean.getGuserid());
 			sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
 			messageService.operateMessageSopTaskInfo(sopTask);
 			
 			//记录操作日志，项目名称，项目id，项目阶段，任务id，原因
 			List<Map<String, Object>> mapList= new ArrayList<Map<String, Object>>();
-			for(Map<String, Object> map:sopTask.getProjects()){
-				paramMap.put("projectId", map.get("projectId"));
-				SopProjectBean sopBean = fcService.getSopProjectInfo(paramMap);
-				map.put("recordId", 2306);
-				map.put("projectProgressName", sopBean.getProjectProgressName());
-				map.put("nums", UrlNumber.one);
-				mapList.add(map);
-			}
+			Map<String, Object> map = new HashMap<String, Object>();
+			
+			
+			
+			map.put("projectId", sopTask.getProjectId());
+			map.put("projectName", sopBean.getProjectName());
+			map.put("projectProgressName", sopBean.getProjectProgressName());
+			map.put("recordId", sopTask.getId());
+			mapList.add(map);
 			ControllerUtils.setRequestBatchParamsForMessageTip(request,mapList);
 		} catch (Exception e) {
 			log.error(SopTaskController.class.getName() + "applyTask",e);
@@ -317,7 +326,7 @@ public class SopTaskController {
 	 */
 	@ResponseBody
 	@RequestMapping("abandonTask")
-	public Object abandonTask(@RequestBody SopTaskRecord sopTaskRecord,HttpServletRequest request){
+	public Object abandonTask(@RequestBody SopTaskRecord sopTaskRecord,HttpServletRequest request,HttpServletResponse response){
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		@SuppressWarnings("unchecked")
 		RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
@@ -327,6 +336,35 @@ public class SopTaskController {
 			resultBean.setMessage("获取用户信息失败");
 			return resultBean;
 		}
+		long deptId=0l;
+		//获取用户所属部门id
+		List<Map<String, Object>> list = fcService.getDeptId(bean.getGuserid(),request,response);
+		if(list!=null){
+			for(Map<String, Object> vMap:list){
+				deptId= CUtils.get().object2Long( vMap.get("deptId"));
+			}
+		}
+		//用户列表
+		Map<String,Object> vmap = new HashMap<String,Object>();
+		vmap.put("depId", deptId);
+		Map<String,Object> headerMap = QHtmlClient.get().getHeaderMap(request);
+		//事业部下的所有用户
+		String urlU = env.getProperty("power.server") + StaticConst.getUsersByDepId;
+		JSONArray rr=null;
+		List<Map<String, Object>> userList=new ArrayList<Map<String, Object>>();
+		String res = QHtmlClient.get().post(urlU, headerMap, vmap);
+		if("error".equals(res)){
+			log.error(FlowCommonServiceImpl.class.getName() + "获取信息时出错","此时服务器返回状态码非200");
+		}else{
+			JSONObject json = JSONObject.parseObject(res);
+			if(json!=null && json.containsKey("value")){
+				rr = json.getJSONArray("value");
+				if(json.containsKey("success") && "true".equals(json.getString("success"))){
+					//操作
+					userList =CUtils.get().jsonString2list(rr);
+				}
+			}
+		}	
 		Map<String, Object> user = BeanUtils.toMap(cache.get(bean.getSessionid()));
 		int count =0;
 		int updateCount = 0;
@@ -368,9 +406,10 @@ public class SopTaskController {
 						//A将报告移交给B
 						if (bean2!=null&&!bean2.equals("")) {
 							//将此报告设为无用
-							sopFileBean.setFileValid(0);
-							sopFileBean.setId(bean2.getId());
-							service.updateFile(sopFileBean);
+							bean2.setFileValid(0);
+							bean2.setId(bean2.getId());
+							bean2.setUpdatedTime(new Date().getTime());
+							service.updateFile(bean2);
 						}
 						
 					}
@@ -381,8 +420,33 @@ public class SopTaskController {
 				resultBean.setStatus("OK");
 			}
 				
-				
-				//发消息
+			//发消息
+			SopTask sopTask =new SopTask();
+			sopTask.setProjects(sopTaskRecord.getTaskIds());
+			sopTask.setUsers(userList);
+			sopTask.setMessageType("1.2.3");
+			sopTask.setAssignUname(CUtils.get().object2String(user.get("userName")));
+			sopTask.setCreatedId(bean.getGuserid());
+			sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
+			messageService.operateMessageSopTaskInfo(sopTask);
+			
+			//记录操作日志，项目名称，项目id，项目阶段，任务id，原因
+			List<Map<String, Object>> mapList= new ArrayList<Map<String, Object>>();
+			
+			for(Map<String, Object> m:sopTask.getProjects()){
+				SopProjectBean sopBean = fcService.getSopProjectInfo(m);
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("projectId", sopBean.getId());
+				map.put("projectName", sopBean.getProjectName());
+				map.put("projectProgressName", sopBean.getProjectProgressName());
+				if(m.containsKey("taskId") && m.get("taskId")!=null){
+					map.put("recordId", m.get("taskId"));
+				}
+				map.put("reason", sopTaskRecord.getReason());
+				mapList.add(map);
+			}
+			
+			ControllerUtils.setRequestBatchParamsForMessageTip(request,mapList);
 			
 		} catch (Exception e) {
 			log.error(SopTaskController.class.getName() + "abandonTask",e);
