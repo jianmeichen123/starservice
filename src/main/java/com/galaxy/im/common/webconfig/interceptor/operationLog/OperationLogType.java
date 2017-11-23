@@ -114,7 +114,7 @@ public enum OperationLogType {
 	//代办任务（领取，移交，指派，放弃）
 	CLAIMT_TASK("/soptask/applyTask", OperType.CLAIMT.getOperationType(), "领取任务",null),
 	APPLY_TASK("/soptask/taskTransfer/"+UrlNumber.one, OperType.APPLY.getOperationType(), "移交任务",null),
-	GIVEUP_TASK("/soptask/applyTask", OperType.GIVEUP.getOperationType(), "放弃任务",null),
+	GIVEUP_TASK("/soptask/abandonTask", OperType.GIVEUP.getOperationType(), "放弃任务",null),
 	ASSIGNED_TASK("/soptask/taskTransfer/"+UrlNumber.two, OperType.ASSIGNED.getOperationType(), "指派任务",null);
 	
 	
