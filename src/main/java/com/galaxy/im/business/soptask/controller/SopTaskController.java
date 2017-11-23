@@ -156,7 +156,7 @@ public class SopTaskController {
 			sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
 			messageService.operateMessageSopTaskInfo(sopTask);
 			
-			//记录操作日志，项目名称，项目id，项目阶段，任务类型，任务id，原因
+			//记录操作日志，项目名称，项目id，项目阶段，任务id，原因
 			List<Map<String, Object>> mapList= new ArrayList<Map<String, Object>>();
 			for(Map<String, Object> map:sopTask.getProjects()){
 				paramMap.put("projectId", map.get("projectId"));
