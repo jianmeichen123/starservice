@@ -243,9 +243,10 @@ public class SopTaskController {
 							//A将报告移交给B
 							if (bean2!=null&&!bean2.equals("")) {
 								//修改文件的认领人为B
-								sopFileBean.setBelongUid(sopTaskRecord.getAfterUid());
-								sopFileBean.setId(bean2.getId());
-								service.updateFile(sopFileBean);
+								bean2.setBelongUid(sopTaskRecord.getAfterUid());
+								bean2.setId(bean2.getId());
+								bean2.setUpdatedTime(new Date().getTime());
+								service.updateFile(bean2);
 							}
 						}
 						
@@ -294,9 +295,10 @@ public class SopTaskController {
 							//A将报告移交给B
 							if (bean2!=null&&!bean2.equals("")) {
 								//修改文件的认领人为B
-								sopFileBean.setBelongUid(sopTaskRecord.getAfterUid());
-								sopFileBean.setId(bean2.getId());
-								service.updateFile(sopFileBean);
+								bean2.setBelongUid(sopTaskRecord.getAfterUid());
+								bean2.setId(bean2.getId());
+								bean2.setUpdatedTime(new Date().getTime());
+								service.updateFile(bean2);
 							}
 							
 						}
