@@ -200,4 +200,26 @@
 		WHERE project_id=#{projectId} 
 		ORDER BY created_time desc LIMIT 1;
 	</select>
+	
+	<!-- 运营会议纪要详情 -->
+	<select id="postMeetingDetail" parameterType="hashmap" resultType="hashmap">
+		SELECT
+			 r.id,
+			 r.project_id projectId, 
+			 date_format(r.meeting_date,'%Y-%m-%d %H:%i') meetingDate,
+       		 r.meeting_type meetintType,
+			 r.meeting_result meetingResult, 
+	         r.meeting_notes meetingNotes,
+	         r.created_time createdTime,
+		     r.record_type recordType ,
+			 r.meet_valid meetValid,
+      		 r.meeting_name meetingName,
+		     d1.name meetingTypeStr,
+			 d2.name meetingResultStr,
+			 concat(d1.name,'纪要',r.meeting_name) as meetingNameStr
+		FROM sop_meeting_record r
+		LEFT JOIN dict d1 on d1.dict_code=r.meeting_type
+		LEFT JOIN dict d2 on d2.dict_code=r.meeting_result
+		WHERE r.id=#{id} and r.record_type=#{recordType};
+	</select>
 </mapper>

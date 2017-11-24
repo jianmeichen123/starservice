@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.galaxy.im.bean.Test;
+import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.sopfile.dao.ISopFileDao;
 import com.galaxy.im.common.db.IBaseDao;
 import com.galaxy.im.common.db.service.BaseServiceImpl;
@@ -43,6 +44,16 @@ public class SopFileServiceImpl extends BaseServiceImpl<Test> implements ISopFil
 			return dao.searchappFileList(paramMap);
 		}catch(Exception e){
 			log.error(SopFileServiceImpl.class.getName() + "searchappFileList",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public List<Map<String, Object>> getSopFileList(SopFileBean sopfile) {
+		try{
+			return dao.getSopFileList(sopfile);
+		}catch(Exception e){
+			log.error(SopFileServiceImpl.class.getName() + "getSopFileList",e);
 			throw new ServiceException(e);
 		}
 	}

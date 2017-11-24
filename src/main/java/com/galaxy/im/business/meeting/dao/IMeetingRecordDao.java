@@ -12,4 +12,6 @@ public interface IMeetingRecordDao extends IBaseDao<MeetingRecordBean, Long>{
 
 	Map<String, Object> getSopProjectHealth(Map<String, Object> paramMap);
 
+	Map<String, Object> postMeetingDetail(MeetingRecordBean meetingRecord);
+
 }

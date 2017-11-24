@@ -12,5 +12,7 @@ public interface IMeetingRecordService extends IBaseService<MeetingRecordBean>{
 
 	Map<String, Object> getSopProjectHealth(Map<String, Object> paramMap);
 
+	Map<String, Object> postMeetingDetail(MeetingRecordBean meetingRecord);
+
 
 }

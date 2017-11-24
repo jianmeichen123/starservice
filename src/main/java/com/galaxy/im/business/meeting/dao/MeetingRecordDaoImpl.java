@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.galaxy.im.bean.meeting.MeetingRecordBean;
+import com.galaxy.im.common.BeanUtils;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.db.BaseDaoImpl;
 import com.galaxy.im.common.db.QPage;
@@ -40,6 +41,17 @@ public class MeetingRecordDaoImpl extends BaseDaoImpl<MeetingRecordBean, Long> i
 			return res;
 		} catch (Exception e) {
 			log.error(MeetingRecordDaoImpl.class.getName() + "_getSopProjectHealth",e);
+			throw new DaoException(e);
+		}
+	}
+
+	@Override
+	public Map<String, Object> postMeetingDetail(MeetingRecordBean meetingRecord) {
+		try{
+			Map<String, Object> params = BeanUtils.toMap(meetingRecord);
+			return sqlSessionTemplate.selectOne(getSqlName("postMeetingDetail"),params);
+		}catch(Exception e){
+			log.error(MeetingRecordDaoImpl.class.getName() + "postMeetingDetail",e);
 			throw new DaoException(e);
 		}
 	}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.business.sopfile.dao.ISopFileDao">
+	
+	<!-- 查询文件列表 -->
+	<select id="getSopFileList" parameterType="hashmap" resultType="hashmap">
+		SELECT
+			f.id,
+			f.project_id projectId,
+			f.file_type fileType,
+			f.project_progress projectProgress, 
+			f.career_line careerLine,
+			f.file_status fileStatus,
+			f.file_uid fileUid,
+			f.created_time createdTime,
+			date_format(from_unixtime(f.created_time/1000),'%Y-%m-%d') createDate,
+			f.file_length fileLength,
+			f.file_key fileKey,
+			f.bucket_name bucketName,
+			f.file_name fileName,
+			f.file_suffix fileSuffix,
+			f.record_type recordType,
+			f.meeting_id meetingId,
+			d1.name progress,
+			d2.name fType,
+			d3.name fileStatusDesc,
+			u.user_name fileUName  
+		FROM sop_file f
+		LEFT JOIN dict d1 on f.project_progress=d1.dict_code
+		LEFT JOIN dict d2 on f.file_type=d2.dict_code
+		LEFT JOIN dict d3 on f.file_status=d3.dict_code
+		LEFT JOIN v_user u on u.id=f.file_uid
+		WHERE f.meeting_id=#{meetingId};
+	</select>
+	
+</mapper>

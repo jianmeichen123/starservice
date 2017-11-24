@@ -39,5 +39,18 @@ public class MeetingRecordServiceImpl extends BaseServiceImpl<MeetingRecordBean>
 	public Map<String, Object> getSopProjectHealth(Map<String, Object> paramMap) {
 		return dao.getSopProjectHealth(paramMap);
 	}
+
+	/**
+	 * 运营会议纪要详情
+	 */
+	@Override
+	public Map<String, Object> postMeetingDetail(MeetingRecordBean meetingRecord) {
+		try{
+			return dao.postMeetingDetail(meetingRecord);
+		}catch(Exception e){
+			log.error(MeetingRecordServiceImpl.class.getName() + "postMeetingDetail",e);
+			throw new ServiceException(e);
+		}
+	}
 	
 }

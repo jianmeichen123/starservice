@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.galaxy.im.bean.Test;
+import com.galaxy.im.bean.talk.SopFileBean;
+import com.galaxy.im.common.BeanUtils;
 import com.galaxy.im.common.db.BaseDaoImpl;
 import com.galaxy.im.common.exception.DaoException;
 
@@ -35,6 +37,18 @@ public class SopFileDaoImpl extends BaseDaoImpl<Test, Long> implements ISopFileD
 			return map;
 		}catch(Exception e){
 			log.error(SopFileDaoImpl.class.getName() + "searchappFileList",e);
+			throw new DaoException(e);
+		}
+	}
+
+	@Override
+	public List<Map<String, Object>> getSopFileList(SopFileBean sopfile) {
+		try{
+			Map<String, Object> params = BeanUtils.toMap(sopfile);
+			String sqlName = "com.galaxy.im.business.sopfile.dao.ISopFileDao.getSopFileList";
+			return sqlSessionTemplate.selectList(sqlName,params);
+		}catch(Exception e){
+			log.error(SopFileDaoImpl.class.getName() + "getSopFileList",e);
 			throw new DaoException(e);
 		}
 	}
