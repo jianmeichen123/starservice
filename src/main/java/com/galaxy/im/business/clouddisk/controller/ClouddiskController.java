@@ -83,12 +83,12 @@ public class ClouddiskController {
 						map.put("errorCode", 7);
 					}else{
 						//添加其他字段
-						String extName = "";
-						if(targeName.indexOf(".")>-1){
-							extName = targeName.substring(targeName.indexOf(".")+1,targeName.length());
-						}
+						//String extName = "";
+						//if(targeName.indexOf(".")>-1){
+						//	extName = targeName.substring(targeName.indexOf(".")+1,targeName.length());
+						//}
 						paramMap.put("originalName", targeName);
-						paramMap.put("extName", extName);
+						//paramMap.put("extName", extName);
 						paramMap.put("uploadUser", ownUser);
 						paramMap.put("uploadTime", DateUtil.getMillis(new Date()));
 						paramMap.put("isDel", 0);
