@@ -80,7 +80,6 @@ public class SopTaskController {
 			//待认领
 			if (paramMap.get("flag").equals("1")) {
 				paramMap.put("taskStatus", "taskStatus:1");
-				
 			}
 			//待完工
 			if (paramMap.get("flag").equals("2")) {
@@ -95,13 +94,36 @@ public class SopTaskController {
 			//部门待完工
 			if (paramMap.get("flag").equals("4")) {
 				paramMap.put("taskStatus", "taskStatus:2");
-				paramMap.put("assignUid", user.get("id"));
+				//paramMap.put("assignUid", user.get("id"));
 			}
 		}
 			QPage page = service.taskListByRole(paramMap);
+			//待认领总数
+			paramMap.put("assignUid", null);
+			paramMap.put("taskStatus", "taskStatus:1");
+			int notApplyCount = service.selectCount(paramMap);
+			//待完工总数
+			paramMap.put("taskStatus", "taskStatus:2");
+			paramMap.put("assignUid", user.get("id"));
+			int isApplyCount = service.selectCount(paramMap);
+			//已完工总数
+			paramMap.put("taskStatus", "taskStatus:3");
+			paramMap.put("assignUid", user.get("id"));
+			int applyCount = service.selectCount(paramMap);
+			//部门待完工
+			paramMap.put("taskStatus", "taskStatus:2");
+			paramMap.put("assignUid", null);
+			int depApplyCount = service.selectCount(paramMap);
+			Map<String, Object> map = new HashMap<>();
+			map.put("notApplyCount", notApplyCount);
+			map.put("isApplyCount", isApplyCount);
+			map.put("applyCount", applyCount);
+			map.put("depApplyCount", depApplyCount);
+			
 			if ( page!=null) {
 				resultBean.setStatus("OK");
 				resultBean.setEntity(page);
+				resultBean.setMap(map);
 			}
 		} catch (Exception e) {
 			log.error(SopTaskController.class.getName() + "taskListByRole",e);

@@ -125,6 +125,17 @@ public class SopTaskServiceImpl extends BaseServiceImpl<SopTask> implements ISop
 			throw new ServiceException(e);
 		}
 	}
+
+	//查询总数
+	@Override
+	public int selectCount(Map<String, Object> paramMap) {
+		try{
+			return dao.selectCount(paramMap);
+		}catch(Exception e){
+			log.error(SopTaskServiceImpl.class.getName() + "_",e);
+			throw new ServiceException(e);
+		}
+	}
 	
 	
 	

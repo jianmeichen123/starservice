@@ -37,4 +37,7 @@ public interface ISopTaskDao extends IBaseDao<SopTask, Long>{
 	//防止重复移交
 	SopTaskRecord selectRecord(SopTaskRecord sopTaskRecord);
 
+	//查询总数
+	int selectCount(Map<String, Object> paramMap);
+
 }

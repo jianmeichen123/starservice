@@ -130,6 +130,17 @@ public class SopTaskDaoImpl extends BaseDaoImpl<SopTask, Long> implements ISopTa
 			throw new DaoException(e);
 		}
 	}
+
+	//查询总数
+	@Override
+	public int selectCount(Map<String, Object> paramMap) {
+		try {
+			return sqlSessionTemplate.selectOne(getSqlName("taskListCount"),paramMap);
+		} catch (Exception e) {
+			log.error(getSqlName("taskListCount"),e);
+			throw new DaoException(e);
+		}
+	}
 	
 
 }
