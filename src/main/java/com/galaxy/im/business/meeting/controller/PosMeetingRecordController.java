@@ -158,6 +158,7 @@ public class PosMeetingRecordController {
 						//保存
 						bean.setMeetingDate(DateUtil.convertStringtoD(bean.getMeetingDateStr()));
 						bean.setCreatedId(sessionBean.getGuserid());
+						bean.setRecordType(2);
 						id = service.insert(bean);
 					}
 				}else{
