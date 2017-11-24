@@ -64,11 +64,11 @@
 		resultType="hashmap">
 		select
 		mu.id, mu.mid, mu.uid, mu.type_role typeRole, mu.is_read isRead,mu.is_use
-		isUse,
+		isUse,sp.id projectId,sp.project_name projectName,
 		me.type, me.remrk_id remarkId, me.content , me.send_time sendTime,me.created_time createdTime,me.category
 		from
-		schedule_message_user mu left join schedule_message me on mu.mid =
-		me.id
+		schedule_message_user mu left join schedule_message me on mu.mid =me.id
+		LEFT JOIN sop_project sp ON sp.id = me.remrk_id
 		where
 		mu.uid = #{userId}
 		and mu.is_use = 0
