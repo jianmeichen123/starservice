@@ -83,7 +83,7 @@ public class CallonController {
 				//保存用户ID
 				infoBean.setUpdatedId(bean.getGuserid());
 				updateCount = callonService.updateById(infoBean);
-				//pushUpdateCallon(request,infoBean);
+				
 				//更新推送消息
 				infoBean.setVisitType("1.4");
 				infoBean.setMessageType("1.4.2");
@@ -100,7 +100,7 @@ public class CallonController {
 				//保存用户ID
 				infoBean.setCreatedId(bean.getGuserid());
 				id = callonService.insert(infoBean);
-				//pusAddCallon(request,id,infoBean);
+				
 				//添加推送消息
 				ContractsBean contractsBean = contractsService.queryById(infoBean.getCallonPerson());
 				if(contractsBean!=null){
@@ -139,7 +139,6 @@ public class CallonController {
 			RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
 			SessionBean bean = CUtils.get().getBeanBySession(request);
 			Map<String,Object> map = CUtils.get().jsonString2map(paramString);
-			//long planId = CUtils.get().object2Long(map.get("id"), 0L);
 			if(map!=null){
 				map.put("updatedTime", DateUtil.getMillis(new Date()));
 				SessionBean sessionBean = CUtils.get().getBeanBySession(request);
@@ -148,7 +147,6 @@ public class CallonController {
 				
 				Long id = CUtils.get().object2Long(map.get("id"), 0L);
 				if(id!=0){
-					//pushDeleteCallon(request, id);
 					//删除推送消息
 					ScheduleInfo infoBean = new ScheduleInfo();
 					infoBean.setCreatedId(bean.getGuserid());
@@ -159,7 +157,6 @@ public class CallonController {
 					infoBean.setMessageType("1.4.3");
 					messageService.operateMessageByDeleteInfo(infoBean, infoBean.getVisitType());
 				}
-				
 				if(flag){
 					resultBean.setFlag(1);
 				}
