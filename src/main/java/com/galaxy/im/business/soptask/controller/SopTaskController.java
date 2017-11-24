@@ -98,6 +98,7 @@ public class SopTaskController {
 			}
 		}
 			QPage page = service.taskListByRole(paramMap);
+			if (paramMap.get("flag").equals("4")) {
 			if (page!=null) {
 				List<Map<String, Object>> list = page.getDataList();
 				for(Map<String, Object> map : list){
@@ -105,6 +106,7 @@ public class SopTaskController {
 						map.put("userFalg", 1);
 					}
 				}
+			  }
 			}
 			//待认领总数
 			paramMap.put("assignUid", null);
