@@ -67,7 +67,7 @@
 		isUse,sp.id projectId,sp.project_name projectName,
 		me.type, me.remrk_id remarkId, me.content , me.send_time sendTime,me.created_time createdTime,me.category
 		from
-		schedule_message_user mu left join schedule_message me on mu.mid =me.id
+		schedule_message me left join schedule_message_user mu on mu.mid = me.id
 		LEFT JOIN sop_project sp ON sp.id = me.remrk_id
 		where
 		mu.uid = #{userId}
