@@ -119,7 +119,6 @@ public class SopTaskController {
 			map.put("isApplyCount", isApplyCount);
 			map.put("applyCount", applyCount);
 			map.put("depApplyCount", depApplyCount);
-			
 			if ( page!=null) {
 				resultBean.setStatus("OK");
 				resultBean.setEntity(page);
@@ -129,7 +128,6 @@ public class SopTaskController {
 			log.error(SopTaskController.class.getName() + "taskListByRole",e);
 		}
 		return resultBean;
-		
 	}
 	
 	/**
@@ -151,7 +149,6 @@ public class SopTaskController {
 		}
 		return resultBean;
 	}
-	
 	/**
 	 * 认领
 	 */
@@ -177,7 +174,6 @@ public class SopTaskController {
 			if (count>0) {
 				resultBean.setStatus("OK");
 			}
-			
 			//发消息
 			paramMap.put("projectId", sopTask.getProjectId());
 			SopProjectBean sopBean = fcService.getSopProjectInfo(paramMap);
@@ -187,13 +183,9 @@ public class SopTaskController {
 			sopTask.setCreatedId(bean.getGuserid());
 			sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
 			messageService.operateMessageSopTaskInfo(sopTask);
-			
 			//记录操作日志，项目名称，项目id，项目阶段，任务id，原因
 			List<Map<String, Object>> mapList= new ArrayList<Map<String, Object>>();
 			Map<String, Object> map = new HashMap<String, Object>();
-			
-			
-			
 			map.put("projectId", sopTask.getProjectId());
 			map.put("projectName", sopBean.getProjectName());
 			map.put("projectProgressName", sopBean.getProjectProgressName());
@@ -247,15 +239,12 @@ public class SopTaskController {
 								//保存移交内容
 								 count = service.taskTransfer(sopTaskRecord);
 							}
-							
-							
 							//修改待办任务的信息
 							SopTask sopTask = new SopTask();
 							sopTask.setId(CUtils.get().object2Long(map.get("taskId")));
 							sopTask.setUpdatedTime(new Date().getTime());
 							sopTask.setAssignUid(sopTaskRecord.getAfterUid());
-							 updateCount = service.updateTask(sopTask);
-							
+							updateCount = service.updateTask(sopTask);
 							//查询人事经理A是否已上传了人事/财务/法务尽调报告
 							SopFileBean sopFileBean = new SopFileBean();
 							sopFileBean.setProjectId( CUtils.get().object2Long(map.get("projectId")));
@@ -272,8 +261,7 @@ public class SopTaskController {
 								bean2.setUpdatedTime(new Date().getTime());
 								service.updateFile(bean2);
 							}
-						}
-						
+						 }
 						}
 					}
 					if (count>0 && updateCount>0) {
@@ -325,8 +313,7 @@ public class SopTaskController {
 								bean2.setUpdatedTime(new Date().getTime());
 								service.updateFile(bean2);
 							}
-							
-						}
+						  }
 						}
 					}
 					if (count>0&&updateCount>0) {
@@ -469,9 +456,7 @@ public class SopTaskController {
 							bean2.setUpdatedTime(new Date().getTime());
 							service.updateFile(bean2);
 						}
-						
 					}
-					
 				}
 			}
 			if (count>0&&updateCount>0) {
@@ -503,9 +488,7 @@ public class SopTaskController {
 				map.put("reason", sopTaskRecord.getReason());
 				mapList.add(map);
 			}
-			
 			ControllerUtils.setRequestBatchParamsForMessageTip(request,mapList);
-			
 		} catch (Exception e) {
 			log.error(SopTaskController.class.getName() + "abandonTask",e);
 		}
