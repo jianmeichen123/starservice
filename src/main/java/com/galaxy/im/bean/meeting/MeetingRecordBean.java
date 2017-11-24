@@ -34,7 +34,7 @@ public class MeetingRecordBean extends PagableEntity{
 	private String fileName;			//档案名称
 	
 	private String projectProgress;		//项目的当前所处阶段
-	
+	private Long scheduleId;			//关联拜访计划id
 	
 	public long getProjectId() {
 		return projectId;
@@ -179,6 +179,12 @@ public class MeetingRecordBean extends PagableEntity{
 	}
 	public void setProjectProgress(String projectProgress) {
 		this.projectProgress = projectProgress;
+	}
+	public Long getScheduleId() {
+		return scheduleId;
+	}
+	public void setScheduleId(Long scheduleId) {
+		this.scheduleId = scheduleId;
 	}
 	
 }

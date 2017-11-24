@@ -130,7 +130,7 @@ public class MeetingRecordController {
 									deptId = CUtils.get().object2Long( vMap.get("deptId"));
 								}
 							}
-							Map<String,String> nameMap = transFileNames(bean.getFileName());
+							Map<String,String> nameMap = service.transFileNames(bean.getFileName());
 							SopFileBean sopFileBean =new SopFileBean();
 							if(p!=null){
 								//项目id，当前阶段，所属事业线
@@ -337,16 +337,4 @@ public class MeetingRecordController {
 		return resultBean;
 	}
 	
-	private Map<String, String> transFileNames(String fileName) {
-		Map<String, String> retMap = new HashMap<String, String>();
-		int dotPos = fileName.lastIndexOf(".");
-		if(dotPos == -1){
-			retMap.put("fileName", fileName);
-			retMap.put("fileSuffix", "");
-		}else{
-			retMap.put("fileName", fileName.substring(0, dotPos));
-			retMap.put("fileSuffix", fileName.substring(dotPos+1));
-		}
-		return retMap;
-	}
 }

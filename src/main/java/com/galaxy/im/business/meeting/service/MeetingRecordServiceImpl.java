@@ -1,5 +1,6 @@
 package com.galaxy.im.business.meeting.service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -51,6 +52,23 @@ public class MeetingRecordServiceImpl extends BaseServiceImpl<MeetingRecordBean>
 			log.error(MeetingRecordServiceImpl.class.getName() + "postMeetingDetail",e);
 			throw new ServiceException(e);
 		}
+	}
+
+	/**
+	 * 拼接文件名
+	 */
+	@Override
+	public Map<String, String> transFileNames(String fileName) {
+		Map<String, String> retMap = new HashMap<String, String>();
+		int dotPos = fileName.lastIndexOf(".");
+		if(dotPos == -1){
+			retMap.put("fileName", fileName);
+			retMap.put("fileSuffix", "");
+		}else{
+			retMap.put("fileName", fileName.substring(0, dotPos));
+			retMap.put("fileSuffix", fileName.substring(dotPos+1));
+		}
+		return retMap;
 	}
 	
 }

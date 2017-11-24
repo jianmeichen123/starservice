@@ -168,10 +168,10 @@
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id"  keyColumn="id" parameterType="com.galaxy.im.bean.meeting.MeetingRecordBean" >
 		insert into sop_meeting_record (id, project_id, file_id, meeting_date, meeting_type, meeting_result,
 			 meeting_notes, meeting_notes_text,created_time,record_type,participant, create_uid,meet_valid,
-			 meeting_name, update_time,result_reason,reason_other)
+			 meeting_name, update_time,result_reason,reason_other,schedule_id)
 	    values (#{id}, #{projectId}, #{fileId}, #{meetingDate}, #{meetingType}, #{meetingResult}, 
 		    #{meetingNotes}, #{meetingNotesText}, #{createdTime}, #{recordType},#{participant},#{createdId},
-		    #{meetValid},#{meetingName}, #{updatedTime},#{resultReason},#{reasonOther});
+		    #{meetValid},#{meetingName}, #{updatedTime},#{resultReason},#{reasonOther},#{scheduleId});
     	<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
 			SELECT LAST_INSERT_ID() AS id
 		</selectKey>
@@ -188,6 +188,7 @@
 	      <if test="meetingResult != null" > meeting_result = #{meetingResult}, </if>
 	      <if test="resultReason != null" > result_reason = #{resultReason}, </if>
 	      <if test="reasonOther != null" > reason_other = #{reasonOther}, </if>
+	      <if test="scheduleId != null" > schedule_id = #{scheduleId} ,</if>
 	      <if test="updatedTime != null" > update_time = #{updatedTime} </if>
 		</set>
 		where id=#{id};

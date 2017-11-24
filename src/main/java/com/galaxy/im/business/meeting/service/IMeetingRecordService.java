@@ -14,5 +14,7 @@ public interface IMeetingRecordService extends IBaseService<MeetingRecordBean>{
 
 	Map<String, Object> postMeetingDetail(MeetingRecordBean meetingRecord);
 
+	Map<String, String> transFileNames(String fileName);
+
 
 }

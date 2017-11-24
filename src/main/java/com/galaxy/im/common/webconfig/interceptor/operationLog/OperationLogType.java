@@ -115,7 +115,12 @@ public enum OperationLogType {
 	CLAIMT_TASK("/soptask/applyTask", OperType.CLAIMT.getOperationType(), "领取任务",null),
 	APPLY_TASK("/soptask/taskTransfer/"+UrlNumber.one, OperType.APPLY.getOperationType(), "移交任务",null),
 	GIVEUP_TASK("/soptask/abandonTask", OperType.GIVEUP.getOperationType(), "放弃任务",null),
-	ASSIGNED_TASK("/soptask/taskTransfer/"+UrlNumber.two, OperType.ASSIGNED.getOperationType(), "指派任务",null);
+	ASSIGNED_TASK("/soptask/taskTransfer/"+UrlNumber.two, OperType.ASSIGNED.getOperationType(), "指派任务",null),
+	
+	//投后运营会议纪要
+	pos_meeting_add("/posmeeting/addPosMeetingRecord/"+UrlNumber.one, OperType.ADD.getOperationType(), "投后运营会议记录",SopStage.EQUITY_DELIVERY_END.getStageName()), 
+	pos_meeting_update("/posmeeting/addPosMeetingRecord/"+UrlNumber.two, OperType.UPDATE.getOperationType(), "投后运营会议记录",SopStage.EQUITY_DELIVERY_END.getStageName()) 
+   	;
 	
 	
 	//-------------------------------------------操作部分-----------------------------------------------------------------
