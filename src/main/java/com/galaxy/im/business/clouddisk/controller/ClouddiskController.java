@@ -85,7 +85,7 @@ public class ClouddiskController {
 						//添加其他字段
 						String extName = "";
 						if(targeName.indexOf(".")>-1){
-							extName = targeName.substring(targeName.indexOf("." + 1),targeName.length());
+							extName = targeName.substring(targeName.indexOf(".")+1,targeName.length());
 						}
 						paramMap.put("originalName", targeName);
 						paramMap.put("extName", extName);
