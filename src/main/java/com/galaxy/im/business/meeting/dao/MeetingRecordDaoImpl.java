@@ -18,6 +18,9 @@ import com.galaxy.im.common.exception.DaoException;
 public class MeetingRecordDaoImpl extends BaseDaoImpl<MeetingRecordBean, Long> implements IMeetingRecordDao{
 	private Logger log = LoggerFactory.getLogger(MeetingRecordDaoImpl.class);
 	
+	/**
+	 * 会议纪要列表
+	 */
 	@Override
 	public QPage getMeetingRecordList(Map<String, Object> paramMap) {
 		try{
@@ -34,6 +37,9 @@ public class MeetingRecordDaoImpl extends BaseDaoImpl<MeetingRecordBean, Long> i
 		}
 	}
 
+	/**
+	 * 获取健康分析情况
+	 */
 	@Override
 	public Map<String, Object> getSopProjectHealth(Map<String, Object> paramMap) {
 		try {
@@ -45,6 +51,9 @@ public class MeetingRecordDaoImpl extends BaseDaoImpl<MeetingRecordBean, Long> i
 		}
 	}
 
+	/**
+	 * 运营会议纪要详情
+	 */
 	@Override
 	public Map<String, Object> postMeetingDetail(MeetingRecordBean meetingRecord) {
 		try{

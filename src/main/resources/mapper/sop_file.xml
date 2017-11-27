@@ -32,7 +32,13 @@
 		LEFT JOIN dict d2 on f.file_type=d2.dict_code
 		LEFT JOIN dict d3 on f.file_status=d3.dict_code
 		LEFT JOIN v_user u on u.id=f.file_uid
-		WHERE f.meeting_id=#{meetingId};
+		WHERE f.meeting_id=#{meetingId} and f.file_valid=1;
 	</select>
+	
+	<!-- 逻辑删除 -->
+	<update id="delPostMeetingFile" parameterType="hashmap">
+		update sop_file set file_valid=0
+		where meeting_id = #{meetingId} and file_key=#{fileKey};
+	</update>
 	
 </mapper>

@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.galaxy.im.bean.meeting.MeetingRecordBean;
+import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.meeting.dao.IMeetingRecordDao;
+import com.galaxy.im.business.sopfile.dao.ISopFileDao;
 import com.galaxy.im.common.db.IBaseDao;
 import com.galaxy.im.common.db.QPage;
 import com.galaxy.im.common.db.service.BaseServiceImpl;
@@ -21,11 +23,16 @@ public class MeetingRecordServiceImpl extends BaseServiceImpl<MeetingRecordBean>
 	
 	@Autowired
 	IMeetingRecordDao dao;
+	@Autowired
+	ISopFileDao fileDao;
 	@Override
 	protected IBaseDao<MeetingRecordBean, Long> getBaseDao() {
 		return dao;
 	}
 
+	/**
+	 * 会议纪要列表
+	 */
 	@Override
 	public QPage getMeetingRecordList(Map<String, Object> paramMap) {
 		try{
@@ -69,6 +76,19 @@ public class MeetingRecordServiceImpl extends BaseServiceImpl<MeetingRecordBean>
 			retMap.put("fileSuffix", fileName.substring(dotPos+1));
 		}
 		return retMap;
+	}
+
+	/**
+	 * 逻辑删除会议纪要附件
+	 */
+	@Override
+	public int delPostMeetingFile(SopFileBean sopfile) {
+		try{
+			return fileDao.delPostMeetingFile(sopfile);
+		}catch(Exception e){
+			log.error(MeetingRecordServiceImpl.class.getName() + "delPostMeetingFile",e);
+			throw new ServiceException(e);
+		}
 	}
 	
 }

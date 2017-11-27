@@ -52,5 +52,20 @@ public class SopFileDaoImpl extends BaseDaoImpl<Test, Long> implements ISopFileD
 			throw new DaoException(e);
 		}
 	}
+	
+	/**
+	 * 逻辑删除会议纪要附件
+	 */
+	@Override
+	public int delPostMeetingFile(SopFileBean sopfile) {
+		try{
+			Map<String, Object> params = BeanUtils.toMap(sopfile);
+			String sqlName = "com.galaxy.im.business.sopfile.dao.ISopFileDao.delPostMeetingFile";
+			return sqlSessionTemplate.update(sqlName,params);
+		}catch(Exception e){
+			log.error(SopFileDaoImpl.class.getName() + "delPostMeetingFile",e);
+			throw new DaoException(e);
+		}
+	}
 
 }

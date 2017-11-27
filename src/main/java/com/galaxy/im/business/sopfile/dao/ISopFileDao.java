@@ -15,4 +15,6 @@ public interface ISopFileDao extends IBaseDao<Test, Long>{
 
 	List<Map<String, Object>> getSopFileList(SopFileBean sopfile);
 
+	int delPostMeetingFile(SopFileBean sopfile);
+
 }

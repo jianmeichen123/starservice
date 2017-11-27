@@ -51,6 +51,7 @@ public class PosMeetingRecordController {
 	 * 运营分析-会议详情
 	 * @param paramString
 	 * @return
+	 * @author liuli
 	 */
 	@RequestMapping("postMeetingDetail")
 	@ResponseBody
@@ -67,7 +68,7 @@ public class PosMeetingRecordController {
 			meetingRecord.setRecordType(2);
 			Map<String,Object> record= service.postMeetingDetail(meetingRecord);
 			if(null == record){
-				resultBean.setMessage("输入参数不正确！未查到结果");
+				resultBean.setMessage("未查到结果");
 				return resultBean;
 			}
 			//查询附件
@@ -81,6 +82,39 @@ public class PosMeetingRecordController {
 			return resultBean;
 		}catch(Exception e){
 			log.error(PosMeetingRecordController.class.getName() + "postMeetingDetail",e);
+		}
+		return resultBean;
+	}
+	
+	/**
+	 * 删除运营分析相关附件(逻辑删除)
+	 * @param paramString
+	 * @return
+	 * @author liuli
+	 */
+	@RequestMapping("delPostMeetingFile")
+	@ResponseBody
+	public Object delPostMeetingFile(@RequestBody MeetingRecordBean meetingRecord){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		resultBean.setStatus("error");
+		try{
+			if(null == meetingRecord.getId()){
+				resultBean.setMessage("缺少重要参数！");
+				return resultBean;
+			}
+			
+			//查询附件
+			SopFileBean sopfile = new SopFileBean();
+		    sopfile.setMeetingId(meetingRecord.getId());
+		    sopfile.setFileKey(meetingRecord.getFileKey());
+		    int result = service.delPostMeetingFile(sopfile);
+		    if(result>0){
+		    	resultBean.setStatus("OK");
+		    	resultBean.setMessage("成功删除");
+		    }
+			return resultBean;
+		}catch(Exception e){
+			log.error(PosMeetingRecordController.class.getName() + "delPostMeetingFile",e);
 		}
 		return resultBean;
 	}
@@ -110,7 +144,7 @@ public class PosMeetingRecordController {
 				SopProjectBean p = fcService.getSopProjectInfo(paramMap);
 				if(projectStatus.containsKey("flag") && 
 						CUtils.get().object2Integer(projectStatus.get("flag"))==1 && 
-						p.getProjectProgress().equals(bean.getProjectProgress()) ){
+						p.getProjectProgress().equals(StaticConst.PROJECT_PROGRESS_10) ){
 					//记录存在，进行更新操作，否则保存
 					if(bean.getId()!=null && bean.getId()!=0){
 						prograss = 1;
@@ -142,7 +176,7 @@ public class PosMeetingRecordController {
 							sopFileBean.setFileStatus(StaticConst.FILE_STATUS_2);
 							sopFileBean.setCreatedTime(new Date().getTime());
 							sopFileBean.setFileSource("1");
-							
+							sopFileBean.setFileValid(1);
 							long sopId =talkService.saveSopFile(sopFileBean);
 							//获取sopfile 主键
 							if(sopId!=0){
@@ -162,7 +196,7 @@ public class PosMeetingRecordController {
 						id = service.insert(bean);
 					}
 				}else{
-					resultBean.setMessage("项目当前状态或进度已被修改，请刷新");	
+					resultBean.setMessage("项目当前状态或进度未处于投后运营阶段");	
 				}
 				
 				//操作日志区分
