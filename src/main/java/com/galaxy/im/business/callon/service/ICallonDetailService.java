@@ -15,5 +15,7 @@ public interface ICallonDetailService extends IBaseService<ScheduleDetailBean>{
 	long getTalkHistoryCounts(ScheduleDetailBeanVo detail);
 	//拜访详情
 	List<ScheduleDetailBean> getQueryById(long callonId);
+	//运营会议历史个数
+	long getPosMeetingCount(Map<String, Object> paramMap);
 
 }

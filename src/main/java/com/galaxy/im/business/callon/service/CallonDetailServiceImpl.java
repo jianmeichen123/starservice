@@ -78,4 +78,18 @@ public class CallonDetailServiceImpl extends BaseServiceImpl<ScheduleDetailBean>
 		}
 	}
 
+	/**
+	 * 运营会议历史个数
+	 */
+	@Override
+	public long getPosMeetingCount(Map<String, Object> paramMap) {
+		try{
+			return dao.getPosMeetingCount(paramMap);
+		}catch(Exception e){
+			log.error(CallonDetailServiceImpl.class.getName() + "getPosMeetingCount",e);
+			throw new ServiceException(e);
+		}
+		
+	}
+
 }

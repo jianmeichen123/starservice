@@ -177,6 +177,7 @@ public class PosMeetingRecordController {
 							sopFileBean.setCreatedTime(new Date().getTime());
 							sopFileBean.setFileSource("1");
 							sopFileBean.setFileValid(1);
+							sopFileBean.setRecordType(2);
 							long sopId =talkService.saveSopFile(sopFileBean);
 							//获取sopfile 主键
 							if(sopId!=0){

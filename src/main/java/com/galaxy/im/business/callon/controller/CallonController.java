@@ -1,5 +1,6 @@
 package com.galaxy.im.business.callon.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,16 +20,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.galaxy.im.bean.common.Dict;
 import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.contracts.ContractsBean;
+import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.schedule.ScheduleDetailBean;
 import com.galaxy.im.bean.schedule.ScheduleDetailBeanVo;
 import com.galaxy.im.bean.schedule.ScheduleInfo;
+import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.callon.service.ICallonDetailService;
 import com.galaxy.im.business.callon.service.ICallonService;
+import com.galaxy.im.business.common.dict.service.IDictService;
 import com.galaxy.im.business.contracts.service.IContractsService;
+import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.message.service.IScheduleMessageService;
 import com.galaxy.im.business.project.service.IProjectService;
+import com.galaxy.im.business.sopfile.service.ISopFileService;
 import com.galaxy.im.common.BeanUtils;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
@@ -61,6 +68,15 @@ public class CallonController {
 
 	@Autowired
 	IScheduleMessageService messageService;
+	
+	@Autowired
+	private IFlowCommonService fcService;
+	
+	@Autowired
+	ISopFileService sopFileService;
+	
+	@Autowired
+	IDictService dictService;
 	
 	/**
 	 * 保存/编辑拜访计划
@@ -234,6 +250,7 @@ public class CallonController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setStatus("error");
 		ScheduleDetailBean bean = null;
+		Map<String,Object> paramMap = new HashMap<String,Object>();
 		try{
 			//拜访详情
 			List<ScheduleDetailBean> listBean = detailService.getQueryById(detail.getCallonId());
@@ -243,8 +260,35 @@ public class CallonController {
 			if(bean!=null){
 				//访谈纪要id
 				detail.setTalkId(bean.getTalkRecordId());
-				//关联项目不为空，取项目的历史访谈记录
+				
 				if(!"".equals(bean.getProjectName()) && bean.getProjectName()!=null){
+					paramMap.put("projectId", bean.getProjectId());
+					SopProjectBean p = fcService.getSopProjectInfo(paramMap);
+					if(p.getProjectProgress().equals(StaticConst.PROJECT_PROGRESS_10)){
+						bean.setPosMeetFlag(1);
+					}else{
+						bean.setPosMeetFlag(0);
+					}
+					//运营会议个数
+					List<String> meetingTypeList = new ArrayList<String>();
+					List<Dict> dictList = dictService.selectByParentCode("postMeetingType");
+					for(Dict dict : dictList){
+						meetingTypeList.add(dict.getDictCode());
+					}
+					paramMap.put("meetingTypeList", meetingTypeList);
+					paramMap.put("recordType", 2);
+					long mCount =detailService.getPosMeetingCount(paramMap);
+					bean.setMeetingCount(mCount);
+					
+					if(bean.getMeetingId()!=null){
+						//查询附件
+						SopFileBean sopfile = new SopFileBean();
+					    sopfile.setMeetingId(bean.getMeetingId());
+						List<Map<String,Object>> sopFileList = new ArrayList<Map<String,Object>>();
+						sopFileList = sopFileService.getSopFileList(sopfile);
+						bean.setFiles(sopFileList);
+					}
+					//关联项目不为空，取项目的历史访谈记录
 					detail.setProId(bean.getProjectId());
 					//访谈记录个数
 					long count = detailService.queryCount(detail);
@@ -253,17 +297,16 @@ public class CallonController {
 					if(projectService.projectIsYJZ(bean.getProjectId())==1){
 						bean.setTransferFlag(1);
 					}
-				}
-				//访谈对象不为空，取访谈对象的历史访谈记录
-				else if(!"".equals(bean.getContactName()) && bean.getContactName()!=null){
+				}else if(!"".equals(bean.getContactName()) && bean.getContactName()!=null){
+					//访谈对象不为空，取访谈对象的历史访谈记录
 					detail.setConId(bean.getContactId());
 					long count = detailService.queryCount(detail);
 					bean.setInterviewCount(count);
-				}
-				//都不满足，访谈记录为0
-				else{
+				}else{
+					//都不满足，访谈记录为0
 					bean.setInterviewCount(0);
 				}
+				
 				//拜访标识
 				if (bean.getInterviewFalg()==0) {
 	                bean.setInterviewContent("未访谈");

@@ -75,4 +75,17 @@ private Logger log = LoggerFactory.getLogger(CallonDaoImpl.class);
 			throw new DaoException(e);
 		}
 	}
+
+	/**
+	 * 运营会议历史个数
+	 */
+	@Override
+	public long getPosMeetingCount(Map<String, Object> paramMap) {
+		try {
+			return sqlSessionTemplate.selectOne(getSqlName("getPosMeetingCount"), paramMap);
+		} catch (Exception e) {
+			log.error(String.format("查询对象总数出错！语句：%s", getSqlName("getPosMeetingCount")), e);
+			throw new DaoException(e);
+		}
+	}
 }

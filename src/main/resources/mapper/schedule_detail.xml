@@ -76,7 +76,9 @@
 			dct5.dict_value resultReasonId,
 			dct5.dict_code resultReasonCode,
 			dct5.`name` resultReason,
-			tt.reason_other reasonOther
+			tt.reason_other reasonOther,
+			tt.meetingId,
+			tt.meetingNotes
 		FROM (select 
 					info.id,
 				    date_format(info.start_time,'%Y/%m/%d %H:%i') startTime,
@@ -116,7 +118,9 @@
 					end resultReason,
 					CASE WHEN r.content_choose IN('尚未获投','不明确') 
 					THEN r.content_choose else di.name  
-					end financeStatusName
+					end financeStatusName,
+					mr.id meetingId,
+					mr.meeting_notes meetingNotes
 				from schedule_info info
 				left join schedule_contacts con on info.callon_person=con.id
 				left join sop_project project on info.project_type=1 and info.project_id=project.id
@@ -124,6 +128,7 @@
 				left join dict dct3 on dct3.parent_code='significance' and dct3.dict_value=info.significance
 				left join schedule_dict sd on sd.id = info.wakeup_id
 				left join sop_interview_record inre on inre.schedule_id=info.id
+				LEFT JOIN sop_meeting_record mr on mr.schedule_id=info.id
 				left join sop_file sf on sf.id=inre.file_id
 				LEFT JOIN information_result r on r.project_id=info.project_id and r.title_id=1108
 				LEFT JOIN information_dictionary di on r.content_choose=di.id
@@ -167,6 +172,19 @@
 	<select id="getTalkHistoryCounts" resultType="java.lang.Long" parameterType="java.util.Map">
 		SELECT COUNT(1) FROM sop_interview_record WHERE 
 		<if test="conId!=0" >schedule_id in (SELECT id FROM schedule_info WHERE callon_person=#{conId});</if>
+	</select>
+	
+	<!-- 运营会议历史个数 -->
+	<select id="getPosMeetingCount" resultType="java.lang.Long" parameterType="java.util.Map">
+		SELECT COUNT(1) 
+		FROM sop_meeting_record 
+		WHERE project_id=#{projectId} and record_type=#{recordType}
+		<if test="meetingTypeList != null">
+			and meeting_type in 
+			<foreach collection="meetingTypeList" item="meetingType" index="index" open="(" close=")" separator=",">
+				#{meetingType}
+			</foreach>
+		</if>
 	</select>
 
 </mapper>

@@ -1,5 +1,8 @@
 package com.galaxy.im.bean.schedule;
 
+import java.util.List;
+import java.util.Map;
+
 import com.galaxy.im.common.db.BaseEntity;
 
 public class ScheduleDetailBean extends BaseEntity{
@@ -49,6 +52,13 @@ public class ScheduleDetailBean extends BaseEntity{
     private String resultReasonCode;	//结论原因code
     private String resultReason;		//结论原因
     private String reasonOther;			//其他原因
+    
+    private int posMeetFlag;			//项目是否处于投后运营阶段 0：不是，1：是
+    
+    private Long meetingId;				//本次运营会议记录id
+    private String meetingNotes;		//本次运营会议纪要
+    private List<Map<String,Object>> files;//本次运营会议纪要附件信息
+    private long meetingCount;			//历史运营会议个数
     
 
 	public Long getInterviewResultId() {
@@ -329,6 +339,46 @@ public class ScheduleDetailBean extends BaseEntity{
 
 	public void setTransferFlag(long transferFlag) {
 		this.transferFlag = transferFlag;
+	}
+
+	public int getPosMeetFlag() {
+		return posMeetFlag;
+	}
+
+	public void setPosMeetFlag(int posMeetFlag) {
+		this.posMeetFlag = posMeetFlag;
+	}
+
+	public Long getMeetingId() {
+		return meetingId;
+	}
+
+	public void setMeetingId(Long meetingId) {
+		this.meetingId = meetingId;
+	}
+
+	public String getMeetingNotes() {
+		return meetingNotes;
+	}
+
+	public void setMeetingNotes(String meetingNotes) {
+		this.meetingNotes = meetingNotes;
+	}
+
+	public List<Map<String,Object>> getFiles() {
+		return files;
+	}
+
+	public void setFiles(List<Map<String,Object>> files) {
+		this.files = files;
+	}
+
+	public long getMeetingCount() {
+		return meetingCount;
+	}
+
+	public void setMeetingCount(long meetingCount) {
+		this.meetingCount = meetingCount;
 	}
 
 }
