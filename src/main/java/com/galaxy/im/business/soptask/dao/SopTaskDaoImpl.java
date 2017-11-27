@@ -29,12 +29,12 @@ public class SopTaskDaoImpl extends BaseDaoImpl<SopTask, Long> implements ISopTa
 		try {
 			List<Map<String,Object>> contentList = null;
 			int total = 0;
-			if(paramMap!=null&&paramMap.get("keyWord")==null && paramMap.get("pageNum")!=null&&paramMap.get("pageSize")!=null){
+			if(paramMap.get("keyWord")==null || paramMap.get("keyWord").equals("")){
 			 contentList = sqlSessionTemplate.selectList(getSqlName("taskListByRole") ,getPageMap(paramMap));
 			 total = CUtils.get().object2Integer(sqlSessionTemplate.selectOne(getSqlName("taskListCount"),getPageMap(paramMap)));
 			}else{
-				contentList = sqlSessionTemplate.selectList(getSqlName("taskListByRole") ,paramMap);
-				total = CUtils.get().object2Integer(sqlSessionTemplate.selectOne(getSqlName("taskListCount"),paramMap));
+				contentList = sqlSessionTemplate.selectList(getSqlName("taskListByRole") ,getPageMap(paramMap));
+				total = CUtils.get().object2Integer(sqlSessionTemplate.selectOne(getSqlName("taskListCount"),getPageMap(paramMap)));
 			}
 			return new QPage(contentList,total);
 		} catch (Exception e) {
