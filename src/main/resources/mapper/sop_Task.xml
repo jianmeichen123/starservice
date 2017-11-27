@@ -21,10 +21,10 @@
 		<if test="keyWord != null" > and 
 		(upper(sp.project_name) like CONCAT('%',upper(#{keyWord}),'%') OR upper(sp.create_uname) LIKE CONCAT('%',upper(#{keyWord}),'%'))
 		</if>
-		<if test="property != null" >
+		<if test="property != null and direction != null" >
 		order by ${property} ${direction}
 		</if>
-		<if test="offset != null" >
+		<if test="offset != null and limit !=null" >
 		limit #{offset},${limit};
 		</if>
 
