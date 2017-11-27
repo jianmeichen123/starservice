@@ -54,7 +54,6 @@ public class ScheduleDetailBean extends BaseEntity{
     private String reasonOther;			//其他原因
     
     private int posMeetFlag;			//项目是否处于投后运营阶段 0：不是，1：是
-    
     private Long meetingId;				//本次运营会议记录id
     private String meetingNotes;		//本次运营会议纪要
     private List<Map<String,Object>> files;//本次运营会议纪要附件信息
