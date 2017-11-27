@@ -7,7 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.galaxy.im.bean.meeting.MeetingRecordBean;
 import com.galaxy.im.bean.schedule.ScheduleInfo;
+import com.galaxy.im.bean.talk.SopFileBean;
+import com.galaxy.im.bean.talk.TalkRecordBean;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.db.BaseDaoImpl;
 import com.galaxy.im.common.db.QPage;
@@ -57,11 +60,73 @@ public class CallonDaoImpl extends BaseDaoImpl<ScheduleInfo, Long> implements IC
 			throw new DaoException(e);
 		}
 	}
-	
-	
-	
+
+	//查询访谈记录
+	@Override
+	public TalkRecordBean getTalkRecordBean(Long id) {
+		try {
+			return sqlSessionTemplate.selectOne(getSqlName("getTalkRecordBean"), id);
+		} catch (Exception e) {
+			log.error(String.format(getSqlName("getTalkRecordBean")), e);
+			throw new DaoException(e);
+		}
+	}
+
+	//删除访谈记录
+	@Override
+	public int delTalkRecordBean(TalkRecordBean tBean) {
+		try {
+			return sqlSessionTemplate.delete(getSqlName("delTalkRecordBean"), tBean);
+		} catch (Exception e) {
+			log.error(String.format( getSqlName("delTalkRecordBean")), e);
+			throw new DaoException(e);
+		}
+	}
+
+	//查询文件
+	@Override
+	public SopFileBean getSopFileBean(SopFileBean bean) {
+		try {
+			return sqlSessionTemplate.selectOne(getSqlName("getSopFileBean"), bean);
+		} catch (Exception e) {
+			log.error(String.format(getSqlName("getSopFileBean")), e);
+			throw new DaoException(e);
+		}
+	}
+
+	//删除文件
+	@Override
+	public int deleteSopFileBean(SopFileBean sFileBean) {
+		try {
+			return sqlSessionTemplate.delete(getSqlName("deleteSopFileBean"), sFileBean);
+		} catch (Exception e) {
+			log.error(String.format(getSqlName("deleteSopFileBean")), e);
+			throw new DaoException(e);
+		}
+	}
+
+	//删除运营会议
+	@Override
+	public int deleteMeetingRecordBean(MeetingRecordBean mBean) {
+		try {
+			return sqlSessionTemplate.delete(getSqlName("deleteMeetingRecordBean"), mBean);
+		} catch (Exception e) {
+			log.error(String.format(getSqlName("deleteMeetingRecordBean")), e);
+			throw new DaoException(e);
+		}
+	}
+
+	//查询运营会议
+	@Override
+	public MeetingRecordBean getMeetingRecordBean(Long id) {
+		try {
+			return sqlSessionTemplate.selectOne(getSqlName("getMeetingRecordBean"), id);
+		} catch (Exception e) {
+			log.error(String.format(getSqlName("getMeetingRecordBean")), e);
+			throw new DaoException(e);
+		}
+	}
 	
 
-	
 	
 }

@@ -23,11 +23,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.galaxy.im.bean.common.Dict;
 import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.contracts.ContractsBean;
+import com.galaxy.im.bean.meeting.MeetingRecordBean;
 import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.schedule.ScheduleDetailBean;
 import com.galaxy.im.bean.schedule.ScheduleDetailBeanVo;
 import com.galaxy.im.bean.schedule.ScheduleInfo;
 import com.galaxy.im.bean.talk.SopFileBean;
+import com.galaxy.im.bean.talk.TalkRecordBean;
 import com.galaxy.im.business.callon.service.ICallonDetailService;
 import com.galaxy.im.business.callon.service.ICallonService;
 import com.galaxy.im.business.common.dict.service.IDictService;
@@ -156,11 +158,47 @@ public class CallonController {
 			SessionBean bean = CUtils.get().getBeanBySession(request);
 			Map<String,Object> map = CUtils.get().jsonString2map(paramString);
 			if(map!=null){
+				//删除与该拜访计划关联的本次访谈记录或运营会议
+				//拜访详情
+				ScheduleDetailBeanVo detail = new ScheduleDetailBeanVo();
+				detail.setCallonId(CUtils.get().object2Short(map.get("id")));
+				List<ScheduleDetailBean> listBean = detailService.getQueryById(detail.getCallonId());
+				//查询访谈记录
+				TalkRecordBean tBean = callonService.getTalkRecordBean(listBean.get(0).getId());
+				if (tBean!=null) {
+					//删除访谈记录
+					tBean.setUpdatedTime(new Date().getTime());
+					 callonService.delTalkRecordBean(tBean);
+					//查询访谈记录下的文件
+					SopFileBean sFileBean = new SopFileBean();
+					sFileBean.setInterviewRecordId(tBean.getId());
+					sFileBean = callonService.getSopFileBean(sFileBean);
+					//删除文件
+					if (sFileBean!=null) {
+						sFileBean.setUpdatedTime(new Date().getTime());
+						 callonService.deleteSopFileBean(sFileBean);
+					}
+				}
+				//查询运营会议
+				MeetingRecordBean mBean = callonService.getMeetingRecordBean(listBean.get(0).getId());
+				if (mBean!=null) {
+					//删除运营会议
+					mBean.setUpdatedTime(new Date().getTime());
+					callonService.deleteMeetingRecordBean(mBean);
+					//查询运营会议下的文件
+					SopFileBean sFileBean = new SopFileBean();
+					sFileBean.setMeetinRecordId(mBean.getId());
+				    sFileBean = callonService.getSopFileBean(sFileBean);
+					//删除文件
+					if (sFileBean!=null) {
+						sFileBean.setUpdatedTime(new Date().getTime());
+						 callonService.deleteSopFileBean(sFileBean);
+					}
+				}
 				map.put("updatedTime", DateUtil.getMillis(new Date()));
 				SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 				map.put("updatedId", sessionBean.getGuserid());
 				boolean flag = callonService.delCallonById(map);
-				
 				Long id = CUtils.get().object2Long(map.get("id"), 0L);
 				if(id!=0){
 					//删除推送消息
