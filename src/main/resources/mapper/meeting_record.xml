@@ -42,7 +42,7 @@
 					r.meeting_type,
 					r.reason_other
 				FROM sop_meeting_record r 
-				WHERE r.project_id=#{projectId} 
+				WHERE r.project_id=#{projectId} and r.meet_valid = 0 
 				<if test="meetingTypeList != null">
 					and r.meeting_type in 
 					<foreach collection="meetingTypeList" item="meetingType" index="index" open="(" close=")" separator=",">
@@ -86,7 +86,7 @@
 					r.meeting_type,
 					r.reason_other
 				FROM sop_meeting_record r
-				WHERE r.project_id=#{projectId} 
+				WHERE r.project_id=#{projectId} and r.meet_valid = 0
 				<if test="meetingTypeList != null">
 					and r.meeting_type in 
 					<foreach collection="meetingTypeList" item="meetingType" index="index" open="(" close=")" separator=",">
@@ -142,7 +142,7 @@
 					sf.file_name
 				FROM sop_meeting_record r 
 				left join sop_file sf on sf.id=r.file_id
-				WHERE r.id=#{id} )tt 
+				WHERE r.id=#{id} and r.meet_valid = 0 and sf.file_valid=1)tt 
 		LEFT JOIN dict dct1 ON dct1.parent_code=tt.meetingType and dct1.dict_code=tt.meeting_result
 		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason;
 	</select>
@@ -180,6 +180,7 @@
 	<update id="updateById" parameterType="com.galaxy.im.bean.meeting.MeetingRecordBean">
 		update sop_meeting_record
 		<set>
+			meet_valid = 0,
 		  <if test="fileId != 0" > file_id = #{fileId}, </if>
 	      <if test="meetingDate != null" > meeting_date = #{meetingDate}, </if>
 	      <if test="meetingNotes != null" > meeting_notes = #{meetingNotes}, </if>
@@ -220,6 +221,6 @@
 		FROM sop_meeting_record r
 		LEFT JOIN dict d1 on d1.dict_code=r.meeting_type
 		LEFT JOIN dict d2 on d2.dict_code=r.meeting_result
-		WHERE r.id=#{id} and r.record_type=#{recordType};
+		WHERE r.id=#{id} and r.record_type=#{recordType} and r.meet_valid = 0;
 	</select>
 </mapper>

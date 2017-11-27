@@ -30,7 +30,7 @@
 					end meetingType,
 					r.meeting_type
 				FROM sop_meeting_record r
-				WHERE r.project_id=#{projectId} 
+				WHERE r.project_id=#{projectId} and r.meet_valid = 0
 				<if test="meetingTypeList != null">
 					and r.meeting_type in 
 					<foreach collection="meetingTypeList" item="meetingType" index="index" open="(" close=")" separator=",">

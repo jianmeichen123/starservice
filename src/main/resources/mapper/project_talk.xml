@@ -35,7 +35,7 @@
 					r.schedule_id
 				FROM sop_interview_record r
 				LEFT JOIN schedule_contacts con on r.view_target=con.id
-				WHERE r.project_id=#{projectId}
+				WHERE r.project_id=#{projectId} and r.interview_valid =0
 			ORDER BY r.view_date desc) tt
 		LEFT JOIN dict dct1 ON dct1.parent_code='meetingResult' and dct1.dict_code=tt.interview_result
 		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason
@@ -63,7 +63,7 @@
 					r.schedule_id
 				FROM sop_interview_record r
 				LEFT JOIN schedule_contacts con on r.view_target=con.id
-				WHERE r.project_id=#{projectId}
+				WHERE r.project_id=#{projectId} and r.interview_valid =0
 			ORDER BY r.view_date desc) tt
 		LEFT JOIN dict dct1 ON dct1.parent_code='meetingResult' and dct1.dict_code=tt.interview_result
 		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason;
@@ -112,7 +112,7 @@
 				FROM sop_interview_record r 
 				LEFT JOIN schedule_contacts con on r.view_target=con.id
 				left join sop_file sf on sf.id=r.file_id
-				WHERE r.id=#{talkRecordId} )tt
+				WHERE r.id=#{talkRecordId} and r.interview_valid =0 and sf.file_valid=1)tt
 		LEFT JOIN dict dct1 ON dct1.parent_code='meetingResult' and dct1.dict_code=tt.interview_result
 		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason;
 	</select>
@@ -151,13 +151,14 @@
 	<update id="updateById" parameterType="com.galaxy.im.bean.talk.ProjectTalkBean">
 		update sop_interview_record
 		<set>
+			interview_valid = 0,
 		  <if test="fileId != 0" > file_id = #{fileId}, </if>
 	      <if test="viewNotes != null" > view_notes = #{viewNotes}, </if>
 	      <if test="viewNotesText != null" > view_notes_text = #{viewNotesText}, </if>
 	      <if test="interviewResult != null" > interview_result = #{interviewResult}, </if>
 	      <if test="resultReason != null" > result_reason = #{resultReason}, </if>
 	      <if test="reasonOther != null" > reason_other = #{reasonOther}, </if>
-	      <if test="updatedTime != null" > update_time = #{updatedTime} </if>
+	      <if test="updatedTime != null" > update_time = #{updatedTime}</if>
 		</set>
 		where id=#{id};
 	</update>

@@ -25,7 +25,7 @@
 				FROM sop_interview_record r
 				LEFT JOIN schedule_contacts con on r.view_target=con.id 
 				LEFT JOIN sop_project p ON p.id = r.project_id
-				WHERE 1=1
+				WHERE 1=1 and r.interview_valid = 0
 			<choose>
 				<when test="proId!=0">
 					and r.project_id=#{proId}
@@ -52,7 +52,7 @@
 	<!-- 访谈记录list总数 -->
 	<select id="selectCount" resultType="java.lang.Long"
 		parameterType="java.util.Map">
-		SELECT COUNT(1) FROM sop_interview_record WHERE 1=1
+		SELECT COUNT(1) FROM sop_interview_record WHERE 1=1 and interview_valid = 0
 		<choose>
 			<when test="proId!=0">
 				and project_id=#{proId}
@@ -83,6 +83,7 @@
 	<update id="updateById" parameterType="com.galaxy.im.bean.talk.TalkRecordBean">
 		update sop_interview_record
 		<set>
+			interview_valid = 0,
 		  <if test="fileId != 0" > file_id = #{fileId}, </if>
 	      <if test="viewTarget != null" > view_target = #{viewTarget}, </if>
 	      <if test="viewNotes != null" > view_notes = #{viewNotes}, </if>

@@ -49,7 +49,7 @@
 				FROM sop_interview_record r 
 				left join sop_file sf on sf.id=r.file_id
 				left join schedule_contacts con on r.view_target=con.id 
-				WHERE r.id=#{id} )tt 
+				WHERE r.id=#{id} and r.interview_valid = 0 and sf.file_valid=1)tt 
 		LEFT JOIN dict dct1 ON dct1.parent_code='meetingResult' and dct1.dict_code=tt.interview_result
 		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason;
 	</select>

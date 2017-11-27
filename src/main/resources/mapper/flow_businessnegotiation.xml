@@ -12,7 +12,7 @@
 		from sop_project p
 		left join sop_meeting_record r on p.id=r.project_id
 		left join dict d1 on r.meeting_result=d1.dict_code
-		where p.id=#{projectId} and r.meeting_type=#{meetingType}
+		where p.id=#{projectId} and r.meeting_type=#{meetingType} and r.meet_valid = 0 
 		group by d1.dict_code;
 	</select>
 	

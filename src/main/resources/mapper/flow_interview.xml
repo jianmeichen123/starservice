@@ -12,7 +12,7 @@
 		from sop_project p
 		left join sop_interview_record sir on p.id=sir.project_id
 		left join dict d1 on sir.interview_result=d1.dict_code
-		where p.id=#{projectId}
+		where p.id=#{projectId} and interview_valid =0
 		group by d1.dict_code;
 	</select>
 	
@@ -33,6 +33,7 @@
 					r.view_notes
 				FROM sop_interview_record r
 				WHERE r.project_id=#{projectId}
+				and r.interview_valid =0
 			ORDER BY r.view_date desc) tt
 		LEFT JOIN dict dct1 ON dct1.parent_code='meetingResult' and dct1.dict_code=tt.interview_result
 		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason;

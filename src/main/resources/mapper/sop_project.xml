@@ -146,7 +146,7 @@
 		left join sop_delivery d on p.id=d.project_id
 		left join sop_project_health h on p.id=h.project_id
 		left join sop_meeting_record m on m.project_id=p.id and m.meeting_type in ('postMeetingType:1' ,'postMeetingType:2','postMeetingType:3')
-		where p.id=#{projectId}
+		where p.id=#{projectId} and m.meet_valid = 0 and f.file_valid=1 and f2.file_valid=1
 		group by p.id;
 	</select>
 	

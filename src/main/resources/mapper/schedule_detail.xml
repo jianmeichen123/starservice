@@ -132,14 +132,14 @@
 				left join sop_file sf on sf.id=inre.file_id
 				LEFT JOIN information_result r on r.project_id=info.project_id and r.title_id=1108
 				LEFT JOIN information_dictionary di on r.content_choose=di.id
-				where info.id=#{id} and info.is_del=0  ORDER BY inre.created_time desc ) tt
+				where info.id=#{id} and info.is_del=0 inre.interview_valid =0 and mr.meet_valid = 0 and sf.file_valid=1 ORDER BY inre.created_time desc ) tt
 			LEFT JOIN dict dct4 ON dct4.parent_code='meetingResult' and dct4.dict_code=tt.interview_result
 			LEFT JOIN dict dct5 ON dct5.parent_code=tt.resultReason and dct5.dict_code=tt.result_reason;
 	</select>
 	
 	<!-- 项目的拜访历史记录个数 -->
 	<select id="selectCount" resultType="java.lang.Long" parameterType="java.util.Map">
-		SELECT COUNT(1) FROM sop_interview_record WHERE 1=1
+		SELECT COUNT(1) FROM sop_interview_record WHERE 1=1 and interview_valid = 0
 		<choose>
 			<when test="proId!=0">
 				and project_id=#{proId}
@@ -170,7 +170,7 @@
 	
 	<!-- 历史访谈记录个数 -->
 	<select id="getTalkHistoryCounts" resultType="java.lang.Long" parameterType="java.util.Map">
-		SELECT COUNT(1) FROM sop_interview_record WHERE 
+		SELECT COUNT(1) FROM sop_interview_record WHERE interview_valid = 0 and
 		<if test="conId!=0" >schedule_id in (SELECT id FROM schedule_info WHERE callon_person=#{conId});</if>
 	</select>
 	
@@ -178,7 +178,7 @@
 	<select id="getPosMeetingCount" resultType="java.lang.Long" parameterType="java.util.Map">
 		SELECT COUNT(1) 
 		FROM sop_meeting_record 
-		WHERE project_id=#{projectId} and record_type=#{recordType}
+		WHERE project_id=#{projectId} and record_type=#{recordType} and meet_valid = 0
 		<if test="meetingTypeList != null">
 			and meeting_type in 
 			<foreach collection="meetingTypeList" item="meetingType" index="index" open="(" close=")" separator=",">

@@ -89,7 +89,7 @@
 			r.meeting_type meetingType
 		FROM sop_meeting_record r 
 		left join dict d1 on r.meeting_result=d1.dict_code
-		WHERE r.project_id=#{projectId} and r.meeting_type=#{meetingType} 
+		WHERE r.project_id=#{projectId} and r.meeting_type=#{meetingType} and r.meet_valid = 0 
 		ORDER BY r.meeting_date desc LIMIT 1;
 	</select>
 	
@@ -390,7 +390,7 @@
 				r.meeting_type meetingType
 		FROM sop_meeting_record r 
 		left join dict d1 on r.meeting_result=d1.dict_code
-		WHERE r.project_id=#{projectId} and r.meeting_type=#{meetingType} 
+		WHERE r.project_id=#{projectId} and r.meeting_type=#{meetingType} and r.meet_valid = 0 
 		<if test="resultList != null">
 			and r.meeting_result in 
 			<foreach collection="resultList" item="res" index="index" open="(" close=")" separator=",">
@@ -475,7 +475,7 @@
 		FROM (
 				SELECT *
 				FROM sop_file 
-				WHERE project_id =#{projectId}
+				WHERE project_id =#{projectId} and file_valid=1
 				<if test="fileWorktypeList != null">
 					and file_worktype in 
 					<foreach collection="fileWorktypeList" item="fileList" index="index" open="(" close=")" separator=",">

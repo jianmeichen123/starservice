@@ -148,7 +148,7 @@
 		<if test="belongUid != null" >belong_uid = #{belongUid},</if>
 		<if test="fileValid != null" >file_valid = #{fileValid},</if>
 		<if test="updatedTime != null" >updated_time= #{updatedTime}</if>
-		where id = #{id}
+		where id = #{id} and file_valid=1
 	</update>
 	
 	<!-- 查询是否已经移交/指派-->
