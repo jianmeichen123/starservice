@@ -111,8 +111,8 @@
 					r.schedule_id
 				FROM sop_interview_record r 
 				LEFT JOIN schedule_contacts con on r.view_target=con.id
-				left join sop_file sf on sf.id=r.file_id
-				WHERE r.id=#{talkRecordId} and r.interview_valid =0 and sf.file_valid=1)tt
+				left join sop_file sf on sf.id=r.file_id and sf.file_valid=1
+				WHERE r.id=#{talkRecordId} and r.interview_valid =0 )tt
 		LEFT JOIN dict dct1 ON dct1.parent_code='meetingResult' and dct1.dict_code=tt.interview_result
 		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason;
 	</select>
