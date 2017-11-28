@@ -32,6 +32,8 @@ public class ProjectTalkBean extends PagableEntity{
 	
 	private String projectProgress;		//项目的当前所处阶段
 	
+	private int interviewValid; 		//0表示有效，1表示无效
+	
 	public long getProjectId() {
 		return projectId;
 	}
@@ -151,6 +153,12 @@ public class ProjectTalkBean extends PagableEntity{
 	}
 	public void setProjectProgress(String projectProgress) {
 		this.projectProgress = projectProgress;
+	}
+	public int getInterviewValid() {
+		return interviewValid;
+	}
+	public void setInterviewValid(int interviewValid) {
+		this.interviewValid = interviewValid;
 	}
 	
 

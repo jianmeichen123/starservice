@@ -138,10 +138,10 @@
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id"  keyColumn="id" parameterType="com.galaxy.im.bean.talk.ProjectTalkBean" >
 		insert into sop_interview_record (id, project_id, file_id, view_date, 
 		  	view_target, view_notes, view_notes_text, created_time, created_id, update_time,schedule_id,
-		  	interview_result,result_reason,reason_other)
+		  	interview_result,result_reason,reason_other,interview_valid)
 	    values (#{id}, #{projectId}, #{fileId}, #{viewDate}, #{viewTarget}, #{viewNotes}, 
 	    	#{viewNotesText}, #{createdTime},#{createdId},#{createdTime},#{scheduleId},
-	    	#{interviewResult},#{resultReason},#{reasonOther});
+	    	#{interviewResult},#{resultReason},#{reasonOther},#{interviewValid});
     	<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
 			SELECT LAST_INSERT_ID() AS id
 		</selectKey>
