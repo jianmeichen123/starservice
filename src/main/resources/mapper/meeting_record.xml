@@ -189,6 +189,7 @@
 	      <if test="resultReason != null" > result_reason = #{resultReason}, </if>
 	      <if test="reasonOther != null" > reason_other = #{reasonOther}, </if>
 	      <if test="scheduleId != null" > schedule_id = #{scheduleId} ,</if>
+	      <if test="meetingType != null" > meeting_type = #{meetingType} ,</if>
 	      <if test="updatedTime != null" > update_time = #{updatedTime} </if>
 		</set>
 		where id=#{id};
