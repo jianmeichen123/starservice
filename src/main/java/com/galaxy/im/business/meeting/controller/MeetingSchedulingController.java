@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.meeting.MeetingSchedulingBo;
+import com.galaxy.im.bean.project.ProjectBo;
 import com.galaxy.im.business.meeting.service.IMeetingSchedulingService;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
@@ -48,6 +49,12 @@ public class MeetingSchedulingController {
 				    String dateString = formatter.format(new Date());  
 				    query.setStartTime(dateString); 
 			}
+			
+			ProjectBo mpb = new ProjectBo();
+			if (query.getKeyword() != null) {
+				mpb.setKeyword(query.getKeyword());
+			}
+			
 		}catch(Exception e){
 			log.error(MeetingSchedulingController.class.getName() + "queryMescheduling",e);
 		}

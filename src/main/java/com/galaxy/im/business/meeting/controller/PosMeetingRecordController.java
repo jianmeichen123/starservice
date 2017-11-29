@@ -98,16 +98,22 @@ public class PosMeetingRecordController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setStatus("error");
 		try{
+			int result = 0;
 			if(null == meetingRecord.getId()){
 				resultBean.setMessage("缺少重要参数！");
 				return resultBean;
 			}
+			if(meetingRecord.getFileKey()==null){
+				//会议删除
+				
+			}else{
+				//删除附件
+				SopFileBean sopfile = new SopFileBean();
+			    sopfile.setMeetingId(meetingRecord.getId());
+			    sopfile.setFileKey(meetingRecord.getFileKey());
+			    result = service.delPostMeetingFile(sopfile);
+			}
 			
-			//查询附件
-			SopFileBean sopfile = new SopFileBean();
-		    sopfile.setMeetingId(meetingRecord.getId());
-		    sopfile.setFileKey(meetingRecord.getFileKey());
-		    int result = service.delPostMeetingFile(sopfile);
 		    if(result>0){
 		    	resultBean.setStatus("OK");
 		    	resultBean.setMessage("成功删除");
