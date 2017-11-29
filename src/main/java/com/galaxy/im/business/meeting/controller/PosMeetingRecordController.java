@@ -140,11 +140,9 @@ public class PosMeetingRecordController {
 			
 			if(bean!=null){
 				paramMap.put("projectId", bean.getProjectId());
-				Map<String, Object> projectStatus = fcService.projectStatus(paramMap);
 				SopProjectBean p = fcService.getSopProjectInfo(paramMap);
-				if(projectStatus.containsKey("flag") && 
-						CUtils.get().object2Integer(projectStatus.get("flag"))==1 && 
-						p.getProjectProgress().equals(StaticConst.PROJECT_PROGRESS_10) ){
+				if(p.getProjectStatus().equals(StaticConst.PROJECT_STATUS_1) && 
+					p.getProjectProgress().equals(StaticConst.PROJECT_PROGRESS_10)){
 					//记录存在，进行更新操作，否则保存
 					if(bean.getId()!=null && bean.getId()!=0){
 						prograss = 1;
