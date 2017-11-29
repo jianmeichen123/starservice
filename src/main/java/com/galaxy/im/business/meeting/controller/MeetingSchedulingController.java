@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.business.meeting.service.IMeetingSchedulingService;
+import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
 
 @Controller
@@ -32,6 +34,11 @@ public class MeetingSchedulingController {
 	public Object queryMescheduling(HttpServletRequest request,HttpServletResponse response,@RequestBody String paramString){
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		try{
+			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
+			if(sessionBean==null){
+				resultBean.setMessage("User用户信息在Session中不存在，无法执行项目列表查询！");
+				return resultBean;
+			}
 			
 		}catch(Exception e){
 			log.error(MeetingSchedulingController.class.getName() + "queryMescheduling",e);
