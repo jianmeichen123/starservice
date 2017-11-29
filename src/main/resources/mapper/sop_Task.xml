@@ -157,7 +157,13 @@
 		SELECT * FROM sop_task_record WHERE task_id=#{taskId} 
 		AND after_uid =#{afterUid} and before_uid=#{beforeUid}
 	</select>
-
+	
+	<!-- 查询是否有操作日志-->
+	<select id="getOperationLogs" parameterType="com.galaxy.im.bean.operationLog.OperationLogs"
+		resultType="integer">
+		select count(1) FROM sop_operation_logs 
+		WHERE record_type=4 and uid=#{uid} and record_id=#{recordId}
+	</select>
 	
 	
 </mapper>

@@ -2,6 +2,7 @@ package com.galaxy.im.business.soptask.service;
 
 import java.util.Map;
 
+import com.galaxy.im.bean.operationLog.OperationLogs;
 import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.soptask.SopTaskRecord;
 import com.galaxy.im.bean.talk.SopFileBean;
@@ -38,6 +39,9 @@ public interface ISopTaskService extends IBaseService<SopTask>{
 
 	//查询总数
 	int selectCount(Map<String, Object> paramMap);
+
+	//查询操作人下是否有操作日志
+	int getOperationLogs(OperationLogs operationLogs);
 
 
 }

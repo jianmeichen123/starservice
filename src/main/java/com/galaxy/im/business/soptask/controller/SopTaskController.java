@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.galaxy.im.bean.common.SessionBean;
+import com.galaxy.im.bean.operationLog.OperationLogs;
 import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.soptask.SopTaskRecord;
@@ -150,7 +151,37 @@ public class SopTaskController {
 		Map<String, Object> paramMap = CUtils.get().jsonString2map(paramString);
 		try {
 			Map<String, Object> map= service.taskInfo(paramMap);
+			//获取登录用户信息
+			SessionBean bean = CUtils.get().getBeanBySession(request);
+			if (bean==null) {
+				resultBean.setMessage("获取用户信息失败");
+			}
+			Map<String, Object> map2 = new HashMap<>();
+			//查询人事经理A是否已上传了人事/财务/法务尽调报告
+			SopFileBean sopFileBean = new SopFileBean();
+			sopFileBean.setProjectId( CUtils.get().object2Long(paramMap.get("projectId")));
+			//fileWorktype=2人事 fileWorktype=3法务 fileWorktype=4财务
+			sopFileBean.setFileWorkType(CUtils.get().object2String(paramMap.get("fileWorkType")));
+			sopFileBean.setFileUid(bean.getGuserid());
+			SopFileBean bean2 = service.isUpload(sopFileBean);
+			if (bean2!=null) {
+				//标识存在报告在详情页显示
+				map2.put("isUploadReport", 1);
+			}
+			
+			//查询时否存在操作日志
+			OperationLogs operationLogs = new OperationLogs();
+			operationLogs.setUid(bean.getGuserid());
+			operationLogs.setProjectId(CUtils.get().object2Long(paramMap.get("projectId")));
+			operationLogs.setRecordId(CUtils.get().object2Long(paramMap.get("id")));
+			int count = service.getOperationLogs(operationLogs);
+			if (count >0) {
+				//标识存在操作日志
+				map2.put("isOperationLogs", 1);
+			}
+			
 			if (map!=null) {
+				resultBean.setMap(map2);
 				resultBean.setEntity(map);
 				resultBean.setStatus("OK");
 			}

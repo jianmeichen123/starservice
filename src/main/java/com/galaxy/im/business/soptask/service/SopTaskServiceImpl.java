@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.galaxy.im.bean.operationLog.OperationLogs;
 import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.soptask.SopTaskRecord;
 import com.galaxy.im.bean.talk.SopFileBean;
@@ -131,6 +132,17 @@ public class SopTaskServiceImpl extends BaseServiceImpl<SopTask> implements ISop
 	public int selectCount(Map<String, Object> paramMap) {
 		try{
 			return dao.selectCount(paramMap);
+		}catch(Exception e){
+			log.error(SopTaskServiceImpl.class.getName() + "_",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	//查询时否有操作日志
+	@Override
+	public int getOperationLogs(OperationLogs operationLogs) {
+		try{
+			return dao.getOperationLogs(operationLogs);
 		}catch(Exception e){
 			log.error(SopTaskServiceImpl.class.getName() + "_",e);
 			throw new ServiceException(e);
