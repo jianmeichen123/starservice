@@ -29,6 +29,8 @@ public class TalkRecordBean extends PagableEntity{
     private String resultReason;		//结论原因
     private String reasonOther;			//其他原因
     
+    private int interviewValid; 		//0表示有效，1表示无效
+    
     
     public Long getInterviewResultId() {
 		return interviewResultId;
@@ -182,6 +184,14 @@ public class TalkRecordBean extends PagableEntity{
 
 	public void setViewDate(Date viewDate) {
 		this.viewDate = viewDate;
+	}
+
+	public int getInterviewValid() {
+		return interviewValid;
+	}
+
+	public void setInterviewValid(int interviewValid) {
+		this.interviewValid = interviewValid;
 	}
 
 }
