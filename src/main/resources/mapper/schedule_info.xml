@@ -393,24 +393,6 @@
 		where id=#{id} 
 	</select>
 	
-	<!-- 查询文件 -->
-	<select id="getSopFileBean" resultType="com.galaxy.im.bean.talk.SopFileBean" 
-	parameterType="com.galaxy.im.bean.talk.SopFileBean">
-		select id,project_id projectId, file_name fileName from sop_file
-		where file_valid =1 and
-		<if test="interviewRecordId != null and interviewRecordId != 0" >interview_record_id=#{interviewRecordId}</if>
-		<if test="meetinRecordId != null and meetinRecordId != 0" >meeting_record_id=#{meetinRecordId}</if>
-	</select>
-	
-	<!-- 删除文件  -->
-	<select id="deleteSopFileBean" resultType="integer" 
-	parameterType="com.galaxy.im.bean.talk.SopFileBean">
-		update sop_file
-		set file_valid=0,
-		updated_time=#{updatedTime}
-		where id=#{id} 
-	</select>
-	
 	
 	
 </mapper>

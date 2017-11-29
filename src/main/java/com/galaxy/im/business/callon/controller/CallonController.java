@@ -168,16 +168,13 @@ public class CallonController {
 				if (tBean!=null) {
 					//删除访谈记录
 					tBean.setUpdatedTime(new Date().getTime());
-					 callonService.delTalkRecordBean(tBean);
+					callonService.delTalkRecordBean(tBean);
 					//查询访谈记录下的文件
 					SopFileBean sFileBean = new SopFileBean();
-					sFileBean.setInterviewRecordId(tBean.getId());
-					sFileBean = callonService.getSopFileBean(sFileBean);
 					//删除文件
-					if (sFileBean!=null) {
-						sFileBean.setUpdatedTime(new Date().getTime());
-						 callonService.deleteSopFileBean(sFileBean);
-					}
+					sFileBean.setInterviewRecordId(tBean.getId());
+					sFileBean.setUpdatedTime(new Date().getTime());
+					callonService.deleteSopFileBean(sFileBean);
 				}
 				//查询运营会议
 				MeetingRecordBean mBean = callonService.getMeetingRecordBean(listBean.get(0).getId());
@@ -185,15 +182,11 @@ public class CallonController {
 					//删除运营会议
 					mBean.setUpdatedTime(new Date().getTime());
 					callonService.deleteMeetingRecordBean(mBean);
-					//查询运营会议下的文件
 					SopFileBean sFileBean = new SopFileBean();
-					sFileBean.setMeetinRecordId(mBean.getId());
-				    sFileBean = callonService.getSopFileBean(sFileBean);
 					//删除文件
-					if (sFileBean!=null) {
-						sFileBean.setUpdatedTime(new Date().getTime());
-						 callonService.deleteSopFileBean(sFileBean);
-					}
+					sFileBean.setMeetingId(mBean.getId());
+					sFileBean.setUpdatedTime(new Date().getTime());
+					callonService.deleteSopFileBean(sFileBean);
 				}
 				map.put("updatedTime", DateUtil.getMillis(new Date()));
 				SessionBean sessionBean = CUtils.get().getBeanBySession(request);

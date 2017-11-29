@@ -12,6 +12,7 @@ import com.galaxy.im.bean.schedule.ScheduleInfo;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.bean.talk.TalkRecordBean;
 import com.galaxy.im.business.callon.dao.ICallonDao;
+import com.galaxy.im.business.sopfile.dao.ISopFileDao;
 import com.galaxy.im.common.db.IBaseDao;
 import com.galaxy.im.common.db.QPage;
 import com.galaxy.im.common.db.service.BaseServiceImpl;
@@ -23,6 +24,9 @@ public class CallonServiceImpl extends BaseServiceImpl<ScheduleInfo> implements 
 	
 	@Autowired
 	private ICallonDao callonDao;
+	
+	@Autowired
+	ISopFileDao dao;
 
 	@Override
 	protected IBaseDao<ScheduleInfo, Long> getBaseDao() {
@@ -81,22 +85,12 @@ public class CallonServiceImpl extends BaseServiceImpl<ScheduleInfo> implements 
 		}
 	}
 
-	//查询文件
-	@Override
-	public SopFileBean getSopFileBean(SopFileBean bean) {
-		try{
-			return callonDao.getSopFileBean(bean);
-		}catch(Exception e){
-			log.error(CallonServiceImpl.class.getName() + "_",e);
-			throw new ServiceException(e);
-		}
-	}
 
 	//删除文件
 	@Override
 	public int deleteSopFileBean(SopFileBean sFileBean) {
 		try{
-			return callonDao.deleteSopFileBean(sFileBean);
+			return dao.delPostMeetingFile(sFileBean);
 		}catch(Exception e){
 			log.error(CallonServiceImpl.class.getName() + "_",e);
 			throw new ServiceException(e);

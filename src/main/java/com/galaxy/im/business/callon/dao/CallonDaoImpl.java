@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import com.galaxy.im.bean.meeting.MeetingRecordBean;
 import com.galaxy.im.bean.schedule.ScheduleInfo;
-import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.bean.talk.TalkRecordBean;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.db.BaseDaoImpl;
@@ -79,28 +78,6 @@ public class CallonDaoImpl extends BaseDaoImpl<ScheduleInfo, Long> implements IC
 			return sqlSessionTemplate.delete(getSqlName("delTalkRecordBean"), tBean);
 		} catch (Exception e) {
 			log.error(String.format( getSqlName("delTalkRecordBean")), e);
-			throw new DaoException(e);
-		}
-	}
-
-	//查询文件
-	@Override
-	public SopFileBean getSopFileBean(SopFileBean bean) {
-		try {
-			return sqlSessionTemplate.selectOne(getSqlName("getSopFileBean"), bean);
-		} catch (Exception e) {
-			log.error(String.format(getSqlName("getSopFileBean")), e);
-			throw new DaoException(e);
-		}
-	}
-
-	//删除文件
-	@Override
-	public int deleteSopFileBean(SopFileBean sFileBean) {
-		try {
-			return sqlSessionTemplate.delete(getSqlName("deleteSopFileBean"), sFileBean);
-		} catch (Exception e) {
-			log.error(String.format(getSqlName("deleteSopFileBean")), e);
 			throw new DaoException(e);
 		}
 	}

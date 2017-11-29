@@ -17,8 +17,6 @@ public interface ICallonService extends IBaseService<ScheduleInfo>{
 	TalkRecordBean getTalkRecordBean(Long id);
 	//删除访谈记录
 	int delTalkRecordBean(TalkRecordBean tBean);
-	//查询访谈记录//运营会议下的文件
-	SopFileBean getSopFileBean(SopFileBean sFileBean);
 	//删除访谈记录//运营会议下的文件
 	int deleteSopFileBean(SopFileBean sFileBean);
 	//查询运营会议

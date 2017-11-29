@@ -4,7 +4,6 @@ import java.util.Map;
 
 import com.galaxy.im.bean.meeting.MeetingRecordBean;
 import com.galaxy.im.bean.schedule.ScheduleInfo;
-import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.bean.talk.TalkRecordBean;
 import com.galaxy.im.common.db.IBaseDao;
 import com.galaxy.im.common.db.QPage;
@@ -17,10 +16,6 @@ public interface ICallonDao extends IBaseDao<ScheduleInfo, Long>{
 	TalkRecordBean getTalkRecordBean(Long id);
 	//删除访谈记录
 	int delTalkRecordBean(TalkRecordBean tBean);
-	//查询文件
-	SopFileBean getSopFileBean(SopFileBean bean);
-	//删除文件
-	int deleteSopFileBean(SopFileBean sFileBean);
 	//删除运营会议
 	int deleteMeetingRecordBean(MeetingRecordBean mBean);
 	//查询运营会议
