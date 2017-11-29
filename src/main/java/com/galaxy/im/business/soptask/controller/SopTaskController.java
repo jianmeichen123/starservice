@@ -161,7 +161,7 @@ public class SopTaskController {
 			SopFileBean sopFileBean = new SopFileBean();
 			sopFileBean.setProjectId( CUtils.get().object2Long(paramMap.get("projectId")));
 			//fileWorktype=2人事 fileWorktype=3法务 fileWorktype=4财务
-			sopFileBean.setFileWorkType(CUtils.get().object2String(paramMap.get("fileWorkType")));
+			sopFileBean.setFileWorkType(CUtils.get().object2String(paramMap.get("fileWorktype")));
 			sopFileBean.setFileUid(bean.getGuserid());
 			SopFileBean bean2 = service.isUpload(sopFileBean);
 			if (bean2!=null) {

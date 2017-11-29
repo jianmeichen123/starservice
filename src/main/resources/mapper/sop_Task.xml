@@ -139,7 +139,7 @@
 	<select id="isUpload" parameterType="com.galaxy.im.bean.talk.SopFileBean"
 		resultType="com.galaxy.im.bean.talk.SopFileBean">
 		SELECT id,belong_uid belongUid,file_uid fileUid FROM sop_file WHERE project_id=#{projectId} 
-		AND file_valid=1 AND file_uid =#{fileUid} and file_worktype=#{fileWorkType}
+		AND file_valid=1 AND file_uid =#{fileUid} and file_worktype=#{fileWorktype}
 	</select>
 	
 	<!-- 更新文件信息 -->
