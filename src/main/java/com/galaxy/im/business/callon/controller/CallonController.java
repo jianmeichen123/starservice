@@ -172,6 +172,7 @@ public class CallonController {
 				if (tBean!=null) {
 					//删除访谈记录
 					tBean.setUpdatedTime(new Date().getTime());
+					tBean.setInterviewValid(1);
 					callonService.delTalkRecordBean(tBean);
 					//查询访谈记录下的文件
 					SopFileBean sFileBean = new SopFileBean();
