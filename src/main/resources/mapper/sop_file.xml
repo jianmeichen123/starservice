@@ -39,12 +39,12 @@
 	<update id="delPostMeetingFile" parameterType="hashmap">
 		update sop_file
 		<set>
-			file_valid = 0
-		 	<if test="updatedTime != null" >, updated_time = #{updatedTime} </if>
+			<if test="fileValid != null" >file_valid = #{fileValid}, </if>
+		 	<if test="updatedTime != null" >updated_time = #{updatedTime} </if>
 		</set>
 		<where>
 			<trim prefixOverrides="and">
-				<if test="interviewRecordId != null">and interview_record_id=#{interviewRecordId}</if>
+				<if test="interviewRecordId != 0">and interview_record_id=#{interviewRecordId}</if>
 				<if test="meetingId != null"> and meeting_id =#{meetingId} </if>
 				<if test="fileKey != null" >and file_key = #{fileKey} </if>
 			</trim>
