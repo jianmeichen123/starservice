@@ -105,6 +105,8 @@ public class SopTaskController {
 				for(Map<String, Object> map : list){
 					if (map.get("assignUid").equals(user.get("id"))) {
 						map.put("userFalg", 1);
+					}else {
+						map.put("userFalg", 0);
 					}
 				}
 			  }
@@ -167,6 +169,8 @@ public class SopTaskController {
 			if (bean2!=null) {
 				//标识存在报告在详情页显示
 				map2.put("isUploadReport", 1);
+			}else {
+				map2.put("isUploadReport", 0);
 			}
 			
 			//查询时否存在操作日志
@@ -178,6 +182,8 @@ public class SopTaskController {
 			if (count >0) {
 				//标识存在操作日志
 				map2.put("isOperationLogs", 1);
+			}else{
+				map2.put("isOperationLogs", 0);
 			}
 			
 			if (map!=null) {
