@@ -34,7 +34,7 @@
 			  FROM sop_project 
 			  <where>
 				<trim prefixOverrides="and">
-					<if test="createUid != null" > and create_uid = #{createUid} </if>
+					<if test="createdId != null" > and create_uid = #{createdId} </if>
 				    <if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
 				    <!-- 模糊查询 -->
 					<if test="keyword != null">
@@ -77,7 +77,7 @@
 			  FROM sop_project 
 			  <where>
 				<trim prefixOverrides="and">
-					<if test="createUid != null" > and create_uid = #{createUid} </if>
+					<if test="createdId != null" > and create_uid = #{createdId} </if>
 				    <if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
 				    <!-- 模糊查询 -->
 					<if test="keyword != null">
