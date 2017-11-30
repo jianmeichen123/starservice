@@ -55,6 +55,8 @@
 	<!-- 待办任务详情 -->
 	<select id="taskInfo" parameterType="hashmap"
 		resultType="hashmap">
+		SELECT p5.*, u2.user_name assignUserName from
+		(
 		SELECT p4.*,st.task_name taskName,st.assign_uid assignUid,st.id taskId
 		FROM sop_task st LEFT JOIN
 		(
@@ -70,7 +72,7 @@
 		LEFT JOIN dict dd ON dd.dict_code =p1.project_type
 		WHERE p1.id = #{projectId}) p2  LEFT JOIN power.department d ON p2.projectCareerline = d.dep_name) p3
 		LEFT JOIN power.user u1 ON p3.depManager = u1.id) p4 ON st.project_id = p4.projectId 
-		WHERE st.id =#{id}
+		WHERE st.id =#{id}) p5 LEFT JOIN power.user u2 ON  u2.id = p5.assignUid
 	</select>
 	
 	<!-- 修改项目状态 为认领-->
