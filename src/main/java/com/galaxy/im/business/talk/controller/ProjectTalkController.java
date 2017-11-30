@@ -120,6 +120,7 @@ public class ProjectTalkController {
 							sopFileBean.setFileStatus(StaticConst.FILE_STATUS_2);
 							sopFileBean.setCreatedTime(new Date().getTime());
 							sopFileBean.setFileSource("1");
+							sopFileBean.setFileValid(1);
 							
 							long sopId =talkService.saveSopFile(sopFileBean);
 							//获取sopfile 主键
