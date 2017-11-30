@@ -38,7 +38,20 @@
 				    <if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
 				    <!-- 模糊查询 -->
 					<if test="keyword != null">
+						
 						and (upper(project_name) like CONCAT("%",upper(#{keyword}),"%")
+						<if test="escapeChar ">
+							escape '/'
+						</if>
+						or upper(project_code) like CONCAT("%",upper(#{keyword}),"%")
+						<if test="escapeChar ">
+							escape '/'
+						</if>
+						or project_name like CONCAT("%",#{ceeword},"%")
+						<if test="escapeChar ">
+							escape '/'
+						</if>
+						)
 					</if>
 				</trim>
 			  </where>
@@ -66,6 +79,23 @@
 				<trim prefixOverrides="and">
 					<if test="createUid != null" > and create_uid = #{createUid} </if>
 				    <if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
+				    <!-- 模糊查询 -->
+					<if test="keyword != null">
+						
+						and (upper(project_name) like CONCAT("%",upper(#{keyword}),"%")
+						<if test="escapeChar ">
+							escape '/'
+						</if>
+						or upper(project_code) like CONCAT("%",upper(#{keyword}),"%")
+						<if test="escapeChar ">
+							escape '/'
+						</if>
+						or project_name like CONCAT("%",#{ceeword},"%")
+						<if test="escapeChar ">
+							escape '/'
+						</if>
+						)
+					</if>
 				</trim>
 			  </where>
 			)

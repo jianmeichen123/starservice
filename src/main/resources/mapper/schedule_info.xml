@@ -114,8 +114,7 @@
 	    projectId,
 	    projectName,
 	    case 
-		WHEN isInterview=1 THEN 1
-		WHEN isMeet=1 THEN 1
+		WHEN isInterview=1 and isMeet=1 THEN 1
 		ELSE 2
 		END isInterview,
 	    case (currentTimeUnix>startTimeUnix) when 1 then 2 else 1 end callonProgress,
