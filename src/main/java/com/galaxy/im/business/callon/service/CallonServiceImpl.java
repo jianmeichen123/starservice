@@ -14,6 +14,7 @@ import com.galaxy.im.bean.talk.TalkRecordBean;
 import com.galaxy.im.business.callon.dao.ICallonDao;
 import com.galaxy.im.business.meeting.dao.IMeetingRecordDao;
 import com.galaxy.im.business.sopfile.dao.ISopFileDao;
+import com.galaxy.im.business.talk.dao.ITalkRecordDao;
 import com.galaxy.im.common.db.IBaseDao;
 import com.galaxy.im.common.db.QPage;
 import com.galaxy.im.common.db.service.BaseServiceImpl;
@@ -27,6 +28,9 @@ public class CallonServiceImpl extends BaseServiceImpl<ScheduleInfo> implements 
 	private ICallonDao callonDao;
 	@Autowired
 	IMeetingRecordDao meetingDao;
+	
+	@Autowired
+	ITalkRecordDao iTalkRecordDao;
 	
 	@Autowired
 	ISopFileDao dao;
@@ -70,7 +74,7 @@ public class CallonServiceImpl extends BaseServiceImpl<ScheduleInfo> implements 
 	@Override
 	public TalkRecordBean getTalkRecordBean(Long id) {
 		try{
-			return callonDao.getTalkRecordBean(id);
+			return iTalkRecordDao.getTalkRecordBean(id);
 		}catch(Exception e){
 			log.error(CallonServiceImpl.class.getName() + "_",e);
 			throw new ServiceException(e);
@@ -81,7 +85,7 @@ public class CallonServiceImpl extends BaseServiceImpl<ScheduleInfo> implements 
 	@Override
 	public int delTalkRecordBean(TalkRecordBean tBean) {
 		try{
-			return callonDao.delTalkRecordBean(tBean);
+			return iTalkRecordDao.delTalkRecordBean(tBean);
 		}catch(Exception e){
 			log.error(CallonServiceImpl.class.getName() + "_",e);
 			throw new ServiceException(e);
@@ -115,12 +119,14 @@ public class CallonServiceImpl extends BaseServiceImpl<ScheduleInfo> implements 
 	@Override
 	public MeetingRecordBean getMeetingRecordBean(Long id) {
 		try{
-			return callonDao.getMeetingRecordBean(id);
+			return meetingDao.getMeetingRecord(id);
 		}catch(Exception e){
 			log.error(CallonServiceImpl.class.getName() + "_",e);
 			throw new ServiceException(e);
 		}
 	}
+
+
 	
 	
 	

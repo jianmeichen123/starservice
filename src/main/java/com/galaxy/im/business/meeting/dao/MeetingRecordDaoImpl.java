@@ -77,5 +77,17 @@ public class MeetingRecordDaoImpl extends BaseDaoImpl<MeetingRecordBean, Long> i
 			throw new DaoException(e);
 		}
 	}
+	
+	//查询运营会议
+	@Override
+	public MeetingRecordBean getMeetingRecord(Long id) {
+		try {
+			return sqlSessionTemplate.selectOne(getSqlName("getMeetingRecordBean"), id);
+		} catch (Exception e) {
+			log.error(String.format(getSqlName("getMeetingRecordBean")), e);
+			throw new DaoException(e);
+		}
+	}
+	
 
 }

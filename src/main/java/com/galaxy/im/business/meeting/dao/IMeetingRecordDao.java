@@ -16,4 +16,6 @@ public interface IMeetingRecordDao extends IBaseDao<MeetingRecordBean, Long>{
 
 	int delMeetingRecord(MeetingRecordBean meetingRecord);
 
+	MeetingRecordBean getMeetingRecord(Long id);
+
 }

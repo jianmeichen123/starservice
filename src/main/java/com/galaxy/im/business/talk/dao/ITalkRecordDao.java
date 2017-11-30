@@ -12,5 +12,11 @@ public interface ITalkRecordDao extends IBaseDao<TalkRecordBean, Long>{
 	 * @return
 	 */
 	long saveSopFile(SopFileBean sopFileBean);
+	
+	//查询访谈记录
+	TalkRecordBean getTalkRecordBean(Long id);
+	//删除访谈记录
+	int delTalkRecordBean(TalkRecordBean tBean);
+	
 
 }

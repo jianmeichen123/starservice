@@ -31,4 +31,26 @@ private Logger log = LoggerFactory.getLogger(TalkRecordDaoImpl.class);
 			throw new DaoException(e);
 		}
 	}
+	
+	//查询访谈记录
+	@Override
+	public TalkRecordBean getTalkRecordBean(Long id) {
+		try {
+			return sqlSessionTemplate.selectOne(getSqlName("getTalkRecordBean"), id);
+		} catch (Exception e) {
+			log.error(String.format(getSqlName("getTalkRecordBean")), e);
+			throw new DaoException(e);
+		}
+	}
+
+	//删除访谈记录
+	@Override
+	public int delTalkRecordBean(TalkRecordBean tBean) {
+		try {
+			return sqlSessionTemplate.delete(getSqlName("delTalkRecordBean"), tBean);
+		} catch (Exception e) {
+			log.error(String.format( getSqlName("delTalkRecordBean")), e);
+			throw new DaoException(e);
+		}
+	}
 }
