@@ -102,7 +102,6 @@
 		update sop_interview_record
 		<set>
 		  <if test="interviewValid != 0" > interview_valid = #{interviewValid},</if>
-		  <if test="scheduleId != null" > schedule_id = #{scheduleId} ,</if>
 		  <if test="fileId != 0" > file_id = #{fileId}, </if>
 	      <if test="viewTarget != null" > view_target = #{viewTarget}, </if>
 	      <if test="viewNotes != null" > view_notes = #{viewNotes}, </if>
