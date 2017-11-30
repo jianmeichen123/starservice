@@ -112,4 +112,13 @@
 			SELECT LAST_INSERT_ID() AS id
 		</selectKey>
     </insert>
+    
+    	
+	<!-- 查询访谈记录 -->
+	<select id="getTalkRecordBean" resultType="com.galaxy.im.bean.talk.TalkRecordBean" 
+	parameterType="com.galaxy.im.bean.talk.TalkRecordBean">
+		select id,project_id projectId, file_id fileId, schedule_id scheduleId from sop_interview_record
+		where schedule_id=#{id} and interview_valid =0
+	</select>
+	
 </mapper>

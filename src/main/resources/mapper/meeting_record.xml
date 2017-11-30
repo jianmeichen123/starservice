@@ -225,4 +225,11 @@
 		WHERE r.id=#{id} and r.record_type=#{recordType} and r.meet_valid = 0;
 	</select>
 	
+	<!-- 查询运营会议 -->
+	<select id="getMeetingRecordBean" resultType="com.galaxy.im.bean.meeting.MeetingRecordBean" 
+	parameterType="com.galaxy.im.bean.meeting.MeetingRecordBean">
+		select id,project_id projectId, file_id fileId, schedule_id scheduleId from sop_meeting_record
+		where schedule_id=#{id} and meet_valid =0
+	</select>
+	
 </mapper>

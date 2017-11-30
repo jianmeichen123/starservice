@@ -47,9 +47,9 @@ private Logger log = LoggerFactory.getLogger(TalkRecordDaoImpl.class);
 	@Override
 	public int delTalkRecordBean(TalkRecordBean tBean) {
 		try {
-			return sqlSessionTemplate.delete(getSqlName("delTalkRecordBean"), tBean);
+			return sqlSessionTemplate.delete(getSqlName("updateById"), tBean);
 		} catch (Exception e) {
-			log.error(String.format( getSqlName("delTalkRecordBean")), e);
+			log.error(String.format( getSqlName("updateById")), e);
 			throw new DaoException(e);
 		}
 	}

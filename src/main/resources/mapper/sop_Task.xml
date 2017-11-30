@@ -164,22 +164,7 @@
 		select count(1) FROM sop_operation_logs 
 		WHERE record_type=4 and uid=#{uid} and record_id=#{recordId}
 	</select>
-	
-	<!-- 查询访谈记录 -->
-	<select id="getTalkRecordBean" resultType="com.galaxy.im.bean.talk.TalkRecordBean" 
-	parameterType="com.galaxy.im.bean.talk.TalkRecordBean">
-		select id,project_id projectId, file_id fileId, schedule_id scheduleId from sop_interview_record
-		where schedule_id=#{id} and interview_valid =0
-	</select>
-	
-	<!-- 删除访谈记录 -->
-	<select id="delTalkRecordBean" resultType="integer" 
-	parameterType="com.galaxy.im.bean.talk.TalkRecordBean">
-		update sop_interview_record
-		set interview_valid=1,
-		update_time=#{updatedTime}
-		where id=#{id} 
-	</select>
+
 	
 	
 </mapper>
