@@ -259,11 +259,11 @@ public class DictController {
 							if(paramMap.containsKey("flag") && CUtils.get().object2String(paramMap.get("flag")).equals("0")){
 								//部门下所有人
 								userList.addAll(uList);
-							}else if(paramMap.containsKey("flag") && CUtils.get().object2String(paramMap.get("flag")).equals("1")){
+							}else if(paramMap.containsKey("flag")){
 								//部门下去掉自己的所有人
 								for(Map<String, Object> pMap:uList){
 									//去除列表中的本人
-									if (!CUtils.get().object2Long(pMap.get("userId")).equals(sessionBean.getGuserid())) {
+									if (!CUtils.get().object2String(pMap.get("userId")).equals(CUtils.get().object2String(paramMap.get("flag")))) {
 										userList.add(pMap);
 									}
 								}

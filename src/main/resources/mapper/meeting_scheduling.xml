@@ -3,5 +3,94 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
 <mapper namespace="com.galaxy.im.business.meeting.dao.IMeetingSchedulingDao">
-
+	
+	<!-- 排期列表 -->
+	<select id="queryMescheduling" resultType="hashMap" parameterType="java.util.Map">
+		select
+			s.id, 
+			s.project_id projectId, 
+			s.meeting_type meetingType, 
+			s.meeting_count meetingCount, 
+			s.meeting_date meetingDate, 
+			s.status status, 
+			s.remark remark, 
+			s.schedule_status scheduleStatus,
+			s.apply_time applyTime,
+			s.reserve_time_start reserveTimeStart, 
+			s.reserve_time_end reserveTimeEnd,
+			s.last_time lastTime,
+			s. updated_time updatedTime, 
+			s.created_time createdTime,
+			p.project_code projectCode,
+			p.project_name projectName,
+			p.create_uname createUname
+		from sop_meeting_scheduling s
+		LEFT JOIN sop_project p on s.project_id=p.id
+		WHERE s.project_id in
+			( SELECT id 
+			  FROM sop_project 
+			  <where>
+				<trim prefixOverrides="and">
+					<if test="createUid != null" > and create_uid = #{createUid} </if>
+				    <if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
+				</trim>
+			  </where>
+			)
+		<if test="scheduleStatus != null" >and s.schedule_status = #{scheduleStatus} </if>
+		<if test="startTime != null ">				
+		 	and s.reserve_time_start >= STR_TO_DATE(CONCAT(#{startTime} , ' 00:00:00') ,'%Y-%m-%d %H:%i:%s')	 
+		</if> 
+		<if test="sorting != null">order by ${sorting}</if> 
+		<if test="sorting == null">order by meeting_count DESC,meeting_date DESC</if> 
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+	<!-- 排期列表个数 -->
+	<select id="queryMeschedulingCount" resultType="java.lang.Long" parameterType="java.util.Map">
+		select count(1)
+		from sop_meeting_scheduling s
+		LEFT JOIN sop_project p on s.project_id=p.id
+		WHERE s.project_id in
+			( SELECT id 
+			  FROM sop_project 
+			  <where>
+				<trim prefixOverrides="and">
+					<if test="createUid != null" > and create_uid = #{createUid} </if>
+				    <if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
+				</trim>
+			  </where>
+			)
+		<if test="scheduleStatus != null" >and s.schedule_status = #{scheduleStatus} </if>
+		<if test="startTime != null ">				
+		 	and s.reserve_time_start >= STR_TO_DATE(CONCAT(#{startTime} , ' 00:00:00') ,'%Y-%m-%d %H:%i:%s')	 
+		</if> 
+	</select>
+	
+	<!-- 查询排队数量 -->
+	 <select id="selectpdCount" resultType="java.lang.Long" parameterType="java.util.Map">		
+		 SELECT COUNT(id) 
+		 FROM sop_meeting_scheduling sms 
+		 WHERE 
+		  sms.meeting_type='meetingType:2' 
+		 AND
+		 sms.schedule_status='0'
+		 AND 
+		 sms.apply_time &lt;&gt; #{applyTime} 				
+	</select>
+	
+	
+	<!-- 查询排队数量 -->
+	<select id="selectltpdCount" resultType="java.lang.Long" parameterType="java.util.Map">		
+		 SELECT COUNT(id) 
+		 FROM sop_meeting_scheduling sms 
+		 WHERE 
+		  sms.meeting_type &lt;&gt; 'meetingType:2' 
+		 AND
+		 sms.schedule_status='0'
+		 AND 
+		 sms.apply_time &lt;&gt; #{applyTime} 				
+	</select>
+	
 </mapper>
