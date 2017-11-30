@@ -83,7 +83,7 @@
 	<update id="updateById" parameterType="com.galaxy.im.bean.talk.TalkRecordBean">
 		update sop_interview_record
 		<set>
-			interview_valid = 0,
+		  <if test="interviewValid != 0" > interview_valid = #{interviewValid},</if>
 		  <if test="fileId != 0" > file_id = #{fileId}, </if>
 	      <if test="viewTarget != null" > view_target = #{viewTarget}, </if>
 	      <if test="viewNotes != null" > view_notes = #{viewNotes}, </if>
