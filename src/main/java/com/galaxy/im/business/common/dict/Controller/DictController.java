@@ -256,7 +256,7 @@ public class DictController {
 							}
 						}else if(paramMap.containsKey("type") && CUtils.get().object2String(paramMap.get("type")).equals("1")){
 							//指派
-							if(paramMap.containsKey("flag") && CUtils.get().object2String(paramMap.get("flag")).equals("0")){
+							if(paramMap.containsKey("flag") && CUtils.get().object2String(paramMap.get("flag")).equals("00")){
 								//部门下所有人
 								userList.addAll(uList);
 							}else if(paramMap.containsKey("flag")){

@@ -13,7 +13,13 @@
 				else tt.name
 				end viewTarget,
 				tt.project_id projectId,
-				tt.project_name projectName
+				tt.project_name projectName,
+				tt.view_notes viewNotes,
+				dct1.dict_value interviewResultId,
+				dct1.`name` interviewResult,
+				dct2.dict_value resultReasonId,
+				dct2.`name` resultReason,
+				tt.reason_other reasonOther
 		FROM(
 			SELECT 	 r.id,
 					 r.view_date,
@@ -21,7 +27,17 @@
 					 r.view_target,
 					 r.schedule_id,
 					 r.project_id,
-					 p.project_name
+					 p.project_name,
+					r.interview_result,
+					case 
+					WHEN locate('Veto',r.result_reason)>0 THEN 'meetingVetoReason'
+					WHEN locate('Undetermined',r.result_reason)>0 THEN 'meetingUndeterminedReason'
+					WHEN locate('Following',r.result_reason)>0 THEN 'meetingFollowingReason'
+					else ''
+					end resultReason,
+					r.result_reason,
+					r.view_notes,
+					r.reason_other
 				FROM sop_interview_record r
 				LEFT JOIN schedule_contacts con on r.view_target=con.id 
 				LEFT JOIN sop_project p ON p.id = r.project_id
@@ -41,7 +57,9 @@
 			<if test="offset != null and limit != null">
 				limit #{offset}, #{limit}
 			</if> 
-		) tt;
+		) tt 
+		LEFT JOIN dict dct1 ON dct1.parent_code='meetingResult' and dct1.dict_code=tt.interview_result
+		LEFT JOIN dict dct2 ON dct2.parent_code=tt.resultReason and dct2.dict_code=tt.result_reason ;
 	</select>
 	<resultMap type="com.galaxy.im.bean.talk.TalkRecordBean" id="talkMap">
 		<result column="id" property="id"/>
