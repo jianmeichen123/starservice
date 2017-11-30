@@ -57,12 +57,5 @@ public class CallonDaoImpl extends BaseDaoImpl<ScheduleInfo, Long> implements IC
 			throw new DaoException(e);
 		}
 	}
-
-
-
-
-
-
-
 	
 }

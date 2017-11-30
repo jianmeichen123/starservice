@@ -180,7 +180,7 @@
 	<update id="updateById" parameterType="com.galaxy.im.bean.meeting.MeetingRecordBean">
 		update sop_meeting_record
 		<set>
-			meet_valid = 0,
+		  <if test="meetValid != 0" > meet_valid = #{meetValid}, </if>
 		  <if test="fileId != 0" > file_id = #{fileId}, </if>
 	      <if test="meetingDate != null" > meeting_date = #{meetingDate}, </if>
 	      <if test="meetingNotes != null" > meeting_notes = #{meetingNotes}, </if>
@@ -225,11 +225,4 @@
 		WHERE r.id=#{id} and r.record_type=#{recordType} and r.meet_valid = 0;
 	</select>
 	
-	<!-- 删除运营会议  -->
-	<select id="delMeetingRecord" resultType="integer" parameterType="com.galaxy.im.bean.meeting.MeetingRecordBean">
-		update sop_meeting_record
-		set meet_valid=1,
-		update_time=#{updatedTime}
-		where id=#{id} 
-	</select>
 </mapper>

@@ -35,6 +35,7 @@ import com.galaxy.im.business.callon.service.ICallonService;
 import com.galaxy.im.business.common.dict.service.IDictService;
 import com.galaxy.im.business.contracts.service.IContractsService;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
+import com.galaxy.im.business.meeting.service.IMeetingRecordService;
 import com.galaxy.im.business.message.service.IScheduleMessageService;
 import com.galaxy.im.business.project.service.IProjectService;
 import com.galaxy.im.business.sopfile.service.ISopFileService;
@@ -79,6 +80,9 @@ public class CallonController {
 	
 	@Autowired
 	IDictService dictService;
+	
+	@Autowired
+	IMeetingRecordService meetService;
 	
 	/**
 	 * 保存/编辑拜访计划
@@ -181,7 +185,8 @@ public class CallonController {
 				if (mBean!=null) {
 					//删除运营会议
 					mBean.setUpdatedTime(new Date().getTime());
-					callonService.deleteMeetingRecordBean(mBean);
+					mBean.setMeetValid(1);
+					meetService.updateById(mBean);
 					SopFileBean sFileBean = new SopFileBean();
 					//删除文件
 					sFileBean.setMeetingId(mBean.getId());

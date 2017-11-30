@@ -107,7 +107,8 @@ public class PosMeetingRecordController {
 			if(meetingRecord.getFileKey()==null){
 				//会议删除
 				meetingRecord.setUpdatedTime(new Date().getTime());
-				result = service.delMeetingRecord(meetingRecord);
+				meetingRecord.setMeetValid(1);
+				result = service.updateById(meetingRecord);
 				//删除文件
 				sopfile.setMeetingId(meetingRecord.getId());
 				sopfile.setUpdatedTime(new Date().getTime());

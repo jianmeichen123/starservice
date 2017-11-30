@@ -104,17 +104,6 @@ public class CallonServiceImpl extends BaseServiceImpl<ScheduleInfo> implements 
 		}
 	}
 
-	//删除运营会议
-	@Override
-	public int deleteMeetingRecordBean(MeetingRecordBean mBean) {
-		try{
-			return meetingDao.delMeetingRecord(mBean);
-		}catch(Exception e){
-			log.error(CallonServiceImpl.class.getName() + "_",e);
-			throw new ServiceException(e);
-		}
-	}
-
 	//查询运营会议
 	@Override
 	public MeetingRecordBean getMeetingRecordBean(Long id) {
