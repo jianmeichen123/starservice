@@ -10,12 +10,14 @@
 			s.id, 
 			s.project_id projectId, 
 			s.meeting_type meetingType, 
+			d.name meetingTypeStr,
 			s.meeting_count meetingCount, 
 			s.meeting_date meetingDate, 
 			s.status status, 
 			s.remark remark, 
 			s.schedule_status scheduleStatus,
 			s.apply_time applyTime,
+			date_format(s.apply_time,'%Y-%m-%d %H:%i:%s') applyTimeStr,
 			s.reserve_time_start reserveTimeStart, 
 			s.reserve_time_end reserveTimeEnd,
 			s.last_time lastTime,
@@ -26,6 +28,7 @@
 			p.create_uname createUname
 		from sop_meeting_scheduling s
 		LEFT JOIN sop_project p on s.project_id=p.id
+		LEFT JOIN dict d on s.meeting_type=d.dict_code
 		WHERE s.project_id in
 			( SELECT id 
 			  FROM sop_project 
@@ -33,6 +36,10 @@
 				<trim prefixOverrides="and">
 					<if test="createUid != null" > and create_uid = #{createUid} </if>
 				    <if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
+				    <!-- 模糊查询 -->
+					<if test="keyword != null">
+						and (upper(project_name) like CONCAT("%",upper(#{keyword}),"%")
+					</if>
 				</trim>
 			  </where>
 			)
