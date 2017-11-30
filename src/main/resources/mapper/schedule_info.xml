@@ -82,7 +82,7 @@
 		    project.id projectId,
 		    project.project_name projectName,
 		    case (isnull(sir.id) &amp;&amp; UNIX_TIMESTAMP(current_timestamp())>UNIX_TIMESTAMP(info.start_time)) when 1 then 1 else 2 end isInterview,
-		    case (isnull(smr.id) && UNIX_TIMESTAMP(current_timestamp())>UNIX_TIMESTAMP(info.start_time)) when 1 then 1 else 2 end isMeet,
+		    case (isnull(smr.id) &amp;&amp; UNIX_TIMESTAMP(current_timestamp())>UNIX_TIMESTAMP(info.start_time)) when 1 then 1 else 2 end isMeet,
 		    info.is_del isDel,
 		    info.created_time createdTime,
 		    info.created_id createdId
