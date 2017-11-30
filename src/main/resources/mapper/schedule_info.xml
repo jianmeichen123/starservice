@@ -384,14 +384,7 @@
 		where schedule_id=#{id} and meet_valid =0
 	</select>
 	
-	<!-- 删除运营会议  -->
-	<select id="deleteMeetingRecordBean" resultType="integer" 
-	parameterType="com.galaxy.im.bean.meeting.MeetingRecordBean">
-		update sop_meeting_record
-		set meet_valid=1,
-		update_time=#{updatedTime}
-		where id=#{id} 
-	</select>
+	
 	
 	
 	

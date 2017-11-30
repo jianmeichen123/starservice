@@ -224,4 +224,12 @@
 		LEFT JOIN dict d2 on d2.dict_code=r.meeting_result
 		WHERE r.id=#{id} and r.record_type=#{recordType} and r.meet_valid = 0;
 	</select>
+	
+	<!-- 删除运营会议  -->
+	<select id="delMeetingRecord" resultType="integer" parameterType="com.galaxy.im.bean.meeting.MeetingRecordBean">
+		update sop_meeting_record
+		set meet_valid=1,
+		update_time=#{updatedTime}
+		where id=#{id} 
+	</select>
 </mapper>

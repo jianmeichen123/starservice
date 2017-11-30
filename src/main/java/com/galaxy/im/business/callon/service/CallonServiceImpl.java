@@ -12,6 +12,7 @@ import com.galaxy.im.bean.schedule.ScheduleInfo;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.bean.talk.TalkRecordBean;
 import com.galaxy.im.business.callon.dao.ICallonDao;
+import com.galaxy.im.business.meeting.dao.IMeetingRecordDao;
 import com.galaxy.im.business.sopfile.dao.ISopFileDao;
 import com.galaxy.im.common.db.IBaseDao;
 import com.galaxy.im.common.db.QPage;
@@ -24,6 +25,8 @@ public class CallonServiceImpl extends BaseServiceImpl<ScheduleInfo> implements 
 	
 	@Autowired
 	private ICallonDao callonDao;
+	@Autowired
+	IMeetingRecordDao meetingDao;
 	
 	@Autowired
 	ISopFileDao dao;
@@ -101,7 +104,7 @@ public class CallonServiceImpl extends BaseServiceImpl<ScheduleInfo> implements 
 	@Override
 	public int deleteMeetingRecordBean(MeetingRecordBean mBean) {
 		try{
-			return callonDao.deleteMeetingRecordBean(mBean);
+			return meetingDao.delMeetingRecord(mBean);
 		}catch(Exception e){
 			log.error(CallonServiceImpl.class.getName() + "_",e);
 			throw new ServiceException(e);

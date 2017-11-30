@@ -19,5 +19,7 @@ public interface IMeetingRecordService extends IBaseService<MeetingRecordBean>{
 
 	int delPostMeetingFile(SopFileBean sopfile);
 
+	int delMeetingRecord(MeetingRecordBean meetingRecord);
+
 
 }

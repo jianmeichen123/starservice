@@ -90,5 +90,18 @@ public class MeetingRecordServiceImpl extends BaseServiceImpl<MeetingRecordBean>
 			throw new ServiceException(e);
 		}
 	}
+
+	/**
+	 * 逻辑删除会议
+	 */
+	@Override
+	public int delMeetingRecord(MeetingRecordBean meetingRecord) {
+		try{
+			return dao.delMeetingRecord(meetingRecord);
+		}catch(Exception e){
+			log.error(MeetingRecordServiceImpl.class.getName() + "delMeetingRecord",e);
+			throw new ServiceException(e);
+		}
+	}
 	
 }

@@ -65,4 +65,17 @@ public class MeetingRecordDaoImpl extends BaseDaoImpl<MeetingRecordBean, Long> i
 		}
 	}
 
+	/**
+	 * 删除会议
+	 */
+	@Override
+	public int delMeetingRecord(MeetingRecordBean meetingRecord) {
+		try {
+			return sqlSessionTemplate.delete(getSqlName("delMeetingRecord"), meetingRecord);
+		} catch (Exception e) {
+			log.error(String.format(getSqlName("delMeetingRecord")), e);
+			throw new DaoException(e);
+		}
+	}
+
 }
