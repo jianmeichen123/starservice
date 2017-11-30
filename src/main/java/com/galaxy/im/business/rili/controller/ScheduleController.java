@@ -182,7 +182,7 @@ public class ScheduleController {
 		try {
 			Map<String,Object> map = CUtils.get().jsonString2map(id);
 			ScheduleInfo sInfo = service.queryById(CUtils.get().object2Long(map.get("id")));
-			Map<String, Object> ss = service.selectOtherScheduleById(map);
+			/*Map<String, Object> ss = service.selectOtherScheduleById(map);
 			if(ss!=null){
 				//判断是否过期
 				Long st= DateUtil.stringToLong(CUtils.get().object2String(ss.get("startTime")), "yyyy-MM-dd HH:mm");
@@ -190,7 +190,7 @@ public class ScheduleController {
 					resultBean.setMessage("此日程过期了");
 					return resultBean;
 				}	
-			}
+			}*/
 			//逻辑删除
 			if(map!=null){
 				map.put("updatedTime", DateUtil.getMillis(new Date()));
