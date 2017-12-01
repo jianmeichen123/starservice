@@ -57,6 +57,7 @@
 			  </where>
 			)
 		<if test="scheduleStatus != null" >and s.schedule_status = #{scheduleStatus} </if>
+		<if test="meetingType != null" >and s.meeting_type = #{meetingType} </if>
 		<if test="startTime != null ">				
 		 	and s.reserve_time_start >= STR_TO_DATE(CONCAT(#{startTime} , ' 00:00:00') ,'%Y-%m-%d %H:%i:%s')	 
 		</if> 
@@ -100,6 +101,7 @@
 			  </where>
 			)
 		<if test="scheduleStatus != null" >and s.schedule_status = #{scheduleStatus} </if>
+		<if test="meetingType != null" >and s.meeting_type = #{meetingType} </if>
 		<if test="startTime != null ">				
 		 	and s.reserve_time_start >= STR_TO_DATE(CONCAT(#{startTime} , ' 00:00:00') ,'%Y-%m-%d %H:%i:%s')	 
 		</if> 
