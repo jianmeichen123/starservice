@@ -157,7 +157,7 @@
 	<select id="selectRecord" parameterType="com.galaxy.im.bean.soptask.SopTaskRecord"
 		resultType="com.galaxy.im.bean.soptask.SopTaskRecord">
 		SELECT * FROM sop_task_record WHERE task_id=#{taskId} 
-		AND after_uid =#{afterUid} and before_uid=#{beforeUid}
+		AND after_uid =#{afterUid} and before_uid=#{beforeUid} and is_del=0
 	</select>
 	
 	<!-- 查询是否有操作日志-->

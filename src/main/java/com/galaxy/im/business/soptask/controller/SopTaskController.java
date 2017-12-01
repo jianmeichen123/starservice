@@ -477,7 +477,7 @@ public class SopTaskController {
 						sopTaskRecord.setBeforeDepartmentId(depId);
 						sopTaskRecord.setRecordType(sopTaskRecord.getFlag());
 						sopTaskRecord.setCreatedTime(new Date().getTime());
-						sopTaskRecord.setIsDel(0);
+						sopTaskRecord.setIsDel(1);
 						//防止重复放弃
 						SopTaskRecord sRecord = service.selectRecord(sopTaskRecord);
 						if (sRecord==null) {
