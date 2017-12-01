@@ -291,6 +291,7 @@ public class SopTaskController {
 							sopTask.setId(CUtils.get().object2Long(map.get("taskId")));
 							sopTask.setUpdatedTime(new Date().getTime());
 							sopTask.setAssignUid(sopTaskRecord.getAfterUid());
+							sopTask.setTaskStatus("taskStatus:2");
 							updateCount = service.updateTask(sopTask);
 							//查询人事经理A是否已上传了人事/财务/法务尽调报告
 							SopFileBean sopFileBean = new SopFileBean();
