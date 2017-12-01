@@ -332,11 +332,11 @@ public class SopTaskController {
 							sopTaskRecord.setCreatedTime(new Date().getTime());
 							sopTaskRecord.setIsDel(0);
 							//防止重复指派
-							SopTaskRecord sRecord = service.selectRecord(sopTaskRecord);
-							if (sRecord==null) {
+							//SopTaskRecord sRecord = service.selectRecord(sopTaskRecord);
+							//if (sRecord==null) {
 								//保存指派内容
 								 count = service.taskTransfer(sopTaskRecord);
-							}
+							//}
 							//修改待办任务的信息
 							SopTask sopTask = new SopTask();
 							sopTask.setId(CUtils.get().object2Long(map.get("taskId")));
