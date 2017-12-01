@@ -425,6 +425,7 @@
 				END fSource,
 				f.record_type recordType,
 				f.created_time createdTime,
+				f.updated_time updatedTime,
 				f.file_uid fileUid,
 				f.career_line careerLine,
 				u.user_name fileUName,
