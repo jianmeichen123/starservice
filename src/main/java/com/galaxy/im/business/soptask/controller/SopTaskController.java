@@ -479,11 +479,11 @@ public class SopTaskController {
 						sopTaskRecord.setCreatedTime(new Date().getTime());
 						sopTaskRecord.setIsDel(1);
 						//防止重复放弃
-						SopTaskRecord sRecord = service.selectRecord(sopTaskRecord);
-						if (sRecord==null) {
+						//SopTaskRecord sRecord = service.selectRecord(sopTaskRecord);
+						//if (sRecord==null) {
 							//保存放弃内容
 							 count = service.taskTransfer(sopTaskRecord);
-						}
+						//}
 						//修改待办任务的信息
 						SopTask sopTask = new SopTask();
 						sopTask.setId(CUtils.get().object2Long(map.get("taskId")));
