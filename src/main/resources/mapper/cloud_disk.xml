@@ -88,7 +88,8 @@
 	<select id="getUsedVolumes" parameterType="hashmap" resultType="hashmap">
 		select sum(t.file_size) fileSize
 			from cloud_disk_files t
-			where t.own_user=#{ownUser};
+			where t.is_del=0
+			and t.own_user=#{ownUser}
 	</select>
 	
 	<!-- 获取云端文件列表 -->
