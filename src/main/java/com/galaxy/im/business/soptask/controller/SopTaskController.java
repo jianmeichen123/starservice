@@ -286,38 +286,33 @@ public class SopTaskController {
 								//保存移交内容
 								 count = service.taskTransfer(sopTaskRecord);
 							}
-							if(count>0){
-								//修改待办任务的信息
-								SopTask sopTask = new SopTask();
-								sopTask.setId(CUtils.get().object2Long(map.get("taskId")));
-								sopTask.setUpdatedTime(new Date().getTime());
-								sopTask.setAssignUid(sopTaskRecord.getAfterUid());
-								updateCount = service.updateTask(sopTask);
-								//查询人事经理A是否已上传了人事/财务/法务尽调报告
-								SopFileBean sopFileBean = new SopFileBean();
-								sopFileBean.setProjectId( CUtils.get().object2Long(map.get("projectId")));
-								//fileWorktype=2人事 fileWorktype=3法务 fileWorktype=4财务
-								sopFileBean.setFileWorkType(sopTaskRecord.getFileWorktype());
-								sopFileBean.setFileUid(CUtils.get().object2Long(user.get("id")));
-								SopFileBean bean2 = service.isUpload(sopFileBean);
-								//A将报告移交给B
-								if (bean2!=null&&!bean2.equals("")) {
-									//修改文件的认领人为B
-									bean2.setFileValid(1);
-									bean2.setBelongUid(sopTaskRecord.getAfterUid());
-									bean2.setId(bean2.getId());
-									bean2.setUpdatedTime(new Date().getTime());
-									service.updateFile(bean2);
-								}
+							//修改待办任务的信息
+							SopTask sopTask = new SopTask();
+							sopTask.setId(CUtils.get().object2Long(map.get("taskId")));
+							sopTask.setUpdatedTime(new Date().getTime());
+							sopTask.setAssignUid(sopTaskRecord.getAfterUid());
+							updateCount = service.updateTask(sopTask);
+							//查询人事经理A是否已上传了人事/财务/法务尽调报告
+							SopFileBean sopFileBean = new SopFileBean();
+							sopFileBean.setProjectId( CUtils.get().object2Long(map.get("projectId")));
+							//fileWorktype=2人事 fileWorktype=3法务 fileWorktype=4财务
+							sopFileBean.setFileWorkType(sopTaskRecord.getFileWorktype());
+							sopFileBean.setFileUid(CUtils.get().object2Long(user.get("id")));
+							SopFileBean bean2 = service.isUpload(sopFileBean);
+							//A将报告移交给B
+							if (bean2!=null&&!bean2.equals("")) {
+								//修改文件的认领人为B
+								bean2.setFileValid(1);
+								bean2.setBelongUid(sopTaskRecord.getAfterUid());
+								bean2.setId(bean2.getId());
+								bean2.setUpdatedTime(new Date().getTime());
+								service.updateFile(bean2);
 							}
-							
 						 }
 						}
 					}
-					if (count>0) {
+					if (count>0 && updateCount>0) {
 						resultBean.setStatus("OK");
-					}else{
-						resultBean.setMessage("移交失败");
 					}
 					
 					//推送消息，记录操作日志
@@ -477,13 +472,13 @@ public class SopTaskController {
 						sopTaskRecord.setBeforeDepartmentId(depId);
 						sopTaskRecord.setRecordType(sopTaskRecord.getFlag());
 						sopTaskRecord.setCreatedTime(new Date().getTime());
-						sopTaskRecord.setIsDel(1);
+						sopTaskRecord.setIsDel(0);
 						//防止重复放弃
-						//SopTaskRecord sRecord = service.selectRecord(sopTaskRecord);
-						//if (sRecord==null) {
+						SopTaskRecord sRecord = service.selectRecord(sopTaskRecord);
+						if (sRecord==null) {
 							//保存放弃内容
 							 count = service.taskTransfer(sopTaskRecord);
-						//}
+						}
 						//修改待办任务的信息
 						SopTask sopTask = new SopTask();
 						sopTask.setId(CUtils.get().object2Long(map.get("taskId")));
