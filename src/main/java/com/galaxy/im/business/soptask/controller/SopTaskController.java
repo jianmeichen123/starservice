@@ -280,12 +280,9 @@ public class SopTaskController {
 							sopTaskRecord.setRecordType(sopTaskRecord.getFlag());
 							sopTaskRecord.setCreatedTime(new Date().getTime());
 							sopTaskRecord.setIsDel(0);
-							//防止重复移交
-							//SopTaskRecord sRecord = service.selectRecord(sopTaskRecord);
-							//if (sRecord==null) {
-								//保存移交内容
-								 count = service.taskTransfer(sopTaskRecord);
-							//}
+							//保存移交内容
+							count = service.taskTransfer(sopTaskRecord);
+							
 							//修改待办任务的信息
 							SopTask sopTask = new SopTask();
 							sopTask.setId(CUtils.get().object2Long(map.get("taskId")));
@@ -293,6 +290,7 @@ public class SopTaskController {
 							sopTask.setAssignUid(sopTaskRecord.getAfterUid());
 							sopTask.setTaskStatus("taskStatus:2");
 							updateCount = service.updateTask(sopTask);
+							
 							//查询人事经理A是否已上传了人事/财务/法务尽调报告
 							SopFileBean sopFileBean = new SopFileBean();
 							sopFileBean.setProjectId( CUtils.get().object2Long(map.get("projectId")));
@@ -331,12 +329,9 @@ public class SopTaskController {
 							sopTaskRecord.setRecordType(sopTaskRecord.getFlag());
 							sopTaskRecord.setCreatedTime(new Date().getTime());
 							sopTaskRecord.setIsDel(0);
-							//防止重复指派
-							//SopTaskRecord sRecord = service.selectRecord(sopTaskRecord);
-							//if (sRecord==null) {
-								//保存指派内容
-								 count = service.taskTransfer(sopTaskRecord);
-							//}
+							//保存指派内容
+							count = service.taskTransfer(sopTaskRecord);
+							
 							//修改待办任务的信息
 							SopTask sopTask = new SopTask();
 							sopTask.setId(CUtils.get().object2Long(map.get("taskId")));
@@ -474,20 +469,16 @@ public class SopTaskController {
 						sopTaskRecord.setRecordType(sopTaskRecord.getFlag());
 						sopTaskRecord.setCreatedTime(new Date().getTime());
 						sopTaskRecord.setIsDel(0);
-						//防止重复放弃
-						SopTaskRecord sRecord = service.selectRecord(sopTaskRecord);
-						if (sRecord==null) {
-							//保存放弃内容
-							 count = service.taskTransfer(sopTaskRecord);
-						}
+						//保存放弃内容
+						count = service.taskTransfer(sopTaskRecord);
+						
 						//修改待办任务的信息
 						SopTask sopTask = new SopTask();
 						sopTask.setId(CUtils.get().object2Long(map.get("taskId")));
 						sopTask.setUpdatedTime(new Date().getTime());
 						sopTask.setAssignUid(null);
 						sopTask.setTaskStatus("taskStatus:1");//将任务状态都变成待认领
-						 updateCount = service.updateTask(sopTask);
-						
+						updateCount = service.updateTask(sopTask);
 						 
 						//查询人事经理A是否已上传了人事/财务/法务尽调报告
 						SopFileBean sopFileBean = new SopFileBean();
