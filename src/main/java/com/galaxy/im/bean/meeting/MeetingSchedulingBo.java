@@ -28,6 +28,11 @@ public class MeetingSchedulingBo extends MeetingScheduling {
 	//获取传入的月
 	private String month;
 	
+	// 项目名称
+	private String projectName;
+	//会议类型
+	private String meetingTypeStr;
+	
 
 	public String getNameLike() {
 		return nameLike;
@@ -123,6 +128,22 @@ public class MeetingSchedulingBo extends MeetingScheduling {
 
 	public void setCountscheduleStatusd(Long countscheduleStatusd) {
 		CountscheduleStatusd = countscheduleStatusd;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+
+	public String getMeetingTypeStr() {
+		return meetingTypeStr;
+	}
+
+	public void setMeetingTypeStr(String meetingTypeStr) {
+		this.meetingTypeStr = meetingTypeStr;
 	}
 
 

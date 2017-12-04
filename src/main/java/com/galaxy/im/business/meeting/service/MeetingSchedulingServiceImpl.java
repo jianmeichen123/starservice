@@ -2,6 +2,7 @@ package com.galaxy.im.business.meeting.service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -82,6 +83,26 @@ public class MeetingSchedulingServiceImpl extends BaseServiceImpl<Test> implemen
 	    String dateString = formatter.format(new Date());  
 	    query.setStartTime(dateString);
 		return dao.queryCount(query);
+	}
+
+	@Override
+	public Long selectdpqCount(MeetingSchedulingBo query) {
+		return dao.selectdpqCount(query);
+	}
+
+	@Override
+	public List<MeetingSchedulingBo> selectMonthScheduling(MeetingSchedulingBo query) {
+		return dao.selectMonthScheduling(query);
+	}
+
+	@Override
+	public Long selectMonthSchedulingCount(MeetingSchedulingBo query) {
+		return dao.selectMonthSchedulingCount(query);
+	}
+
+	@Override
+	public List<MeetingSchedulingBo> selectDayScheduling(MeetingSchedulingBo bop) {
+		return dao.selectDayScheduling(bop);
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.galaxy.im.business.meeting.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.galaxy.im.bean.Test;
@@ -18,5 +19,13 @@ public interface IMeetingSchedulingService extends IBaseService<Test>{
 	Long queryCountscheduleStatusd(MeetingSchedulingBo query);
 
 	Long queryCountscheduleStatusy(MeetingSchedulingBo query);
+
+	Long selectdpqCount(MeetingSchedulingBo query);
+
+	List<MeetingSchedulingBo> selectMonthScheduling(MeetingSchedulingBo query);
+
+	Long selectMonthSchedulingCount(MeetingSchedulingBo query);
+
+	List<MeetingSchedulingBo> selectDayScheduling(MeetingSchedulingBo bop);
 
 }

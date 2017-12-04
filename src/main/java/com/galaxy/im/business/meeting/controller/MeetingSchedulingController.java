@@ -2,6 +2,7 @@ package com.galaxy.im.business.meeting.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -125,4 +126,137 @@ public class MeetingSchedulingController {
 		}
 		return "";
 	}
+	
+	
+	
+	/**
+	 * 查询会议排期的日历页面
+	 */
+	@ResponseBody
+	@RequestMapping("queryMeetSchedulingrl")
+	public Object queryMeetSchedulingrl(HttpServletRequest request, @RequestBody MeetingSchedulingBo query){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		try {
+			Map<String, Object> depmap = new HashMap<>();
+			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
+			if(sessionBean==null){
+				resultBean.setMessage("User用户信息在Session中不存在，无法执行项目列表查询！");
+				return resultBean;
+			}
+			
+			SimpleDateFormat ss = new SimpleDateFormat("yyyy-MM-dd");
+			if(query.getYear()!=null&&query.getMonth()!=null){
+				//获取传过来的年月的第一天
+				Date d = getFirstDayOfMonth(Integer.valueOf(query.getYear()),Integer.valueOf(query.getMonth())-1);
+				query.setStartTime(ss.format(d));
+				//获取传过来的年月的最后一天
+				Date f = getLastDayOfMonth(Integer.valueOf(query.getYear()),Integer.valueOf(query.getMonth())-1);
+				query.setEndTime(ss.format(f));		
+			}
+			
+			if (query.getUid()==null && query.getProjectDepartid()==null) {
+				//需要进新接口  数目未排期的数目
+				Long iu = service.selectdpqCount(query);
+				depmap.put("id", iu);//当是秘书登录时产生的待排期会议的总个数
+			}
+			
+			
+			List<MeetingSchedulingBo> listmb = service.selectMonthScheduling(query);
+			for(MeetingSchedulingBo mo :listmb){						 						
+				 String aa = ss.format(mo.getReserveTimeStart());
+				 if(!depmap.containsKey(aa)){
+					 Map<String, Object> ms = new HashMap<>();
+					 query.setDayTime(aa);
+					 query.setMeetingType(StaticConst.MEETING_TYPE_APPROVAL);							 
+					 Long y = service.selectMonthSchedulingCount(query);
+					 ms.put("lxh", StaticConst.MEETING_TYPE_APPROVAL);
+					 ms.put("lxhCount", y);
+					 query.setMeetingType(StaticConst.MEETING_TYPE_INVEST);
+					 Long k = service.selectMonthSchedulingCount(query);
+					 ms.put("tjh", StaticConst.MEETING_TYPE_INVEST);
+					 ms.put("tjhCount", k);
+					 query.setMeetingType(StaticConst.MEETING_TYPE_CEO);
+					 Long g = service.selectMonthSchedulingCount(query);
+					 ms.put("ceops", StaticConst.MEETING_TYPE_CEO);
+					 ms.put("ceopsCount", g);
+					 depmap.put(aa, ms);
+				 }
+			}
+			
+			//获取初始的当日事项
+			MeetingSchedulingBo bop = new MeetingSchedulingBo();
+			String bb = ss.format(new Date());
+			bop.setDateTime(bb);
+			if(query.getUid()!=null){
+				bop.setUid(query.getUid());
+			}
+			if(query.getProjectDepartid()!=null){
+				bop.setProjectDepartid(query.getProjectDepartid());
+			}
+			List<MeetingSchedulingBo> lisb = service.selectDayScheduling(bop);
+			
+			resultBean.setStatus("OK");
+			resultBean.setEntity(lisb);
+			resultBean.setMap(depmap);
+		} catch (Exception e) {
+			log.error(MeetingSchedulingController.class.getName() + "queryMeetSchedulingrl",e);
+		}
+		return resultBean;
+	}
+	
+	/**
+	 * 排期日历的当日事项
+	 * @param request
+	 * @param query
+	 * @return 传入的是当日时间的string类型 dateTime "yyyy-MM-dd"
+	 */
+	@ResponseBody
+	@RequestMapping("selectDayScheduling")
+	public Object selectDayScheduling(HttpServletRequest request, @RequestBody MeetingSchedulingBo query){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		try {
+			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
+			if(sessionBean==null){
+				resultBean.setMessage("User用户信息在Session中不存在，无法执行项目列表查询！");
+				return resultBean;
+			}
+			//获取初始的当日事项
+			List<MeetingSchedulingBo> lisb = service.selectDayScheduling(query);
+			resultBean.setStatus("OK");
+			resultBean.setEntity(lisb);
+		} catch (Exception e) {
+			log.error(MeetingSchedulingController.class.getName() + "selectDayScheduling",e);
+		}
+		return resultBean;
+	}
+	
+	
+	
+	//获取指定年月的第一天
+	 public static Date getFirstDayOfMonth(Integer year, Integer month) {
+	        Calendar calendar = Calendar.getInstance();
+	        if (year == null) {
+	            year = calendar.get(Calendar.YEAR);
+	        }
+	        if (month == null) {
+	            month = calendar.get(Calendar.MONTH);
+	        }
+	        calendar.set(year, month, 1);
+	        return calendar.getTime();
+	    }
+	//获取指定年月的最后一天
+	 public static Date getLastDayOfMonth(Integer year, Integer month) {
+	        Calendar calendar = Calendar.getInstance();
+	        if (year == null) {
+	            year = calendar.get(Calendar.YEAR);
+	        }
+	        if (month == null) {
+	            month = calendar.get(Calendar.MONTH);
+	        }
+	        calendar.set(year, month, 1);
+	        calendar.roll(Calendar.DATE, -1);
+	        return calendar.getTime();
+	    }
+
+
 }

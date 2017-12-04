@@ -132,4 +132,61 @@
 		 sms.apply_time &lt;&gt; #{applyTime} 				
 	</select>
 	
+	<!-- 查询待排期的总数 -->
+	<select id="selectdpqCount" resultType="java.lang.Long" parameterType="java.util.Map">
+		SELECT COUNT(id) FROM sop_meeting_scheduling s WHERE s.schedule_status= 0
+	</select>
+	
+	
+	<resultMap id="PageResultMap" type="com.galaxy.im.bean.meeting.MeetingSchedulingBo" >
+		<id column="id" property="id"/>
+	    <result column="project_id" property="projectId" />
+	    <result column="project_name" property="projectName"  />
+	    <result column="meeting_type" property="meetingType"/>
+	    <result column="reserve_time_start" property="reserveTimeStart"/>
+	    <result column="reserve_time_end" property="reserveTimeEnd"/>
+	    <result column="name" property="meetingTypeStr"/>
+	</resultMap>
+	<!-- 查询月排期-->
+	<select id="selectMonthScheduling" resultMap="PageResultMap" parameterType="java.util.Map">
+		select p.project_name,sm.id,sm.reserve_time_start,sm.meeting_type,sm.reserve_time_end,sm.project_id
+			FROM sop_meeting_scheduling sm , sop_project p
+			WHERE sm.project_id = p.id 
+			AND sm.schedule_status=1 
+			<if test="uid != null"> and p.create_uid = #{uid} </if>
+			<if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
+			AND sm.reserve_time_start BETWEEN STR_TO_DATE(CONCAT(#{startTime} , ' 00:00:00') ,'%Y-%m-%d %H:%i:%s' )
+			AND STR_TO_DATE(CONCAT(#{endTime} , ' 23:59:59') ,'%Y-%m-%d %H:%i:%s' )
+	</select>
+	<!-- 查询 月排期总数-->
+	<select id="selectMonthSchedulingCount" resultType="java.lang.Long" parameterType="java.util.Map">
+	  select count(id) from (
+	  	select p.project_name,sm.id,sm.reserve_time_start,sm.meeting_type,sm.reserve_time_end,sm.project_id
+			FROM sop_meeting_scheduling sm , sop_project p
+			WHERE sm.project_id = p.id 
+			AND sm.schedule_status=1 
+			<if test="uid != null"> and p.create_uid = #{uid} </if>
+			<if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
+			AND sm.reserve_time_start BETWEEN STR_TO_DATE(CONCAT(#{startTime} , ' 00:00:00') ,'%Y-%m-%d %H:%i:%s' )
+			AND STR_TO_DATE(CONCAT(#{endTime} , ' 23:59:59') ,'%Y-%m-%d %H:%i:%s' ) ) b
+			WHERE 
+			b.reserve_time_start
+			BETWEEN STR_TO_DATE(CONCAT(#{dayTime} , ' 00:00:00') ,'%Y-%m-%d %H:%i:%s' )
+			AND STR_TO_DATE(CONCAT(#{dayTime} , ' 23:59:59') ,'%Y-%m-%d %H:%i:%s' )
+			<if test="meetingType != null" >and b.meeting_type = #{meetingType} </if>						
+	</select>
+	
+	<!-- 查询当天的事项 -->
+	 <select id="selectDayScheduling" resultMap="PageResultMap" parameterType="java.util.Map">
+		select p.project_name ,sm.id ,sm.reserve_time_start ,
+		sm.meeting_type ,sm.reserve_time_end ,sm.project_id ,d.name  
+		FROM sop_meeting_scheduling sm , sop_project p, dict d
+		WHERE sm.project_id = p.id and sm.meeting_type = d.dict_code
+		AND sm.schedule_status=1 
+		<if test="uid != null"> and p.create_uid = #{uid} </if>
+		<if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
+		AND sm.reserve_time_start BETWEEN STR_TO_DATE(CONCAT(#{dateTime} , ' 00:00:00') ,'%Y-%m-%d %H:%i:%s' )
+		AND STR_TO_DATE(CONCAT(#{dateTime} , ' 23:59:59') ,'%Y-%m-%d %H:%i:%s' )
+	</select>
+	
 </mapper>

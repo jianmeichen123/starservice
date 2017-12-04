@@ -88,4 +88,70 @@ public class MeetingSchedulingDaoImpl extends BaseDaoImpl<Test, Long> implements
 		}
 	}
 
+	/**
+	 * 当是秘书登录时产生的待排期会议的总个数
+	 */
+	@Override
+	public Long selectdpqCount(MeetingSchedulingBo query) {
+		Long count = 0L;
+		try {
+			if (query!=null) {
+			Map<String, Object> params = BeanUtils.toMap(query);
+			String sqlName = "com.galaxy.im.business.meeting.dao.IMeetingSchedulingDao.selectdpqCount";
+			count = CUtils.get().object2Long(sqlSessionTemplate.selectOne(sqlName,params));
+			}
+			return count;
+		} catch (Exception e) {
+			log.error(MeetingSchedulingDaoImpl.class.getName() + "selectdpqCount",e);
+			throw new DaoException(e);
+		}
+		
+	}
+
+	/**
+	 * 查询月排期列表
+	 */
+	@Override
+	public List<MeetingSchedulingBo> selectMonthScheduling(MeetingSchedulingBo query) {
+		try {
+			Map<String, Object> params = BeanUtils.toMap(query);
+			String sqlName = "com.galaxy.im.business.meeting.dao.IMeetingSchedulingDao.selectMonthScheduling";
+			return sqlSessionTemplate.selectList(sqlName,params);
+		} catch (Exception e) {
+			log.error(MeetingSchedulingDaoImpl.class.getName() + "selectMonthScheduling",e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 查询月排期总数
+	 */
+	@Override
+	public Long selectMonthSchedulingCount(MeetingSchedulingBo query) {
+		try {
+			Map<String, Object> params = BeanUtils.toMap(query);
+			String sqlName = "com.galaxy.im.business.meeting.dao.IMeetingSchedulingDao.selectMonthSchedulingCount";
+			Long count= sqlSessionTemplate.selectOne(sqlName,params);
+			return count;
+		} catch (Exception e) {
+			log.error(MeetingSchedulingDaoImpl.class.getName() + "selectMonthSchedulingCount",e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 查询当日事项
+	 */
+	@Override
+	public List<MeetingSchedulingBo> selectDayScheduling(MeetingSchedulingBo bop) {
+		try {
+			Map<String, Object> params = BeanUtils.toMap(bop);
+			String sqlName = "com.galaxy.im.business.meeting.dao.IMeetingSchedulingDao.selectDayScheduling";
+			return sqlSessionTemplate.selectList(sqlName,params);
+		} catch (Exception e) {
+			log.error(MeetingSchedulingDaoImpl.class.getName() + "selectDayScheduling",e);
+			throw new DaoException(e);
+		}
+	}
+
 }
