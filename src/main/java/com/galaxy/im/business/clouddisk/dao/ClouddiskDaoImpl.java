@@ -102,6 +102,19 @@ public class ClouddiskDaoImpl extends BaseDaoImpl<CloudDiskFiles, Long> implemen
 		}
 	}
 
+	/**
+	 * 批量删除
+	 */
+	@Override
+	public Integer deleteBatches(List<Long> ids){
+		try{
+			String sqlName = "com.galaxy.im.bean.clouddisk.CloudDiskFiles.deleteBatches";
+			return sqlSessionTemplate.delete(sqlName, ids);
+		}catch(Exception e){
+			log.error(className + ":deleteBatches",e);
+			throw new DaoException(e);
+		}
+	}
 	
 	
 	

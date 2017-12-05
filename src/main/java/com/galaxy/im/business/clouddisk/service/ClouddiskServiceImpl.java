@@ -152,10 +152,24 @@ public class ClouddiskServiceImpl extends BaseServiceImpl<CloudDiskFiles> implem
 			throw new ServiceException(e);
 		}
 	}
+	
+	/**
+	 * 批量删除云端文件
+	 */
+	@Override
+	public Integer deleteBatches(List<Long> ids) {
+		try{
+			return dao.deleteBatches(ids);
+		}catch(DaoException daoE){
+			throw daoE;
+		}catch(Exception e){
+			log.error(ClouddiskServiceImpl.class.getName() + ":deleteBatches",e);
+			throw new ServiceException(e);
+		}
+	}
 
 	@Override
 	public Object isVolumnEnough() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

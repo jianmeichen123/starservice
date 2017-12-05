@@ -2,6 +2,7 @@ package com.galaxy.im.business.clouddisk.controller;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +32,7 @@ public class ClouddiskController {
 	
 	@Autowired
 	private IClouddiskService service;
-	
+		
 	/**
 	 * 保存文件信息
 	 * @param paramString
@@ -182,6 +183,33 @@ public class ClouddiskController {
 			log.error(className + ":deleteCloudFile",e);
 			e.printStackTrace();
 		}
+		return result;
+	}
+	
+	/**
+	 * 批量删除云端文件
+	 * 
+	 */
+	@RequestMapping("deleteBatches")
+	@ResponseBody
+	public Object deleteBatches(@RequestBody List<Long> ids){
+		ResultBean<Object> result = new ResultBean<Object>();
+		result.setStatus("OK");
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("success", 0);
+		result.setMap(map);
+		try{
+			if(ids!=null && ids.size()>0){
+				int count = service.deleteBatches(ids);
+				if(count>0){
+					map.put("success", "1");
+				}
+			}
+		}catch(Exception e){
+			log.error(className + ":deleteCloudFile",e);
+			e.printStackTrace();
+		}
+		
 		return result;
 	}
 	
