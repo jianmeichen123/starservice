@@ -86,8 +86,8 @@ public class MeetingSchedulingServiceImpl extends BaseServiceImpl<Test> implemen
 	}
 
 	@Override
-	public Long selectdpqCount(MeetingSchedulingBo query) {
-		return dao.selectdpqCount(query);
+	public Long selectdpqCount(MeetingSchedulingBo mBo) {
+		return dao.selectdpqCount(mBo);
 	}
 
 	@Override

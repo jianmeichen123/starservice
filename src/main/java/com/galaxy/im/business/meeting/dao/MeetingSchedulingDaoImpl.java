@@ -92,17 +92,17 @@ public class MeetingSchedulingDaoImpl extends BaseDaoImpl<Test, Long> implements
 	 * 当是秘书登录时产生的待排期会议的总个数
 	 */
 	@Override
-	public Long selectdpqCount(MeetingSchedulingBo query) {
+	public Long selectdpqCount(MeetingSchedulingBo mBo) {
 		Long count = 0L;
 		try {
-			if (query!=null) {
-			Map<String, Object> params = BeanUtils.toMap(query);
-			String sqlName = "com.galaxy.im.business.meeting.dao.IMeetingSchedulingDao.selectdpqCount";
+			if (mBo!=null) {
+			Map<String, Object> params = BeanUtils.toMap(mBo);
+			String sqlName = "com.galaxy.im.business.meeting.dao.IMeetingSchedulingDao.queryMeschedulingCount";
 			count = CUtils.get().object2Long(sqlSessionTemplate.selectOne(sqlName,params));
 			}
 			return count;
 		} catch (Exception e) {
-			log.error(MeetingSchedulingDaoImpl.class.getName() + "selectdpqCount",e);
+			log.error(MeetingSchedulingDaoImpl.class.getName() + "queryMeschedulingCount",e);
 			throw new DaoException(e);
 		}
 		

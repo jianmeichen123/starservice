@@ -156,7 +156,9 @@ public class MeetingSchedulingController {
 			
 			if (query.getUid()==null && query.getProjectDepartid()==null) {
 				//需要进新接口  数目未排期的数目
-				Long iu = service.selectdpqCount(query);
+				MeetingSchedulingBo mBo = new MeetingSchedulingBo();
+				mBo.setScheduleStatus(0);
+				Long iu = service.selectdpqCount(mBo);
 				depmap.put("id", iu);//当是秘书登录时产生的待排期会议的总个数
 			}
 			

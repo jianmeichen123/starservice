@@ -132,12 +132,6 @@
 		 sms.apply_time &lt;&gt; #{applyTime} 				
 	</select>
 	
-	<!-- 查询待排期的总数 -->
-	<select id="selectdpqCount" resultType="java.lang.Long" parameterType="java.util.Map">
-		SELECT COUNT(id) FROM sop_meeting_scheduling s WHERE s.schedule_status= 0
-	</select>
-	
-	
 	<resultMap id="PageResultMap" type="com.galaxy.im.bean.meeting.MeetingSchedulingBo" >
 		<id column="id" property="id"/>
 	    <result column="project_id" property="projectId" />

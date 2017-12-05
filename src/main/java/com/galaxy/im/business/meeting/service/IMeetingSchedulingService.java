@@ -20,7 +20,7 @@ public interface IMeetingSchedulingService extends IBaseService<Test>{
 
 	Long queryCountscheduleStatusy(MeetingSchedulingBo query);
 
-	Long selectdpqCount(MeetingSchedulingBo query);
+	Long selectdpqCount(MeetingSchedulingBo mBo);
 
 	List<MeetingSchedulingBo> selectMonthScheduling(MeetingSchedulingBo query);
 

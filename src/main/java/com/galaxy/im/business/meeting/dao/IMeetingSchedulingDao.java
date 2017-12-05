@@ -18,7 +18,7 @@ public interface IMeetingSchedulingDao extends IBaseDao<Test, Long>{
 
 	Long queryCount(MeetingSchedulingBo query);
 
-	Long selectdpqCount(MeetingSchedulingBo query);
+	Long selectdpqCount(MeetingSchedulingBo mBo);
 
 	List<MeetingSchedulingBo> selectMonthScheduling(MeetingSchedulingBo query);
 
