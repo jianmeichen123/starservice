@@ -157,9 +157,9 @@ public class ClouddiskServiceImpl extends BaseServiceImpl<CloudDiskFiles> implem
 	 * 批量删除云端文件
 	 */
 	@Override
-	public Integer deleteBatches(List<Long> ids) {
+	public Integer deleteBatches(Map<String,Object> paramMap) {
 		try{
-			return dao.deleteBatches(ids);
+			return dao.deleteBatches(paramMap);
 		}catch(DaoException daoE){
 			throw daoE;
 		}catch(Exception e){

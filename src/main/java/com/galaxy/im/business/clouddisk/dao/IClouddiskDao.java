@@ -13,6 +13,6 @@ public interface IClouddiskDao extends IBaseDao<CloudDiskFiles, Long>{
 	boolean deleteCloudFile(Map<String,Object> paramMap);
 	List<Map<String,Object>> getUsedVolumes(Map<String,Object> paramMap);
 	List<Map<String,Object>> getCloudFileList(long userId);
-	Integer deleteBatches(List<Long> ids);
+	Integer deleteBatches(Map<String,Object> paramMap);
 	
 }

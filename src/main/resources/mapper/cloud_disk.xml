@@ -108,10 +108,12 @@
 	</select>
 	
 	<!-- 批量删除云端文件 -->
-	<delete id="deleteBatches" parameterType="java.util.List">
+	<delete id="deleteBatches" parameterType="hashMap">
 	    update cloud_disk_files t
-			set t.is_del=1 where t.id in 
-	    <foreach item="id" collection="list" open="(" separator="," close=")">
+			set t.is_del=1 where 
+			t.own_user=#{ownUser}
+			and t.id in 
+	    <foreach item="id" collection="ids" open="(" separator="," close=")">
 	    	#{id}
 	    </foreach>
 	</delete>

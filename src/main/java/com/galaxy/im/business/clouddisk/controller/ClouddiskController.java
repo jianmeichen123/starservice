@@ -1,5 +1,6 @@
 package com.galaxy.im.business.clouddisk.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.galaxy.im.bean.clouddisk.CloudDiskFiles;
 import com.galaxy.im.business.clouddisk.service.IClouddiskService;
 import com.galaxy.im.common.CUtils;
@@ -192,17 +195,31 @@ public class ClouddiskController {
 	 */
 	@RequestMapping("deleteBatches")
 	@ResponseBody
-	public Object deleteBatches(@RequestBody List<Long> ids){
+	public Object deleteBatches(@RequestBody Map<String,Object> paramMap){
 		ResultBean<Object> result = new ResultBean<Object>();
 		result.setStatus("OK");
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("success", 0);
 		result.setMap(map);
 		try{
-			if(ids!=null && ids.size()>0){
-				int count = service.deleteBatches(ids);
-				if(count>0){
-					map.put("success", "1");
+			if(paramMap!=null && paramMap.size()>0){
+				Long ownUser = CUtils.get().object2Long(paramMap.get("ownUser"));
+				JSONArray array = JSON.parseArray(CUtils.get().object2String(paramMap.get("ids")));
+				List<Long> idList = new ArrayList<Long>();
+				if(array!=null && array.size()>0){
+					for(int i=0;i<array.size();i++){
+						idList.add(array.getLong(i));
+					}
+					Map<String,Object> delParam = new HashMap<String,Object>();
+					delParam.put("ownUser", ownUser);
+					delParam.put("ids", idList);
+					
+					//删除
+					int count = service.deleteBatches(delParam);
+					if(count>0){
+						map.put("success", "1");
+					}
+					
 				}
 			}
 		}catch(Exception e){
