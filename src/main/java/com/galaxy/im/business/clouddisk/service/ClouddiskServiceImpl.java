@@ -111,9 +111,10 @@ public class ClouddiskServiceImpl extends BaseServiceImpl<CloudDiskFiles> implem
 		try{
 			List<Map<String,Object>> dataList = dao.getUsedVolumes(paramMap);
 			if(dataList!=null && dataList.size()>0){
-				return CUtils.get().object2Long(dataList.get(0).get("fileSize"));
+				if(dataList.get(0)!=null && dataList.get(0).containsKey("fileSize")){
+					return CUtils.get().object2Long(dataList.get(0).get("fileSize"),0L);
+				}
 			}
-			
 		}catch(DaoException daoE){
 			throw daoE;
 		}catch(Exception e){
