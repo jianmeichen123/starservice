@@ -204,5 +204,15 @@ public class ProjectDaoImpl extends BaseDaoImpl<ProjectBean,Long> implements IPr
 		}
 	}
 
+	@Override
+	public int delProjectUserIds(Map<String, Object> map) {
+		try{
+			return sqlSessionTemplate.delete(getSqlName("delProjectUserIds"),map);
+		}catch(Exception e){
+			log.error(ProjectDaoImpl.class.getName() + "delProjectUserIds",e);
+			throw new DaoException(e);
+		}
+	}
+
 
 }

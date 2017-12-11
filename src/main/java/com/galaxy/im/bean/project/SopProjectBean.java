@@ -81,9 +81,8 @@ public class SopProjectBean extends PagableEntity {
     
     private String projectSource;			//项目来源
     private String projectSourceName;		//项目来源对应的填写项名称
-    private String projectUsers;			//项目承揽人(id)
-    
-    
+    private List<Long> projectUserIds;		//项目承揽人id
+    private String projectUserRemark;		//项目承揽人（非投资线员工名称）
     
 	public Long getIdeaId() {
 		return ideaId;
@@ -460,17 +459,23 @@ public class SopProjectBean extends PagableEntity {
 	public void setProjectSource(String projectSource) {
 		this.projectSource = projectSource;
 	}
-	public String getProjectUsers() {
-		return projectUsers;
-	}
-	public void setProjectUsers(String projectUsers) {
-		this.projectUsers = projectUsers;
-	}
 	public String getProjectSourceName() {
 		return projectSourceName;
 	}
 	public void setProjectSourceName(String projectSourceName) {
 		this.projectSourceName = projectSourceName;
+	}
+	public List<Long> getProjectUserIds() {
+		return projectUserIds;
+	}
+	public void setProjectUserIds(List<Long> projectUserIds) {
+		this.projectUserIds = projectUserIds;
+	}
+	public String getProjectUserRemark() {
+		return projectUserRemark;
+	}
+	public void setProjectUserRemark(String projectUserRemark) {
+		this.projectUserRemark = projectUserRemark;
 	}
 	
 }

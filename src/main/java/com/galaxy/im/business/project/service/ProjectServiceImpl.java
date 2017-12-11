@@ -299,6 +299,16 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 			throw new ServiceException(e);
 		}
 	}
+
+	@Override
+	public int delProjectUserIds(Map<String, Object> map) {
+		try{
+			return dao.delProjectUserIds(map);
+		}catch(Exception e){
+			log.error(ProjectServiceImpl.class.getName() + "delProjectUserIds",e);
+			throw new ServiceException(e);
+		}
+	}
 	
 	
 }

@@ -57,9 +57,9 @@
 		    d2.name financeStatusDs,					融资状态名称 -->
 		    p.create_uid createUid,
 		    u.user_name createUname,
-		    d7.name faFlag,	
+		    <!-- d7.name faFlag,	
 			d7.dict_code faFlagCode,
-		    p.fa_name faName,	
+		    p.fa_name faName,	 -->
 		    
 		   <!--  p.project_contribution projectContribution,	计划-融资金额
 		    p.project_valuations projectValuations,		计划-项目估值
@@ -90,7 +90,7 @@
 		left join dict d4 on p.industry_own=d4.dict_code and d4.parent_code='industryOwn'
 		left join dict d5 on p.finance_mode=d5.dict_code
 		left join dict d6 on d6.dict_code=p.project_progress
-		left join dict d7 on d7.dict_code=p.fa_flag
+		<!-- left join dict d7 on d7.dict_code=p.fa_flag -->
 		left join v_user u on u.id=p.create_uid
 		left join v_department t on p.project_departId=t.id
 		left join v_user u2 on t.dep_manager=u2.id
@@ -226,8 +226,6 @@
 	    <result column="operational_data" property="operationalData" />
 	    <result column="count" property="count" />
 	    <result column="idea_id" property="ideaId" />
-	    <result column="fa_flag" property="faFlag" />
-	    <result column="fa_name" property="faName" />
 	    <result column="project_time" property="projectTime" />
 	</resultMap>
 	
@@ -239,7 +237,7 @@
 	      currency_unit, project_company, formation_date, project_company_code, company_legal, create_uid, 
 	      create_uname, create_uposition, project_progress, project_status, updated_time, created_time, 
 	      project_describe, project_describe_financing, project_business_model, company_location,
-	      user_portrait, prospect_analysis,idea_id,fa_flag,fa_name,project_time,progress_history)
+	      user_portrait, prospect_analysis,idea_id,project_time,progress_history)
 	    values 
 	    ( #{id}, #{projectName}, #{projectCode},
 	      #{projectType}, #{stockTransfer}, #{projectCareerline}, #{projectDepartId}, #{industryOwn},
@@ -247,7 +245,7 @@
 	      #{formationDate}, #{projectCompanyCode}, #{companyLegal}, #{createUid}, #{createUname}, 
 	      #{createUposition}, #{projectProgress}, #{projectStatus}, #{updatedTime}, #{createdTime}, 
 	      #{projectDescribe}, #{projectDescribeFinancing}, #{projectBusinessModel}, #{companyLocation},
-	      #{userPortrait}, #{prospectAnalysis},#{ideaId},#{faFlag},#{faName},#{projectTime},#{progressHistory})
+	      #{userPortrait}, #{prospectAnalysis},#{ideaId},#{projectTime},#{progressHistory})
     </insert>
     
     <!-- 更新项目下的所有投资方的投资形式 -->
@@ -290,8 +288,6 @@
 		      <if test="nextFinancingSource != null" >  next_financing_source = #{nextFinancingSource}, </if>
 		      <if test="industryAnalysis != null" >  industry_analysis = #{industryAnalysis}, </if>
 		      <if test="operationalData != null" >  operational_data = #{operationalData}, </if>
-		      <if test="faFlag != null" >  fa_flag = #{faFlag} ,</if>
-		      <if test="faName != null" >  fa_name = #{faName} ,</if>
 		      <if test="financeMode != null" >  finance_mode = #{financeMode} ,</if>
 		      <if test="projectTime != null" > project_time = #{projectTime} </if>
 		</set>
@@ -363,5 +359,11 @@
 		</set>
 		where id = #{id};
 	</update>
+	
+	<!-- 删除项目所有承揽人-->
+	<delete id="delProjectUserIds" parameterType="hashmap">
+		DELETE FROM information_result 
+		WHERE project_id=#{projectId} and title_id=#{titleId};
+	</delete>
 
 </mapper>

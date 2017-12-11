@@ -345,6 +345,8 @@ public class ProjectController {
 	void editInformationResult(SopProjectBean bean,Long userId){
 		List<InformationResult> list = new ArrayList<>();
 		Map<String, Object> hashmap = new HashMap<>();
+		Map<String, Object> map = new HashMap<>();
+		map.put("projectId", bean.getId());
 		hashmap.put("projectId", bean.getId());
 		InformationResult result = null;
 		//融资金额
@@ -489,6 +491,63 @@ public class ProjectController {
 					result.setProjectId(CUtils.get().object2String(bean.getId()));
 					result.setContentDescribe1(bean.getFormatFinalValuations());
 					list.add(result);
+			}
+		}
+		//项目来源
+		if (bean.getProjectSource()!=null && !bean.getProjectSource().equals("")) {
+			hashmap.put("titleId", 1120);
+			result = service.findResultInfoById(hashmap);
+			if (result!=null) {
+				result.setUpdatedTime(new Date().getTime());
+				result.setContentChoose(bean.getProjectSource());
+				if(bean.getProjectSourceName()!=null && !bean.getProjectSourceName().equals("")){
+					result.setContentDescribe1(bean.getProjectSourceName());
+				}
+				service.updateInformationResult(result);
+			}else{
+					//项目来源
+					result = new InformationResult();
+					result.setTitleId("1120");
+					result.setCreateId(CUtils.get().object2String(userId));
+					result.setCreatedTime(new Date().getTime());
+					result.setProjectId(CUtils.get().object2String(bean.getId()));
+					result.setContentChoose(bean.getProjectSource());
+					if(bean.getProjectSourceName()!=null && !bean.getProjectSourceName().equals("")){
+						result.setContentDescribe1(bean.getProjectSourceName());
+					}
+					list.add(result);
+			}
+			//添加项目承揽人之前，先清空所有的
+			map.put("titleId", 1118);
+			@SuppressWarnings("unused")
+			int del = service.delProjectUserIds(map);
+			if(bean.getProjectUserIds()!=null && bean.getProjectUserIds().size()>0){
+				//项目承揽人
+				List<Long> ids = bean.getProjectUserIds();
+				for(int i=0;i<ids.size();i++){
+					InformationResult r = new InformationResult();
+					r.setTitleId("1118");
+					r.setCreateId(CUtils.get().object2String(userId));
+					r.setCreatedTime(new Date().getTime());
+					r.setProjectId(CUtils.get().object2String(bean.getId()));
+					r.setContentChoose(CUtils.get().object2String(ids.get(i)));
+					if(CUtils.get().object2String(ids.get(i)).equals("10072") && bean.getProjectUserRemark()!=null && !bean.getProjectUserRemark().equals("")){
+						r.setContentDescribe1(bean.getProjectUserRemark());
+					}
+					list.add(r);
+				}
+			}else{
+				//项目来源不是FA的默认创建一条承揽人信息
+				if(!bean.getProjectSource().equals("2257")){
+					InformationResult r = new InformationResult();
+					r.setTitleId("1118");
+					r.setCreateId(CUtils.get().object2String(userId));
+					r.setCreatedTime(new Date().getTime());
+					r.setProjectId(CUtils.get().object2String(bean.getId()));
+					r.setContentChoose(CUtils.get().object2String(userId));
+					
+					list.add(r);
+				}
 			}
 		}
 		if (list.size()>0) {

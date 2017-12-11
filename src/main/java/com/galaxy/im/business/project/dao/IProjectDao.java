@@ -33,5 +33,7 @@ public interface IProjectDao extends IBaseDao<ProjectBean,Long>{
 	//添加信息到全息报告
 	int addInformationResult(List<InformationResult> list);
 	int updateInformationResult(InformationResult result);
+	//删除项目承揽人
+	int delProjectUserIds(Map<String, Object> map);
 	
 }
