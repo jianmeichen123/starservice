@@ -28,4 +28,6 @@ public interface IDictDao extends IBaseDao<Dict, Long>{
 	List<Map<String, Object>> getfinancingStatusList(Map<String, Object> paramMap);
 
 	List<Map<String, Object>> getfinancingStockList(Map<String, Object> paramMap);
+
+	List<Map<String, Object>> getProjectUserList(Map<String, Object> paramMap);
 }

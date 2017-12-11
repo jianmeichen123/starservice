@@ -102,6 +102,11 @@
 		ORDER BY d.sort ASC;
 	</select>
 	
+	<!-- 项目承揽人 -->
+	<select id="getProjectUserList" parameterType="hashmap" resultType="hashmap">
+		SELECT d.id,d.name name ,d.code code FROM information_dictionary d WHERE d.parent_id=10001;
+	</select>
+	
 	<!-- 股东性质 -->
 	<select id="getShareholderNatureList" parameterType="hashmap" resultType="hashmap">
 		SELECT d.id,d.name name ,d.code code FROM information_title_relate r

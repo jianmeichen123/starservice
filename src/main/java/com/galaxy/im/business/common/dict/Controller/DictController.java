@@ -117,6 +117,8 @@ public class DictController {
 	 * 8.团队成员职位	FNO1_4（全息报告：团队成员职位列表）
 	 * 9.投资方币种		currency
 	 * 10.运营会议纪要会议类型                 postMeetingType
+	 * 11.项目来源                FNO1_10
+	 * 11.项目承揽人                projectUser
 	 * @return
 	 * @author liuli
 	 */
