@@ -104,7 +104,10 @@
 	
 	<!-- 项目承揽人 -->
 	<select id="getProjectUserList" parameterType="hashmap" resultType="hashmap">
-		SELECT d.id,d.name name ,d.code code FROM information_dictionary d WHERE d.parent_id=10001;
+		SELECT d.id,d.name name ,d.code code FROM information_dictionary d WHERE d.parent_id=10001
+		<if test="uName !=null and uName !='null' and uName !=''">
+			and d.name like concat(concat('%','${uName}'),'%')
+		</if>;
 	</select>
 	
 	<!-- 股东性质 -->
