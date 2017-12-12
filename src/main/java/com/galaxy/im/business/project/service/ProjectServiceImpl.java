@@ -309,6 +309,16 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 			throw new ServiceException(e);
 		}
 	}
+
+	@Override
+	public long findInputTitleId(Map<String, Object> hashmap) {
+		try{
+			return dao.findInputTitleId(hashmap);
+		}catch(Exception e){
+			log.error(ProjectServiceImpl.class.getName() + "findInputTitleId",e);
+			throw new ServiceException(e);
+		}
+	}
 	
 	
 }

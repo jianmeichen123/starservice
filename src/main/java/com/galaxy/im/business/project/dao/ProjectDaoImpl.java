@@ -214,5 +214,15 @@ public class ProjectDaoImpl extends BaseDaoImpl<ProjectBean,Long> implements IPr
 		}
 	}
 
+	@Override
+	public long findInputTitleId(Map<String, Object> hashmap) {
+		try{
+			return sqlSessionTemplate.selectOne(getSqlName("findInputTitleId"),hashmap);
+		}catch(Exception e){
+			log.error(ProjectDaoImpl.class.getName() + "findInputTitleId",e);
+			throw new DaoException(e);
+		}
+	}
+
 
 }
