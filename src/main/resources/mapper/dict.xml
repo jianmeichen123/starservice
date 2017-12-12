@@ -99,15 +99,10 @@
 		SELECT d.id,d.name name ,d.code code FROM information_title_relate r
 		LEFT JOIN information_dictionary d on r.title_id=d.title_id
 		WHERE r.code=#{parentCode} 
-		ORDER BY d.sort ASC;
-	</select>
-	
-	<!-- 项目承揽人 -->
-	<select id="getProjectUserList" parameterType="hashmap" resultType="hashmap">
-		SELECT d.id,d.name name ,d.code code FROM information_dictionary d WHERE d.parent_id=10001
 		<if test="uName !=null and uName !='null' and uName !=''">
 			and d.name like concat(concat('%','${uName}'),'%')
-		</if>;
+		</if>
+		ORDER BY d.sort ASC;
 	</select>
 	
 	<!-- 股东性质 -->

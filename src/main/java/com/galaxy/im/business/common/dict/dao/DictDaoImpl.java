@@ -136,16 +136,4 @@ public class DictDaoImpl extends BaseDaoImpl<Dict, Long> implements IDictDao{
 		}
 	}
 
-	@Override
-	public List<Map<String, Object>> getProjectUserList(Map<String, Object> paramMap) {
-		try {
-			return sqlSessionTemplate.selectList(getSqlName("getProjectUserList"),paramMap);
-		} catch (Exception e) {
-			log.error(String.format("查询对象总数出错！语句：%s", getSqlName("getProjectUserList")), e);
-			throw new DaoException(e);
-		}
-	}
-	
-	
-
 }
