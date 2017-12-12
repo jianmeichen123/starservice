@@ -132,11 +132,10 @@ public class SopTaskController {
 			map.put("isApplyCount", isApplyCount);
 			map.put("applyCount", applyCount);
 			map.put("depApplyCount", depApplyCount);
-			if ( page!=null) {
-				resultBean.setStatus("OK");
-				resultBean.setEntity(page);
-				resultBean.setMap(map);
-			}
+			
+			resultBean.setStatus("OK");
+			resultBean.setEntity(page);
+			resultBean.setMap(map);
 		} catch (Exception e) {
 			log.error(SopTaskController.class.getName() + "taskListByRole",e);
 		}
