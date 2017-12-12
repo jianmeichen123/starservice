@@ -496,12 +496,23 @@ public class ProjectController {
 		//项目来源
 		if (bean.getProjectSource()!=null && !bean.getProjectSource().equals("")) {
 			hashmap.put("titleId", 1120);
+			Long tempId = 0L;
 			result = service.findResultInfoById(hashmap);
+			if(bean.getProjectSource()!=null){
+				hashmap.put("inputId", bean.getProjectSource());
+				tempId = service.findInputTitleId(hashmap);
+			}
 			if (result!=null) {
 				result.setUpdatedTime(new Date().getTime());
 				result.setContentChoose(bean.getProjectSource());
 				if(bean.getProjectSourceName()!=null && !bean.getProjectSourceName().equals("")){
-					result.setContentDescribe1(bean.getProjectSourceName());
+					InformationResult r = new InformationResult();
+					r.setTitleId(CUtils.get().object2String(tempId));
+					r.setCreateId(CUtils.get().object2String(userId));
+					r.setCreatedTime(new Date().getTime());
+					r.setProjectId(CUtils.get().object2String(bean.getId()));
+					r.setContentDescribe1(bean.getProjectSourceName());
+					service.updateInformationResult(r);
 				}
 				service.updateInformationResult(result);
 			}else{
@@ -513,7 +524,13 @@ public class ProjectController {
 					result.setProjectId(CUtils.get().object2String(bean.getId()));
 					result.setContentChoose(bean.getProjectSource());
 					if(bean.getProjectSourceName()!=null && !bean.getProjectSourceName().equals("")){
-						result.setContentDescribe1(bean.getProjectSourceName());
+						InformationResult r = new InformationResult();
+						r.setTitleId(CUtils.get().object2String(tempId));
+						r.setCreateId(CUtils.get().object2String(userId));
+						r.setCreatedTime(new Date().getTime());
+						r.setProjectId(CUtils.get().object2String(bean.getId()));
+						r.setContentDescribe1(bean.getProjectSourceName());
+						list.add(r);
 					}
 					list.add(result);
 			}

@@ -169,9 +169,20 @@ public class ClouddiskServiceImpl extends BaseServiceImpl<CloudDiskFiles> implem
 		}
 	}
 
+	/**
+	 * 获取云端文件全部文件的key
+	 */
 	@Override
-	public Object isVolumnEnough() {
-		return null;
+	public List<String> getCloudFileKeys(Map<String, Object> paramMap) {
+		try{
+			return dao.getCloudFileKeys(paramMap);
+		}catch(DaoException daoE){
+			throw daoE;
+		}catch(Exception e){
+			log.error(ClouddiskServiceImpl.class.getName() + ":getCloudFileKeys",e);
+			throw new ServiceException(e);
+		}
 	}
+
 	
 }

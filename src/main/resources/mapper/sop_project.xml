@@ -309,6 +309,11 @@
 		and title_id=#{titleId} and is_valid=0;
 	</select>
 	
+	<!-- 全息报告信息获取 -->
+	<select id="findInputTitleId" parameterType="hashmap" resultType="long">
+		SELECT id FROM information_title WHERE find_in_set(#{inputId} , val_rule_formula) 
+	</select>
+	
 	<!-- 插入信息到全息报告-->
 	<insert id="addInformationResult" useGeneratedKeys="true" parameterType="java.util.List">  
 	    <selectKey resultType="long" keyProperty="id" order="AFTER">  
@@ -357,7 +362,13 @@
 			<if test="updatedTime != null"> updated_time = #{updatedTime},</if>
 			<if test="updateId != null"> update_id = #{updateId}</if>
 		</set>
-		where id = #{id};
+		<where>
+			<trim prefixOverrides="and">
+				<if test="projectId != null" > and project_id = #{projectId}</if>
+				<if test="titleId != null"> and title_id = #{titleId} </if>
+				<if test="id != null" >and id = #{id}</if>
+			</trim>
+		</where>
 	</update>
 	
 	<!-- 删除项目所有承揽人-->

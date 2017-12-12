@@ -12,7 +12,6 @@ public interface IClouddiskDao extends IBaseDao<CloudDiskFiles, Long>{
 	boolean renameCloudFile(Map<String,Object> paramMap);
 	boolean deleteCloudFile(Map<String,Object> paramMap);
 	List<Map<String,Object>> getUsedVolumes(Map<String,Object> paramMap);
-	List<Map<String,Object>> getCloudFileList(long userId);
 	Integer deleteBatches(Map<String,Object> paramMap);
-	
+	List<String> getCloudFileKeys(Map<String,Object> paramMap);
 }
