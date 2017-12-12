@@ -272,7 +272,7 @@ public class ProjectController {
 					bean.setUpdatedTime(System.currentTimeMillis());
 					int num = service.updateProject(bean);
 					//全息报告result表数据更新
-					editInformationResult(bean,userId);
+					editInformationResult(bean,userId,userName);
 					if (num > 0) {
 						//0：删除项目下所有投资方，其他：修改项目所有投资方信息
 						@SuppressWarnings("unused")
@@ -327,7 +327,7 @@ public class ProjectController {
 						bean.setCreatedTime(DateUtil.convertStringToDate(bean.getCreateDate().trim(), "yyyy-MM-dd").getTime());
 						long id = service.saveProject(bean);
 						//新建项目存入全息报告中的信息
-						editInformationResult(bean,userId);
+						editInformationResult(bean,userId,userName);
 						if (id > 0) {
 							map.put("id", id);
 							resultBean.setStatus("OK");
@@ -344,7 +344,7 @@ public class ProjectController {
 	}
 	
 	//全息报告数据处理
-	void editInformationResult(SopProjectBean bean,Long userId){
+	void editInformationResult(SopProjectBean bean,Long userId, String userName){
 		List<InformationResult> list = new ArrayList<>();
 		Map<String, Object> hashmap = new HashMap<>();
 		Map<String, Object> map = new HashMap<>();
@@ -571,7 +571,19 @@ public class ProjectController {
 					r.setCreateId(CUtils.get().object2String(userId));
 					r.setCreatedTime(new Date().getTime());
 					r.setProjectId(CUtils.get().object2String(bean.getId()));
-					r.setContentChoose(CUtils.get().object2String(userId));
+					
+					//登陆用户和承揽人进行匹配
+					Map<String, Object> m = new HashMap<>();
+					m.put("parentCode", "FNO1_11");
+					m.put("userName", userName);
+					List<Map<String,Object>> mp = service.getMatchingInfo(m);
+					if(!mp.isEmpty()&&mp.size()>0){
+						for(Map<String,Object> mm:mp){
+							r.setContentChoose(CUtils.get().object2String(mm.get("id")));
+						}
+					}else{
+						r.setContentDescribe1(userName);
+					}
 					
 					list.add(r);
 				}

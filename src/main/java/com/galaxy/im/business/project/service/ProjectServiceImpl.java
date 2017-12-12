@@ -16,6 +16,7 @@ import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.ProjectBo;
 import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.talk.SopFileBean;
+import com.galaxy.im.business.common.dict.dao.IDictDao;
 import com.galaxy.im.business.flow.common.dao.IFlowCommonDao;
 import com.galaxy.im.business.project.dao.IProjectDao;
 import com.galaxy.im.business.project.dao.ISopProjectDao;
@@ -37,6 +38,8 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 	IFlowCommonDao flowdao;
 	@Autowired
 	ISopProjectDao sopdao;
+	@Autowired
+	private IDictDao dictDao;
 
 	@Override
 	protected IBaseDao<ProjectBean, Long> getBaseDao() {
@@ -352,6 +355,16 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 			return dao.findInputTitleId(hashmap);
 		}catch(Exception e){
 			log.error(ProjectServiceImpl.class.getName() + "findInputTitleId",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public List<Map<String, Object>> getMatchingInfo(Map<String, Object> m) {
+		try{
+			return dictDao.getFinanceStatusList(m);
+		}catch(Exception e){
+			log.error(ProjectServiceImpl.class.getName() + "getMatchingInfo",e);
 			throw new ServiceException(e);
 		}
 	}

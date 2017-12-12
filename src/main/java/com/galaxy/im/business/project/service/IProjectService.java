@@ -55,5 +55,7 @@ public interface IProjectService extends IBaseService<ProjectBean>{
 	int delProjectUserIds(Map<String, Object> map);
 	//获取项目来源关联的名称titleId
 	long findInputTitleId(Map<String, Object> hashmap);
+	//登陆用户匹配承揽人
+	List<Map<String, Object>> getMatchingInfo(Map<String, Object> m);
 	
 }
