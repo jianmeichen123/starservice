@@ -37,5 +37,8 @@ public interface IProjectDao extends IBaseDao<ProjectBean,Long>{
 	int delProjectUserIds(Map<String, Object> map);
 	//获取项目来源关联的名称titleId
 	long findInputTitleId(Map<String, Object> hashmap);
-	
+	//项目来源
+	Map<String, Object> selectProjectSoureInfo(Map<String, Object> paramMap);
+	//项目承揽人
+	List<Map<String, Object>> selectProjectUserInfo(Map<String, Object> paramMap);
 }

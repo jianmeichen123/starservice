@@ -132,6 +132,8 @@ public class ProjectController {
 			paramMap.put("titleId6", 3011);
 			paramMap.put("titleId7", 3012);
 			paramMap.put("titleId8", 1108);
+			paramMap.put("titleId9", 1120);
+			paramMap.put("titleId10", 1118);
 			paramMap.put("projectId", projectId);
 			//基础信息(数据来源 全息报告)
 			Map<String,Object> QXinfoMap = service.selectBaseProjectInfo(paramMap);

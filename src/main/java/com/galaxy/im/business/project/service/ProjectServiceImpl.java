@@ -1,6 +1,7 @@
 package com.galaxy.im.business.project.service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -253,7 +254,42 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 	@Override
 	public Map<String, Object> selectBaseProjectInfo(Map<String, Object> paramMap) {
 		try{
-			return dao.selectBaseProjectInfo(paramMap);
+			//项目详情 基础信息、融资计划、实际投资
+			Map<String,Object> map1 = dao.selectBaseProjectInfo(paramMap);
+			//项目来源
+			Map<String,Object> map2 = dao.selectProjectSoureInfo(paramMap);
+			//项目承揽人
+			List<Map<String,Object>> map3 = dao.selectProjectUserInfo(paramMap);
+			Map<String,Object> QXinfoMap = new HashMap<>();
+			if (map1!=null || map2 !=null || map3 != null) {
+				
+				QXinfoMap.putAll(map1);
+				
+				if (map2.get("name")!=null) {
+					String value = CUtils.get().object2String(map2.get("projectSoure")) +"-"+ CUtils.get().object2String(map2.get("name"));
+					map2.put("projectSoureName", value);
+					map2.remove("name");
+					map2.remove("projectSoure");
+				}else{
+					map2.put("projectSoureName", CUtils.get().object2String(map2.get("projectSoure")));
+					map2.remove("projectSoure");
+				}
+				
+				QXinfoMap.putAll(map2);
+				
+				Map<String, Object> projectMap = new HashMap<>();
+				StringBuilder sBuilder = new StringBuilder();
+				for(Map<String,Object> maps : map3){
+					
+					if (maps.get("projectUserName")!=null) {
+						projectMap.put("otherProjectUser", CUtils.get().object2String(maps.get("projectUserName")));
+					}
+					sBuilder.append(maps.get("projectUser"));
+				}
+				projectMap.put("projectUser", sBuilder);
+				QXinfoMap.putAll(projectMap);
+			}
+			return QXinfoMap;
 		}catch(Exception e){
 			log.error(ProjectServiceImpl.class.getName() + "_ProjectServiceImpl",e);
 			throw new ServiceException(e);
