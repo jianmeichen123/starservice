@@ -387,7 +387,7 @@
 		<where>
 			<trim prefixOverrides="and">
 				<if test="projectId != null" > and project_id = #{projectId}</if>
-				<if test="titleId != null"> and title_id = #{titleId} </if>
+				<if test="valueId != null"> and title_id = #{valueId} </if>
 				<if test="id != null" >and id = #{id}</if>
 			</trim>
 		</where>

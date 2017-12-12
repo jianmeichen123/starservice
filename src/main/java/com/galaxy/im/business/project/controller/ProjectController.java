@@ -499,12 +499,19 @@ public class ProjectController {
 		if (bean.getProjectSource()!=null && !bean.getProjectSource().equals("")) {
 			hashmap.put("titleId", 1120);
 			Long tempId = 0L;
+			Long oldId = 0L;
 			result = service.findResultInfoById(hashmap);
+			//新选择的项目来源获取关联名称的titleId
 			if(bean.getProjectSource()!=null){
 				hashmap.put("inputId", bean.getProjectSource());
 				tempId = service.findInputTitleId(hashmap);
 			}
 			if (result!=null) {
+				//原先的项目来源
+				if(result.getContentChoose()!=null){
+					hashmap.put("inputId", result.getContentChoose());
+					oldId = service.findInputTitleId(hashmap);
+				}
 				result.setUpdatedTime(new Date().getTime());
 				result.setContentChoose(bean.getProjectSource());
 				if(bean.getProjectSourceName()!=null && !bean.getProjectSourceName().equals("")){
@@ -514,6 +521,7 @@ public class ProjectController {
 					r.setCreatedTime(new Date().getTime());
 					r.setProjectId(CUtils.get().object2String(bean.getId()));
 					r.setContentDescribe1(bean.getProjectSourceName());
+					r.setValueId(oldId);
 					service.updateInformationResult(r);
 				}
 				service.updateInformationResult(result);
