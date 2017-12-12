@@ -118,6 +118,12 @@
 	    </foreach>
 	</delete>
 	
+	<select id="getCloudFileKeys" parameterType="hashMap" resultType="string">
+		select t.oss_key from cloud_disk_files t 
+			where t.own_user=#{ownUser}
+			and t.is_del=0;
+	</select>
+	
 	
 
 </mapper>

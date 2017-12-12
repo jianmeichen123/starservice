@@ -300,7 +300,32 @@ public class ClouddiskController {
 		return result;
 	}
 	
-	
+	/**
+	 * 获取云端文件全部文件的key
+	 */
+	@RequestMapping("getCloudFileKeys")
+	@ResponseBody
+	public Object getCloudFileKeys(@RequestBody String paramString) {
+		ResultBean<Object> result = new ResultBean<Object>(); 
+		result.setStatus("OK");
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("keyCount", 0);
+		result.setMap(map);
+		try{
+			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);	
+			if(paramMap!=null && paramMap.containsKey("ownUser")) {
+				List<String> keys = service.getCloudFileKeys(paramMap);
+				if(keys!=null && keys.size()>0) {
+					map.put("keys", keys);
+					map.put("keyCount", keys.size());
+				}
+			}
+		}catch(Exception e) {
+			log.error(className + ":getCloudFileKeys",e);
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 	
 	

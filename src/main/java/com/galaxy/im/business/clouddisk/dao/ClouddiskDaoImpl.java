@@ -36,17 +36,6 @@ public class ClouddiskDaoImpl extends BaseDaoImpl<CloudDiskFiles, Long> implemen
 	}
 
 	/**
-	 * 获取云端列表
-	 */
-	@Override
-	public List<Map<String,Object>> getCloudFileList(long userId) {
-		
-		
-		
-		return null;
-	}
-
-	/**
 	 * 获取用户的云盘信息
 	 */
 	@Override
@@ -97,7 +86,7 @@ public class ClouddiskDaoImpl extends BaseDaoImpl<CloudDiskFiles, Long> implemen
 			String sqlName = "com.galaxy.im.bean.clouddisk.CloudDiskFiles.getUsedVolumes";
 			return sqlSessionTemplate.selectList(sqlName, paramMap);
 		}catch(Exception e){
-			log.error(className + "：deleteCloudFile",e);
+			log.error(className + "：getUsedVolumes",e);
 			throw new DaoException(e);
 		}
 	}
@@ -112,6 +101,20 @@ public class ClouddiskDaoImpl extends BaseDaoImpl<CloudDiskFiles, Long> implemen
 			return sqlSessionTemplate.delete(sqlName, paramMap);
 		}catch(Exception e){
 			log.error(className + ":deleteBatches",e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 获取云端文件全部文件的key
+	 */
+	@Override
+	public List<String> getCloudFileKeys(Map<String, Object> paramMap) {
+		try{
+			String sqlName = "com.galaxy.im.bean.clouddisk.CloudDiskFiles.getCloudFileKeys";
+			return sqlSessionTemplate.selectList(sqlName, paramMap);
+		}catch(Exception e){
+			log.error(className + ":getCloudFileKeys",e);
 			throw new DaoException(e);
 		}
 	}

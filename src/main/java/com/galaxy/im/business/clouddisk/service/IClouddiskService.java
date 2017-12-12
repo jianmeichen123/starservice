@@ -1,5 +1,6 @@
 package com.galaxy.im.business.clouddisk.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.galaxy.im.bean.clouddisk.CloudDiskFiles;
@@ -13,8 +14,7 @@ public interface IClouddiskService extends IBaseService<CloudDiskFiles>{
 	Long getUsedVolumes(Map<String,Object> paramMap);
 	
 	Object getCloudFileList(long userId);
-	
-	Object isVolumnEnough();
-	
 	Integer deleteBatches(Map<String,Object> paramMap);
+	
+	List<String> getCloudFileKeys(Map<String,Object> paramMap);
 }
