@@ -88,7 +88,7 @@ public class ClouddiskServiceImpl extends BaseServiceImpl<CloudDiskFiles> implem
 					BigDecimal ub2 = new BigDecimal(1024*1024);
 					resMap.put("usedVolume", ub1.divide(ub2,2,BigDecimal.ROUND_UP).toString() + "M");
 				}else if(usedVolume>1024){
-					BigDecimal ub2 = new BigDecimal(1024*1024*1024);
+					BigDecimal ub2 = new BigDecimal(1024);
 					resMap.put("usedVolume", ub1.divide(ub2,2,BigDecimal.ROUND_UP).toString() + "K");
 				}else{
 					resMap.put("usedVolume", usedVolume + "B");
