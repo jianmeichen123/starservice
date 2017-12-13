@@ -262,7 +262,7 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 			Map<String,Object> map1 = dao.selectBaseProjectInfo(paramMap);
 			//项目来源
 			Map<String,Object> sourceMap = dao.selectProjectSoureInfo(paramMap);
-			if (CUtils.get().object2Integer(sourceMap.get("projectSoureId")) != 2262) {
+			if (!sourceMap.isEmpty() && sourceMap.containsKey("projectSoureId") && CUtils.get().object2Integer(sourceMap.get("projectSoureId")) != 2262) {
 				String tempId = "";
 				projectMap.put("inputId", sourceMap.get("projectSoureId"));
 				tempId = dao.findInputTitleId(projectMap);
