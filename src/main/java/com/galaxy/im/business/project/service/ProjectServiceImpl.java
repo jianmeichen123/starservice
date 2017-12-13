@@ -258,8 +258,12 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 	public Map<String, Object> selectBaseProjectInfo(Map<String, Object> paramMap) {
 		try{
 			Map<String, Object> projectMap = new HashMap<>();
+			Map<String,Object> QXinfoMap = new HashMap<>();
 			//项目详情 基础信息、融资计划、实际投资
 			Map<String,Object> map1 = dao.selectBaseProjectInfo(paramMap);
+			if (map1!=null) {
+				QXinfoMap.putAll(map1);
+			}
 			//项目来源
 			Map<String,Object> sourceMap = dao.selectProjectSoureInfo(paramMap);
 			if (sourceMap!=null && sourceMap.containsKey("projectSoureId") && CUtils.get().object2Integer(sourceMap.get("projectSoureId")) != 2262) {
@@ -269,45 +273,43 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 				paramMap.put("titleId11", tempId);
 			}
 			Map<String,Object> map2 = dao.selectProjectSoureInfo(paramMap);
-			//项目承揽人
-			List<Map<String,Object>> map3 = dao.selectProjectUserInfo(paramMap);
-			Map<String,Object> QXinfoMap = new HashMap<>();
-			if (map1!=null || map2 !=null || map3 != null) {
-				
-				QXinfoMap.putAll(map1);
-				
-				if (map2.get("name")!=null) {
-					String value = CUtils.get().object2String(map2.get("projectSoure")) +"-"+ CUtils.get().object2String(map2.get("name"));
-					map2.put("projectSoureName", value);
-					map2.remove("name");
-					map2.remove("projectSoure");
-				}else{
-					map2.put("projectSoureName", CUtils.get().object2String(map2.get("projectSoure")));
-					map2.remove("projectSoure");
+				if (map2!=null) {
+					if (map2 != null && map2.get("name")!=null) {
+						String value = CUtils.get().object2String(map2.get("projectSoure")) +"-"+ CUtils.get().object2String(map2.get("name"));
+						map2.put("projectSoureName", value);
+						map2.remove("name");
+						map2.remove("projectSoure");
+					}else{
+						map2.put("projectSoureName", CUtils.get().object2String(map2.get("projectSoure")));
+						map2.remove("projectSoure");
+					}
+					QXinfoMap.putAll(map2);
 				}
-				QXinfoMap.putAll(map2);
-				if (map3.size()>0) {
-					StringBuilder sBuilder = new StringBuilder();
-					for(Map<String,Object> maps : map3){
-						if (maps.get("projectUserName")!=null && maps.get("projectUser")!=null) {
-							projectMap.put("otherProjectUser", CUtils.get().object2String(maps.get("projectUserName")));
-						}
-						if (maps.get("projectUser")!=null) {
-							if (maps.get("projectUser")!=null && maps.get("projectUser").equals("其他")) {
-								sBuilder.append("非投资线员工" + "、");
-							}else {
-								sBuilder.append(maps.get("projectUser") + "、");
+				//项目承揽人
+				List<Map<String,Object>> map3 = dao.selectProjectUserInfo(paramMap);
+				if (map3!=null) {
+					if (map3.size()>0) {
+						StringBuilder sBuilder = new StringBuilder();
+						for(Map<String,Object> maps : map3){
+							if (maps.get("projectUserName")!=null && maps.get("projectUser")!=null) {
+								projectMap.put("otherProjectUser", CUtils.get().object2String(maps.get("projectUserName")));
+							}
+							if (maps.get("projectUser")!=null) {
+								if (maps.get("projectUser")!=null && maps.get("projectUser").equals("其他")) {
+									sBuilder.append("非投资线员工" + "、");
+								}else {
+									sBuilder.append(maps.get("projectUser") + "、");
+								}
+							}
+							if (maps.get("projectUser")==null && maps.get("projectUserName")!=null) {
+								sBuilder.append(maps.get("projectUserName") + "、");
 							}
 						}
-						if (maps.get("projectUser")==null && maps.get("projectUserName")!=null) {
-							sBuilder.append(maps.get("projectUserName") + "、");
-						}
+						sBuilder.deleteCharAt(sBuilder.length() - 1);
+						projectMap.put("projectUser", sBuilder);
+						QXinfoMap.putAll(projectMap);
 					}
-					sBuilder.deleteCharAt(sBuilder.length() - 1);
-					projectMap.put("projectUser", sBuilder);
-					QXinfoMap.putAll(projectMap);
 				}
-			}
 			return QXinfoMap;
 		}catch(Exception e){
 			log.error(ProjectServiceImpl.class.getName() + "_ProjectServiceImpl",e);
