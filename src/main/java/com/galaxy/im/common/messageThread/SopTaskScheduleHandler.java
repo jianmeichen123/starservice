@@ -47,10 +47,19 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 		SopTask model = (SopTask) info;
 		
 		long sendTime = new Date().getTime();
-		/*if(sendTime<System.currentTimeMillis()){
-			return;
-		}*/
 		
+		//转taskname
+		for(Map<String, Object> map:model.getProjects()){
+			if(map.containsKey("taskName") && map.get("taskName")!=null){
+				if(CUtils.get().object2String(map.get("taskName")).contains("人事")){
+					map.put("taskName", "人事尽调任务");
+				}else if(CUtils.get().object2String(map.get("taskName")).contains("法务")){
+					map.put("taskName", "法务尽调任务");
+				}else if(CUtils.get().object2String(map.get("taskName")).contains("财务")){
+					map.put("taskName", "财务尽调任务");
+				}
+			}
+		}
 		if(model.getMessageType().equals(sop_task_1)){
 			//认领
 			for(Map<String, Object> map:model.getProjects()){
