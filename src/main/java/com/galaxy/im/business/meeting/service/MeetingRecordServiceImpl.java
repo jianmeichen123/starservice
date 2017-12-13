@@ -103,5 +103,18 @@ public class MeetingRecordServiceImpl extends BaseServiceImpl<MeetingRecordBean>
 			throw new ServiceException(e);
 		}
 	}
+
+	/**
+	 * 获取会议类型的个数
+	 */
+	@Override
+	public int getMeetingTypeCount(Map<String, Object> paramMap) {
+		try{
+			return dao.getMeetingTypeCount(paramMap);
+		}catch(Exception e){
+			log.error(MeetingRecordServiceImpl.class.getName() + "getMeetingTypeCount",e);
+			throw new ServiceException(e);
+		}
+	}
 	
 }

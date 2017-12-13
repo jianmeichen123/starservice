@@ -88,6 +88,19 @@ public class MeetingRecordDaoImpl extends BaseDaoImpl<MeetingRecordBean, Long> i
 			throw new DaoException(e);
 		}
 	}
+
+	/**
+	 * 获取会议类型的个数
+	 */
+	@Override
+	public int getMeetingTypeCount(Map<String, Object> paramMap) {
+		try {
+			return sqlSessionTemplate.selectOne(getSqlName("getMeetingTypeCount"), paramMap);
+		} catch (Exception e) {
+			log.error(String.format(getSqlName("getMeetingTypeCount")), e);
+			throw new DaoException(e);
+		}
+	}
 	
 
 }

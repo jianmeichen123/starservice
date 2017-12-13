@@ -206,9 +206,12 @@ public class PosMeetingRecordController {
 						updateCount = service.updateById(bean);
 					}else{
 						//保存
+						paramMap.put("meetingType", bean.getMeetingType());
+						int count = service.getMeetingTypeCount(paramMap);
 						bean.setMeetingDate(DateUtil.convertStringtoD(bean.getMeetingDateStr()));
 						bean.setCreatedId(sessionBean.getGuserid());
 						bean.setRecordType(2);
+						bean.setMeetingName(CUtils.get().object2Long(count+1));
 						id = service.insert(bean);
 					}
 				}else{

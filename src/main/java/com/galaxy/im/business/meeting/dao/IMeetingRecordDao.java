@@ -18,4 +18,6 @@ public interface IMeetingRecordDao extends IBaseDao<MeetingRecordBean, Long>{
 
 	MeetingRecordBean getMeetingRecord(Long id);
 
+	int getMeetingTypeCount(Map<String, Object> paramMap);
+
 }

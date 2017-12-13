@@ -21,5 +21,7 @@ public interface IMeetingRecordService extends IBaseService<MeetingRecordBean>{
 
 	int delMeetingRecord(MeetingRecordBean meetingRecord);
 
+	int getMeetingTypeCount(Map<String, Object> paramMap);
+
 
 }
