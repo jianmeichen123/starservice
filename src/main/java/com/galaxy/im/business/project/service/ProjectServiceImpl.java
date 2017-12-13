@@ -257,9 +257,17 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 	@Override
 	public Map<String, Object> selectBaseProjectInfo(Map<String, Object> paramMap) {
 		try{
+			Map<String, Object> projectMap = new HashMap<>();
 			//项目详情 基础信息、融资计划、实际投资
 			Map<String,Object> map1 = dao.selectBaseProjectInfo(paramMap);
 			//项目来源
+			Map<String,Object> sourceMap = dao.selectProjectSoureInfo(paramMap);
+			if (CUtils.get().object2Integer(sourceMap.get("projectSoureId")) != 2262) {
+				Long tempId = 0L;
+				projectMap.put("inputId", sourceMap.get("projectSoureId"));
+				tempId = dao.findInputTitleId(projectMap);
+				paramMap.put("titleId11", tempId);
+			}
 			Map<String,Object> map2 = dao.selectProjectSoureInfo(paramMap);
 			//项目承揽人
 			List<Map<String,Object>> map3 = dao.selectProjectUserInfo(paramMap);
@@ -277,20 +285,28 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 					map2.put("projectSoureName", CUtils.get().object2String(map2.get("projectSoure")));
 					map2.remove("projectSoure");
 				}
-				
 				QXinfoMap.putAll(map2);
-				
-				Map<String, Object> projectMap = new HashMap<>();
-				StringBuilder sBuilder = new StringBuilder();
-				for(Map<String,Object> maps : map3){
-					
-					if (maps.get("projectUserName")!=null) {
-						projectMap.put("otherProjectUser", CUtils.get().object2String(maps.get("projectUserName")));
+				if (map3.size()>0) {
+					StringBuilder sBuilder = new StringBuilder();
+					for(Map<String,Object> maps : map3){
+						if (maps.get("projectUserName")!=null && maps.get("projectUser")!=null) {
+							projectMap.put("otherProjectUser", CUtils.get().object2String(maps.get("projectUserName")));
+						}
+						if (maps.get("projectUser")!=null) {
+							if (maps.get("projectUser")!=null && maps.get("projectUser").equals("其他")) {
+								sBuilder.append("非投资线员工" + "、");
+							}else {
+								sBuilder.append(maps.get("projectUser") + "、");
+							}
+						}
+						if (maps.get("projectUser")==null && maps.get("projectUserName")!=null) {
+							sBuilder.append(maps.get("projectUserName") + "、");
+						}
 					}
-					sBuilder.append(maps.get("projectUser"));
+					sBuilder.deleteCharAt(sBuilder.length() - 1);
+					projectMap.put("projectUser", sBuilder);
+					QXinfoMap.putAll(projectMap);
 				}
-				projectMap.put("projectUser", sBuilder);
-				QXinfoMap.putAll(projectMap);
 			}
 			return QXinfoMap;
 		}catch(Exception e){
