@@ -209,5 +209,36 @@ public class LoginController {
 		}
 		return result;
 	}
+	
+	
+
+	/**
+	 * 获得用户所有信息
+	 */
+	@RequestMapping("/power/allResourceToUser")
+	@ResponseBody
+	public Object allResourceToUser(HttpServletRequest request,HttpServletResponse response,@RequestBody String paramString){
+		ResultBean<Object> result = new ResultBean<Object>();
+		try{
+			String url = env.getProperty("power.server") + StaticConst.allResourceToUser;
+			
+			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
+			
+			String htmlString = QHtmlClient.get().post(url, null, paramMap);
+			if(CUtils.get().stringIsNotEmpty(htmlString) && !"error".equals(htmlString)){
+				JSONObject resultJson = CUtils.get().object2JSONObject(htmlString); 
+				if(resultJson!=null && resultJson.containsKey("success")){
+					if(resultJson.getBoolean("success")){
+						JSONObject valueJson = resultJson.getJSONObject("value");
+						result.setEntity(valueJson);
+						result.setStatus("OK");
+					}
+				}
+			}
+		}catch(Exception e){
+			log.error(LoginController.class.getName() + "allResourceToUser",e);
+		}
+		return result;
+	}
 
 }

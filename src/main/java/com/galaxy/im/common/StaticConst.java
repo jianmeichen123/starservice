@@ -28,6 +28,7 @@ public class StaticConst {
 	public static final String getCreadIdInfo = "user/getCreadIdInfo";   				//power外部接口：获取用户名和部门名称
 	public static final String getDeptIdByDeptName = "depart/getDeptIdByDeptName";   	//power外部接口：获取部门名称
 	public static final String login = "login/userLoginForApp";							//登录
+	public static final String allResourceToUser = "login/allResourceToUser";			//获取用户权限信息接口
 	public static final String resetPwd = "user/resetPasswordForApp";					//重置密码
 	public static final String getCareerLineList = "depart/getCareerLineList";			//获得事业线
 	public static final String getRoleCodeByUserId = "role/getRoleCodeByUserId";		//角色code
