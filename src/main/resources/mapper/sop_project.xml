@@ -332,7 +332,7 @@
 	</select>
 	
 	<!-- 全息报告信息获取 -->
-	<select id="findInputTitleId" parameterType="hashmap" resultType="long">
+	<select id="findInputTitleId" parameterType="hashmap" resultType="String">
 		SELECT id FROM information_title WHERE find_in_set(#{inputId} , val_rule_formula) 
 	</select>
 	

@@ -498,8 +498,8 @@ public class ProjectController {
 		//项目来源
 		if (bean.getProjectSource()!=null && !bean.getProjectSource().equals("")) {
 			hashmap.put("titleId", 1120);
-			Long tempId = 0L;
-			Long oldId = 0L;
+			String tempId="";
+			String oldId ="";
 			result = service.findResultInfoById(hashmap);
 			//新选择的项目来源获取关联名称的titleId
 			if(bean.getProjectSource()!=null){
@@ -521,7 +521,7 @@ public class ProjectController {
 					r.setCreatedTime(new Date().getTime());
 					r.setProjectId(CUtils.get().object2String(bean.getId()));
 					r.setContentDescribe1(bean.getProjectSourceName());
-					r.setValueId(oldId);
+					r.setValueId(CUtils.get().object2Long(oldId));
 					service.updateInformationResult(r);
 				}
 				service.updateInformationResult(result);

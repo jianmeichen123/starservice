@@ -366,7 +366,7 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 	}
 
 	@Override
-	public long findInputTitleId(Map<String, Object> hashmap) {
+	public String findInputTitleId(Map<String, Object> hashmap) {
 		try{
 			return dao.findInputTitleId(hashmap);
 		}catch(Exception e){
