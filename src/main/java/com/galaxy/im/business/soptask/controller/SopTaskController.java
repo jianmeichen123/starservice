@@ -383,6 +383,7 @@ public class SopTaskController {
 			sopTask.setMessageType("1.2.4");
 			uNum = UrlNumber.two;
 		}
+		sopTask.setId(sopTaskRecord.getTaskId());
 		sopTask.setAssignUname(sopTaskRecord.getAssignUname());
 		sopTask.setAssignUid(sopTaskRecord.getAfterUid());
 		sopTask.setCreatedId(bean.getGuserid());
