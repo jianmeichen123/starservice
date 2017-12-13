@@ -64,7 +64,7 @@
 		resultType="hashmap">
 		select
 		mu.id, mu.mid, mu.uid, mu.type_role typeRole, mu.is_read isRead,mu.is_use
-		isUse,sp.id projectId,sp.project_name projectName,
+		isUse,
 		me.type, me.remrk_id remarkId, me.content , me.send_time sendTime,me.created_time createdTime,me.category,
 		(SELECT p.id FROM sop_task t LEFT JOIN sop_project p on p.id= t.project_id  
 		 WHERE   me.type =1.2 and me.remrk_id = t.id) projectId,
