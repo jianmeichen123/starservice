@@ -72,7 +72,7 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 				StringBuffer con = new StringBuffer();
 				ScheduleMessageBean message1 =getScheduleMessageInfo(model,0,map);
 				content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
-				content.append("向您移交了将").append("\"");
+				content.append("向您移交了").append("\"");
 				content.append("<pname>").append(CUtils.get().object2String(map.get("projectName"))).append("</pname>\"");
 				content.append("的").append(CUtils.get().object2String(map.get("taskName")));
 				message1.setSendTime(sendTime);
@@ -114,7 +114,7 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 				//该任务的接收人（被指派人）
 				ScheduleMessageBean message1 =getScheduleMessageInfo(model,0,map);
 				content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
-				content.append("向您指派了将").append("\"");
+				content.append("向您指派了").append("\"");
 				content.append("<pname>").append(CUtils.get().object2String(map.get("projectName"))).append("</pname>\"");
 				content.append("的").append(CUtils.get().object2String(map.get("taskName")));
 				message1.setSendTime(sendTime);
