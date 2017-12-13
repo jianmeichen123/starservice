@@ -76,9 +76,11 @@ public class ClouddiskServiceImpl extends BaseServiceImpl<CloudDiskFiles> implem
 				//已经使用比
 				BigDecimal bd = new BigDecimal(StaticConst.CLOUD_VOLUME_DOSE);
 				BigDecimal b1 = new BigDecimal(usedVolume);
-				String usedString = b1.divide(bd,2,BigDecimal.ROUND_HALF_UP).toString();
-				
-				
+				String usedString = b1.divide(bd,6,BigDecimal.ROUND_UP).toString();
+				Double tt = CUtils.get().object2Double(usedString, 0D);
+				if(tt<0.0001) {
+					usedString = "0.0001";
+				}
 				resMap.put("usedRate", usedString);
 				
 				//已经使用 resMap.put("usedVolume", usedVolume);
