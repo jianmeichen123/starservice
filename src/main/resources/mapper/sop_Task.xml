@@ -65,14 +65,16 @@
 		(SELECT p2.*,d.dep_manager depManager
 		from
 		(
-		SELECT p1.id projectId,p1.project_careerline projectCareerline,u.user_name projectCreatedName,p1.create_uid projectCreatedId,
+		SELECT p1.id projectId,u.user_name projectCreatedName,p1.create_uid projectCreatedId,
 		 p1.project_name projectName,dd.name projectType, p1.project_code projectCode,p1.created_time createdTime, 
-		 r.content_describe1 projectCompany
+		 r.content_describe1 projectCompany,d.dep_name projectCareerline
 		FROM sop_project p1 
 		LEFT JOIN power.user u ON p1.create_uid = u.id
+		LEFT JOIN power.rel_dep_user du on u.id= du.user_id
+		LEFT JOIN power.department d on d.id= du.dep_id
 		LEFT JOIN dict dd ON dd.dict_code =p1.project_type
 		LEFT JOIN information_result r on r.project_id=p1.id and r.title_id=1814
-		WHERE p1.id = #{projectId}) p2  LEFT JOIN power.department d ON p2.projectCareerline = d.dep_name) p3
+		WHERE p1.id =#{projectId}) p2  LEFT JOIN power.department d ON p2.projectCareerline = d.dep_name) p3
 		LEFT JOIN power.user u1 ON p3.depManager = u1.id) p4 ON st.project_id = p4.projectId 
 		WHERE st.id =#{id}) p5 LEFT JOIN power.user u2 ON  u2.id = p5.assignUid
 	</select>
