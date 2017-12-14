@@ -81,6 +81,11 @@ public class ClouddiskServiceImpl extends BaseServiceImpl<CloudDiskFiles> implem
 				if(usedVolume>0 && tt<0.0001) {
 					usedString = "0.0001";
 				}
+				
+				if("0.00".equals(usedString)) {
+					usedString = "0";
+				}
+				
 				resMap.put("usedRate", usedString);
 				
 				//已经使用 resMap.put("usedVolume", usedVolume);
