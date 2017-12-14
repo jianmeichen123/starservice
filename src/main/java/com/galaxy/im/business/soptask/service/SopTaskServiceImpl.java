@@ -7,10 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.galaxy.im.bean.operationLog.OperationLogs;
 import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.soptask.SopTaskRecord;
 import com.galaxy.im.bean.talk.SopFileBean;
+import com.galaxy.im.business.operationLog.dao.IOperationLogsDao;
 import com.galaxy.im.business.soptask.dao.ISopTaskDao;
 import com.galaxy.im.common.db.IBaseDao;
 import com.galaxy.im.common.db.QPage;
@@ -23,6 +23,8 @@ public class SopTaskServiceImpl extends BaseServiceImpl<SopTask> implements ISop
 
 	@Autowired
 	ISopTaskDao dao;
+	@Autowired
+	IOperationLogsDao logDao;
 	
 	@Override
 	protected IBaseDao<SopTask, Long> getBaseDao() {
@@ -140,16 +142,13 @@ public class SopTaskServiceImpl extends BaseServiceImpl<SopTask> implements ISop
 
 	//查询时否有操作日志
 	@Override
-	public int getOperationLogs(OperationLogs operationLogs) {
+	public int getOperationLogs(Map<String, Object> paramMap) {
 		try{
-			return dao.getOperationLogs(operationLogs);
+			return logDao.getOperationLogsCount(paramMap);
 		}catch(Exception e){
-			log.error(SopTaskServiceImpl.class.getName() + "_",e);
+			log.error(SopTaskServiceImpl.class.getName() + "getOperationLogs",e);
 			throw new ServiceException(e);
 		}
 	}
-	
-	
-	
 	
 }

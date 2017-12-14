@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.galaxy.im.bean.common.SessionBean;
-import com.galaxy.im.bean.operationLog.OperationLogs;
 import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.soptask.SopTaskRecord;
@@ -173,11 +172,8 @@ public class SopTaskController {
 			}
 			
 			//查询时否存在操作日志
-			OperationLogs operationLogs = new OperationLogs();
-			operationLogs.setUid(bean.getGuserid());
-			operationLogs.setProjectId(CUtils.get().object2Long(paramMap.get("projectId")));
-			operationLogs.setRecordId(CUtils.get().object2Long(paramMap.get("id")));
-			int count = service.getOperationLogs(operationLogs);
+			paramMap.put("recordId", paramMap.get("id"));
+			int count = service.getOperationLogs(paramMap);
 			if (count >0) {
 				//标识存在操作日志
 				map2.put("isOperationLogs", 1);

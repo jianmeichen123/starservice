@@ -2,7 +2,6 @@ package com.galaxy.im.business.soptask.dao;
 
 import java.util.Map;
 
-import com.galaxy.im.bean.operationLog.OperationLogs;
 import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.soptask.SopTaskRecord;
 import com.galaxy.im.bean.talk.SopFileBean;
@@ -41,7 +40,5 @@ public interface ISopTaskDao extends IBaseDao<SopTask, Long>{
 	//查询总数
 	int selectCount(Map<String, Object> paramMap);
 
-	//查询时否有操作日志
-	int getOperationLogs(OperationLogs operationLogs);
 
 }

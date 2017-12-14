@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import com.galaxy.im.bean.operationLog.OperationLogs;
 import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.soptask.SopTaskRecord;
 import com.galaxy.im.bean.talk.SopFileBean;
@@ -148,17 +147,5 @@ public class SopTaskDaoImpl extends BaseDaoImpl<SopTask, Long> implements ISopTa
 			throw new DaoException(e);
 		}
 	}
-
-	//查询是否有操作日志
-	@Override
-	public int getOperationLogs(OperationLogs operationLogs) {
-		try {
-			return sqlSessionTemplate.selectOne(getSqlName("getOperationLogs"),operationLogs);
-		} catch (Exception e) {
-			log.error(getSqlName("getOperationLogs"),e);
-			throw new DaoException(e);
-		}
-	}
-	
 
 }
