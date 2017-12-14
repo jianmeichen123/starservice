@@ -504,6 +504,7 @@ public class SopTaskController {
 				
 			//发消息
 			SopTask sopTask =new SopTask();
+			sopTask.setId(sopTaskRecord.getId());
 			sopTask.setProjects(sopTaskRecord.getTaskIds());
 			sopTask.setUsers(userList);
 			sopTask.setMessageType("1.2.3");
