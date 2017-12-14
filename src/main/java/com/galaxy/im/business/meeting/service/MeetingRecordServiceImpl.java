@@ -116,5 +116,18 @@ public class MeetingRecordServiceImpl extends BaseServiceImpl<MeetingRecordBean>
 			throw new ServiceException(e);
 		}
 	}
+
+	/**
+	 * 文件名已经存在的个数
+	 */
+	@Override
+	public int getFileNameCount(Map<String, String> nameMap) {
+		try{
+			return fileDao.getFileNameCount(nameMap);
+		}catch(Exception e){
+			log.error(MeetingRecordServiceImpl.class.getName() + "getFileNameCount",e);
+			throw new ServiceException(e);
+		}
+	}
 	
 }

@@ -68,4 +68,18 @@ public class SopFileDaoImpl extends BaseDaoImpl<Test, Long> implements ISopFileD
 		}
 	}
 
+	/**
+	 * 文件名已存在的个数
+	 */
+	@Override
+	public int getFileNameCount(Map<String, String> nameMap) {
+		try{
+			String sqlName = "com.galaxy.im.business.sopfile.dao.ISopFileDao.getFileNameCount";
+			return sqlSessionTemplate.selectOne(sqlName,nameMap);
+		}catch(Exception e){
+			log.error(SopFileDaoImpl.class.getName() + "getFileNameCount",e);
+			throw new DaoException(e);
+		}
+	}
+
 }

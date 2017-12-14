@@ -174,6 +174,9 @@ public class PosMeetingRecordController {
 							}
 							Map<String,String> nameMap = service.transFileNames(bean.getFileName());
 							SopFileBean sopFileBean =new SopFileBean();
+							//判断文件名重复
+							nameMap.put("projectId", CUtils.get().object2String(p.getId()));
+							int count = service.getFileNameCount(nameMap);
 							if(p!=null){
 								//项目id，当前阶段，所属事业线
 								sopFileBean.setProjectId(p.getId());
@@ -183,7 +186,12 @@ public class PosMeetingRecordController {
 							sopFileBean.setFileKey(bean.getFileKey());
 							sopFileBean.setFileLength(bean.getFileLength());
 							sopFileBean.setBucketName(bean.getBucketName());
-							sopFileBean.setFileName(nameMap.get("fileName"));
+							if(count<=0){
+								sopFileBean.setFileName(nameMap.get("fileName"));
+							}else{
+								count=count+1;
+								sopFileBean.setFileName(nameMap.get("fileName")+"("+count+")");
+							}
 							sopFileBean.setFileSuffix(nameMap.get("fileSuffix"));
 							sopFileBean.setFileType(StaticConst.FILE_TYPE_1);
 							sopFileBean.setMeetingId(bean.getId());

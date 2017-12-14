@@ -23,5 +23,7 @@ public interface IMeetingRecordService extends IBaseService<MeetingRecordBean>{
 
 	int getMeetingTypeCount(Map<String, Object> paramMap);
 
+	int getFileNameCount(Map<String, String> nameMap);
+
 
 }
