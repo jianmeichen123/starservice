@@ -68,7 +68,7 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 				content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
 				content.append("认领了");
 				content.append("\"").append("<pname>").append(model.getProjectName()).append("</pname>\"");
-				content.append("的尽调任务");
+				content.append("的").append(CUtils.get().object2String(map.get("taskName")));
 				message.setSendTime(sendTime);
 				message.setContent(content.toString());
 				list.add(message);
