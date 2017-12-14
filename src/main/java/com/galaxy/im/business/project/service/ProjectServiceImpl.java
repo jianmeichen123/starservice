@@ -295,8 +295,8 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 								projectMap.put("otherProjectUser", CUtils.get().object2String(maps.get("projectUserName")));
 							}
 							if (maps.get("projectUser")!=null) {
-								if (maps.get("projectUser")!=null && maps.get("projectUser").equals("其他")) {
-									sBuilder.append("非投资线员工" + "、");
+								if (maps.get("projectUser")!=null && maps.get("projectUserId").equals("10072")) {
+									sBuilder.append(projectMap.get("otherProjectUser") + "、");
 								}else {
 									sBuilder.append(maps.get("projectUser") + "、");
 								}
