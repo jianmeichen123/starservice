@@ -85,20 +85,19 @@ public class ClouddiskServiceImpl extends BaseServiceImpl<CloudDiskFiles> implem
 				if("0.00".equals(usedString)) {
 					usedString = "0";
 				}
-				
 				resMap.put("usedRate", usedString);
 				
 				//已经使用 resMap.put("usedVolume", usedVolume);
 				BigDecimal ub1 = new BigDecimal(usedVolume);
 				if(usedVolume>1024*1024*1024){
 					BigDecimal ub2 = new BigDecimal(1024*1024*1024);
-					resMap.put("usedVolume", ub1.divide(ub2,2,BigDecimal.ROUND_UP).toString() + "G");
+					resMap.put("usedVolume", delLastZero(ub1.divide(ub2,2,BigDecimal.ROUND_UP).toString()) + "G");
 				}else if(usedVolume>1024*1024){
 					BigDecimal ub2 = new BigDecimal(1024*1024);
-					resMap.put("usedVolume", ub1.divide(ub2,2,BigDecimal.ROUND_UP).toString() + "M");
+					resMap.put("usedVolume", delLastZero(ub1.divide(ub2,2,BigDecimal.ROUND_UP).toString()) + "M");
 				}else if(usedVolume>1024){
 					BigDecimal ub2 = new BigDecimal(1024);
-					resMap.put("usedVolume", ub1.divide(ub2,2,BigDecimal.ROUND_UP).toString() + "K");
+					resMap.put("usedVolume", delLastZero(ub1.divide(ub2,2,BigDecimal.ROUND_UP).toString()) + "K");
 				}else{
 					resMap.put("usedVolume", usedVolume + "B");
 				}
@@ -193,5 +192,13 @@ public class ClouddiskServiceImpl extends BaseServiceImpl<CloudDiskFiles> implem
 		}
 	}
 
+	private String delLastZero(String numString) {
+		String s = numString;
+		if(CUtils.get().stringIsNotEmpty(numString)) {
+	        s = s.replaceAll("0+?$", "");//去掉多余的0
+	        s = s.replaceAll("[.]$", "");//如最后一位是.则去掉
+		}
+		return s;
+	}
 	
 }
