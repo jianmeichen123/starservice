@@ -31,9 +31,6 @@ public interface ISopTaskDao extends IBaseDao<SopTask, Long>{
 	//A是否上传报告
 	SopFileBean isUpload(SopFileBean sopFileBean);
 
-	//更新文件信息
-	int updateFile(SopFileBean sopFileBean);
-
 	//防止重复移交
 	SopTaskRecord selectRecord(SopTaskRecord sopTaskRecord);
 

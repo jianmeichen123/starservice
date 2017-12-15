@@ -481,12 +481,19 @@ public class SopTaskController {
 						sopFileBean.setProjectId( CUtils.get().object2Long(map.get("projectId")));
 						//fileWorktype=2人事 fileWorktype=3法务 fileWorktype=4财务
 						sopFileBean.setFileWorkType(sopTaskRecord.getFileWorktype());
-						sopFileBean.setFileUid(CUtils.get().object2Long(user.get("id")));
+						//sopFileBean.setFileUid(CUtils.get().object2Long(user.get("id")));
 						SopFileBean bean2 = service.isUpload(sopFileBean);
 						//A将报告移交给B
 						if (bean2!=null&&!bean2.equals("")) {
 							//将此报告设为无用
-							bean2.setFileValid(0);
+							bean2.setFileKey("");
+							bean2.setFileLength(0);
+							bean2.setBucketName("");
+							bean2.setFileName("");
+							bean2.setFileSuffix("");
+							bean2.setFileType("");
+							bean2.setFileUid(0);
+							bean2.setFileStatus(StaticConst.FILE_STATUS_1);
 							bean2.setId(bean2.getId());
 							bean2.setUpdatedTime(new Date().getTime());
 							service.updateFile(bean2);

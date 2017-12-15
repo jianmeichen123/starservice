@@ -144,18 +144,18 @@
 	<!-- 人事/财务/法务是否上传报告 -->
 	<select id="isUpload" parameterType="com.galaxy.im.bean.talk.SopFileBean"
 		resultType="com.galaxy.im.bean.talk.SopFileBean">
-		SELECT id,belong_uid belongUid,file_uid fileUid FROM sop_file WHERE project_id=#{projectId} 
-		AND file_valid=1 AND file_uid =#{fileUid} and file_worktype=#{fileWorkType}
+		SELECT 
+			id, project_id projectId, belong_uid belongUid,
+		    file_valid fileValid, project_progress projectProgress, 
+		    file_worktype fileWorkType, career_line careerLine,
+			file_source fileSource, file_type fileType,
+			file_status fileStatus, file_uid fileUid, 
+			fil_uri filUri, file_length fileLength,
+			file_key fileKey, bucket_name bucketName,
+			file_name fileName,file_suffix fileSuffix
+		FROM sop_file WHERE project_id=#{projectId} 
+		AND file_valid=1  and file_worktype=#{fileWorkType}
 	</select>
-	
-	<!-- 更新文件信息 -->
-	<update id="updateFile" parameterType="com.galaxy.im.bean.talk.SopFileBean">
-		update sop_file set
-		<if test="belongUid != null" >belong_uid = #{belongUid},</if>
-		<if test="fileValid != null" >file_valid = #{fileValid},</if>
-		<if test="updatedTime != null" >updated_time= #{updatedTime}</if>
-		where id = #{id} and file_valid=1
-	</update>
 	
 	<!-- 查询是否已经移交/指派-->
 	<select id="selectRecord" parameterType="com.galaxy.im.bean.soptask.SopTaskRecord"

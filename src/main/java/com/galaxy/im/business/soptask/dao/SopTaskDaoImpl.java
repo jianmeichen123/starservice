@@ -115,17 +115,6 @@ public class SopTaskDaoImpl extends BaseDaoImpl<SopTask, Long> implements ISopTa
 		}
 	}
 
-	//更新文件信息
-	@Override
-	public int updateFile(SopFileBean sopFileBean) {
-		try {
-			return sqlSessionTemplate.update(getSqlName("updateFile"),sopFileBean);
-		} catch (Exception e) {
-			log.error(getSqlName("updateFile"),e);
-			throw new DaoException(e);
-		}
-	}
-
 	//防止重复移交
 	@Override
 	public SopTaskRecord selectRecord(SopTaskRecord sopTaskRecord) {

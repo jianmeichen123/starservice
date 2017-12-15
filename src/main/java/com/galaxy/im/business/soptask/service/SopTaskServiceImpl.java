@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.soptask.SopTaskRecord;
 import com.galaxy.im.bean.talk.SopFileBean;
+import com.galaxy.im.business.flow.common.dao.IFlowCommonDao;
 import com.galaxy.im.business.operationLog.dao.IOperationLogsDao;
 import com.galaxy.im.business.soptask.dao.ISopTaskDao;
 import com.galaxy.im.common.db.IBaseDao;
@@ -25,6 +26,8 @@ public class SopTaskServiceImpl extends BaseServiceImpl<SopTask> implements ISop
 	ISopTaskDao dao;
 	@Autowired
 	IOperationLogsDao logDao;
+	@Autowired
+	IFlowCommonDao fDao;
 	
 	@Override
 	protected IBaseDao<SopTask, Long> getBaseDao() {
@@ -109,9 +112,9 @@ public class SopTaskServiceImpl extends BaseServiceImpl<SopTask> implements ISop
 
 	//更新文件信息
 	@Override
-	public int updateFile(SopFileBean sopFileBean) {
+	public long updateFile(SopFileBean sopFileBean) {
 		try{
-			return dao.updateFile(sopFileBean);
+			return fDao.updateSopFile(sopFileBean);
 		}catch(Exception e){
 			log.error(SopTaskServiceImpl.class.getName() + "_",e);
 			throw new ServiceException(e);

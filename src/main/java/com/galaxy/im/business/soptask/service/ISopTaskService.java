@@ -31,7 +31,7 @@ public interface ISopTaskService extends IBaseService<SopTask>{
 	SopFileBean isUpload(SopFileBean sopFileBean);
 
 	//更新文件信息
-	int updateFile(SopFileBean sopFileBean);
+	long updateFile(SopFileBean sopFileBean);
 
 	//防止重复移交
 	SopTaskRecord selectRecord(SopTaskRecord sopTaskRecord);
