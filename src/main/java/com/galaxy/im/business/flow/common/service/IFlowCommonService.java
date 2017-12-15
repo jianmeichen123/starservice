@@ -65,5 +65,7 @@ public interface IFlowCommonService extends IBaseService<ProjectBean>{
 	long updateInformationResult(InformationResult res);
 	//获取会议记录信息（投资，闪投===通过）
 	Map<String, Object> getMeetingRecordInfo(Map<String, Object> map);
+	//获取部门下所有用户
+	List<Map<String, Object>> getUserListByDeptId(int fdDeptId);
 
 }

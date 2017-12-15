@@ -23,10 +23,13 @@ import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.flow.investmentPolicy.service.IInvestmentPolicyService;
+import com.galaxy.im.business.message.service.IScheduleMessageService;
 import com.galaxy.im.business.operationLog.controller.ControllerUtils;
+import com.galaxy.im.common.BeanUtils;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
+import com.galaxy.im.common.cache.redis.RedisCacheImpl;
 import com.galaxy.im.common.webconfig.interceptor.operationLog.UrlNumber;
 
 /**
@@ -43,6 +46,9 @@ public class InvestmentPolicyController {
 
 	@Autowired
 	private IInvestmentPolicyService iPService;
+	
+	@Autowired
+	IScheduleMessageService messageService;
 
 	/**
 	 * 判断项目操作按钮状态 依据：1.需要上传完成投资协议；同时判定该项目在“会后商务谈判”阶段的结论是“闪投”
@@ -96,6 +102,16 @@ public class InvestmentPolicyController {
 		Map<String, Object> map = new HashMap<>();
 		resultBean.setFlag(0);
 		try {
+			//获取登录用户信息
+			@SuppressWarnings("unchecked")
+			RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
+			SessionBean b = CUtils.get().getBeanBySession(request);
+			if (b==null) {
+				resultBean.setMessage("获取用户信息失败");
+				return resultBean;
+			}
+			Map<String, Object> user = BeanUtils.toMap(cache.get(b.getSessionid()));
+			
 			long deptId=0l;
 			String progressHistory = "";
 			Map<String, Object> paramMap = CUtils.get().jsonString2map(paramString);
@@ -160,7 +176,6 @@ public class InvestmentPolicyController {
 							beanFd.setTaskOrder(StaticConst.TASK_ORDER_NORMAL);
 							beanFd.setDepartmentId(CUtils.get().object2Long(fdDeptId));
 							beanFd.setCreatedTime(new Date().getTime());
-							@SuppressWarnings("unused")
 							Long fd = fcService.insertsopTask(beanFd);
 							// 给法务生成法务尽职调查待办任务
 							SopTask beanLaw = new SopTask();
@@ -175,6 +190,25 @@ public class InvestmentPolicyController {
 							beanLaw.setCreatedTime(new Date().getTime());
 							@SuppressWarnings("unused")
 							Long law = fcService.insertsopTask(beanLaw);
+							
+							
+							//消息
+							List<Map<String, Object>> userList=new ArrayList<Map<String, Object>>();
+							List<Map<String, Object>> lawDeptIdList = fcService.getUserListByDeptId(lawDeptId);
+							List<Map<String, Object>> fdDeptIdList = fcService.getUserListByDeptId(fdDeptId);
+							List<Map<String, Object>> hrDeptIdList = fcService.getUserListByDeptId(hrDeptId);
+							userList.addAll(lawDeptIdList);
+							userList.addAll(fdDeptIdList);
+							userList.addAll(hrDeptIdList);
+							SopTask sopTask =new SopTask();
+							sopTask.setId(fd);
+							sopTask.setProjectName(sopBean.getProjectName());
+							sopTask.setUsers(userList);
+							sopTask.setMessageType("1.2.5");
+							sopTask.setAssignUname(CUtils.get().object2String(user.get("userName")));
+							sopTask.setCreatedId(b.getGuserid());
+							sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
+							messageService.operateMessageSopTaskInfo(sopTask);
 						}
 						resultBean.setMap(map);
 						resultBean.setStatus("OK");
@@ -206,7 +240,17 @@ public class InvestmentPolicyController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		Map<String, Object> map = new HashMap<>();
 		resultBean.setFlag(0);
+		@SuppressWarnings("unchecked")
+		RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
 		try {
+			//获取登录用户信息
+			SessionBean bean = CUtils.get().getBeanBySession(request);
+			if (bean==null) {
+				resultBean.setMessage("获取用户信息失败");
+				return resultBean;
+			}
+			Map<String, Object> user = BeanUtils.toMap(cache.get(bean.getSessionid()));
+			
 			String progressHistory = "";
 			Map<String, Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if (CUtils.get().mapIsNotEmpty(paramMap)) {
@@ -249,12 +293,26 @@ public class InvestmentPolicyController {
 							beanFd.setTaskOrder(StaticConst.TASK_ORDER_NORMAL);
 							beanFd.setDepartmentId(CUtils.get().object2Long(fdDeptId));
 							beanFd.setCreatedTime(new Date().getTime());
-							@SuppressWarnings("unused")
 							Long fd = fcService.insertsopTask(beanFd);
 							resultBean.setMap(map);
 							resultBean.setStatus("OK");
 							//记录操作日志
 							ControllerUtils.setRequestParamsForMessageTip(request, sopBean.getProjectName(), sopBean.getId(),"");
+							//消息
+							List<Map<String, Object>> userList=new ArrayList<Map<String, Object>>();
+							List<Map<String, Object>> lawDeptIdList = fcService.getUserListByDeptId(lawDeptId);
+							List<Map<String, Object>> fdDeptIdList = fcService.getUserListByDeptId(fdDeptId);
+							userList.addAll(lawDeptIdList);
+							userList.addAll(fdDeptIdList);
+							SopTask sopTask =new SopTask();
+							sopTask.setId(fd);
+							sopTask.setProjectName(sopBean.getProjectName());
+							sopTask.setUsers(userList);
+							sopTask.setMessageType("1.2.6");
+							sopTask.setAssignUname(CUtils.get().object2String(user.get("userName")));
+							sopTask.setCreatedId(bean.getGuserid());
+							sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
+							messageService.operateMessageSopTaskInfo(sopTask);
 						}else {
 							resultBean.setMessage("项目当前状态或进度已被修改，请刷新");
 						}

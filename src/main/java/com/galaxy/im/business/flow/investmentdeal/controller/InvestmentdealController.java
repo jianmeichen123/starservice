@@ -23,11 +23,14 @@ import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.flow.investmentdeal.service.IInvestmentdealService;
+import com.galaxy.im.business.message.service.IScheduleMessageService;
 import com.galaxy.im.business.operationLog.controller.ControllerUtils;
+import com.galaxy.im.common.BeanUtils;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
+import com.galaxy.im.common.cache.redis.RedisCacheImpl;
 
 /**
  * 投决会
@@ -44,6 +47,8 @@ public class InvestmentdealController {
 	
 	@Autowired
 	private IInvestmentdealService iiService;
+	@Autowired
+	IScheduleMessageService messageService;
 
 	/**
 	 * 判断项目操作按钮状态
@@ -276,6 +281,16 @@ public class InvestmentdealController {
 		Map<String, Object> map = new HashMap<>();
 		resultBean.setFlag(0);
 		try {
+			//获取登录用户信息
+			@SuppressWarnings("unchecked")
+			RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
+			SessionBean b = CUtils.get().getBeanBySession(request);
+			if (b==null) {
+				resultBean.setMessage("获取用户信息失败");
+				return resultBean;
+			}
+			Map<String, Object> user = BeanUtils.toMap(cache.get(b.getSessionid()));
+			
 			String progressHistory = "";
 			Map<String, Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if (CUtils.get().mapIsNotEmpty(paramMap)) {
@@ -317,7 +332,6 @@ public class InvestmentdealController {
 							beanFd.setTaskOrder(StaticConst.TASK_ORDER_NORMAL);
 							beanFd.setDepartmentId(CUtils.get().object2Long(fdDeptId));
 							beanFd.setCreatedTime(new Date().getTime());
-							@SuppressWarnings("unused")
 							Long fd = fcService.insertsopTask(beanFd);
 							// 修改投决会排期状态为已通过
 							paramMap.put("scheduleStatus", 2);
@@ -329,6 +343,22 @@ public class InvestmentdealController {
 							reportSync(sopBean,1);
 							//记录操作日志
 							ControllerUtils.setRequestParamsForMessageTip(request, sopBean.getProjectName(), sopBean.getId(),"");
+							
+							//消息
+							List<Map<String, Object>> userList=new ArrayList<Map<String, Object>>();
+							List<Map<String, Object>> lawDeptIdList = fcService.getUserListByDeptId(lawDeptId);
+							List<Map<String, Object>> fdDeptIdList = fcService.getUserListByDeptId(fdDeptId);
+							userList.addAll(lawDeptIdList);
+							userList.addAll(fdDeptIdList);
+							SopTask sopTask =new SopTask();
+							sopTask.setId(fd);
+							sopTask.setProjectName(sopBean.getProjectName());
+							sopTask.setUsers(userList);
+							sopTask.setMessageType("1.2.6");
+							sopTask.setAssignUname(CUtils.get().object2String(user.get("userName")));
+							sopTask.setCreatedId(b.getGuserid());
+							sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
+							messageService.operateMessageSopTaskInfo(sopTask);
 						}else{
 							resultBean.setMessage("项目当前状态或进度已被修改，请刷新");
 						}

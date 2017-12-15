@@ -26,7 +26,8 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 	private String sop_task_2  = "1.2.2";
 	private String sop_task_3  = "1.2.3";
 	private String sop_task_4  = "1.2.4";
-	
+	private String sop_task_5  = "1.2.5";
+	private String sop_task_6  = "1.2.6";
 	
 	private Map<String,String> map = new HashMap<String,String>();
 	public SopTaskScheduleHandler(){
@@ -34,6 +35,8 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 		map.put(sop_task_2,  "移交  代办任务 ");
 		map.put(sop_task_3,  "放弃   代办任务 ");
 		map.put(sop_task_4,  "指派   代办任务 ");
+		map.put(sop_task_5,  "尽职调查   代办任务 ");
+		map.put(sop_task_6,  "股权交割   代办任务 ");
 	}
 	
 
@@ -49,14 +52,16 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 		long sendTime = new Date().getTime();
 		
 		//转taskname
-		for(Map<String, Object> map:model.getProjects()){
-			if(map.containsKey("taskName") && map.get("taskName")!=null){
-				if(CUtils.get().object2String(map.get("taskName")).contains("人事")){
-					map.put("taskName", "人事尽调任务");
-				}else if(CUtils.get().object2String(map.get("taskName")).contains("法务")){
-					map.put("taskName", "法务尽调任务");
-				}else if(CUtils.get().object2String(map.get("taskName")).contains("财务")){
-					map.put("taskName", "财务尽调任务");
+		if(model.getProjects()!=null){
+			for(Map<String, Object> map:model.getProjects()){
+				if(map.containsKey("taskName") && map.get("taskName")!=null){
+					if(CUtils.get().object2String(map.get("taskName")).contains("人事")){
+						map.put("taskName", "人事尽调任务");
+					}else if(CUtils.get().object2String(map.get("taskName")).contains("法务")){
+						map.put("taskName", "法务尽调任务");
+					}else if(CUtils.get().object2String(map.get("taskName")).contains("财务")){
+						map.put("taskName", "财务尽调任务");
+					}
 				}
 			}
 		}
@@ -138,6 +143,27 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 				list.add(message1);
 				list.add(message2);
 			}
+		}else if(model.getMessageType().equals(sop_task_5)){
+			//放弃
+			StringBuffer content = new StringBuffer();
+			content.append("\"<pname>").append(model.getProjectName()).append("</pname>\"");
+			content.append("进入了尽调阶段，请您关注");
+			//所有人（按部门识别）
+			ScheduleMessageBean message =getScheduleMessageInfo(model,2,null);
+			message.setSendTime(sendTime);
+			message.setContent(content.toString());
+			list.add(message);
+		}
+		else if(model.getMessageType().equals(sop_task_6)){
+			//放弃
+			StringBuffer content = new StringBuffer();
+			content.append("\"<pname>").append(model.getProjectName()).append("</pname>\"");
+			content.append("进入了股权交割阶段，请您关注");
+			//所有人（按部门识别）
+			ScheduleMessageBean message =getScheduleMessageInfo(model,2,null);
+			message.setSendTime(sendTime);
+			message.setContent(content.toString());
+			list.add(message);
 		}
 	}
 

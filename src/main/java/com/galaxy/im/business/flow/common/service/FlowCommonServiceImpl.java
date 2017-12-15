@@ -1,5 +1,6 @@
 package com.galaxy.im.business.flow.common.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,7 +110,8 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 	@Override
 	public Long insertsopTask(SopTask bean) {
 		try{
-			return dao.insertsopTask(bean);
+			dao.insertsopTask(bean);
+			return bean.getId();
 		}catch(Exception e){
 			log.error(FlowCommonServiceImpl.class.getName() + ":insertsopTask",e);
 			throw new ServiceException(e);
@@ -575,6 +577,34 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 			log.error(FlowCommonServiceImpl.class.getName() + ":getMeetingRecordInfo",e);
 			throw new ServiceException(e);
 		}
+	}
+
+	/**
+	 * 获取部门下所有用户
+	 */
+	@Override
+	public List<Map<String, Object>> getUserListByDeptId(int deptId) {
+		//用户列表
+		Map<String,Object> vmap = new HashMap<String,Object>();
+		vmap.put("depId", deptId);
+		//事业部下的所有用户
+		String urlU = env.getProperty("power.server") + StaticConst.getUsersByDepId;
+		JSONArray rr=null;
+		List<Map<String, Object>> userList=new ArrayList<Map<String, Object>>();
+		String res = QHtmlClient.get().post(urlU, null, vmap);
+		if("error".equals(res)){
+			log.error(FlowCommonServiceImpl.class.getName() + "获取信息时出错","此时服务器返回状态码非200");
+		}else{
+			JSONObject json = JSONObject.parseObject(res);
+			if(json!=null && json.containsKey("value")){
+				rr = json.getJSONArray("value");
+				if(json.containsKey("success") && "true".equals(json.getString("success"))){
+					//操作
+					userList =CUtils.get().jsonString2list(rr);
+				}
+			}
+		}
+		return userList;	
 	}
 
 	
