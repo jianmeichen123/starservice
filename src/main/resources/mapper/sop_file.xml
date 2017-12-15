@@ -52,10 +52,10 @@
 	</update>
 	
 	<!-- 文件名存在的个数 -->
-	<select id="getFileNameList" parameterType="hashmap" resultType="List">
+	<select id="getFileNameList" parameterType="hashmap" resultType="String">
 		SELECT file_name fileName
 		FROM sop_file 
-		WHERE project_id= #{projectId} and file_valid=1 and meeing_id=#{meetingId}
+		WHERE project_id= #{projectId} and file_valid=1 and meeting_id=#{meetingId}
 	</select>
 	
 </mapper>
