@@ -122,7 +122,7 @@
 		SELECT 
 		CASE WHEN t.choose IN('创业者','外部独立合伙人','自开发') THEN t.choose else id.name end projectSoure,
 		CASE WHEN t.choose IN('创业者','外部独立合伙人','自开发') THEN t.choose else id.id end projectSoureId,
-		group_concat(case when t.tid=#{titleId11} then t.result else null end) as name
+		group_concat(case when t.tid=#{titleId11} then t.result else null end) as projectSoureName
 		FROM 
 		(SELECT title_id tid, content_describe1 result, content_choose choose FROM information_result WHERE  project_id=#{projectId} AND title_id in(#{titleId9},#{titleId11})) t
 		LEFT JOIN information_dictionary id ON t.choose=id.id 

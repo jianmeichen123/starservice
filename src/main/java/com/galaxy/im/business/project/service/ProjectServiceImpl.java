@@ -274,14 +274,9 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 			}
 			Map<String,Object> map2 = dao.selectProjectSoureInfo(paramMap);
 				if (map2!=null) {
-					if (map2 != null && map2.get("name")!=null) {
-						String value = CUtils.get().object2String(map2.get("projectSoure")) +"-"+ CUtils.get().object2String(map2.get("name"));
-						map2.put("projectSoureName", value);
-						map2.remove("name");
-						map2.remove("projectSoure");
-					}else{
-						map2.put("projectSoureName", CUtils.get().object2String(map2.get("projectSoure")));
-						map2.remove("projectSoure");
+					if (map2 != null && map2.get("projectSoureName")!=null) {
+						String value = CUtils.get().object2String(map2.get("projectSoure")) +"-"+ CUtils.get().object2String(map2.get("projectSoureName"));
+						map2.put("showProjectSoure", value);
 					}
 					QXinfoMap.putAll(map2);
 				}
