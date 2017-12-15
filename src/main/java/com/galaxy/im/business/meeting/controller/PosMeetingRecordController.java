@@ -114,14 +114,14 @@ public class PosMeetingRecordController {
 				//删除文件
 				sopfile.setMeetingId(meetingRecord.getId());
 				sopfile.setUpdatedTime(new Date().getTime());
-				sopfile.setFileValid(0);
+				sopfile.setFileValid(3);
 				res = service.delPostMeetingFile(sopfile);
 			}else{
 				//删除附件
 			    sopfile.setMeetingId(meetingRecord.getId());
 			    sopfile.setFileKey(meetingRecord.getFileKey());
 			    sopfile.setUpdatedTime(new Date().getTime());
-			    sopfile.setFileValid(0);
+			    sopfile.setFileValid(3);
 			    result = service.delPostMeetingFile(sopfile);
 			}
 			
