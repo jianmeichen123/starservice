@@ -290,6 +290,7 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 				if (map3!=null) {
 					if (map3.size()>0) {
 						StringBuilder sBuilder = new StringBuilder();
+						StringBuilder sb = new StringBuilder();
 						for(Map<String,Object> maps : map3){
 							if (maps.get("projectUserName")!=null && maps.get("projectUser")!=null) {
 								projectMap.put("otherProjectUser", CUtils.get().object2String(maps.get("projectUserName")));
@@ -304,9 +305,16 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 							if (maps.get("projectUser")==null && maps.get("projectUserName")!=null) {
 								sBuilder.append(maps.get("projectUserName") + "、");
 							}
+							if(maps.get("projectUserId")!=null){
+								sb.append(maps.get("projectUserId") + "、");
+							}
+						}
+						if(sb.length()>0){
+							sb.deleteCharAt(sb.length() - 1);
 						}
 						sBuilder.deleteCharAt(sBuilder.length() - 1);
 						projectMap.put("projectUser", sBuilder);
+						projectMap.put("projectUserId", sb);
 						QXinfoMap.putAll(projectMap);
 					}
 				}
