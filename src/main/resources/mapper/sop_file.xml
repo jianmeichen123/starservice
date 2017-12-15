@@ -52,13 +52,10 @@
 	</update>
 	
 	<!-- 文件名存在的个数 -->
-	<select id="getFileNameCount" parameterType="hashmap" resultType="integer">
-		SELECT COUNT(1) 
+	<select id="getFileNameList" parameterType="hashmap" resultType="List">
+		SELECT file_name fileName
 		FROM sop_file 
-		WHERE project_id= #{projectId}  and file_suffix=#{fileSuffix} and file_valid=1
-		<if test="fileName !=null and fileName !='null' and fileName !=''">
-			and file_name like concat('${fileName}','%')
-		</if>
+		WHERE project_id= #{projectId} and file_valid=1 and meeing_id=#{meetingId}
 	</select>
 	
 </mapper>

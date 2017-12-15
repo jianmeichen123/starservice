@@ -176,7 +176,17 @@ public class PosMeetingRecordController {
 							SopFileBean sopFileBean =new SopFileBean();
 							//判断文件名重复
 							nameMap.put("projectId", CUtils.get().object2String(p.getId()));
-							int count = service.getFileNameCount(nameMap);
+							nameMap.put("meetingId", CUtils.get().object2String(bean.getId()));
+							List<String> arr = service.getFileNameList(nameMap);
+							String newString =nameMap.get("fileName");
+							while (isContain(newString,arr)) {
+					            String str = newString;
+					            for (int i= 1; i<=arr.size(); i++) {
+					                if (isContain(newString,arr)) {
+					                    newString = str + "("+i+")";
+					                }
+					            }
+					        }
 							if(p!=null){
 								//项目id，当前阶段，所属事业线
 								sopFileBean.setProjectId(p.getId());
@@ -186,12 +196,7 @@ public class PosMeetingRecordController {
 							sopFileBean.setFileKey(bean.getFileKey());
 							sopFileBean.setFileLength(bean.getFileLength());
 							sopFileBean.setBucketName(bean.getBucketName());
-							if(count<=0){
-								sopFileBean.setFileName(nameMap.get("fileName"));
-							}else{
-								count=count+1;
-								sopFileBean.setFileName(nameMap.get("fileName")+"("+count+")");
-							}
+							sopFileBean.setFileName(newString);
 							sopFileBean.setFileSuffix(nameMap.get("fileSuffix"));
 							sopFileBean.setFileType(StaticConst.FILE_TYPE_1);
 							sopFileBean.setMeetingId(bean.getId());
@@ -248,4 +253,16 @@ public class PosMeetingRecordController {
 		}
 		return resultBean;
 	}
+	
+	//是否包含
+	private boolean isContain(String str, List<String> arr) {
+        for (int i = 0; i < arr.size(); i++) {
+            String str1 = arr.get(i);
+            if(str.equals(str1)) {
+                return true;
+            }
+        }
+        return false;
+    }
+	
 }

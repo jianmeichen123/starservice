@@ -1,5 +1,6 @@
 package com.galaxy.im.business.meeting.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.galaxy.im.bean.meeting.MeetingRecordBean;
@@ -23,7 +24,7 @@ public interface IMeetingRecordService extends IBaseService<MeetingRecordBean>{
 
 	int getMeetingTypeCount(Map<String, Object> paramMap);
 
-	int getFileNameCount(Map<String, String> nameMap);
+	List<String> getFileNameList(Map<String, String> nameMap);
 
 
 }

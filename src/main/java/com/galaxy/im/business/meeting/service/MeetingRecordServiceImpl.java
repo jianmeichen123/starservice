@@ -1,6 +1,7 @@
 package com.galaxy.im.business.meeting.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -121,11 +122,11 @@ public class MeetingRecordServiceImpl extends BaseServiceImpl<MeetingRecordBean>
 	 * 文件名已经存在的个数
 	 */
 	@Override
-	public int getFileNameCount(Map<String, String> nameMap) {
+	public List<String> getFileNameList(Map<String, String> nameMap) {
 		try{
-			return fileDao.getFileNameCount(nameMap);
+			return fileDao.getFileNameList(nameMap);
 		}catch(Exception e){
-			log.error(MeetingRecordServiceImpl.class.getName() + "getFileNameCount",e);
+			log.error(MeetingRecordServiceImpl.class.getName() + "getFileNameList",e);
 			throw new ServiceException(e);
 		}
 	}
