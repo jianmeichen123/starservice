@@ -155,6 +155,7 @@
 			file_name fileName,file_suffix fileSuffix
 		FROM sop_file WHERE project_id=#{projectId} 
 		AND file_valid=1  and file_worktype=#{fileWorkType}
+		and file_status <![CDATA[!= ]]> 'fileStatus:4'
 	</select>
 	
 	<!-- 查询是否已经移交/指派-->
