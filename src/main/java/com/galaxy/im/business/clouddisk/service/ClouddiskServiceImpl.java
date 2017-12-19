@@ -71,7 +71,7 @@ public class ClouddiskServiceImpl extends BaseServiceImpl<CloudDiskFiles> implem
 				}
 				
 				//将原始大小传递给前端
-				resMap.put("originalUserdVolume", usedVolume);
+				resMap.put("originalUsedVolume", usedVolume);
 				resMap.put("originalAllVolume", StaticConst.CLOUD_VOLUME_DOSE/1024/1024/1024);
 				
 				resMap.put("typeList", dataList);
