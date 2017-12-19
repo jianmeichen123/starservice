@@ -205,7 +205,7 @@
 		from sop_project
 		<where>
 		<if test="projectName != null" >  project_name = #{projectName}</if>
-		<if test="id != null" >and id = #{id}</if>
+		<!-- <if test="id != null" >and id = #{id}</if> -->
 		</where>
 	</select>
 	
