@@ -70,6 +70,10 @@ public class ClouddiskServiceImpl extends BaseServiceImpl<CloudDiskFiles> implem
 					usedVolume += CUtils.get().object2Long(dataList.get(i).get("usedFileSize"), 0L);
 				}
 				
+				//将原始大小传递给前端
+				resMap.put("originalUserdVolume", usedVolume);
+				resMap.put("originalAllVolume", StaticConst.CLOUD_VOLUME_DOSE/1024/1024/1024);
+				
 				resMap.put("typeList", dataList);
 				resMap.put("gogalVolume", StaticConst.CLOUD_VOLUME_DOSE/1024/1024/1024 + "G");
 				
