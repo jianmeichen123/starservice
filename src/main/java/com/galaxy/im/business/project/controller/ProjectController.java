@@ -499,32 +499,47 @@ public class ProjectController {
 		if (bean.getProjectSource()!=null && !bean.getProjectSource().equals("")) {
 			hashmap.put("titleId", 1120);
 			String tempId="";
-			String oldId ="";
+			//String oldId ="";
 			result = service.findResultInfoById(hashmap);
 			//新选择的项目来源获取关联名称的titleId
 			if(bean.getProjectSource()!=null){
-				hashmap.put("inputId", bean.getProjectSource());
-				tempId = service.findInputTitleId(hashmap);
+				hashmap.put("inputId", bean.getProjectSource());//2256
+				tempId = service.findInputTitleId(hashmap);//1121
 			}
 			if (result!=null) {
-				//原先的项目来源
+				/*//原先的项目来源
 				if(result.getContentChoose()!=null){
-					hashmap.put("inputId", result.getContentChoose());
-					oldId = service.findInputTitleId(hashmap);
-				}
+					hashmap.put("inputId", result.getContentChoose());//2252
+					oldId = service.findInputTitleId(hashmap);//null
+				}*/
 				result.setUpdatedTime(new Date().getTime());
 				result.setContentChoose(bean.getProjectSource());
-				if(bean.getProjectSourceName()!=null && !bean.getProjectSourceName().equals("")){
-					InformationResult r = new InformationResult();
-					r.setTitleId(CUtils.get().object2String(tempId));
-					r.setCreateId(CUtils.get().object2String(userId));
-					r.setCreatedTime(new Date().getTime());
-					r.setProjectId(CUtils.get().object2String(bean.getId()));
-					r.setContentDescribe1(bean.getProjectSourceName());
-					r.setValueId(CUtils.get().object2Long(oldId));
-					service.updateInformationResult(r);
-				}
 				service.updateInformationResult(result);
+				if (tempId!=null) {
+					if(bean.getProjectSourceName()!=null && !bean.getProjectSourceName().equals("")){
+						InformationResult r = new InformationResult();
+						//查询有没有
+						hashmap.put("titleId", tempId);//1121
+						r = service.findResultInfoById(hashmap);
+						if (r!=null) {
+							//r.setTitleId(CUtils.get().object2String(tempId));
+							r.setUpdateId(CUtils.get().object2String(userId));
+							r.setUpdatedTime(new Date().getTime());
+							//r.setProjectId(CUtils.get().object2String(bean.getId()));
+							r.setContentDescribe1(bean.getProjectSourceName());
+							//r.setValueId(CUtils.get().object2Long(oldId));
+							service.updateInformationResult(r);
+						}else{
+							r = new InformationResult();
+							r.setTitleId(tempId);
+							r.setCreateId(CUtils.get().object2String(userId));
+							r.setCreatedTime(new Date().getTime());
+							r.setProjectId(CUtils.get().object2String(bean.getId()));
+							r.setContentDescribe1(bean.getProjectSourceName());
+							list.add(r);
+						}
+					}
+				}
 			}else{
 					//项目来源
 					result = new InformationResult();
