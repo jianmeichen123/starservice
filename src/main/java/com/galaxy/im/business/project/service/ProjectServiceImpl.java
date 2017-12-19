@@ -277,6 +277,8 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 					if (map2 != null && map2.get("projectSoureName")!=null) {
 						String value = CUtils.get().object2String(map2.get("projectSoure")) +"-"+ CUtils.get().object2String(map2.get("projectSoureName"));
 						map2.put("showProjectSoure", value);
+					}else{
+						map2.put("showProjectSoure", CUtils.get().object2String(map2.get("projectSoure")));
 					}
 					QXinfoMap.putAll(map2);
 				}
