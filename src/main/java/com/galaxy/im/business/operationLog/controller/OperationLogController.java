@@ -1,5 +1,6 @@
 package com.galaxy.im.business.operationLog.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,6 +45,15 @@ public class OperationLogController {
 				paramMap.put("uid", sessionBean.getGuserid());
 			}
 			QPage page = service.getOperationLogList(paramMap);
+			if (page!=null) {
+				List<Map<String,Object>> list = page.getDataList();
+				for(Map<String,Object> map : list){
+					if (map.get("operationType")!= null && map.get("operationContent")!=null) {
+						map.put("operationContent", CUtils.get().object2String(map.get("operationType")) + 
+								CUtils.get().object2String(map.get("operationContent")));
+					}
+				}
+			}
 			resultBean.setStatus("OK");
 			resultBean.setEntity(page);
 		}catch(Exception e){
