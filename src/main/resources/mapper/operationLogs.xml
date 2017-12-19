@@ -25,6 +25,7 @@
 		SELECT 
 			uid uId,
 			uname uName,
+			operation_type operationType,
 			operation_content operationContent,
 			date_format(from_unixtime(created_time/1000),'%Y/%m/%d') createdTime, 
 			reason

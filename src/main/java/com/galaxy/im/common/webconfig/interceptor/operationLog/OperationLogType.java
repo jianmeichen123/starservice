@@ -112,10 +112,10 @@ public enum OperationLogType {
 	P7_BREAK_PROJECT("/flow/projectapproval/votedown", OperType.BREAK.getOperationType(), null,"否决项目"),
 	
 	//代办任务（领取，移交，指派，放弃）
-	CLAIMT_TASK("/soptask/applyTask", OperType.CLAIMT.getOperationType(), "领取尽职调查",null),
-	APPLY_TASK("/soptask/taskTransfer/"+UrlNumber.one, OperType.APPLY.getOperationType(), "移交尽职调查",null),
-	GIVEUP_TASK("/soptask/abandonTask", OperType.GIVEUP.getOperationType(), "放弃尽职调查",null),
-	ASSIGNED_TASK("/soptask/taskTransfer/"+UrlNumber.two, OperType.ASSIGNED.getOperationType(), "指派尽职调查",null),
+	CLAIMT_TASK("/soptask/applyTask", OperType.CLAIMT.getOperationType(), "尽调",null),
+	APPLY_TASK("/soptask/taskTransfer/"+UrlNumber.one, OperType.APPLY.getOperationType(), "尽调",null),
+	GIVEUP_TASK("/soptask/abandonTask", OperType.GIVEUP.getOperationType(), "尽调",null),
+	ASSIGNED_TASK("/soptask/taskTransfer/"+UrlNumber.two, OperType.ASSIGNED.getOperationType(), "尽调",null),
 	
 	//投后运营会议纪要
 	pos_meeting_add("/posmeeting/addPosMeetingRecord/"+UrlNumber.one, OperType.ADD.getOperationType(), "投后运营会议记录",SopStage.EQUITY_DELIVERY_END.getStageName()), 
