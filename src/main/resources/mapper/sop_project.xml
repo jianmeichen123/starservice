@@ -329,7 +329,7 @@
 		SELECT id, project_id projectId,title_id titleId, content_choose contentChoose, content_describe1 contentDescribe1 
 		FROM information_result 
 		WHERE project_id=#{projectId}  
-		and title_id=#{titleId} and is_valid=0;
+		and title_id=#{titleId} and is_valid=0 limit 1;
 	</select>
 	
 	<!-- 全息报告信息获取 -->
