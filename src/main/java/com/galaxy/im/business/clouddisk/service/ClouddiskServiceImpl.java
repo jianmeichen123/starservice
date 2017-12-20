@@ -80,7 +80,7 @@ public class ClouddiskServiceImpl extends BaseServiceImpl<CloudDiskFiles> implem
 				//已经使用比
 				BigDecimal bd = new BigDecimal(StaticConst.CLOUD_VOLUME_DOSE);
 				BigDecimal b1 = new BigDecimal(usedVolume);
-				String usedString = b1.divide(bd,6,BigDecimal.ROUND_UP).toString();
+				String usedString = b1.divide(bd,6,BigDecimal.ROUND_DOWN).toString();
 				Double tt = CUtils.get().object2Double(usedString, 0D);
 				if(usedVolume>0 && tt<0.0001) {
 					usedString = "0.0001";
@@ -95,13 +95,13 @@ public class ClouddiskServiceImpl extends BaseServiceImpl<CloudDiskFiles> implem
 				BigDecimal ub1 = new BigDecimal(usedVolume);
 				if(usedVolume>1024*1024*1024){
 					BigDecimal ub2 = new BigDecimal(1024*1024*1024);
-					resMap.put("usedVolume", delLastZero(ub1.divide(ub2,2,BigDecimal.ROUND_UP).toString()) + "G");
+					resMap.put("usedVolume", delLastZero(ub1.divide(ub2,2,BigDecimal.ROUND_DOWN).toString()) + "G");
 				}else if(usedVolume>1024*1024){
 					BigDecimal ub2 = new BigDecimal(1024*1024);
-					resMap.put("usedVolume", delLastZero(ub1.divide(ub2,2,BigDecimal.ROUND_UP).toString()) + "M");
+					resMap.put("usedVolume", delLastZero(ub1.divide(ub2,2,BigDecimal.ROUND_DOWN).toString()) + "M");
 				}else if(usedVolume>1024){
 					BigDecimal ub2 = new BigDecimal(1024);
-					resMap.put("usedVolume", delLastZero(ub1.divide(ub2,2,BigDecimal.ROUND_UP).toString()) + "K");
+					resMap.put("usedVolume", delLastZero(ub1.divide(ub2,2,BigDecimal.ROUND_DOWN).toString()) + "K");
 				}else{
 					resMap.put("usedVolume", usedVolume + "B");
 				}
