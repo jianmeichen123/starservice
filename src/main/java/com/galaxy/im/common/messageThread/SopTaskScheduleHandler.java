@@ -61,6 +61,10 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 						map.put("taskName", "法务尽调任务");
 					}else if(CUtils.get().object2String(map.get("taskName")).contains("财务")){
 						map.put("taskName", "财务尽调任务");
+					}else if(CUtils.get().object2String(map.get("taskName")).contains("工商")){
+						map.put("taskName", "工商转让凭证任务");
+					}else if(CUtils.get().object2String(map.get("taskName")).contains("资金")){
+						map.put("taskName", "资金拨付凭证任务");
 					}
 				}
 			}
