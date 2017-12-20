@@ -105,6 +105,7 @@ public class InvestmentintentController{
 			}
 			Map<String, Object> user = BeanUtils.toMap(cache.get(b.getSessionid()));
 			
+			@SuppressWarnings("unused")
 			long deptId=0l;
 			String progressHistory="";
 			Map<String,Object> map =new HashMap<String,Object>();
@@ -125,7 +126,7 @@ public class InvestmentintentController{
 						if(fcService.enterNextFlow(paramMap)){
 							resultBean.setFlag(1);
 							map.put("projectProgress", StaticConst.PROJECT_PROGRESS_6);
-							SessionBean sessionBean = CUtils.get().getBeanBySession(request);
+							/*SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 							
 							//给投资经理自己生成业务尽职调查待办任务
 							SopTask bean = new SopTask();
@@ -145,7 +146,7 @@ public class InvestmentintentController{
 							bean.setDepartmentId(deptId);
 							bean.setCreatedTime(new Date().getTime());
 							@SuppressWarnings("unused")
-							Long id = fcService.insertsopTask(bean);
+							Long id = fcService.insertsopTask(bean);*/
 							
 							//给人事生成人事尽职调查待办任务
 							SopTask beanHr = new SopTask();

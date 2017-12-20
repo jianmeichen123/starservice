@@ -153,6 +153,7 @@ public class InvestmentdealController {
 		Map<String, Object> map = new HashMap<>();
 		resultBean.setFlag(0);
 		try {
+			@SuppressWarnings("unused")
 			long deptId=0l;
 			String progressHistory = "";
 			Map<String, Object> paramMap = CUtils.get().jsonString2map(paramString);
@@ -181,7 +182,7 @@ public class InvestmentdealController {
 								}
 							}
 							//给投资经理生成代码任务
-							SopTask bean = new SopTask();
+							/*SopTask bean = new SopTask();
 							bean.setProjectId(CUtils.get().object2Long(paramMap.get("projectId")));
 							bean.setTaskName(StaticConst.TASK_NAME_TZXY);
 							bean.setTaskType(StaticConst.TASK_TYPE_XTBG);
@@ -192,7 +193,7 @@ public class InvestmentdealController {
 							bean.setDepartmentId(deptId);
 							bean.setCreatedTime(new Date().getTime());
 							@SuppressWarnings("unused")
-							Long id = fcService.insertsopTask(bean);
+							Long id = fcService.insertsopTask(bean);*/
 							// 修改投决会排期状态为已通过
 							paramMap.put("scheduleStatus", 2);
 							paramMap.put("updatedTime", DateUtil.getMillis(new Date()));

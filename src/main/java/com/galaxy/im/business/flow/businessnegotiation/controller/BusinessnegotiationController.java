@@ -135,6 +135,7 @@ public class BusinessnegotiationController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		try{
+			@SuppressWarnings("unused")
 			long deptId=0l;
 			String progressHistory="";
 			Map<String,Object> map =new HashMap<String,Object>();
@@ -165,7 +166,7 @@ public class BusinessnegotiationController {
 									deptId= CUtils.get().object2Long( vMap.get("deptId"));
 								}
 							}
-							SopTask bean = new SopTask();
+							/*SopTask bean = new SopTask();
 							bean.setProjectId(CUtils.get().object2Long(paramMap.get("projectId")));
 							bean.setTaskName(StaticConst.TASK_NAME_TZXY);
 							bean.setTaskType(StaticConst.TASK_TYPE_XTBG);
@@ -176,7 +177,7 @@ public class BusinessnegotiationController {
 							bean.setDepartmentId(deptId);
 							bean.setCreatedTime(new Date().getTime());
 							@SuppressWarnings("unused")
-							Long id = fcService.insertsopTask(bean);
+							Long id = fcService.insertsopTask(bean);*/
 							resultBean.setMap(map);
 							resultBean.setStatus("OK");
 							//记录操作日志
