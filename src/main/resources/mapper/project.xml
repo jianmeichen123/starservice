@@ -22,11 +22,11 @@
 					AND r.content_choose = #{financeStatus} 
 					)
 			    </if>
-				<if test="faFlag != null">
+				<if test="projectSource != null">
 					AND EXISTS(
 					SELECT 1 
 					FROM information_result rst 
-					WHERE rst.title_id = 1120 AND rst.project_id = sop_project.id AND rst.content_choose = #{faFlag}
+					WHERE rst.title_id = 1120 AND rst.project_id = sop_project.id AND rst.content_choose = #{projectSource}
 					)
 				</if>
 				<!-- 模糊查询 -->
