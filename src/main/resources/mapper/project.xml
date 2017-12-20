@@ -22,7 +22,13 @@
 					AND r.content_choose = #{financeStatus} 
 					)
 			    </if>
-				<if test="faFlag != null"> and fa_flag = #{faFlag} </if>
+				<if test="faFlag != null">
+					AND EXISTS(
+					SELECT 1 
+					FROM information_result rst 
+					WHERE rst.title_id = 1120 AND rst.project_id = sop_project.id AND rst.content_choose = #{faFlag}
+					)
+				</if>
 				<!-- 模糊查询 -->
 				<if test="keyword != null">
 					<choose>
@@ -98,8 +104,6 @@
 	    industry_analysis industryAnalysis,
 	    operational_data operationalData, 
 	    idea_id ideaId, 
-	    fa_flag faFlag, 
-	    fa_name faName,
 	    project_time projectTime,
 	    (SELECT r.content_choose
 				FROM information_title_relate t
