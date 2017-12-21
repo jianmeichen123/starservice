@@ -160,6 +160,24 @@ public class MessageHandlerInterceptor extends HandlerInterceptorAdapter {
 			}
 			entity.setRecordType(recordType.getType());
 			list.add(entity);
+			//认领生成项目操作日志
+			if(entity.getOperationType().equals("领取")){
+				OperationLogs e = new OperationLogs();
+				e.setOperationContent(entity.getOperationContent());
+				e.setOperationType(entity.getOperationType());
+				e.setUid(user.getId());
+				e.setUname(user.getRealName());
+				e.setDepartName(user.getDepartmentName());
+				e.setUserDepartid(user.getDepartmentId());
+				e.setCreatedTime(new Date().getTime());
+				e.setProjectName(CUtils.get().object2String(m.get("projectName")));
+				e.setProjectId(CUtils.get().object2Long(m.get("projectId")));
+				e.setSopstage(CUtils.get().object2String(m.get("projectProgressName")));
+				e.setReason(CUtils.get().object2String(m.get("reason")));
+				e.setRecordId(CUtils.get().object2Long(m.get("recordId")));
+				e.setRecordType(RecordType.PROJECT.getType());
+				list.add(e);
+			}
 		}
 		return list;
 	}

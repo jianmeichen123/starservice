@@ -238,6 +238,7 @@ public class SopTaskController {
 			map.put("projectProgressName", sopBean.getProjectProgressName());
 			map.put("recordId", sopTask.getId());
 			mapList.add(map);
+			//代办任务操作日志
 			ControllerUtils.setRequestBatchParamsForMessageTip(request,mapList);
 		} catch (Exception e) {
 			log.error(SopTaskController.class.getName() + "applyTask",e);
