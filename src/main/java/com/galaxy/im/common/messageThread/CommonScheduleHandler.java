@@ -40,8 +40,6 @@ public class CommonScheduleHandler implements ScheduleMessageHandler
 		return  message != null && (map.containsKey(message.getMessageType()) || message.getMessageType().startsWith("1.3"));
 	}
 
-	
-	
 	// 您有一个日程将于①明日（2017-12-12） ②3:00开始，日程名称“③XXXXX”。 
 	public void handle(ScheduleMessageBean message,Object info) {
 		
@@ -56,21 +54,18 @@ public class CommonScheduleHandler implements ScheduleMessageHandler
 		Long info_id = model.getId();
 		
 		//消息内容
-		message.setCategory((byte) 0);  // 0:操作消息  1:系统消息
-		message.setType("1.3");         // 消息类型  日程(1.1:会议  1.2:拜访  1.3:其它)
+		message.setCategory((byte) 0);  				 // 0:操作消息  1:系统消息
+		message.setType(model.getMessageType());         // 消息类型  日程(1.1:会议  1.2:拜访  1.3:其它)
 		message.setRemarkId(info_id);
 		message.setCreatedUid(model.getCreatedId());
 		message.setCreatedUname(model.getUserName());
 		
 		StringBuffer content = new StringBuffer();
-		//if(model.getMessageType().equals(add_com_schedule)){
 			content.append("您有一个日程将于 ");
 			content.append("<time>").append(startTime).append("</time>");
 			content.append(" 开始，");
 			content.append("日程名称\"").append("<name>").append(model.getName()).append("</name>\"。");
-		//}
 		message.setContent(content.toString());
-		
 		
 		//消息推送时间
 		try {
@@ -83,7 +78,6 @@ public class CommonScheduleHandler implements ScheduleMessageHandler
 			message.setSendTime(null);
 			logger.error("CommonScheduleHandler . handle sendtime 异常 ",e.getMessage());
 		}
-		
 		
 		//消息接收人
 		List<ScheduleMessageUserBean> toUsers = new ArrayList<ScheduleMessageUserBean>();

@@ -181,7 +181,7 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 		//0:操作消息  1:系统消息
 		message.setCategory((byte) 1);  
 		//消息类型
-		message.setType("1.2");         
+		message.setType(model.getMessageType());         
 		message.setRemarkId(info_id);
 		message.setCreatedUid(model.getCreatedId());
 		message.setCreatedUname(model.getUserName());
