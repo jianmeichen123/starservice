@@ -450,6 +450,7 @@ public class SopTaskController {
 		String urlU = env.getProperty("power.server") + StaticConst.getUsersByDepId;
 		JSONArray rr=null;
 		List<Map<String, Object>> userList=new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> mList=new ArrayList<Map<String, Object>>();
 		String res = QHtmlClient.get().post(urlU, headerMap, vmap);
 		if("error".equals(res)){
 			log.error(FlowCommonServiceImpl.class.getName() + "获取信息时出错","此时服务器返回状态码非200");
@@ -459,7 +460,12 @@ public class SopTaskController {
 				rr = json.getJSONArray("value");
 				if(json.containsKey("success") && "true".equals(json.getString("success"))){
 					//操作
-					userList =CUtils.get().jsonString2list(rr);
+					mList =CUtils.get().jsonString2list(rr);
+					for(Map<String, Object> map:mList){
+						if(!CUtils.get().object2String(map.get("userId")).equals(CUtils.get().object2String(bean.getGuserid()))){
+							userList.add(map);
+						}
+					}
 				}
 			}
 		}	
