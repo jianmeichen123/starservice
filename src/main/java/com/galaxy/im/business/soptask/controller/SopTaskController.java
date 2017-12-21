@@ -237,6 +237,11 @@ public class SopTaskController {
 			map.put("projectName", sopBean.getProjectName());
 			map.put("projectProgressName", sopBean.getProjectProgressName());
 			map.put("recordId", sopTask.getId());
+			for(Map<String, Object> m:sopTask.getProjects()){
+				if(m.containsKey("taskName") && m.get("taskName")!=null){
+					map.put("taskName", m.get("taskName"));
+				}
+			}
 			mapList.add(map);
 			//代办任务操作日志
 			ControllerUtils.setRequestBatchParamsForMessageTip(request,mapList);
@@ -404,6 +409,9 @@ public class SopTaskController {
 			if(m.containsKey("taskId") && m.get("taskId")!=null){
 				map.put("recordId", m.get("taskId"));
 			}
+			if(m.containsKey("taskName") && m.get("taskName")!=null){
+				map.put("taskName", m.get("taskName"));
+			}
 			map.put("nums", uNum);
 			map.put("reason", sopTaskRecord.getReason());
 			mapList.add(map);
@@ -534,6 +542,9 @@ public class SopTaskController {
 				map.put("projectProgressName", sopBean.getProjectProgressName());
 				if(m.containsKey("taskId") && m.get("taskId")!=null){
 					map.put("recordId", m.get("taskId"));
+				}
+				if(m.containsKey("taskName") && m.get("taskName")!=null){
+					map.put("taskName", m.get("taskName"));
 				}
 				map.put("reason", sopTaskRecord.getReason());
 				mapList.add(map);

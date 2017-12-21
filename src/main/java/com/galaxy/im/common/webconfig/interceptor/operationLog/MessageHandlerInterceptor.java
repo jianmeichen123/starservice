@@ -130,12 +130,17 @@ public class MessageHandlerInterceptor extends HandlerInterceptorAdapter {
 		List<Map<String, Object>> mapList = (List<Map<String, Object>>) map.get(PlatformConst.REQUEST_SCOPE_MESSAGE_BATCH);
 		for(Map<String, Object> m: mapList){
 			OperationLogs entity = new OperationLogs();
-			if (user.getDepartmentId()==20) {
-				entity.setOperationContent("法务" + type.getContent());
-			}else if (user.getDepartmentId()==21) {
-				entity.setOperationContent("财务" + type.getContent());
-			}else if (user.getDepartmentId()==23) {
-				entity.setOperationContent("人事" + type.getContent());
+			String taskName =CUtils.get().object2String(m.get("taskName"));
+			if (taskName.contains("人事")) {
+				entity.setOperationContent("人事尽调");
+			}else if (taskName.contains("法务")) {
+				entity.setOperationContent("法务尽调");
+			}else if (taskName.contains("财务")) {
+				entity.setOperationContent("财务尽调");
+			}else if(taskName.contains("工商")){
+				entity.setOperationContent("工商变更");
+			}else if(taskName.contains("资金")){
+				entity.setOperationContent("打款凭证");
 			}
 			entity.setOperationType(type.getType());
 			entity.setUid(user.getId());
