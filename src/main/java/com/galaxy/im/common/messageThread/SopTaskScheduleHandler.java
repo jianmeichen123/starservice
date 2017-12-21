@@ -99,7 +99,7 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 				ScheduleMessageBean message2 =getScheduleMessageInfo(model,1,map);
 				con.append("\"<pname>").append(CUtils.get().object2String(map.get("projectName"))).append("</pname>\"");
 				con.append("的").append(CUtils.get().object2String(map.get("taskName"))).append("负责人变更为").append("\"");
-				con.append("<uname>").append(model.getAssignUid()).append("</uname>\"");
+				con.append("<uname>").append(model.getAssignUname()).append("</uname>\"");
 				message2.setSendTime(sendTime);
 				message2.setContent(con.toString());
 				list.add(message1);
@@ -141,7 +141,7 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 				ScheduleMessageBean message2 =getScheduleMessageInfo(model,1,map);
 				con.append("\"<pname>").append(CUtils.get().object2String(map.get("projectName"))).append("</pname>\"");
 				con.append("的").append(CUtils.get().object2String(map.get("taskName"))).append("负责人为").append("\"");
-				con.append("<uname>").append(model.getAssignUid()).append("</uname>\"");
+				con.append("<uname>").append(model.getAssignUname()).append("</uname>\"");
 				message2.setSendTime(sendTime);
 				message2.setContent(con.toString());
 				list.add(message1);
