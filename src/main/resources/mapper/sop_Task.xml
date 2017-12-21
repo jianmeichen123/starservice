@@ -55,28 +55,20 @@
 	<!-- 待办任务详情 -->
 	<select id="taskInfo" parameterType="hashmap"
 		resultType="hashmap">
-		SELECT p5.*, u2.user_name assignUserName from
-		(
-		SELECT p4.*,st.task_name taskName,st.assign_uid assignUid,st.id taskId
-		FROM sop_task st LEFT JOIN
-		(
-		SELECT p3.*,u1.user_name partner
-		from
-		(SELECT p2.*,d.dep_manager depManager
-		from
-		(
-		SELECT p1.id projectId,u.user_name projectCreatedName,p1.create_uid projectCreatedId,
-		 p1.project_name projectName,dd.name projectType, p1.project_code projectCode,p1.created_time createdTime, 
-		 r.content_describe1 projectCompany,d.dep_name projectCareerline
+		SELECT p1.id projectId,u.user_name projectCreatedName,p1.create_uid projectCreatedId,p1.project_name projectName,dd.name 
+		projectType, p1.project_code projectCode,p1.created_time createdTime, 
+		r.content_describe1 projectCompany,d.dep_name projectCareerline,d.dep_manager depManager,u2.user_name partner,u1.user_name assignUserName ,
+		st.task_name taskName,st.assign_uid assignUid,st.id taskId
 		FROM sop_project p1 
+	    LEFT JOIN  sop_task st ON st.project_id = p1.id 
 		LEFT JOIN power.user u ON p1.create_uid = u.id
+		LEFT JOIN power.user u1 ON st.assign_uid = u1.id 
 		LEFT JOIN power.rel_dep_user du on u.id= du.user_id
 		LEFT JOIN power.department d on d.id= du.dep_id
+        LEFT JOIN power.user u2 ON d.dep_manager = u2.id 
 		LEFT JOIN dict dd ON dd.dict_code =p1.project_type
 		LEFT JOIN information_result r on r.project_id=p1.id and r.title_id=1814
-		WHERE p1.id =#{projectId}) p2  LEFT JOIN power.department d ON p2.projectCareerline = d.dep_name) p3
-		LEFT JOIN power.user u1 ON p3.depManager = u1.id) p4 ON st.project_id = p4.projectId 
-		WHERE st.id =#{id}) p5 LEFT JOIN power.user u2 ON  u2.id = p5.assignUid
+		WHERE p1.id =#{projectId} and st.id=#{id}
 	</select>
 	
 	<!-- 修改项目状态 为认领-->
@@ -145,17 +137,17 @@
 	<select id="isUpload" parameterType="com.galaxy.im.bean.talk.SopFileBean"
 		resultType="com.galaxy.im.bean.talk.SopFileBean">
 		SELECT 
-			id, project_id projectId, belong_uid belongUid,
-		    file_valid fileValid, project_progress projectProgress, 
-		    file_worktype fileWorkType, career_line careerLine,
-			file_source fileSource, file_type fileType,
-			file_status fileStatus, file_uid fileUid, 
-			fil_uri filUri, file_length fileLength,
-			file_key fileKey, bucket_name bucketName,
-			file_name fileName,file_suffix fileSuffix
-		FROM sop_file WHERE project_id=#{projectId} 
-		AND file_valid=1  and file_worktype=#{fileWorkType}
-		and file_status <![CDATA[!= ]]> 'fileStatus:4'
+		s.id, s.project_id projectId, s.belong_uid belongUid,
+		s.file_valid fileValid, s.project_progress projectProgress, 
+		s.file_worktype fileWorkType, s.career_line careerLine,
+		s.file_source fileSource,  s.file_type fileType,
+		s.file_status fileStatus,  s.file_uid fileUid, 
+		s.fil_uri filUri,  s.file_length fileLength,
+		s.file_key fileKey,  s.bucket_name bucketName,
+		s.file_name fileName, s.file_suffix fileSuffix
+		FROM sop_file s 
+		WHERE s.project_id=#{projectId}
+		AND s.file_valid=1 and s.file_worktype=#{fileWorktype}  and s.file_status <> 'fileStatus:4'
 	</select>
 	
 	<!-- 查询是否已经移交/指派-->
