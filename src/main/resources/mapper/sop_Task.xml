@@ -147,7 +147,7 @@
 		s.file_name fileName, s.file_suffix fileSuffix
 		FROM sop_file s 
 		WHERE s.project_id=#{projectId}
-		AND s.file_valid=1 and s.file_worktype=#{fileWorktype}  and s.file_status <> 'fileStatus:4'
+		AND s.file_valid=1 and s.file_worktype=#{fileWorktype}  and s.file_status &lt;&gt; 'fileStatus:4'
 	</select>
 	
 	<!-- 查询是否已经移交/指派-->
