@@ -161,8 +161,10 @@ public class SopTaskController {
 			SopFileBean sopFileBean = new SopFileBean();
 			sopFileBean.setProjectId( CUtils.get().object2Long(paramMap.get("projectId")));
 			//fileWorktype=2人事 fileWorktype=3法务 fileWorktype=4财务fileWorktype=8工商转让凭证(法务)fileWorktype=9资金拨付(财务)
-			sopFileBean.setFileWorkType(CUtils.get().object2String(paramMap.get("fileWorktype")));
 			
+			String taskName = CUtils.get().object2String(paramMap.get("taskName"));
+			String fileWorkType = getFileWorkType(taskName);
+			sopFileBean.setFileWorkType(fileWorkType);
 			sopFileBean.setFileUid(bean.getGuserid());
 			SopFileBean bean2 = service.isUpload(sopFileBean);
 			if (bean2!=null) {
@@ -192,6 +194,8 @@ public class SopTaskController {
 		}
 		return resultBean;
 	}
+	
+
 	/**
 	 * 认领
 	 */
@@ -539,6 +543,26 @@ public class SopTaskController {
 		}
 		return resultBean;
 	}
+	
+	
+	private String getFileWorkType(String taskName) {
+		String fileWorkType="";
+		if (taskName!=null && !"".equals(taskName)) {
+			if (taskName.contains("财务")) {
+				fileWorkType="fileWorktype:4";
+			}else if (taskName.contains("资金")) {
+				fileWorkType="fileWorktype:9";
+			}else if (taskName.contains("法务")) {
+				fileWorkType="fileWorktype:3";
+			}else if (taskName.contains("工商")) {
+				fileWorkType="fileWorktype:8";
+			}else if (taskName.contains("人事")) {
+				fileWorkType="fileWorktype:2";
+			}
+		}
+		return fileWorkType;
+	}
+	
 	
 	
 }
