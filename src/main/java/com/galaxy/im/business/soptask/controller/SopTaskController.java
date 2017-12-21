@@ -484,9 +484,9 @@ public class SopTaskController {
 						//查询人事经理A是否已上传了人事/财务/法务尽调报告
 						SopFileBean sopFileBean = new SopFileBean();
 						sopFileBean.setProjectId( CUtils.get().object2Long(map.get("projectId")));
-						//fileWorktype=2人事 fileWorktype=3法务 fileWorktype=4财务
-						sopFileBean.setFileWorkType(sopTaskRecord.getFileWorktype());
-						//sopFileBean.setFileUid(CUtils.get().object2Long(user.get("id")));
+						//根据代办任务名称，获取对应上传的报告类型
+						String fileWorkType = getFileWorkType(CUtils.get().object2String(map.get("taskName")));
+						sopFileBean.setFileWorkType(fileWorkType);
 						SopFileBean bean2 = service.isUpload(sopFileBean);
 						//A将报告移交给B
 						if (bean2!=null&&!bean2.equals("")) {
