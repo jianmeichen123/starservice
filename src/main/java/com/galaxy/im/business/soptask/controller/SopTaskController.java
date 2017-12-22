@@ -513,7 +513,6 @@ public class SopTaskController {
 							bean2.setFileSuffix(null);
 							bean2.setFileType(null);
 							bean2.setFileUid(0);
-							bean2.setFileValid(0);
 							bean2.setFileStatus(StaticConst.FILE_STATUS_1);
 							bean2.setId(bean2.getId());
 							bean2.setUpdatedTime(new Date().getTime());

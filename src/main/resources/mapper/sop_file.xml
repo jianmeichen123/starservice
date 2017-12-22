@@ -100,7 +100,7 @@
 			<if test="fileSource != null"> file_source = #{fileSource}, </if>
 			<if test="voucherId != null"> voucher_id = #{voucherId}, </if>
 			<if test="fileStatus != null"> file_status = #{fileStatus}, </if>
-			file_valid = #{fileValid},
+			<if test="fileValid != null"> file_valid = #{fileValid},</if>
 			file_type = #{fileType},
 			file_uid = #{fileUid},
 			fil_uri = #{filUri},
