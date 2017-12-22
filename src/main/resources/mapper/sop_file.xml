@@ -82,5 +82,35 @@
 			meeting_record_id,id 
 		FROM sop_file WHERE id = #{fileId};
  	</insert>
+ 	
+ 	<!-- 更新sop_file -->
+	<update id="updateSopFile" parameterType="com.galaxy.im.bean.talk.SopFileBean">
+		update sop_file
+		<set>
+			<if test="projectId != null"> project_id = #{projectId}, </if>
+			<if test="belongUid != null"> belong_uid = #{belongUid}, </if>
+			<if test="meetingId != null"> meeting_id = #{meetingId}, </if>
+			<if test="careerLine != null"> career_line = #{careerLine}, </if>
+			<if test="projectProgress != null"> project_progress = #{projectProgress}, </if>
+			<if test="remark != null"> remark = #{remark}, </if>
+			<if test="updatedTime != null"> updated_time = #{updatedTime}, </if>
+			<if test="createdTime != null"> created_time = #{createdTime}, </if>
+			<if test="recordType != null"> record_type = #{recordType},</if>
+			<if test="fileWorkType != null"> file_worktype = #{fileWorkType}, </if>
+			<if test="fileSource != null"> file_source = #{fileSource}, </if>
+			<if test="voucherId != null"> voucher_id = #{voucherId}, </if>
+			<if test="fileStatus != null"> file_status = #{fileStatus}, </if>
+			file_valid = #{fileValid},
+			file_type = #{fileType},
+			file_uid = #{fileUid},
+			fil_uri = #{filUri},
+			file_length = #{fileLength},
+			file_key = #{fileKey},
+			bucket_name = #{bucketName},
+			file_name = #{fileName},
+			file_suffix = #{fileSuffix}
+		</set>
+		where id = #{id};
+	</update>
 	
 </mapper>

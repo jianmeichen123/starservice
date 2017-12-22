@@ -21,4 +21,6 @@ public interface ISopFileDao extends IBaseDao<Test, Long>{
 
 	long insertHistory(Map<String, Object> map);
 
+	int updateSopFile(SopFileBean bean);
+
 }

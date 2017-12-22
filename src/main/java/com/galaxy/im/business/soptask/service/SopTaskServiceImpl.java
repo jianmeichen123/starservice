@@ -12,6 +12,7 @@ import com.galaxy.im.bean.soptask.SopTaskRecord;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.flow.common.dao.IFlowCommonDao;
 import com.galaxy.im.business.operationLog.dao.IOperationLogsDao;
+import com.galaxy.im.business.sopfile.dao.ISopFileDao;
 import com.galaxy.im.business.soptask.dao.ISopTaskDao;
 import com.galaxy.im.common.db.IBaseDao;
 import com.galaxy.im.common.db.QPage;
@@ -28,6 +29,8 @@ public class SopTaskServiceImpl extends BaseServiceImpl<SopTask> implements ISop
 	IOperationLogsDao logDao;
 	@Autowired
 	IFlowCommonDao fDao;
+	@Autowired
+	ISopFileDao sfDao;
 	
 	@Override
 	protected IBaseDao<SopTask, Long> getBaseDao() {
@@ -150,6 +153,17 @@ public class SopTaskServiceImpl extends BaseServiceImpl<SopTask> implements ISop
 			return logDao.getOperationLogsCount(paramMap);
 		}catch(Exception e){
 			log.error(SopTaskServiceImpl.class.getName() + "getOperationLogs",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	//放弃代办任务的更新
+	@Override
+	public int updateSopFile(SopFileBean bean) {
+		try{
+			return sfDao.updateSopFile(bean);
+		}catch(Exception e){
+			log.error(SopTaskServiceImpl.class.getName() + "updateSopFile",e);
 			throw new ServiceException(e);
 		}
 	}

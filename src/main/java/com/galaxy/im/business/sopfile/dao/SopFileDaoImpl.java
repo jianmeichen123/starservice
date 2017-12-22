@@ -94,4 +94,16 @@ public class SopFileDaoImpl extends BaseDaoImpl<Test, Long> implements ISopFileD
 		}
 	}
 
+	@Override
+	public int updateSopFile(SopFileBean bean) {
+		try{
+			Map<String, Object> params = BeanUtils.toMap(bean);
+			String sqlName = "com.galaxy.im.business.sopfile.dao.ISopFileDao.updateSopFile";
+			return sqlSessionTemplate.update(sqlName,params);
+		}catch(Exception e){
+			log.error(SopFileDaoImpl.class.getName() + "updateSopFile",e);
+			throw new DaoException(e);
+		}
+	}
+
 }

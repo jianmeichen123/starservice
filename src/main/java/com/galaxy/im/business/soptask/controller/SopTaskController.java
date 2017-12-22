@@ -506,18 +506,19 @@ public class SopTaskController {
 						//A将报告移交给B
 						if (bean2!=null&&!bean2.equals("")) {
 							//将此报告设为无用
-							bean2.setFileKey("");
+							bean2.setFileKey(null);
 							bean2.setFileLength(0);
-							bean2.setBucketName("");
-							bean2.setFileName("");
-							bean2.setFileSuffix("");
-							bean2.setFileType("");
+							bean2.setBucketName(null);
+							bean2.setFileName(null);
+							bean2.setFileSuffix(null);
+							bean2.setFileType(null);
 							bean2.setFileUid(0);
 							bean2.setFileValid(0);
 							bean2.setFileStatus(StaticConst.FILE_STATUS_1);
 							bean2.setId(bean2.getId());
 							bean2.setUpdatedTime(new Date().getTime());
-							service.updateFile(bean2);
+							@SuppressWarnings("unused")
+							int res1 = service.updateSopFile(bean2);
 						}
 					}
 				}
