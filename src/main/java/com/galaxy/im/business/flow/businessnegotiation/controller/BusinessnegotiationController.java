@@ -1,6 +1,5 @@
 package com.galaxy.im.business.flow.businessnegotiation.controller;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.project.SopProjectBean;
-import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.business.flow.businessnegotiation.service.IBusinessnegotiationService;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.operationLog.controller.ControllerUtils;
@@ -207,6 +205,7 @@ public class BusinessnegotiationController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		try{
+			@SuppressWarnings("unused")
 			long deptId=0l;
 			String progressHistory="";
 			Map<String,Object> map =new HashMap<String,Object>();
@@ -229,7 +228,7 @@ public class BusinessnegotiationController {
 							resultBean.setFlag(1);
 							map.put("projectProgress", StaticConst.PROJECT_PROGRESS_5);
 							//生成投资意向书的代办任务
-							SessionBean sessionBean = CUtils.get().getBeanBySession(request);
+							/*SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 							//获取用户所属部门id
 							List<Map<String, Object>> list = fcService.getDeptId(sessionBean.getGuserid(),request,response);
 							if(list!=null){
@@ -248,7 +247,7 @@ public class BusinessnegotiationController {
 							bean.setDepartmentId(deptId);
 							bean.setCreatedTime(new Date().getTime());
 							@SuppressWarnings("unused")
-							Long id = fcService.insertsopTask(bean);
+							Long id = fcService.insertsopTask(bean);*/
 							resultBean.setMap(map);
 							resultBean.setStatus("OK");
 							//记录操作日志
