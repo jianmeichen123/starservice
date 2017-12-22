@@ -19,4 +19,6 @@ public interface ISopFileDao extends IBaseDao<Test, Long>{
 
 	List<String> getFileNameList(Map<String, String> nameMap);
 
+	long insertHistory(Map<String, Object> map);
+
 }

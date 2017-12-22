@@ -58,4 +58,29 @@
 		WHERE project_id= #{projectId} and file_valid=1 and meeting_id=#{meetingId}
 	</select>
 	
+	
+	<insert id="insertHistory" useGeneratedKeys="true" keyProperty="id"  parameterType="hashmap">
+ 		INSERT INTO sop_file_history (
+			project_id, belong_uid, file_valid, 
+			project_progress,file_worktype, career_line, 
+			file_source,file_type, remark, 
+			voucher_id, file_status,file_uid, 
+			fil_uri, updated_time,
+			created_time, file_length, file_key,
+			bucket_name,file_name,file_suffix,
+			record_type,meeting_id,interview_record_id,
+			meeting_record_id,file_id) 
+		SELECT 
+			project_id, belong_uid, file_valid, 
+			project_progress,file_worktype, career_line, 
+			file_source,file_type, remark, 
+			voucher_id, file_status,file_uid, 
+			fil_uri, updated_time,
+			created_time, file_length, file_key,
+			bucket_name,file_name,file_suffix,
+			record_type,meeting_id,interview_record_id,
+			meeting_record_id,id 
+		FROM sop_file WHERE id = #{fileId};
+ 	</insert>
+	
 </mapper>

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.galaxy.im.bean.Test;
 import com.galaxy.im.bean.talk.SopFileBean;
+import com.galaxy.im.business.flow.common.dao.FlowCommonDaoImpl;
 import com.galaxy.im.common.BeanUtils;
 import com.galaxy.im.common.db.BaseDaoImpl;
 import com.galaxy.im.common.exception.DaoException;
@@ -78,6 +79,17 @@ public class SopFileDaoImpl extends BaseDaoImpl<Test, Long> implements ISopFileD
 			return sqlSessionTemplate.selectList(sqlName,nameMap);
 		}catch(Exception e){
 			log.error(SopFileDaoImpl.class.getName() + "getFileNameList",e);
+			throw new DaoException(e);
+		}
+	}
+
+	@Override
+	public long insertHistory(Map<String, Object> map) {
+		String sqlName = "com.galaxy.im.business.sopfile.dao.ISopFileDao.insertHistory";
+		try{
+			return sqlSessionTemplate.insert(sqlName,map);
+		}catch(Exception e){
+			log.error(FlowCommonDaoImpl.class.getName() + ":addSopFile",e);
 			throw new DaoException(e);
 		}
 	}

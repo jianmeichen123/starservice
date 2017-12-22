@@ -15,4 +15,6 @@ public interface ISopFileService extends IBaseService<Test>{
 
 	List<Map<String, Object>> getSopFileList(SopFileBean sopfile);
 
+	long insertHistory(Long id);
+
 }

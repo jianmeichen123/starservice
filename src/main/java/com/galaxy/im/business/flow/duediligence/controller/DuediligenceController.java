@@ -26,6 +26,7 @@ import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.flow.duediligence.service.IDuediligenceService;
 import com.galaxy.im.business.operationLog.controller.ControllerUtils;
+import com.galaxy.im.business.sopfile.service.ISopFileService;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.ResultBean;
@@ -45,6 +46,8 @@ public class DuediligenceController {
 	IDuediligenceService service;
 	@Autowired
 	private IFlowCommonService fcService;
+	@Autowired
+	ISopFileService fileService;
 
 	/**
 	 * 申请投决会排期/否决项目的操作按钮状态
@@ -256,7 +259,7 @@ public class DuediligenceController {
 		resultBean.setFlag(0);
 		long id=0L;
 		@SuppressWarnings("unused")
-		int vid=0;
+		long vid=0L;
 		int prograss = 0;
 		try{
 			Long deptId =0L;
@@ -294,9 +297,13 @@ public class DuediligenceController {
 					bean.setFileUid(sessionBean.getGuserid());
 					//业务操作
 					if(bean.getId()!=null && bean.getId()!=0){
-						//更新：添加新的一条记录
-						vid = fcService.updateValid(bean.getId());
-						id = fcService.addSopFile(bean);
+						//更新：添加新的一条记录(人法财文件历史表)
+						id=fcService.updateSopFile(bean);
+						if(bean.getFileWorkType().equals(StaticConst.FILE_WORKTYPE_2) ||
+								bean.getFileWorkType().equals(StaticConst.FILE_WORKTYPE_3) ||
+								bean.getFileWorkType().equals(StaticConst.FILE_WORKTYPE_4)){
+							vid = fileService.insertHistory(bean.getId());
+						}
 						prograss=1;
 					}else{
 						//上传之前:查数据库中是否存在信息，存在更新，否则新增

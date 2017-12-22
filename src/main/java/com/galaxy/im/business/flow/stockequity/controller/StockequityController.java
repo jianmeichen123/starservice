@@ -25,6 +25,7 @@ import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.flow.investmentintent.service.IInvestmentintentService;
 import com.galaxy.im.business.flow.stockequity.service.IStockequityService;
 import com.galaxy.im.business.operationLog.controller.ControllerUtils;
+import com.galaxy.im.business.sopfile.service.ISopFileService;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
@@ -47,6 +48,8 @@ public class StockequityController {
 
 	@Autowired
 	IStockequityService isservice;
+	@Autowired
+	ISopFileService fileService;
 
 	/**
 	 * 判断项目操作按钮状态
@@ -234,10 +237,10 @@ public class StockequityController {
 					bean.setFileUid(sessionBean.getGuserid());
 					//业务操作
 					if(bean.getId()!=null && bean.getId()!=0){
-						//更新：添加新的一条记录
+						//更新：添加新的一条记录(文件历史表)
+						id=fcService.updateSopFile(bean);
 						@SuppressWarnings("unused")
-						int vid = fcService.updateValid(bean.getId());
-						id =fcService.addSopFile(bean);
+						long vid = fileService.insertHistory(bean.getId());
 						prograss=1;
 					}else{
 						//上传之前:查数据库中是否存在信息，存在更新，否则新增

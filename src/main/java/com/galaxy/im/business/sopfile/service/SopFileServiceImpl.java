@@ -1,5 +1,6 @@
 package com.galaxy.im.business.sopfile.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +53,18 @@ public class SopFileServiceImpl extends BaseServiceImpl<Test> implements ISopFil
 	public List<Map<String, Object>> getSopFileList(SopFileBean sopfile) {
 		try{
 			return dao.getSopFileList(sopfile);
+		}catch(Exception e){
+			log.error(SopFileServiceImpl.class.getName() + "getSopFileList",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public long insertHistory(Long id) {
+		try{
+			Map<String,Object> map = new HashMap<String,Object> ();
+			map.put("fileId", id);
+			return dao.insertHistory(map);
 		}catch(Exception e){
 			log.error(SopFileServiceImpl.class.getName() + "getSopFileList",e);
 			throw new ServiceException(e);
