@@ -605,6 +605,7 @@ public class ProjectController {
 							r.setContentChoose(CUtils.get().object2String(mm.get("id")));
 						}
 					}else{
+						r.setContentChoose("10072");
 						r.setContentDescribe1(userName);
 					}
 					
