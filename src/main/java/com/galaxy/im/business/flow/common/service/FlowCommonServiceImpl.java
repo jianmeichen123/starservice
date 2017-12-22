@@ -447,9 +447,9 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 			break;
 		case "fileWorktype:7":			//股权转让协议
 			if(prograss==0){
-				number = UrlNumber.one;
+				number = UrlNumber.three;
 			}else{
-				number = UrlNumber.two;
+				number = UrlNumber.four;
 			}	
 			break;
 		case "fileWorktype:17":			//立项报告
@@ -468,9 +468,9 @@ public class FlowCommonServiceImpl extends BaseServiceImpl<ProjectBean> implemen
 			break;
 		case "fileWorktype:9":			//资金拨付凭证
 			if(prograss==0){
-				number = UrlNumber.one;
+				number = UrlNumber.three;
 			}else{
-				number = UrlNumber.two;
+				number = UrlNumber.four;
 			}
 			break;
 		default:

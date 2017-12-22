@@ -53,9 +53,9 @@ public enum OperationLogType {
   			"投资协议",SopStage.INVESTMENT_AGREEMENT.getStageName()),
   	p8_f6_tzxy_edit("/flow/investmentPolicy/uploadInvestmentPolicy/"+UrlNumber.two, OperType.UPDATE.getOperationType(), 
   			"投资协议",SopStage.INVESTMENT_AGREEMENT.getStageName()),
-  	p8_f7_gqzr_up("/flow/investmentPolicy/uploadInvestmentPolicy/"+UrlNumber.one, OperType.UPLOAD.getOperationType(), 
+  	p8_f7_gqzr_up("/flow/investmentPolicy/uploadInvestmentPolicy/"+UrlNumber.three, OperType.UPLOAD.getOperationType(), 
   			"股权转让协议",SopStage.INVESTMENT_AGREEMENT.getStageName()),
-  	p8_f7_gqzr_edit("/flow/investmentPolicy/uploadInvestmentPolicy/"+UrlNumber.two, OperType.UPDATE.getOperationType(), 
+  	p8_f7_gqzr_edit("/flow/investmentPolicy/uploadInvestmentPolicy/"+UrlNumber.four, OperType.UPDATE.getOperationType(), 
   			"股权转让协议",SopStage.INVESTMENT_AGREEMENT.getStageName()),
   	
 	//  立项报告     	fileWorktype:17  
@@ -70,9 +70,9 @@ public enum OperationLogType {
   			"工商转让凭证",SopStage.EQUITY_DELIVERY_STAGE.getStageName()),
   	p9_f8_gszrpz_edit("/flow/stockequity/uploadStockequity/"+UrlNumber.two, OperType.UPDATE.getOperationType(), 
   			"工商转让凭证",SopStage.EQUITY_DELIVERY_STAGE.getStageName()),
-  	p9_f9_zjbfpz_up("/flow/stockequity/uploadStockequity/"+UrlNumber.one, OperType.UPLOAD.getOperationType(), 
+  	p9_f9_zjbfpz_up("/flow/stockequity/uploadStockequity/"+UrlNumber.three, OperType.UPLOAD.getOperationType(), 
   			"资金拨付凭证",SopStage.EQUITY_DELIVERY_STAGE.getStageName()),
-  	p9_f9_zjbfpz_edit("/flow/stockequity/uploadStockequity/"+UrlNumber.two, OperType.UPDATE.getOperationType(), 
+  	p9_f9_zjbfpz_edit("/flow/stockequity/uploadStockequity/"+UrlNumber.four, OperType.UPDATE.getOperationType(), 
   			"资金拨付凭证",SopStage.EQUITY_DELIVERY_STAGE.getStageName()),
 	
 	//点击‘启动内部评审’
