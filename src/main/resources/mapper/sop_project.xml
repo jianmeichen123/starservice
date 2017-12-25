@@ -131,9 +131,9 @@
 	<!-- 项目详情 项目承揽人(来源全息报告)-->
 	<select id="selectProjectUserInfo" parameterType="hashmap" resultType="hashmap">
 		SELECT 
-		case when t.tid=#{titleId10} then t.choose else null  end as projectUserId,
-		case when t.tid=#{titleId10} then id.name else null end as projectUser,
-		case when t.tid=#{titleId10} then t.result else null end as projectUserName
+		case when t.tid=#{titleId10} then t.choose    end as projectUserId,
+		case when t.tid=#{titleId10} then id.name   end as projectUser,
+		case when t.tid=#{titleId10} then t.result   end as projectUserName
 		 FROM 
 		(SELECT title_id tid, content_describe1 result, content_choose choose FROM information_result 
 		WHERE  project_id=#{projectId} AND title_id in(#{titleId10})) t

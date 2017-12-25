@@ -293,27 +293,31 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 						StringBuilder sBuilder = new StringBuilder();
 						StringBuilder sb = new StringBuilder();
 						for(Map<String,Object> maps : map3){
-							if (maps.containsKey("projectUserName") && maps.get("projectUserName")!=null) {
-								projectMap.put("otherProjectUser", CUtils.get().object2String(maps.get("projectUserName")));
-							}
-							if (maps.containsKey("projectUser") && maps.get("projectUser")!=null) {
-								if (maps.get("projectUser")!=null && maps.get("projectUserId").equals("10072")) {
-									sBuilder.append(projectMap.get("otherProjectUser") + "、");
-								}else {
-									sBuilder.append(maps.get("projectUser") + "、");
+							if(maps!=null && !maps.isEmpty()){
+								if (maps.get("projectUserName")!=null && maps.get("projectUser")!=null) {
+									projectMap.put("otherProjectUser", CUtils.get().object2String(maps.get("projectUserName")));
 								}
-							}
-							if (maps.get("projectUser")==null && maps.get("projectUserName")!=null) {
-								sBuilder.append(maps.get("projectUserName") + "、");
-							}
-							if(maps.get("projectUserId")!=null){
-								sb.append(maps.get("projectUserId") + "、");
+								if (maps.get("projectUser")!=null) {
+									if (maps.get("projectUser")!=null && maps.get("projectUserId").equals("10072")) {
+										sBuilder.append(projectMap.get("otherProjectUser") + "、");
+									}else {
+										sBuilder.append(maps.get("projectUser") + "、");
+									}
+								}
+								if (maps.get("projectUser")==null && maps.get("projectUserName")!=null) {
+									sBuilder.append(maps.get("projectUserName") + "、");
+								}
+								if(maps.get("projectUserId")!=null){
+									sb.append(maps.get("projectUserId") + "、");
+								}
 							}
 						}
 						if(sb.length()>0){
 							sb.deleteCharAt(sb.length() - 1);
 						}
-						sBuilder.deleteCharAt(sBuilder.length() - 1);
+						if(sBuilder.length()>0){
+							sBuilder.deleteCharAt(sBuilder.length() - 1);
+						}
 						projectMap.put("projectUser", sBuilder);
 						projectMap.put("projectUserId", sb);
 						QXinfoMap.putAll(projectMap);
