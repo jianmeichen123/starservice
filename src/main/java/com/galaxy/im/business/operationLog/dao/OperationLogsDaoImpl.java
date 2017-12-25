@@ -62,7 +62,7 @@ public class OperationLogsDaoImpl extends BaseDaoImpl<OperationLogs, Long> imple
 		try{
 			int total = 0;
 			if(paramMap!=null){
-				total = CUtils.get().object2Integer(sqlSessionTemplate.selectOne(getSqlName("countOperationLogList"),getPageMap(paramMap)));
+				total = sqlSessionTemplate.selectOne(getSqlName("countOperationLogList"),getPageMap(paramMap));
 			}    
 			return total;
 		}catch(Exception e){
