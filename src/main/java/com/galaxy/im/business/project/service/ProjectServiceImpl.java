@@ -266,12 +266,16 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 			}
 			//项目来源
 			Map<String,Object> sourceMap = dao.selectProjectSoureInfo(paramMap);
-			if (sourceMap!=null && sourceMap.containsKey("projectSoureId") && CUtils.get().object2Integer(sourceMap.get("projectSoureId")) != 2262) {
-				String tempId = "";
-				projectMap.put("inputId", sourceMap.get("projectSoureId"));
-				tempId = dao.findInputTitleId(projectMap);
-				paramMap.put("titleId11", tempId);
+			if (sourceMap!=null && sourceMap.containsKey("projectSoureId")){
+				if (!sourceMap.get("projectSoureId").equals("创业者") && !sourceMap.get("projectSoureId").equals("外部独立合伙人") &&
+						!sourceMap.get("projectSoureId").equals("自开发") && CUtils.get().object2Integer(sourceMap.get("projectSoureId")) != 2262) {
+					String tempId = "";
+					projectMap.put("inputId", sourceMap.get("projectSoureId"));
+					tempId = dao.findInputTitleId(projectMap);
+					paramMap.put("titleId11", tempId);
+				}
 			}
+		
 			Map<String,Object> map2 = dao.selectProjectSoureInfo(paramMap);
 				if (map2!=null) {
 					if (map2 != null && map2.get("projectSoureName")!=null && !map2.get("projectSoureName").equals("")) {
