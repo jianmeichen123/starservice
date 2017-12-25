@@ -170,6 +170,23 @@ public class DictServiceImpl extends BaseServiceImpl<Dict> implements IDictServi
 				}else if(CUtils.get().object2String(paramMap.get("parentCode")).equals("FNO1_10")){
 					//项目来源
 					list = dictDao.getFinanceStatusList(paramMap);
+					if(paramMap.containsKey("flag")&& CUtils.get().object2Integer(paramMap.get("flag"))==1){
+						Map<String,Object> map =new HashMap<String,Object>();
+						Map<String,Object> map1 =new HashMap<String,Object>();
+						Map<String,Object> map2 =new HashMap<String,Object>();
+						map.put("name", "创业者");
+						map.put("code", "创业者");
+						map.put("id", "创业者");
+						map1.put("name", "自开发");
+						map1.put("code", "自开发");
+						map1.put("id", "自开发");
+						map2.put("name", "外部独立合伙人");
+						map2.put("code", "外部独立合伙人");
+						map2.put("id", "外部独立合伙人");
+						list.add(map);
+						list.add(map1);
+						list.add(map2);
+					}
 				}else if(CUtils.get().object2String(paramMap.get("parentCode")).equals("FNO1_11")){
 					//项目承揽人
 					list = dictDao.getFinanceStatusList(paramMap);
