@@ -58,11 +58,11 @@ public class OperationLogsDaoImpl extends BaseDaoImpl<OperationLogs, Long> imple
 	 * 操作日志个数
 	 */
 	@Override
-	public int getOperationLogsCount(Map<String, Object> paramMap) {
+	public Long getOperationLogsCount(Map<String, Object> paramMap) {
 		try{
-			int total = 0;
+			long total = 0;
 			if(paramMap!=null){
-				total = sqlSessionTemplate.selectOne(getSqlName("countOperationLogList"),getPageMap(paramMap));
+				total = CUtils.get().object2Long(sqlSessionTemplate.selectOne(getSqlName("countOperationLogList"),getPageMap(paramMap)));
 			}    
 			return total;
 		}catch(Exception e){

@@ -148,7 +148,7 @@ public class SopTaskServiceImpl extends BaseServiceImpl<SopTask> implements ISop
 
 	//查询时否有操作日志
 	@Override
-	public int getOperationLogs(Map<String, Object> paramMap) {
+	public Long getOperationLogs(Map<String, Object> paramMap) {
 		try{
 			return logDao.getOperationLogsCount(paramMap);
 		}catch(Exception e){

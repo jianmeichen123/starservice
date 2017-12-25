@@ -12,6 +12,6 @@ public interface IOperationLogsDao extends IBaseDao<OperationLogs, Long>{
 
 	QPage getOperationLogList(Map<String, Object> paramMap);
 
-	int getOperationLogsCount(Map<String, Object> paramMap);
+	Long getOperationLogsCount(Map<String, Object> paramMap);
 
 }

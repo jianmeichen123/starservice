@@ -40,7 +40,7 @@ public interface ISopTaskService extends IBaseService<SopTask>{
 	int selectCount(Map<String, Object> paramMap);
 
 	//查询操作人下是否有操作日志
-	int getOperationLogs(Map<String, Object> paramMap);
+	Long getOperationLogs(Map<String, Object> paramMap);
 	
 	//不限制条件的更新
 	int updateSopFile(SopFileBean bean2);

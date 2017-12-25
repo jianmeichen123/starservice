@@ -176,7 +176,7 @@ public class SopTaskController {
 			
 			//查询时否存在操作日志
 			paramMap.put("recordId", paramMap.get("id"));
-			int count = service.getOperationLogs(paramMap);
+			Long count = service.getOperationLogs(paramMap);
 			if (count >0) {
 				//标识存在操作日志
 				map2.put("isOperationLogs", 1);
