@@ -288,12 +288,12 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 				}
 				//项目承揽人
 				List<Map<String,Object>> map3 = dao.selectProjectUserInfo(paramMap);
-				if (map3!=null) {
+				if (!CUtils.get().listIsNotEmpty(map3)) {
 					if (map3.size()>0) {
 						StringBuilder sBuilder = new StringBuilder();
 						StringBuilder sb = new StringBuilder();
 						for(Map<String,Object> maps : map3){
-							if (maps.containsKey("projectUserName") && maps.containsKey("projectUser") && maps.get("projectUserName")!=null && maps.get("projectUser")!=null) {
+							if (maps.get("projectUserName")!=null && maps.get("projectUser")!=null) {
 								projectMap.put("otherProjectUser", CUtils.get().object2String(maps.get("projectUserName")));
 							}
 							if (maps.get("projectUser")!=null) {
