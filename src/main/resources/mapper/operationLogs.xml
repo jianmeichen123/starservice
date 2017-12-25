@@ -37,7 +37,7 @@
 	
 	<!-- 操作日志列表个数 -->
 	<select id="countOperationLogList" parameterType="hashmap" resultType="java.lang.Long">
-		SELECT count(1) 
+		SELECT count(id) 
 		FROM sop_operation_logs 
 		WHERE record_type=4 and record_id=#{recordId}
 		ORDER BY created_time DESC
