@@ -1,5 +1,6 @@
 package com.galaxy.im.business.flow.duediligence.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import com.galaxy.im.bean.Test;
 import com.galaxy.im.business.flow.duediligence.dao.IDuediligenceDao;
 import com.galaxy.im.business.soptask.dao.ISopTaskDao;
 import com.galaxy.im.common.CUtils;
+import com.galaxy.im.common.StaticConst;
 import com.galaxy.im.common.db.IBaseDao;
 import com.galaxy.im.common.db.service.BaseServiceImpl;
 import com.galaxy.im.common.exception.ServiceException;
@@ -74,6 +76,12 @@ public class DuediligenceServiceImpl extends BaseServiceImpl<Test> implements ID
 					}
 				}
 				//判断人法财3个代办任务的完成状态为（已完成）
+				//判断人法财3个代办任务的完成状态为（已完成）
+				List<Integer> taskFlagList = new ArrayList<Integer>();
+				taskFlagList.add(StaticConst.TASK_FLAG_RSJD);
+				taskFlagList.add(StaticConst.TASK_FLAG_FWJD);
+				taskFlagList.add(StaticConst.TASK_FLAG_CWJD);
+				paramMap.put("taskFlagList", taskFlagList);
 				long count = taskDao.getCountByTaskStatus(paramMap);
 				if(count1>=6 && count>=3){
 					result.put("pass", true);

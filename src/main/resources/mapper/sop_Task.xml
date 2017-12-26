@@ -157,13 +157,19 @@
 		AND after_uid =#{afterUid} and before_uid=#{beforeUid} and is_del=0
 	</select>
 	
-	<!-- 部门id -->
+	<!-- 代办任务状态 -->
 	<select id="getCountByTaskStatus" parameterType="hashmap"
 		resultType="long">
 		SELECT COUNT(id) 
 		FROM sop_task 
 		WHERE project_id=#{projectId} 
-		and task_flag in(2,3,4) and task_status='taskStatus:3';
+		 and task_status='taskStatus:3'
+		 <if test="taskFlagList != null">
+			and task_flag in 
+			<foreach collection="taskFlagList" item="taskFlag" index="index" open="(" close=")" separator=",">
+				#{taskFlag}
+			</foreach>
+		</if>;
 	</select>
 	
 </mapper>
