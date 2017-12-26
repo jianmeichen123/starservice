@@ -15,13 +15,5 @@
 		where f.file_valid=1 and p.id=#{projectId} and f.file_status in ('fileStatus:2','fileStatus:4')
 		group by d1.dict_code;
 	</select>
-	
-
-	
-	<!-- 获取资金拨付代办任务的状态-->
-	<select id="status"  parameterType="hashmap" resultType="hashmap">
-		SELECT task_status tstatus  FROM sop_task WHERE project_id=#{projectId} AND task_name='上传资金拨付凭证';
-
-	</select>
 
 </mapper>

@@ -113,4 +113,24 @@
 		where id = #{id};
 	</update>
 	
+	<!-- 文件状态  -->
+	<select id="getCountByFileStatus" parameterType="hashmap"
+		resultType="long">
+		SELECT COUNT(id) 
+		FROM sop_file 
+		WHERE project_id=#{projectId} 
+		<if test="fileWorkTypeList != null">
+			and file_worktype in 
+			<foreach collection="fileWorkTypeList" item="fileWorkType" index="index" open="(" close=")" separator=",">
+				#{fileWorkType}
+			</foreach>
+		</if>
+		<if test="fileStatusList != null">
+			and file_status in 
+			<foreach collection="fileStatusList" item="fileStatus" index="index" open="(" close=")" separator=",">
+				#{fileStatus}
+			</foreach>
+		</if>;
+	</select>
+	
 </mapper>

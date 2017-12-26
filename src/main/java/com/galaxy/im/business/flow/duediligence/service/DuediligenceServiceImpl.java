@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.galaxy.im.bean.Test;
 import com.galaxy.im.business.flow.duediligence.dao.IDuediligenceDao;
+import com.galaxy.im.business.sopfile.dao.ISopFileDao;
 import com.galaxy.im.business.soptask.dao.ISopTaskDao;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.StaticConst;
@@ -27,6 +28,8 @@ public class DuediligenceServiceImpl extends BaseServiceImpl<Test> implements ID
 	private IDuediligenceDao dao;
 	@Autowired
 	ISopTaskDao taskDao;
+	@Autowired
+	ISopFileDao fileDao;
 	
 	@Override
 	protected IBaseDao<Test, Long> getBaseDao() {
@@ -76,14 +79,29 @@ public class DuediligenceServiceImpl extends BaseServiceImpl<Test> implements ID
 					}
 				}
 				//判断人法财3个代办任务的完成状态为（已完成）
-				//判断人法财3个代办任务的完成状态为（已完成）
 				List<Integer> taskFlagList = new ArrayList<Integer>();
 				taskFlagList.add(StaticConst.TASK_FLAG_RSJD);
 				taskFlagList.add(StaticConst.TASK_FLAG_FWJD);
 				taskFlagList.add(StaticConst.TASK_FLAG_CWJD);
 				paramMap.put("taskFlagList", taskFlagList);
 				long count = taskDao.getCountByTaskStatus(paramMap);
-				if(count1>=6 && count>=3){
+				//上传文件的状态（已上传，已放弃）
+				List<String> fileWorkTypeList = new ArrayList<String>();
+				fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_1);
+				fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_2);
+				fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_3);
+				fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_4);
+				fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_18);
+				fileWorkTypeList.add(StaticConst.FILE_WORKTYPE_19);
+				paramMap.put("fileWorkTypeList", fileWorkTypeList);
+				
+				List<String> fileStatusList = new ArrayList<String>();
+				fileStatusList.add(StaticConst.FILE_STATUS_2);
+				fileStatusList.add(StaticConst.FILE_STATUS_4);
+				paramMap.put("fileStatusList", fileStatusList);
+				
+				long cc =fileDao.getCountByFileStatus(paramMap);
+				if((count1>=6 && count>=3) || cc>=6){
 					result.put("pass", true);
 				}
 			}

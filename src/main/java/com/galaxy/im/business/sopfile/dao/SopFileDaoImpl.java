@@ -106,4 +106,15 @@ public class SopFileDaoImpl extends BaseDaoImpl<Test, Long> implements ISopFileD
 		}
 	}
 
+	@Override
+	public long getCountByFileStatus(Map<String, Object> paramMap) {
+		String sqlName = "com.galaxy.im.business.sopfile.dao.ISopFileDao.getCountByFileStatus";
+		try{
+			return sqlSessionTemplate.insert(sqlName,paramMap);
+		}catch(Exception e){
+			log.error(SopFileDaoImpl.class.getName() + "getCountByFileStatus",e);
+			throw new DaoException(e);
+		}
+	}
+
 }

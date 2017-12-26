@@ -23,4 +23,6 @@ public interface ISopFileDao extends IBaseDao<Test, Long>{
 
 	int updateSopFile(SopFileBean bean);
 
+	long getCountByFileStatus(Map<String, Object> paramMap);
+
 }
