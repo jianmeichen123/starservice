@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.galaxy.im.bean.Test;
 import com.galaxy.im.business.flow.duediligence.dao.IDuediligenceDao;
+import com.galaxy.im.business.soptask.dao.ISopTaskDao;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.db.IBaseDao;
 import com.galaxy.im.common.db.service.BaseServiceImpl;
@@ -22,6 +23,8 @@ public class DuediligenceServiceImpl extends BaseServiceImpl<Test> implements ID
 	
 	@Autowired
 	private IDuediligenceDao dao;
+	@Autowired
+	ISopTaskDao taskDao;
 	
 	@Override
 	protected IBaseDao<Test, Long> getBaseDao() {
@@ -70,7 +73,9 @@ public class DuediligenceServiceImpl extends BaseServiceImpl<Test> implements ID
 						}
 					}
 				}
-				if(count1>=6){
+				//判断人法财3个代办任务的完成状态为（已完成）
+				long count = taskDao.getCountByTaskStatus(paramMap);
+				if(count1>=6 && count>=3){
 					result.put("pass", true);
 				}
 			}
