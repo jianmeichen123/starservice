@@ -38,6 +38,7 @@ public class StaticConst {
 	public static final String getUsersByKey = "user/getUsersByKey";					//用户名称模糊查询
 	public static final String getLeafDepartList = "depart/getLeafDepartList";			//事业部列表
 	public static final String getUsersByDepId = "user/getUsersByDepId";				//事业部下的所有用户
+	public static final String getTZJLByDepId = "user/getTZJLByDepId";				    //事业部下的所有投资经理
 	
 	//过滤器白名单
 	public static final String FILTER_WHITE_LOGIN = "userlogin/login";		//用户登录白名单

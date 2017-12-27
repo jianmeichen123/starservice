@@ -239,5 +239,30 @@ public class LoginController {
 		}
 		return result;
 	}
+	
+	
+	/**
+	 * 获取部门下所有投资经理
+	 */
+	@RequestMapping("/platform/getTZJLByDeptId")
+	@ResponseBody
+	public Object getTZJLByDepId(HttpServletRequest request,HttpServletResponse response,@RequestBody String paramString){
+		ResultBean<Object> result = new ResultBean<Object>();
+		
+		String url = env.getProperty("power.server") + StaticConst.getTZJLByDepId;
+		Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
+		if(paramMap.containsKey("deptId")){
+			String htmlString = QHtmlClient.get().post(url, null, paramMap);
+			if(CUtils.get().stringIsNotEmpty(htmlString) && !"error".equals(htmlString)){
+				JSONObject resultJson = CUtils.get().object2JSONObject(htmlString); 
+				JSONArray valueJson = resultJson.getJSONArray("value");
+				List<Map<String, Object>> dataList = CUtils.get().jsonString2list(valueJson);
+				
+				result.setStatus("OK");
+				result.setMapList(dataList);
+			}
+		}
+		return result;
+	}
 
 }
