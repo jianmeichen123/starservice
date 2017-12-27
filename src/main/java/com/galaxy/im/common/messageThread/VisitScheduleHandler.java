@@ -48,8 +48,8 @@ public class VisitScheduleHandler implements ScheduleMessageHandler
 		ScheduleInfo model = (ScheduleInfo) info;
 		
 		String startTime = model.getStartTime().replace("/","-");
-		if(startTime.indexOf(":00.0")!=-1){
-			startTime = startTime.replace(":00.0", "");
+		if(startTime.indexOf(":00")!=-1){
+			startTime = startTime.replace(":00", "");
 		}
 		byte isAllday = model.getIsAllday(); //是否全天 0:否 1:是
 		Long dictId = model.getWakeupId();
