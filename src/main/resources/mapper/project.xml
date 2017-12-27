@@ -11,6 +11,12 @@
 				<if test="createUid != null" > and create_uid = #{createUid} </if>
 				<if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
 				<if test="projectStatus != null" > and project_status = #{projectStatus} </if>
+				<if test="createUidList != null">
+					and create_uid in 
+					<foreach collection="createUidList" item="tzjl" index="index" open="(" close=")" separator=",">
+						#{tzjl}
+					</foreach>
+				</if>	
 				<if test="projectTypeList != null">
 					and project_type in 
 					<foreach collection="projectTypeList" item="type" index="index" open="(" close=")" separator=",">

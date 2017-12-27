@@ -84,12 +84,12 @@ public class SopProjectBean extends PagableEntity {
     private List<Long> projectUserIds;		//项目承揽人id
     private String projectUserName;			//项目承揽人（非投资线员工名称）
     
-    //一下是项目筛选多选情况
+    //项目筛选多选情况
     private List<String> projectTypeList;				//内部创建、外部投资
     private List<String> financeStatusList;				//融资状态
     private List<String> projectProgressList;			//项目的当前所处阶段
     private List<String> projectSourceList;			    //项目来源
-    
+    private List<String> createUidList;					//投资经理
     
 	public Long getIdeaId() {
 		return ideaId;
@@ -507,6 +507,12 @@ public class SopProjectBean extends PagableEntity {
 	}
 	public void setProjectSourceList(List<String> projectSourceList) {
 		this.projectSourceList = projectSourceList;
+	}
+	public List<String> getCreateUidList() {
+		return createUidList;
+	}
+	public void setCreateUidList(List<String> createUidList) {
+		this.createUidList = createUidList;
 	}
 	
 }
