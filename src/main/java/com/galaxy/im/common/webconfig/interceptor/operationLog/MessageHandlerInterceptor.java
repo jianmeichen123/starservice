@@ -138,9 +138,9 @@ public class MessageHandlerInterceptor extends HandlerInterceptorAdapter {
 			}else if (taskName.contains("财务")) {
 				entity.setOperationContent("财务尽调");
 			}else if(taskName.contains("工商")){
-				entity.setOperationContent("工商变更");
+				entity.setOperationContent("工商转让");
 			}else if(taskName.contains("资金")){
-				entity.setOperationContent("打款凭证");
+				entity.setOperationContent("拨付凭证");
 			}
 			entity.setOperationType(type.getType());
 			entity.setUid(user.getId());
