@@ -11,24 +11,42 @@
 				<if test="createUid != null" > and create_uid = #{createUid} </if>
 				<if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
 				<if test="projectStatus != null" > and project_status = #{projectStatus} </if>
-				<if test="projectType != null" > and project_type = #{projectType} </if>	
-				<if test="projectProgress != null" > and project_progress = #{projectProgress} </if>
-				<if test="financeStatus != null" >
-			      	AND EXISTS(
+				<if test="projectTypeList != null">
+					and project_type in 
+					<foreach collection="projectTypeList" item="type" index="index" open="(" close=")" separator=",">
+						#{type}
+					</foreach>
+				</if>	
+				<if test="projectProgressList != null">
+					and project_progress in 
+					<foreach collection="projectProgressList" item="progress" index="index" open="(" close=")" separator=",">
+						#{progress}
+					</foreach>
+				</if>
+				<if test="financeStatusList != null">
+					AND EXISTS(
 					SELECT 1
 					FROM information_title_relate t
 					INNER JOIN information_result r ON t.title_id = r.title_id 
 					WHERE r.project_id = sop_project.id AND t.code = 'FNO1_1' and t.report_type=4
-					AND r.content_choose = #{financeStatus} 
+					AND r.content_choose in  
+					<foreach collection="financeStatusList" item="status" index="index" open="(" close=")" separator=",">
+						#{status}
+					</foreach>
 					)
-			    </if>
-				<if test="projectSource != null">
+				</if>
+				<if test="projectSourceList != null">
 					AND EXISTS(
 					SELECT 1 
 					FROM information_result rst 
-					WHERE rst.title_id = 1120 AND rst.project_id = sop_project.id AND rst.content_choose = #{projectSource}
+					WHERE rst.title_id = 1120 AND rst.project_id = sop_project.id 
+					AND rst.content_choose in
+					<foreach collection="projectSourceList" item="source" index="index" open="(" close=")" separator=",">
+						#{source}
+					</foreach>
 					)
 				</if>
+				
 				<!-- 模糊查询 -->
 				<if test="keyword != null">
 					<choose>
