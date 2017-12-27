@@ -182,7 +182,6 @@ public class LoginController {
 		ResultBean<Object> result = new ResultBean<Object>();
 		SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 		Long deptId = 0L;
-		//System.out.println(cache.get(sessionBean.getSessionid()));
 		//通过用户id获取一些信息
 		List<Map<String, Object>> list = fcService.getDeptId(sessionBean.getGuserid(),request,response);
 		if(list!=null){
