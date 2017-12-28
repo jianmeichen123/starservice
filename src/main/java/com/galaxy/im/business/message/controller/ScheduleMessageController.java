@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.galaxy.im.bean.common.SessionBean;
+import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.business.message.service.IScheduleMessageService;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
@@ -125,6 +126,23 @@ public class ScheduleMessageController {
 			}
 		} catch (Exception e) {
 			log.error(ScheduleMessageController.class.getName() + "：perMessageToClear",e);
+		}
+		return resultBean;
+	}
+	
+	/**
+	 * 创建消息
+     */
+	@ResponseBody
+	@RequestMapping("/saveSchedule")
+	public Object saveSchedule(HttpServletRequest request,@RequestBody SopTask sopTask){
+		
+		ResultBean<Object> resultBean = new ResultBean<>();
+		try {
+			service.operateMessageSopTaskInfo(sopTask);
+			resultBean.setStatus("OK");
+		} catch (Exception e) {
+			log.error(ScheduleMessageController.class.getName() + "saveSchedule",e);
 		}
 		return resultBean;
 	}
