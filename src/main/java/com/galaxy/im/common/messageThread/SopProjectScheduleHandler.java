@@ -1,0 +1,93 @@
+package com.galaxy.im.common.messageThread;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import com.galaxy.im.bean.message.ScheduleMessageBean;
+import com.galaxy.im.bean.message.ScheduleMessageUserBean;
+import com.galaxy.im.bean.project.SopProjectBean;
+
+@Component
+public class SopProjectScheduleHandler implements SopTaskScheduleMessageHandler
+{
+	private static final long serialVersionUID = 1L;
+	final Logger logger = LoggerFactory.getLogger(VisitScheduleHandler.class);
+	
+	
+	private String sop_task_1  = "1.1.1";
+	private String sop_task_2  = "1.1.2";
+	private String sop_task_3  = "1.1.3";
+	
+	private Map<String,String> map = new HashMap<String,String>();
+	public SopProjectScheduleHandler(){
+		map.put(sop_task_1,  "项目删除");
+		map.put(sop_task_2,  "项目移交");
+		map.put(sop_task_3,  "项目指派 ");
+	}
+	
+
+	public boolean support(Object info) {
+		SopProjectBean message = (SopProjectBean) info;
+		return  message != null && (map.containsKey(message.getMessageType()) || message.getMessageType().startsWith("1.1"));
+	}
+	
+	public void handle(List<ScheduleMessageBean> list,Object info) {
+		
+		SopProjectBean model = (SopProjectBean) info;
+		
+		long sendTime = new Date().getTime();
+	
+		if(model.getMessageType().equals(sop_task_1)){
+			//项目删除
+			StringBuffer content = new StringBuffer();
+			ScheduleMessageBean message =getScheduleMessageInfo(model);
+			content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
+			content.append("删除了您的项目");
+			content.append("\"").append("<pname>").append(model.getProjectName()).append("</pname>\"");
+			content.append(",删除原因：\"").append("<msg>").append(model.getDeleteReason()).append("</msg>\"");
+			message.setSendTime(sendTime);
+			message.setContent(content.toString());
+			list.add(message);
+		}else if(model.getMessageType().equals(sop_task_2)){
+			//项目移交
+		}else if(model.getMessageType().equals(sop_task_3)){
+			//项目指派
+		}
+	}
+
+	
+	//初始化消息公用部分 model
+	private ScheduleMessageBean getScheduleMessageInfo(SopProjectBean model) {
+		ScheduleMessageBean message = new ScheduleMessageBean();
+		Long info_id = model.getId();
+		
+		message.setStatus((byte) 1);    // 0:可用 1:禁用  2:删除
+		//0:操作消息  1:系统消息
+		message.setCategory((byte) 1);  
+		//消息类型
+		message.setType(model.getMessageType());         
+		message.setRemarkId(info_id);
+		message.setCreatedUid(model.getUserId());
+		message.setCreatedUname(model.getUserName());
+		
+		List<ScheduleMessageUserBean> toUsers = new ArrayList<ScheduleMessageUserBean>();
+		
+		//接收人
+		ScheduleMessageUserBean toU = new ScheduleMessageUserBean();
+		toU.setUid(model.getCreateUid());
+		toU.setUname(model.getCreateUname());
+		toUsers.add(toU);
+		
+		//消息接收人
+		message.setToUsers(toUsers);
+		return message;
+	}
+
+}

@@ -46,8 +46,6 @@ public class SopProjectBean extends PagableEntity {
     private String nextFinancingSource;			//下一轮融资路径
     private String industryAnalysis;			//行业分析
     private String operationalData;				//运营数据
-    //private String faFlag;						//项目来源
-    //private String faName;						//FA全名
     private String greanChannel;				//项目绿色通道标识(多通道支持,分割) 1：接触访谈，2：内部评审，3：CEO评审，4：立项会，5：投资意向书，6：尽职调查，7：投资决策会，8：投资协议，9：股权交割
     private String remark;						//备注
     private Long projectTime; 					//项目创建时间（数据库保存时间）
@@ -93,6 +91,8 @@ public class SopProjectBean extends PagableEntity {
     
     private Integer isDelete;			//是否删除标识
     private String deleteReason;		//删除原因
+    private Long userId;				//用户id
+    private String userName;     		//用户名
     
 	public Long getIdeaId() {
 		return ideaId;
@@ -528,6 +528,18 @@ public class SopProjectBean extends PagableEntity {
 	}
 	public void setDeleteReason(String deleteReason) {
 		this.deleteReason = deleteReason;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 	
 }

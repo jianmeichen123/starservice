@@ -119,7 +119,10 @@ public enum OperationLogType {
 	
 	//投后运营会议纪要
 	pos_meeting_add("/posmeeting/addPosMeetingRecord/"+UrlNumber.one, OperType.ADD.getOperationType(), "投后运营会议记录",SopStage.EQUITY_DELIVERY_END.getStageName()), 
-	pos_meeting_update("/posmeeting/addPosMeetingRecord/"+UrlNumber.two, OperType.UPDATE.getOperationType(), "投后运营会议记录",SopStage.EQUITY_DELIVERY_END.getStageName()) 
+	pos_meeting_update("/posmeeting/addPosMeetingRecord/"+UrlNumber.two, OperType.UPDATE.getOperationType(), "投后运营会议记录",SopStage.EQUITY_DELIVERY_END.getStageName()),
+	
+	//项目删除
+	project_del("/project/delProject", OperType.DELETE.getOperationType(),"项目删除",null),
    	;
 	
 	

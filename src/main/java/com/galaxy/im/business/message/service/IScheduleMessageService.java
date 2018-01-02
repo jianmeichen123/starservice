@@ -27,8 +27,10 @@ public interface IScheduleMessageService extends IBaseService<ScheduleMessageBea
 	void operateMessageBySaveInfo(Object scheduleInfo);
 	void operateMessageByDeleteInfo(Object scheduleInfo, String messageType);
 	void operateMessageByUpdateInfo(Object scheduleInfo, String messageType);
-	//代办任务消息同步
-	void operateMessageSopTaskInfo(Object sopTask);
+	
+	//代办，项目消息推送
+	void operateMessageSopTaskInfo(Object model);
+	//获取发送消息
 	List<ScheduleMessageBean> queryTodayMessToSend();
 
 }

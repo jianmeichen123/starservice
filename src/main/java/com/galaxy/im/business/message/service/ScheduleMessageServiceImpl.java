@@ -494,7 +494,7 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 	
 	
 	/**
-	 * 代办任务消息推送
+	 * 代办任务，项目消息推送
 	 * 生成对应消息
 	 * ScheduleMessage    ScheduleMessageUser
      */
@@ -542,7 +542,5 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 			}
 		});
 	}
-
-	
 
 }

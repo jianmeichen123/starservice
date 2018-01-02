@@ -34,7 +34,6 @@ public class ScheduleMessageGenerator implements InitializingBean,ApplicationCon
 		 if(map != null)
 		 {
 			 handlers = new ArrayList<ScheduleMessageHandler>(map.values());
-			 //OrderComparator.sort(handlers);
 		 }
 		 Map<String, SopTaskScheduleMessageHandler> map1 = BeanFactoryUtils.beansOfTypeIncludingAncestors(context, SopTaskScheduleMessageHandler.class, true, false);
 		 if(map != null)
@@ -42,7 +41,7 @@ public class ScheduleMessageGenerator implements InitializingBean,ApplicationCon
 			 handler = new ArrayList<SopTaskScheduleMessageHandler>(map1.values());
 		 }
 	}
-
+	//一条信息
 	public ScheduleMessageBean process(Object info)
 	{
 		if(handlers != null) {
@@ -57,7 +56,7 @@ public class ScheduleMessageGenerator implements InitializingBean,ApplicationCon
 		}
 		return null;
 	}
-	
+	//多条信息
 	public List<ScheduleMessageBean> processTask(Object info)
 	{
 		if(handler != null) {

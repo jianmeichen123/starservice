@@ -135,7 +135,7 @@ public class ControllerUtils {
 		params.put(PlatformConst.REQUEST_SCOPE_PROJECT_NAME, priject.getProjectName());
 		params.put(PlatformConst.REQUEST_SCOPE_USER, user);
 		params.put(PlatformConst.REQUEST_SCOPE_PROJECT_ID, priject.getId());
-		params.put(PlatformConst.REQUEST_SCOPE_PROJECT_PROGRESS, priject.getProjectProgress());
+		params.put(PlatformConst.REQUEST_SCOPE_PROJECT_PROGRESS, priject.getProjectProgressName());
 		params.put(PlatformConst.REQUEST_SCOPE_MESSAGE_TYPE, messageType);
 		if(number != null){
 			params.put(PlatformConst.REQUEST_SCOPE_URL_NUMBER, number.name());

@@ -33,6 +33,8 @@ import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.business.common.config.service.ConfigService;
 import com.galaxy.im.business.common.dict.service.IDictService;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
+import com.galaxy.im.business.message.service.IScheduleMessageService;
+import com.galaxy.im.business.operationLog.controller.ControllerUtils;
 import com.galaxy.im.business.project.service.IFinanceHistoryService;
 import com.galaxy.im.business.project.service.IProjectService;
 import com.galaxy.im.business.rili.service.IScheduleService;
@@ -41,6 +43,7 @@ import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
+import com.galaxy.im.common.cache.redis.RedisCacheImpl;
 import com.galaxy.im.common.db.Page;
 import com.galaxy.im.common.db.PageRequest;
 import com.galaxy.im.common.enums.EnumUtil;
@@ -65,6 +68,9 @@ public class ProjectController {
 	
 	@Autowired
 	IScheduleService schService;
+	
+	@Autowired
+	IScheduleMessageService messageService;
 	
 	
 	/**
@@ -824,6 +830,15 @@ public class ProjectController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		resultBean.setFlag(0);
 		try{
+			//获取登录用户信息
+			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
+			if (sessionBean==null) {
+				resultBean.setMessage("获取用户信息失败");
+			}
+			@SuppressWarnings("unchecked")
+			RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
+			Map<String, Object> user = BeanUtils.toMap(cache.get(sessionBean.getSessionid()));
+			
 			//删除项目
 			bean.setIsDelete(0);
 			int result = service.updateProject(bean);
@@ -831,6 +846,18 @@ public class ProjectController {
 				resultBean.setStatus("OK");
 				resultBean.setMessage("删除项目成功");
 			}
+			//发消息
+			Map<String,Object> paramMap = new HashMap<String,Object>();
+			paramMap.put("projectId",bean.getId());
+			SopProjectBean sopBean = fcService.getSopProjectInfo(paramMap);
+			sopBean.setDeleteReason(bean.getDeleteReason());
+			sopBean.setMessageType("1.1.1");
+			sopBean.setUserId(sessionBean.getGuserid());
+			sopBean.setUserName(CUtils.get().object2String(user.get("realName")));
+			messageService.operateMessageSopTaskInfo(sopBean);
+			
+			//记录操作日志
+			ControllerUtils.setRequestParamsForMessageTip(request, null, sopBean,"",null);
 		}catch(Exception e){
 			log.error(ProjectController.class.getName() + "delProject",e);
 		}
