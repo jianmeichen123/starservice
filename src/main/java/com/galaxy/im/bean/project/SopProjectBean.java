@@ -3,6 +3,7 @@ package com.galaxy.im.bean.project;
 
 
 import java.util.List;
+import java.util.Map;
 
 import com.galaxy.im.common.NumberUtils;
 import com.galaxy.im.common.db.PagableEntity;
@@ -93,6 +94,9 @@ public class SopProjectBean extends PagableEntity {
     private String deleteReason;		//删除原因
     private Long userId;				//用户id
     private String userName;     		//用户名
+    private String userDeptName;		//用户事业线
+    
+    private List<Map<String, Object>> projects;	//项目名称，项目id
     
 	public Long getIdeaId() {
 		return ideaId;
@@ -540,6 +544,18 @@ public class SopProjectBean extends PagableEntity {
 	}
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+	public List<Map<String, Object>> getProjects() {
+		return projects;
+	}
+	public void setProjects(List<Map<String, Object>> projects) {
+		this.projects = projects;
+	}
+	public String getUserDeptName() {
+		return userDeptName;
+	}
+	public void setUserDeptName(String userDeptName) {
+		this.userDeptName = userDeptName;
 	}
 	
 }

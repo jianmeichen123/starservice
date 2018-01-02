@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.galaxy.im.bean.message.ScheduleMessageBean;
 import com.galaxy.im.bean.message.ScheduleMessageUserBean;
 import com.galaxy.im.bean.project.SopProjectBean;
+import com.galaxy.im.common.CUtils;
 
 @Component
 public class SopProjectScheduleHandler implements SopTaskScheduleMessageHandler
@@ -57,8 +58,33 @@ public class SopProjectScheduleHandler implements SopTaskScheduleMessageHandler
 			list.add(message);
 		}else if(model.getMessageType().equals(sop_task_2)){
 			//项目移交
+			for(Map<String, Object> map:model.getProjects()){
+				//该任务的接收人
+				StringBuffer content = new StringBuffer();
+				ScheduleMessageBean message1 =getScheduleMessageInfo(model);
+				content.append("\"<uname>").append(model.getUserName()).append("</uname>\"(");
+				content.append("\"<dname>").append(model.getUserDeptName()).append("</dname>\")");
+				content.append("将项目\"");
+				content.append("<pname>").append(CUtils.get().object2String(map.get("projectName"))).append("</pname>\"");
+				content.append("移交给你");
+				message1.setSendTime(sendTime);
+				message1.setContent(content.toString());
+				list.add(message1);
+			}
 		}else if(model.getMessageType().equals(sop_task_3)){
 			//项目指派
+			for(Map<String, Object> map:model.getProjects()){
+				//该任务的接收人
+				StringBuffer content = new StringBuffer();
+				ScheduleMessageBean message1 =getScheduleMessageInfo(model);
+				content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
+				content.append("将项目\"");
+				content.append("<pname>").append(CUtils.get().object2String(map.get("projectName"))).append("</pname>\"");
+				content.append("指派给你");
+				message1.setSendTime(sendTime);
+				message1.setContent(content.toString());
+				list.add(message1);
+			}
 		}
 	}
 

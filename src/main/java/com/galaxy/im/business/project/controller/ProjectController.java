@@ -838,6 +838,7 @@ public class ProjectController {
 			@SuppressWarnings("unchecked")
 			RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
 			Map<String, Object> user = BeanUtils.toMap(cache.get(sessionBean.getSessionid()));
+			//同时删除
 			
 			//删除项目
 			bean.setIsDelete(0);
@@ -851,9 +852,11 @@ public class ProjectController {
 			paramMap.put("projectId",bean.getId());
 			SopProjectBean sopBean = fcService.getSopProjectInfo(paramMap);
 			sopBean.setDeleteReason(bean.getDeleteReason());
+			sopBean.setProjects(bean.getProjects());
 			sopBean.setMessageType("1.1.1");
 			sopBean.setUserId(sessionBean.getGuserid());
 			sopBean.setUserName(CUtils.get().object2String(user.get("realName")));
+			sopBean.setUserDeptName(CUtils.get().object2String(user.get("departmentName")));
 			messageService.operateMessageSopTaskInfo(sopBean);
 			
 			//记录操作日志
