@@ -825,6 +825,7 @@ public class ProjectController {
 		resultBean.setFlag(0);
 		try{
 			//删除项目
+			bean.setIsDelete(0);
 			int result = service.updateProject(bean);
 			if(result>0){
 				resultBean.setStatus("OK");

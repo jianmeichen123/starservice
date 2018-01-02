@@ -260,7 +260,7 @@
 	      currency_unit, project_company, formation_date, project_company_code, company_legal, create_uid, 
 	      create_uname, create_uposition, project_progress, project_status, updated_time, created_time, 
 	      project_describe, project_describe_financing, project_business_model, company_location,
-	      user_portrait, prospect_analysis,idea_id,project_time,progress_history)
+	      user_portrait, prospect_analysis,idea_id,project_time,progress_history,is_delete,delete_reason)
 	    values 
 	    ( #{id}, #{projectName}, #{projectCode},
 	      #{projectType}, #{stockTransfer}, #{projectCareerline}, #{projectDepartId}, #{industryOwn},
@@ -268,7 +268,7 @@
 	      #{formationDate}, #{projectCompanyCode}, #{companyLegal}, #{createUid}, #{createUname}, 
 	      #{createUposition}, #{projectProgress}, #{projectStatus}, #{updatedTime}, #{createdTime}, 
 	      #{projectDescribe}, #{projectDescribeFinancing}, #{projectBusinessModel}, #{companyLocation},
-	      #{userPortrait}, #{prospectAnalysis},#{ideaId},#{projectTime},#{progressHistory})
+	      #{userPortrait}, #{prospectAnalysis},#{ideaId},#{projectTime},#{progressHistory},#{isDelete},#{deleteReason})
     </insert>
     
     <!-- 更新项目下的所有投资方的投资形式 -->
