@@ -324,6 +324,7 @@ public class ProjectController {
 						bean.setProjectStatus(StaticConst.PROJECT_STATUS_0);
 						bean.setUpdatedTime(new Date().getTime());
 						bean.setProjectTime(new Date().getTime());
+						bean.setIsDelete(1);
 						bean.setCreatedTime(DateUtil.convertStringToDate(bean.getCreateDate().trim(), "yyyy-MM-dd").getTime());
 						long id = service.saveProject(bean);
 						//新建项目存入全息报告中的信息
@@ -807,6 +808,30 @@ public class ProjectController {
 			
 		}catch(Exception e){
 			log.error(ProjectController.class.getName() + "showProjectCount",e);
+		}
+		return resultBean;
+	}
+	
+	
+	/**
+	 * 删除项目
+	 * @param paramString
+	 * @return
+	 */
+	@RequestMapping("delProject")
+	@ResponseBody
+	public Object delProject(HttpServletRequest request,@RequestBody SopProjectBean bean){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		resultBean.setFlag(0);
+		try{
+			//删除项目
+			int result = service.updateProject(bean);
+			if(result>0){
+				resultBean.setStatus("OK");
+				resultBean.setMessage("删除项目成功");
+			}
+		}catch(Exception e){
+			log.error(ProjectController.class.getName() + "delProject",e);
 		}
 		return resultBean;
 	}

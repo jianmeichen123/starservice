@@ -312,7 +312,9 @@
 		      <if test="industryAnalysis != null" >  industry_analysis = #{industryAnalysis}, </if>
 		      <if test="operationalData != null" >  operational_data = #{operationalData}, </if>
 		      <if test="financeMode != null" >  finance_mode = #{financeMode} ,</if>
-		      <if test="projectTime != null" > project_time = #{projectTime} </if>
+		      <if test="projectTime != null" > project_time = #{projectTime}, </if>
+		      <if test="isDelete != null" > is_delete = #{isDelete}, </if>
+		      <if test="deleteReason != null" > delete_reason = #{deleteReason} </if>
 		</set>
 		where id = #{id}
 	</update>

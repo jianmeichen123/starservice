@@ -329,16 +329,6 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 	}
 
 	@Override
-	public int updateProjects(Map<String, Object> hashmap) {
-		try{
-			return dao.updateProjects(hashmap);
-		}catch(Exception e){
-			log.error(ProjectServiceImpl.class.getName() + "updateProjects",e);
-			throw new ServiceException(e);
-		}
-	}
-
-	@Override
 	public InformationResult findResultInfoById(Map<String, Object> hashmap) {
 		try{
 			return dao.findResultInfoById(hashmap);
@@ -397,6 +387,5 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 			throw new ServiceException(e);
 		}
 	}
-	
 	
 }

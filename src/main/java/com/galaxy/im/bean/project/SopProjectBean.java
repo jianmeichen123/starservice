@@ -91,6 +91,9 @@ public class SopProjectBean extends PagableEntity {
     private List<String> projectSourceList;			    //项目来源
     private List<String> createUidList;					//投资经理
     
+    private Integer isDelete;			//是否删除标识
+    private String deleteReason;		//删除原因
+    
 	public Long getIdeaId() {
 		return ideaId;
 	}
@@ -513,6 +516,18 @@ public class SopProjectBean extends PagableEntity {
 	}
 	public void setCreateUidList(List<String> createUidList) {
 		this.createUidList = createUidList;
+	}
+	public Integer getIsDelete() {
+		return isDelete;
+	}
+	public void setIsDelete(Integer isDelete) {
+		this.isDelete = isDelete;
+	}
+	public String getDeleteReason() {
+		return deleteReason;
+	}
+	public void setDeleteReason(String deleteReason) {
+		this.deleteReason = deleteReason;
 	}
 	
 }

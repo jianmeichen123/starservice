@@ -28,7 +28,6 @@ public interface IProjectDao extends IBaseDao<ProjectBean,Long>{
 	SopProjectBean getProjectInfoById(Long id);
 	int projectIsInterview(Long id);
 	Map<String, Object> selectBaseProjectInfo(Map<String, Object> paramMap);
-	int updateProjects(Map<String, Object> hashmap);
 	InformationResult findResultInfoById(Map<String, Object> hashmap);
 	//添加信息到全息报告
 	int addInformationResult(List<InformationResult> list);

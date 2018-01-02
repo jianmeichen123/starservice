@@ -165,16 +165,6 @@ public class ProjectDaoImpl extends BaseDaoImpl<ProjectBean,Long> implements IPr
 	}
 
 	@Override
-	public int updateProjects(Map<String, Object> hashmap) {
-		try{
-			return sqlSessionTemplate.update(getSqlName("updateProjects"),hashmap);
-		}catch(Exception e){
-			log.error(ProjectDaoImpl.class.getName() + "updateProjects",e);
-			throw new DaoException(e);
-		}
-	}
-
-	@Override
 	public InformationResult findResultInfoById(Map<String, Object> hashmap) {
 		try{
 			return sqlSessionTemplate.selectOne(getSqlName("findResultInfoById"),hashmap);
