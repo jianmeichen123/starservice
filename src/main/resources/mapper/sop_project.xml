@@ -401,5 +401,38 @@
 		DELETE FROM information_result 
 		WHERE project_id=#{projectId} and title_id=#{titleId};
 	</delete>
+	
+	<!-- 项目移交、指派的记录信息 -->
+	<insert id="saveProjectTransfer" useGeneratedKeys="true" keyProperty="id"  keyColumn="id" parameterType="com.galaxy.im.bean.project.ProjectTransfer" >
+	     insert into sop_transfer_record (
+	      project_id,
+	      before_uid,
+	      before_department_id,
+	      after_uid,
+	      after_department_id,
+	      transfer_reason, 
+	      record_status,
+	      undo_reason,
+	      refuse_reason,
+	      updated_time,
+	      created_time
+	      )
+	    values(
+	      #{projectId},
+	      #{beforeUid},
+	      #{beforeDepartmentId},
+	      #{afterUid},
+          #{afterDepartmentId}, 
+          #{transferReason}, 
+          #{recordStatus},
+          #{undoReason}, 
+	      #{refuseReason}, 
+	      #{updatedTime},
+	      #{createdTime}
+	      )
+	    <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+    </insert>
 
 </mapper>

@@ -14,6 +14,7 @@ import com.galaxy.im.bean.project.GeneralProjecttVO;
 import com.galaxy.im.bean.project.InformationResult;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.ProjectBo;
+import com.galaxy.im.bean.project.ProjectTransfer;
 import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.common.dict.dao.IDictDao;
@@ -384,6 +385,19 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 			return dictDao.getFinanceStatusList(m);
 		}catch(Exception e){
 			log.error(ProjectServiceImpl.class.getName() + "getMatchingInfo",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	/**
+	 * 保存移交，指派的记录信息
+	 */
+	@Override
+	public int saveProjectTransfer(ProjectTransfer bean) {
+		try{
+			return dao.saveProjectTransfer(bean);
+		}catch(Exception e){
+			log.error(ProjectServiceImpl.class.getName() + "saveProjectTransfer",e);
 			throw new ServiceException(e);
 		}
 	}

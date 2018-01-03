@@ -29,6 +29,7 @@ import com.galaxy.im.bean.project.InformationResult;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.ProjectBeanVo;
 import com.galaxy.im.bean.project.ProjectBo;
+import com.galaxy.im.bean.project.ProjectTransfer;
 import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.business.common.config.service.ConfigService;
 import com.galaxy.im.business.common.dict.service.IDictService;
@@ -863,6 +864,68 @@ public class ProjectController {
 			ControllerUtils.setRequestParamsForMessageTip(request, null, sopBean,"",null);
 		}catch(Exception e){
 			log.error(ProjectController.class.getName() + "delProject",e);
+		}
+		return resultBean;
+	}
+	
+	/**
+	 * 移交，指派
+	 * @param request
+	 * @param bean
+	 * @return
+	 */
+	@RequestMapping("projectTransfer")
+	@ResponseBody
+	public Object projectTransfer(HttpServletRequest request,@RequestBody ProjectTransfer bean){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		try{
+			//获取登录用户信息
+			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
+			if (sessionBean==null) {
+				resultBean.setMessage("获取用户信息失败");
+			}
+			@SuppressWarnings("unchecked")
+			RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
+			Map<String, Object> user = BeanUtils.toMap(cache.get(sessionBean.getSessionid()));
+			
+			List<Map<String, Object>> projects = bean.getProjects();
+			if(projects!=null){
+				if(bean.getFlag()==1){
+					//移交
+					for(Map<String, Object> map : projects){
+						SopProjectBean sopBean = fcService.getSopProjectInfo(map);
+						if (sessionBean.getGuserid() == CUtils.get().object2Long(bean.getAfterUid()))
+						{
+							resultBean.setMessage("不能移交给本人");
+							return resultBean;
+						}
+						bean.setProjectId(CUtils.get().object2Long(map.get("projectId")));
+						bean.setBeforeUid(sopBean.getCreateUid());
+						bean.setBeforeDepartmentId(sopBean.getProjectDepartId());
+						bean.setRecordStatus(2);
+						bean.setCreatedTime(new Date().getTime());
+						int result = service.saveProjectTransfer(bean);
+					}
+				}else if(bean.getFlag()==2){
+					//指派
+					for(Map<String, Object> map : projects){
+						SopProjectBean sopBean = fcService.getSopProjectInfo(map);
+						if(sopBean.getCreateUid() == CUtils.get().object2Long(bean.getAfterUid())){
+							resultBean.setMessage("不能指派给项目负责人");
+							return resultBean;
+						}
+						bean.setProjectId(CUtils.get().object2Long(map.get("projectId")));
+						bean.setBeforeUid(sopBean.getCreateUid());
+						bean.setBeforeDepartmentId(sopBean.getProjectDepartId());
+						bean.setRecordStatus(2);
+						bean.setCreatedTime(new Date().getTime());
+						int result = service.saveProjectTransfer(bean);
+						
+					}
+				}
+			}
+		}catch(Exception e){
+			log.error(ProjectController.class.getName() + "projectTransfer",e);
 		}
 		return resultBean;
 	}

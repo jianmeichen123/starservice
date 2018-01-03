@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.galaxy.im.bean.project.InformationResult;
 import com.galaxy.im.bean.project.ProjectBean;
+import com.galaxy.im.bean.project.ProjectTransfer;
 import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.common.db.IBaseDao;
 
@@ -40,4 +41,6 @@ public interface IProjectDao extends IBaseDao<ProjectBean,Long>{
 	Map<String, Object> selectProjectSoureInfo(Map<String, Object> paramMap);
 	//项目承揽人
 	List<Map<String, Object>> selectProjectUserInfo(Map<String, Object> paramMap);
+	//保存移交，指派记录信息
+	int saveProjectTransfer(ProjectTransfer bean);
 }

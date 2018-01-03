@@ -7,6 +7,7 @@ import com.galaxy.im.bean.project.GeneralProjecttVO;
 import com.galaxy.im.bean.project.InformationResult;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.ProjectBo;
+import com.galaxy.im.bean.project.ProjectTransfer;
 import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.common.db.PageRequest;
 import com.galaxy.im.common.db.service.IBaseService;
@@ -57,5 +58,7 @@ public interface IProjectService extends IBaseService<ProjectBean>{
 	String findInputTitleId(Map<String, Object> hashmap);
 	//登陆用户匹配承揽人
 	List<Map<String, Object>> getMatchingInfo(Map<String, Object> m);
+	//保存，移交、指派的记录信息
+	int saveProjectTransfer(ProjectTransfer bean);
 	
 }

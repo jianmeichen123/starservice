@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.galaxy.im.bean.project.InformationResult;
 import com.galaxy.im.bean.project.ProjectBean;
+import com.galaxy.im.bean.project.ProjectTransfer;
 import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.common.BeanUtils;
 import com.galaxy.im.common.db.BaseDaoImpl;
@@ -230,6 +231,19 @@ public class ProjectDaoImpl extends BaseDaoImpl<ProjectBean,Long> implements IPr
 			return sqlSessionTemplate.selectList(getSqlName("selectProjectUserInfo"),paramMap);
 		}catch(Exception e){
 			log.error(ProjectDaoImpl.class.getName() + "selectProjectUserInfo",e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 保存移交，指派的记录信息
+	 */
+	@Override
+	public int saveProjectTransfer(ProjectTransfer bean) {
+		try{
+			return sqlSessionTemplate.insert(getSqlName("saveProjectTransfer"),bean);
+		}catch(Exception e){
+			log.error(ProjectDaoImpl.class.getName() + "saveProjectTransfer",e);
 			throw new DaoException(e);
 		}
 	}
