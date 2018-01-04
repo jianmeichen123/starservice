@@ -48,6 +48,7 @@ import com.galaxy.im.common.cache.redis.RedisCacheImpl;
 import com.galaxy.im.common.db.Page;
 import com.galaxy.im.common.db.PageRequest;
 import com.galaxy.im.common.enums.EnumUtil;
+import com.galaxy.im.common.webconfig.interceptor.operationLog.UrlNumber;
 
 @Controller
 @RequestMapping("/project")
@@ -853,7 +854,6 @@ public class ProjectController {
 			paramMap.put("projectId",bean.getId());
 			SopProjectBean sopBean = fcService.getSopProjectInfo(paramMap);
 			sopBean.setDeleteReason(bean.getDeleteReason());
-			sopBean.setProjects(bean.getProjects());
 			sopBean.setMessageType("1.1.1");
 			sopBean.setUserId(sessionBean.getGuserid());
 			sopBean.setUserName(CUtils.get().object2String(user.get("realName")));
@@ -904,8 +904,11 @@ public class ProjectController {
 						bean.setBeforeDepartmentId(sopBean.getProjectDepartId());
 						bean.setRecordStatus(2);
 						bean.setCreatedTime(new Date().getTime());
+						@SuppressWarnings("unused")
 						int result = service.saveProjectTransfer(bean);
+						service.receiveProjectTransfer(bean);
 					}
+					operateMethod(bean,1,user,sessionBean,request);
 				}else if(bean.getFlag()==2){
 					//指派
 					for(Map<String, Object> map : projects){
@@ -919,15 +922,56 @@ public class ProjectController {
 						bean.setBeforeDepartmentId(sopBean.getProjectDepartId());
 						bean.setRecordStatus(2);
 						bean.setCreatedTime(new Date().getTime());
-						int result = service.saveProjectTransfer(bean);
-						
+						//int result = service.saveProjectTransfer(bean);
+						service.receiveProjectTransfer(bean);
 					}
+					operateMethod(bean,2,user,sessionBean,request);
 				}
+				resultBean.setStatus("OK");
 			}
 		}catch(Exception e){
 			log.error(ProjectController.class.getName() + "projectTransfer",e);
 		}
 		return resultBean;
+	}
+
+	//移交，指派记录操作日志，推送消息
+	private void operateMethod(ProjectTransfer bean,int flag, Map<String, Object> user, SessionBean sessionBean, HttpServletRequest request) {
+		
+		//发消息
+		SopProjectBean sop = new SopProjectBean();
+		UrlNumber uNum = null;
+		if(flag==1){
+			sop.setMessageType("1.1.2");
+			uNum = UrlNumber.one;
+		}else if(flag==2){
+			sop.setMessageType("1.1.3");
+			uNum = UrlNumber.two;
+		}
+		sop.setCreateUid(bean.getAfterUid());
+		sop.setCreateUname(bean.getAfrerUName());
+		sop.setProjects(bean.getProjects());
+		sop.setUserId(sessionBean.getGuserid());
+		sop.setUserName(CUtils.get().object2String(user.get("realName")));
+		sop.setUserDeptName(CUtils.get().object2String(user.get("departmentName")));
+		messageService.operateMessageSopTaskInfo(sop);
+		
+		
+		//记录操作日志，项目名称，项目id，项目阶段
+		List<Map<String, Object>> mapList= new ArrayList<Map<String, Object>>();
+		
+		for(Map<String, Object> m:bean.getProjects()){
+			SopProjectBean sopBean = fcService.getSopProjectInfo(m);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("projectId", sopBean.getId());
+			map.put("projectName", sopBean.getProjectName());
+			map.put("projectProgressName", sopBean.getProjectProgressName());
+			map.put("recordId", sopBean.getId());
+			map.put("nums", uNum);
+			map.put("reason", bean.getTransferReason());
+			mapList.add(map);
+		}
+		ControllerUtils.setRequestProjectBatchForMessageTip(request,mapList);
 	}
 	
 

@@ -10,17 +10,24 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.galaxy.im.bean.meeting.MeetingRecordBean;
 import com.galaxy.im.bean.project.GeneralProjecttVO;
+import com.galaxy.im.bean.project.InformationListdata;
 import com.galaxy.im.bean.project.InformationResult;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.ProjectBo;
 import com.galaxy.im.bean.project.ProjectTransfer;
 import com.galaxy.im.bean.project.SopProjectBean;
+import com.galaxy.im.bean.report.InformationFile;
+import com.galaxy.im.bean.talk.ProjectTalkBean;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.common.dict.dao.IDictDao;
 import com.galaxy.im.business.flow.common.dao.IFlowCommonDao;
+import com.galaxy.im.business.meeting.dao.IMeetingRecordDao;
 import com.galaxy.im.business.project.dao.IProjectDao;
 import com.galaxy.im.business.project.dao.ISopProjectDao;
+import com.galaxy.im.business.sopfile.dao.ISopFileDao;
+import com.galaxy.im.business.talk.dao.IProjectTalkDao;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.StaticConst;
 import com.galaxy.im.common.db.IBaseDao;
@@ -41,6 +48,12 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 	ISopProjectDao sopdao;
 	@Autowired
 	private IDictDao dictDao;
+	@Autowired
+	IMeetingRecordDao meetDao;
+	@Autowired
+	ISopFileDao fileDao;
+	@Autowired
+	IProjectTalkDao talkDao;
 
 	@Override
 	protected IBaseDao<ProjectBean, Long> getBaseDao() {
@@ -400,6 +413,57 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 			log.error(ProjectServiceImpl.class.getName() + "saveProjectTransfer",e);
 			throw new ServiceException(e);
 		}
+	}
+
+	/**
+	 * 项目移交，指派同时要修改的内容
+	 */
+	@Override
+	public void receiveProjectTransfer(ProjectTransfer bean) {
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("projectId",bean.getId());
+		//项目修改
+		Long projectId = bean.getProjectId();
+		SopProjectBean po = new SopProjectBean();
+		po.setId(projectId);
+		po.setCreateUid(bean.getAfterUid());
+		po.setCreateUname(bean.getAfrerUName());
+		po.setProjectDepartid(bean.getAfterDepartmentId());
+		dao.updateProject(po);
+		
+		//会议修改
+		MeetingRecordBean mr = new MeetingRecordBean();
+		mr.setProjectId(projectId);
+		mr.setCreateUid(bean.getAfterUid());
+		mr.setUpdatedTime(new Date().getTime());
+		meetDao.updateCreateUid(mr);
+		
+		//文件修改
+		SopFileBean file = new SopFileBean();
+		file.setProjectId(projectId);
+		file.setCareerLine(bean.getAfterDepartmentId());
+		fileDao.delPostMeetingFile(file);
+		
+		//访谈记录修改
+		ProjectTalkBean ir = new ProjectTalkBean();
+		ir.setProjectId(projectId);
+		ir.setCreatedId(bean.getAfterUid());
+		ir.setUpdatedTime(new Date().getTime());
+		talkDao.updateCreateUid(ir);
+		
+		//交割前事项修改
+		InformationListdata ild = new InformationListdata();
+		ild.setProjectId(projectId);
+		ild.setCreateId(bean.getAfterUid());
+		ild.setTitleId(1810l);
+		flowdao.updateCreateUid(ild);
+		
+		//交割前事项文件修改
+		InformationFile iF = new InformationFile();
+		iF.setProjectId(projectId);
+		iF.setCreateId(bean.getAfterUid());
+		iF.setTitleId(1810l);
+		flowdao.updateCreateUid(iF);
 	}
 	
 }

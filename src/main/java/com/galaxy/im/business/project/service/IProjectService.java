@@ -60,5 +60,7 @@ public interface IProjectService extends IBaseService<ProjectBean>{
 	List<Map<String, Object>> getMatchingInfo(Map<String, Object> m);
 	//保存，移交、指派的记录信息
 	int saveProjectTransfer(ProjectTransfer bean);
+	//项目移交，指派同时要修改的内容
+	void receiveProjectTransfer(ProjectTransfer bean);
 	
 }

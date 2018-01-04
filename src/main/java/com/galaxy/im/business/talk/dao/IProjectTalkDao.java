@@ -10,4 +10,6 @@ public interface IProjectTalkDao extends IBaseDao<ProjectTalkBean, Long>{
 
 	QPage getProjectTalkList(Map<String, Object> paramMap);
 
+	int updateCreateUid(ProjectTalkBean ir);
+
 }

@@ -40,13 +40,15 @@
 		update sop_file
 		<set>
 			<if test="fileValid != null" >file_valid = #{fileValid}, </if>
-		 	<if test="updatedTime != null" >updated_time = #{updatedTime} </if>
+		 	<if test="updatedTime != null" >updated_time = #{updatedTime}, </if>
+		 	<if test="careerLine != null" >career_line = #{careerLine} </if>
 		</set>
 		<where>
 			<trim prefixOverrides="and">
 				<if test="interviewRecordId != 0">and interview_record_id=#{interviewRecordId}</if>
 				<if test="meetingId != null"> and meeting_id =#{meetingId} </if>
 				<if test="fileKey != null" >and file_key = #{fileKey} </if>
+				<if test="projectId != null" >and project_id = #{projectId} </if>
 			</trim>
 		</where>
 	</update>

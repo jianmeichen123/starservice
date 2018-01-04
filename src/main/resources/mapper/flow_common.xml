@@ -495,4 +495,34 @@
 		GROUP BY f.file_worktype;
 	</select>
 	
+	<!-- 更新 -->
+	<update id="updateListDataCreateUid" parameterType="com.galaxy.im.bean.project.InformationListdata">
+		update information_listdata
+		<set>
+		    <if test="createId != null" > create_id = #{createId}, </if>
+		    <if test="updateId != null" > update_id = #{updateId} </if>
+		</set>
+		<where>
+			<trim prefixOverrides="and">
+				<if test="projectId != null" >and project_id = #{projectId} </if>
+				<if test="titleId != null" >and title_id = #{titleId} </if>
+			</trim>
+		</where>
+	</update>
+	
+	<!-- 更新 -->
+	<update id="updateFileCreateUid" parameterType="com.galaxy.im.bean.report.InformationFile">
+		update information_file
+		<set>
+		    <if test="createId != null" > create_id = #{createId,jdbcType=BIGINT}, </if>
+		    <if test="updateId != null" > update_id = #{updateId,jdbcType=BIGINT}, </if>
+		</set>
+		<where>
+			<trim prefixOverrides="and">
+				<if test="projectId != null" >and project_id = #{projectId,jdbcType=BIGINT} </if>
+				<if test="titleId != null" >and title_id = #{titleId,jdbcType=BIGINT} </if>
+			</trim>
+		</where>
+	</update>
+	
 </mapper>

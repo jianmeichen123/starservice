@@ -3,10 +3,12 @@ package com.galaxy.im.business.flow.common.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.galaxy.im.bean.project.InformationListdata;
 import com.galaxy.im.bean.project.InformationResult;
 import com.galaxy.im.bean.project.MeetingScheduling;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.SopProjectBean;
+import com.galaxy.im.bean.report.InformationFile;
 import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.common.db.IBaseDao;
@@ -46,5 +48,9 @@ public interface IFlowCommonDao extends IBaseDao<ProjectBean, Long>{
 	long updateInformationResult(InformationResult result);
 	//获取会议记录信息（投资，闪投===通过）
 	Map<String, Object> getMeetingRecordInfo(Map<String, Object> map);
+	//交割前事项修改
+	int updateCreateUid(InformationListdata ild);
+	//交割前事项文件修改
+	int updateCreateUid(InformationFile iF);
 	
 }

@@ -31,6 +31,8 @@ public class PlatformConst {
 	public static final String REQUEST_SCOPE_MESSAGE_BATCH = "galaxy_message_batch";
 	public static final String REQUEST_SCOPE_MESSAGE_ASSISRCOLUMN = "galaxy_message_assistColumn";
 	
+	public static final String PROJECT_BATCH = "project_batch";
+	
 	
 	// ios 消息推送
 	public static final String IOS_TITLE_TASK = "任务状态变更";

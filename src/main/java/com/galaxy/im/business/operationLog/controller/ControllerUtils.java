@@ -173,5 +173,11 @@ public class ControllerUtils {
 		params.put(PlatformConst.REQUEST_SCOPE_MESSAGE_BATCH, mapList);
 		request.setAttribute(PlatformConst.REQUEST_SCOPE_MESSAGE_BATCH, params);
 	}
+	//项目批量
+	public static void setRequestProjectBatchForMessageTip(HttpServletRequest request,List<Map<String, Object>> mapList){
+		Map<String,List<Map<String, Object>>> params = new HashMap<String,List<Map<String, Object>>>();
+		params.put(PlatformConst.PROJECT_BATCH, mapList);
+		request.setAttribute(PlatformConst.PROJECT_BATCH, params);
+	}
 	
 }

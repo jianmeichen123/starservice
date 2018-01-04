@@ -7,10 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.galaxy.im.bean.project.InformationListdata;
 import com.galaxy.im.bean.project.InformationResult;
 import com.galaxy.im.bean.project.MeetingScheduling;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.SopProjectBean;
+import com.galaxy.im.bean.report.InformationFile;
 import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.common.db.BaseDaoImpl;
@@ -277,6 +279,28 @@ public class FlowCommonDaoImpl extends BaseDaoImpl<ProjectBean, Long> implements
 		}catch(Exception e){
 			log.error(String.format("查询对象总数出错！语句：%s", sqlName), e);
 			throw new DaoException(e);
+		}
+	}
+	
+	//修改交割前事项
+	@Override
+	public int updateCreateUid(InformationListdata ild) {
+		try {
+			String sqlName = "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.updateListDataCreateUid";
+			return sqlSessionTemplate.update(sqlName, ild);
+		} catch (Exception e) {
+			throw new DaoException(String.format("根据ID更新对象出错！语句：%s", getSqlName("updateListDataCreateUid")), e);
+		}
+	}
+
+	//修改交割前事项文件
+	@Override
+	public int updateCreateUid(InformationFile iF) {
+		try {
+			String sqlName = "com.galaxy.im.business.flow.common.dao.IFlowCommonDao.updateFileCreateUid";
+			 return sqlSessionTemplate.update(sqlName, iF);
+		} catch (Exception e) {
+			throw new DaoException(String.format("根据ID更新对象出错！语句：%s", getSqlName("updateFileCreateUid")), e);
 		}
 	}
 	

@@ -48,7 +48,7 @@ public class SopProjectScheduleHandler implements SopTaskScheduleMessageHandler
 		if(model.getMessageType().equals(sop_task_1)){
 			//项目删除
 			StringBuffer content = new StringBuffer();
-			ScheduleMessageBean message =getScheduleMessageInfo(model);
+			ScheduleMessageBean message =getScheduleMessageInfo(model,null);
 			content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
 			content.append("删除了您的项目");
 			content.append("\"").append("<pname>").append(model.getProjectName()).append("</pname>\"");
@@ -61,7 +61,7 @@ public class SopProjectScheduleHandler implements SopTaskScheduleMessageHandler
 			for(Map<String, Object> map:model.getProjects()){
 				//该任务的接收人
 				StringBuffer content = new StringBuffer();
-				ScheduleMessageBean message1 =getScheduleMessageInfo(model);
+				ScheduleMessageBean message1 =getScheduleMessageInfo(model,map);
 				content.append("\"<uname>").append(model.getUserName()).append("</uname>\"(");
 				content.append("\"<dname>").append(model.getUserDeptName()).append("</dname>\")");
 				content.append("将项目\"");
@@ -76,7 +76,7 @@ public class SopProjectScheduleHandler implements SopTaskScheduleMessageHandler
 			for(Map<String, Object> map:model.getProjects()){
 				//该任务的接收人
 				StringBuffer content = new StringBuffer();
-				ScheduleMessageBean message1 =getScheduleMessageInfo(model);
+				ScheduleMessageBean message1 =getScheduleMessageInfo(model,map);
 				content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
 				content.append("将项目\"");
 				content.append("<pname>").append(CUtils.get().object2String(map.get("projectName"))).append("</pname>\"");
@@ -90,16 +90,21 @@ public class SopProjectScheduleHandler implements SopTaskScheduleMessageHandler
 
 	
 	//初始化消息公用部分 model
-	private ScheduleMessageBean getScheduleMessageInfo(SopProjectBean model) {
+	private ScheduleMessageBean getScheduleMessageInfo(SopProjectBean model, Map<String, Object> map) {
 		ScheduleMessageBean message = new ScheduleMessageBean();
-		Long info_id = model.getId();
+		if(map!=null){
+			message.setRemarkId(CUtils.get().object2Long(map.get("projectId")));
+		}else{
+			Long info_id = model.getId();
+			message.setRemarkId(info_id);
+		}
 		
 		message.setStatus((byte) 1);    // 0:可用 1:禁用  2:删除
 		//0:操作消息  1:系统消息
 		message.setCategory((byte) 1);  
 		//消息类型
 		message.setType(model.getMessageType());         
-		message.setRemarkId(info_id);
+		
 		message.setCreatedUid(model.getUserId());
 		message.setCreatedUname(model.getUserName());
 		

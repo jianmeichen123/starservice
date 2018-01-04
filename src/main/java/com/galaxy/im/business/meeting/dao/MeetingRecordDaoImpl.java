@@ -101,6 +101,17 @@ public class MeetingRecordDaoImpl extends BaseDaoImpl<MeetingRecordBean, Long> i
 			throw new DaoException(e);
 		}
 	}
+
+	//更新会议
+	@Override
+	public int updateCreateUid(MeetingRecordBean mr) {
+		try {
+			 return sqlSessionTemplate.update(getSqlName("updateCreateUid"), mr);
+		} catch (Exception e) {
+			log.error(String.format("根据ID更新对象出错！语句：%s", getSqlName("updateCreateUid")), e);
+			throw new DaoException(e);
+		}
+	}
 	
 
 }

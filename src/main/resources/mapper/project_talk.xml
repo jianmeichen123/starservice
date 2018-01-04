@@ -162,5 +162,15 @@
 		</set>
 		where id=#{id};
 	</update>
+	
+	<!-- 更新项目访谈-->
+	<update id="updateCreateUid" parameterType="com.galaxy.im.bean.talk.ProjectTalkBean">
+		update sop_interview_record
+		<set>
+	      <if test="createdId != null" > created_id = #{createdId}, </if>
+	      <if test="updatedTime != null" > update_time = #{updatedTime}</if>
+		</set>
+		where project_id=#{projectId};
+	</update>
 
 </mapper>

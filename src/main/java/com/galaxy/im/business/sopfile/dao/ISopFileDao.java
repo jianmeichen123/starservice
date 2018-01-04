@@ -25,4 +25,5 @@ public interface ISopFileDao extends IBaseDao<Test, Long>{
 
 	long getCountByFileStatus(Map<String, Object> paramMap);
 
+
 }

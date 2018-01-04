@@ -23,6 +23,7 @@ public class ProjectTransfer extends PagableEntity {
    	private String createDate;//创建时间
    	private String updateDate;//修改时间
    	
+   	private String afrerUName;					//项目接收人名称
    	private int flag;     						//1代表移交 2 代表指派
    	private List<Map<String, Object>> projects;	//项目名称，项目id
    	
@@ -150,6 +151,14 @@ public class ProjectTransfer extends PagableEntity {
 
 	public void setProjects(List<Map<String, Object>> projects) {
 		this.projects = projects;
+	}
+
+	public String getAfrerUName() {
+		return afrerUName;
+	}
+
+	public void setAfrerUName(String afrerUName) {
+		this.afrerUName = afrerUName;
 	}
    	
   

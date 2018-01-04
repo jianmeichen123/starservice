@@ -239,4 +239,14 @@
 		WHERE project_id=#{projectId} and meeting_type=#{meetingType} and meet_valid=0;
 	</select>
 	
+	<!-- 更新项目访谈-->
+	<update id="updateCreateUid" parameterType="com.galaxy.im.bean.meeting.MeetingRecordBean">
+		update sop_meeting_record
+		<set>
+	      <if test="createUid != null" > create_uid = #{createUid}, </if>
+	      <if test="updatedTime != null" > update_time = #{updatedTime}</if>
+		</set>
+		where project_id=#{projectId};
+	</update>
+	
 </mapper>

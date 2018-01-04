@@ -72,7 +72,7 @@ public class MessageHandlerInterceptor extends HandlerInterceptorAdapter {
 					});
 				}
 			}
-			//批量
+			//代办批量
 			final Map<String, Object> batchMap = (Map<String, Object>) request.getAttribute(PlatformConst.REQUEST_SCOPE_MESSAGE_BATCH);
 			if (null != batchMap && !batchMap.isEmpty()) {
 				String uniqueKey = getUniqueKeys(request, batchMap);
@@ -87,7 +87,22 @@ public class MessageHandlerInterceptor extends HandlerInterceptorAdapter {
 						}
 					});
 				}
-			
+			}
+			//项目批量
+			final Map<String, Object> projectBatchMap = (Map<String, Object>) request.getAttribute(PlatformConst.PROJECT_BATCH);
+			if (null != projectBatchMap && !projectBatchMap.isEmpty()) {
+				String uniqueKey = getUniqueKeys(request, projectBatchMap);
+				final OperationLogType operLogType = OperationLogType.getObject(uniqueKey);
+				if (operLogType != null) {
+					final RecordType recordType = RecordType.PROJECT;
+					//线程池执行
+					GalaxyThreadPool.getExecutorService().execute(new Runnable() {
+						@Override
+						public void run() {
+							batchOperationLog(batchOperationLog(operLogType, user, projectBatchMap, recordType));
+						}
+					});
+				}
 			}
 		}
 		super.afterCompletion(request, response, handler, ex);
@@ -126,64 +141,98 @@ public class MessageHandlerInterceptor extends HandlerInterceptorAdapter {
 			RecordType recordType) {
 		List<OperationLogs> list = new ArrayList<OperationLogs>();
 		
-		@SuppressWarnings("unchecked")
-		List<Map<String, Object>> mapList = (List<Map<String, Object>>) map.get(PlatformConst.REQUEST_SCOPE_MESSAGE_BATCH);
-		for(Map<String, Object> m: mapList){
-			OperationLogs entity = new OperationLogs();
-			String taskName =CUtils.get().object2String(m.get("taskName"));
-			if (taskName.contains("人事")) {
-				entity.setOperationContent("人事尽调");
-			}else if (taskName.contains("法务")) {
-				entity.setOperationContent("法务尽调");
-			}else if (taskName.contains("财务")) {
-				entity.setOperationContent("财务尽调");
-			}else if(taskName.contains("工商")){
-				entity.setOperationContent("工商转让");
-			}else if(taskName.contains("资金")){
-				entity.setOperationContent("拨付凭证");
+		if(recordType.equals("4")){
+			//代办任务批量记录操作日志
+			@SuppressWarnings("unchecked")
+			List<Map<String, Object>> mapList = (List<Map<String, Object>>) map.get(PlatformConst.REQUEST_SCOPE_MESSAGE_BATCH);
+			for(Map<String, Object> m: mapList){
+				OperationLogs entity = new OperationLogs();
+				String taskName =CUtils.get().object2String(m.get("taskName"));
+				if (taskName.contains("人事")) {
+					entity.setOperationContent("人事尽调");
+				}else if (taskName.contains("法务")) {
+					entity.setOperationContent("法务尽调");
+				}else if (taskName.contains("财务")) {
+					entity.setOperationContent("财务尽调");
+				}else if(taskName.contains("工商")){
+					entity.setOperationContent("工商转让");
+				}else if(taskName.contains("资金")){
+					entity.setOperationContent("拨付凭证");
+				}
+				entity.setOperationType(type.getType());
+				entity.setUid(user.getId());
+				entity.setUname(user.getRealName());
+				entity.setDepartName(user.getDepartmentName());
+				entity.setUserDepartid(user.getDepartmentId());
+				entity.setCreatedTime(new Date().getTime());
+				if(m.containsKey("projectName")){
+					entity.setProjectName(CUtils.get().object2String(m.get("projectName")));
+				}
+				if(m.containsKey("projectId")){
+					entity.setProjectId(CUtils.get().object2Long(m.get("projectId")));
+				}
+				if(m.containsKey("projectProgressName")){
+					entity.setSopstage(CUtils.get().object2String(m.get("projectProgressName")));
+				}
+				if(m.containsKey("reason")){
+					entity.setReason(CUtils.get().object2String(m.get("reason")));
+				}
+				if(m.containsKey("recordId")){
+					entity.setRecordId(CUtils.get().object2Long(m.get("recordId")));
+				}
+				entity.setRecordType(recordType.getType());
+				list.add(entity);
+				//认领生成项目操作日志
+				if(entity.getOperationType().equals("领取")){
+					OperationLogs e = new OperationLogs();
+					e.setOperationContent(entity.getOperationContent());
+					e.setOperationType(entity.getOperationType());
+					e.setUid(user.getId());
+					e.setUname(user.getRealName());
+					e.setDepartName(user.getDepartmentName());
+					e.setUserDepartid(user.getDepartmentId());
+					e.setCreatedTime(new Date().getTime());
+					e.setProjectName(CUtils.get().object2String(m.get("projectName")));
+					e.setProjectId(CUtils.get().object2Long(m.get("projectId")));
+					e.setSopstage(CUtils.get().object2String(m.get("projectProgressName")));
+					e.setReason(CUtils.get().object2String(m.get("reason")));
+					e.setRecordId(CUtils.get().object2Long(m.get("recordId")));
+					e.setRecordType(RecordType.PROJECT.getType());
+					list.add(e);
+				}
 			}
-			entity.setOperationType(type.getType());
-			entity.setUid(user.getId());
-			entity.setUname(user.getRealName());
-			entity.setDepartName(user.getDepartmentName());
-			entity.setUserDepartid(user.getDepartmentId());
-			entity.setCreatedTime(new Date().getTime());
-			if(m.containsKey("projectName")){
-				entity.setProjectName(CUtils.get().object2String(m.get("projectName")));
-			}
-			if(m.containsKey("projectId")){
-				entity.setProjectId(CUtils.get().object2Long(m.get("projectId")));
-			}
-			if(m.containsKey("projectProgressName")){
-				entity.setSopstage(CUtils.get().object2String(m.get("projectProgressName")));
-			}
-			if(m.containsKey("reason")){
-				entity.setReason(CUtils.get().object2String(m.get("reason")));
-			}
-			if(m.containsKey("recordId")){
-				entity.setRecordId(CUtils.get().object2Long(m.get("recordId")));
-			}
-			entity.setRecordType(recordType.getType());
-			list.add(entity);
-			//认领生成项目操作日志
-			if(entity.getOperationType().equals("领取")){
-				OperationLogs e = new OperationLogs();
-				e.setOperationContent(entity.getOperationContent());
-				e.setOperationType(entity.getOperationType());
-				e.setUid(user.getId());
-				e.setUname(user.getRealName());
-				e.setDepartName(user.getDepartmentName());
-				e.setUserDepartid(user.getDepartmentId());
-				e.setCreatedTime(new Date().getTime());
-				e.setProjectName(CUtils.get().object2String(m.get("projectName")));
-				e.setProjectId(CUtils.get().object2Long(m.get("projectId")));
-				e.setSopstage(CUtils.get().object2String(m.get("projectProgressName")));
-				e.setReason(CUtils.get().object2String(m.get("reason")));
-				e.setRecordId(CUtils.get().object2Long(m.get("recordId")));
-				e.setRecordType(RecordType.PROJECT.getType());
-				list.add(e);
+		}else{
+			//项目批量移交，指派记录操作日志
+			@SuppressWarnings("unchecked")
+			List<Map<String, Object>> mapList = (List<Map<String, Object>>) map.get(PlatformConst.PROJECT_BATCH);
+			for(Map<String, Object> m: mapList){
+				OperationLogs entity = new OperationLogs();
+				entity.setOperationType(type.getType());
+				entity.setUid(user.getId());
+				entity.setUname(user.getRealName());
+				entity.setDepartName(user.getDepartmentName());
+				entity.setUserDepartid(user.getDepartmentId());
+				entity.setCreatedTime(new Date().getTime());
+				if(m.containsKey("projectName")){
+					entity.setProjectName(CUtils.get().object2String(m.get("projectName")));
+				}
+				if(m.containsKey("projectId")){
+					entity.setProjectId(CUtils.get().object2Long(m.get("projectId")));
+				}
+				if(m.containsKey("projectProgressName")){
+					entity.setSopstage(CUtils.get().object2String(m.get("projectProgressName")));
+				}
+				if(m.containsKey("reason")){
+					entity.setReason(CUtils.get().object2String(m.get("reason")));
+				}
+				if(m.containsKey("recordId")){
+					entity.setRecordId(CUtils.get().object2Long(m.get("recordId")));
+				}
+				entity.setRecordType(recordType.getType());
+				list.add(entity);
 			}
 		}
+		
 		return list;
 	}
 

@@ -33,4 +33,14 @@ public class ProjectTalkDaoImpl extends BaseDaoImpl<ProjectTalkBean, Long> imple
 		}
 	}
 
+	@Override
+	public int updateCreateUid(ProjectTalkBean entity) {
+		try {
+			 return sqlSessionTemplate.update(getSqlName("updateCreateUid"), entity);
+		} catch (Exception e) {
+			log.error(String.format("根据ID更新对象出错！语句：%s", getSqlName("updateCreateUid")), e);
+			throw new DaoException(e);
+		}
+	}
+
 }

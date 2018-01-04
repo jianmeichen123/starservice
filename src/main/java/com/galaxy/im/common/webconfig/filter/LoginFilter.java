@@ -57,7 +57,7 @@ public class LoginFilter implements Filter{
 			}
 			filterChain.doFilter(requestWrapper, resp);
 		}else{
-			if(cache.hasKey(sessionId)){
+			if(sessionId!=null && cache.hasKey(sessionId)){
 				if(CUtils.get().stringIsNotEmpty(cache.get(sessionId))){
 					flag = true;
 				}
