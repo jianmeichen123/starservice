@@ -69,7 +69,7 @@ public class ContractsDaoImapl extends BaseDaoImpl<ContractsBean, Long> implemen
 	public List<ContractsBean> selectPersonList(ContractsBean bean) {
 		try{
 			Map<String, Object> map = BeanUtils.toMap(bean);
-			return sqlSessionTemplate.selectList(getSqlName("selectPersonByName"),map);
+			return sqlSessionTemplate.selectList(getSqlName("selectPersonByName"),getPageMap(map));
 		}catch(Exception e){
 			log.error(getSqlName("selectPersonList"),e);
 			throw new DaoException(e);
