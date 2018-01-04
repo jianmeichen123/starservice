@@ -123,8 +123,8 @@ public enum OperationLogType {
 	
 	//项目删除
 	project_del("/project/delProject", OperType.DELETE.getOperationType(),"项目删除",null),
-	project_apply("/project/projectTransfer"+UrlNumber.one, OperType.APPLY.getOperationType(),"项目移交",null),
-	project_assigned("/project/projectTransfer"+UrlNumber.two, OperType.ASSIGNED.getOperationType(),"项目指派",null),
+	project_apply("/project/projectTransfer/"+UrlNumber.one, OperType.APPLY.getOperationType(),"项目移交",null),
+	project_assigned("/project/projectTransfer/"+UrlNumber.two, OperType.ASSIGNED.getOperationType(),"项目指派",null),
    	;
 	
 	

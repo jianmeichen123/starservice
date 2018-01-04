@@ -112,9 +112,16 @@ public class MessageHandlerInterceptor extends HandlerInterceptorAdapter {
 	private String getUniqueKeys(HttpServletRequest request, Map<String, Object> map) {
 		String uniqueKey = request.getRequestURL().toString();
 		if (null != map && !map.isEmpty()) {
+			Map<String, Object> m;
 			@SuppressWarnings("unchecked")
 			List<Map<String, Object>> mapList = (List<Map<String, Object>>) map.get(PlatformConst.REQUEST_SCOPE_MESSAGE_BATCH);
-			Map<String, Object> m =mapList.get(0);
+			@SuppressWarnings("unchecked")
+			List<Map<String, Object>> mapList1 = (List<Map<String, Object>>) map.get(PlatformConst.PROJECT_BATCH);
+			if(mapList!=null && mapList.size()>0){
+				m =mapList.get(0);
+			}else{
+				m =mapList1.get(0);
+			}
 			
 			if (m.containsKey("nums")) {
 				uniqueKey = uniqueKey + "/" + CUtils.get().object2String(m.get("nums"));
@@ -207,6 +214,7 @@ public class MessageHandlerInterceptor extends HandlerInterceptorAdapter {
 			List<Map<String, Object>> mapList = (List<Map<String, Object>>) map.get(PlatformConst.PROJECT_BATCH);
 			for(Map<String, Object> m: mapList){
 				OperationLogs entity = new OperationLogs();
+				entity.setOperationContent(type.getContent());
 				entity.setOperationType(type.getType());
 				entity.setUid(user.getId());
 				entity.setUname(user.getRealName());
