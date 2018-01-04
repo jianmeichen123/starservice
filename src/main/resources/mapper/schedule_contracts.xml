@@ -56,7 +56,7 @@
 			order by ${property} ${direction}
 		</if>
 		<if test="pageNum != null and pageSize != null">
-			limit #{pageNum}, #{pageSize}
+			LIMIT #{offset},${limit};
 		</if>
 	</sql>
 	
