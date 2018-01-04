@@ -314,8 +314,8 @@
 				and 
 				((date_format(#{date},'%y-%m') &gt;= date_format(start_time,'%y-%m')
 				 AND date_format(end_time,'%y-%m') &gt;= date_format(#{date},'%y-%m' ) and is_allday=0)
-				 or(date_format(#{date},'%y-%m') &lt;= date_format(start_time,'%y-%m')
-				 AND date_format(start_time,'%y-%m') &gt;= date_format(#{date},'%y-%m' ) and is_allday=1 ))
+				 or(date_format(#{date},'%y-%m') = date_format(start_time,'%y-%m')
+				 AND date_format(start_time,'%y-%m') = date_format(#{date},'%y-%m' ) and is_allday=1 ))
 				</if>
 				<if test="queryForMounth == null">
 				<!-- AND (start_time &gt;= #{eqStartTime} and end_time &lt;= #{bqEndTime} AND end_time &gt;= start_time AND is_allday=0
