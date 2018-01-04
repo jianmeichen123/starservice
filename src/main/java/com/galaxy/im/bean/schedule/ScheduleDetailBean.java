@@ -34,6 +34,8 @@ public class ScheduleDetailBean extends BaseEntity{
 	private long interviewCount;			//历史访谈记录个数
 	
 	private int interviewFalg;				//访谈标识，1：已访谈，0：未访谈
+	private int isInterview;				//记录是否为缺失状态1：缺失，其他不缺失
+	private int callonFlag;					//0:未关联项目，1：关联项目未拜访，2：关联项目已拜访记录缺失，3：关联项目已拜访记录不缺失
 	private String interviewContent;		//已访谈，未访谈
 	
 	private String fileKey;					//档案阿里云存储Key
@@ -378,6 +380,22 @@ public class ScheduleDetailBean extends BaseEntity{
 
 	public void setMeetingCount(long meetingCount) {
 		this.meetingCount = meetingCount;
+	}
+
+	public int getIsInterview() {
+		return isInterview;
+	}
+
+	public void setIsInterview(int isInterview) {
+		this.isInterview = isInterview;
+	}
+
+	public int getCallonFlag() {
+		return callonFlag;
+	}
+
+	public void setCallonFlag(int callonFlag) {
+		this.callonFlag = callonFlag;
 	}
 
 }

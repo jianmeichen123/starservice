@@ -62,5 +62,7 @@ public interface IProjectService extends IBaseService<ProjectBean>{
 	int saveProjectTransfer(ProjectTransfer bean);
 	//项目移交，指派同时要修改的内容
 	void receiveProjectTransfer(ProjectTransfer bean);
+	//项目删除，同时修改的内容
+	void receiveProjectDel(SopProjectBean bean);
 	
 }

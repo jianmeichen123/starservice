@@ -51,6 +51,7 @@
 			tt.callonAddress,
 			tt.createdId,
 			tt.interviewFalg,
+			tt.isInterview,
 			tt.contactId,
 			tt.contactName,
 			tt.contactPost,
@@ -89,6 +90,8 @@
 					info.created_id createdId,
 					case UNIX_TIMESTAMP(current_timestamp())>UNIX_TIMESTAMP(info.start_time) 
 					when 1 then 1 else 0 end interviewFalg,
+					case (isnull(inre.id) &amp;&amp; UNIX_TIMESTAMP(current_timestamp())>UNIX_TIMESTAMP(info.start_time)) 
+					when 1 then 1 else 2 end isInterview,
 					con.id contactId,
 					con.name contactName,
 				    con.post contactPost,

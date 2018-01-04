@@ -244,7 +244,8 @@
 		update sop_meeting_record
 		<set>
 	      <if test="createUid != null" > create_uid = #{createUid}, </if>
-	      <if test="updatedTime != null" > update_time = #{updatedTime}</if>
+	      <if test="updatedTime != null" > update_time = #{updatedTime},</if>
+	      <if test="meetValid != null" > meet_valid = #{meetValid}</if>
 		</set>
 		where project_id=#{projectId};
 	</update>

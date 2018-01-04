@@ -841,7 +841,7 @@ public class ProjectController {
 			RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
 			Map<String, Object> user = BeanUtils.toMap(cache.get(sessionBean.getSessionid()));
 			//同时删除
-			
+			service.receiveProjectDel(bean);
 			//删除项目
 			bean.setIsDelete(0);
 			int result = service.updateProject(bean);

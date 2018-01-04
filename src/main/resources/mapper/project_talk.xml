@@ -168,7 +168,8 @@
 		update sop_interview_record
 		<set>
 	      <if test="createdId != null" > created_id = #{createdId}, </if>
-	      <if test="updatedTime != null" > update_time = #{updatedTime}</if>
+	      <if test="updatedTime != null" > update_time = #{updatedTime},</if>
+	      <if test="interviewValid != null" > interview_valid = #{interviewValid}</if>
 		</set>
 		where project_id=#{projectId};
 	</update>

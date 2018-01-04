@@ -465,5 +465,33 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 		iF.setTitleId(1810l);
 		flowdao.updateCreateUid(iF);
 	}
+
+	/**
+	 * 项目删除同时修改的内容
+	 * @param bean
+	 */
+	@Override
+	public void receiveProjectDel(SopProjectBean bean) {
+		//会议修改为无效
+		MeetingRecordBean mr = new MeetingRecordBean();
+		mr.setProjectId(bean.getId());
+		mr.setMeetValid(1);
+		mr.setUpdatedTime(new Date().getTime());
+		meetDao.updateCreateUid(mr);
+		
+		//访谈记录修改
+		ProjectTalkBean ir = new ProjectTalkBean();
+		ir.setProjectId(bean.getId());
+		ir.setInterviewValid(1);
+		ir.setUpdatedTime(new Date().getTime());
+		talkDao.updateCreateUid(ir);
+		
+		//文件修改
+		SopFileBean file = new SopFileBean();
+		file.setProjectId(bean.getId());
+		file.setFileValid(0);
+		fileDao.delPostMeetingFile(file);
+		
+	}
 	
 }

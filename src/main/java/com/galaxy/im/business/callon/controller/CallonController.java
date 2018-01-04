@@ -334,6 +334,15 @@ public class CallonController {
 					if(projectService.projectIsYJZ(bean.getProjectId())==1){
 						bean.setTransferFlag(1);
 					}
+					if(bean.getInterviewFalg()==0){
+						bean.setCallonFlag(1);
+					}else if(bean.getInterviewFalg()==1){
+						if(bean.getIsInterview()==1){
+							bean.setCallonFlag(2);
+						}else{
+							bean.setCallonFlag(3);
+						}
+					}
 				}else if(!"".equals(bean.getContactName()) && bean.getContactName()!=null){
 					//访谈对象不为空，取访谈对象的历史访谈记录
 					detail.setConId(bean.getContactId());
