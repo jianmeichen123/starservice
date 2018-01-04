@@ -137,10 +137,8 @@ public class ContractController {
 			bean.setProperty("firstpinyin");
 			bean.setIsDel(0);
 			List<ContractsBean> list = service.selectPersonList(bean);
-			if(list.size()>0){
-				resultBean.setStatus("OK");
-				resultBean.setEntity(list);
-			}
+			resultBean.setStatus("OK");
+			resultBean.setEntity(list);
 		}catch (Exception e) {
 			log.error(ContractController.class.getName() + "savePerson",e);
 		}
