@@ -22,15 +22,15 @@ public class SopProjectScheduleHandler implements SopTaskScheduleMessageHandler
 	final Logger logger = LoggerFactory.getLogger(VisitScheduleHandler.class);
 	
 	
-	private String sop_task_1  = "1.1.1";
-	private String sop_task_2  = "1.1.2";
-	private String sop_task_3  = "1.1.3";
+	private String sop_project_1  = "1.1.1";
+	private String sop_project_2  = "1.1.2";
+	private String sop_project_3  = "1.1.3";
 	
 	private Map<String,String> map = new HashMap<String,String>();
 	public SopProjectScheduleHandler(){
-		map.put(sop_task_1,  "项目删除");
-		map.put(sop_task_2,  "项目移交");
-		map.put(sop_task_3,  "项目指派 ");
+		map.put(sop_project_1,  "项目删除");
+		map.put(sop_project_2,  "项目移交");
+		map.put(sop_project_3,  "项目指派 ");
 	}
 	
 
@@ -45,7 +45,7 @@ public class SopProjectScheduleHandler implements SopTaskScheduleMessageHandler
 		
 		long sendTime = new Date().getTime();
 	
-		if(model.getMessageType().equals(sop_task_1)){
+		if(model.getMessageType().equals(sop_project_1)){
 			//项目删除
 			StringBuffer content = new StringBuffer();
 			ScheduleMessageBean message =getScheduleMessageInfo(model,null);
@@ -56,7 +56,7 @@ public class SopProjectScheduleHandler implements SopTaskScheduleMessageHandler
 			message.setSendTime(sendTime);
 			message.setContent(content.toString());
 			list.add(message);
-		}else if(model.getMessageType().equals(sop_task_2)){
+		}else if(model.getMessageType().equals(sop_project_2)){
 			//项目移交
 			for(Map<String, Object> map:model.getProjects()){
 				//该任务的接收人
@@ -71,7 +71,7 @@ public class SopProjectScheduleHandler implements SopTaskScheduleMessageHandler
 				message1.setContent(content.toString());
 				list.add(message1);
 			}
-		}else if(model.getMessageType().equals(sop_task_3)){
+		}else if(model.getMessageType().equals(sop_project_3)){
 			//项目指派
 			for(Map<String, Object> map:model.getProjects()){
 				//该任务的接收人

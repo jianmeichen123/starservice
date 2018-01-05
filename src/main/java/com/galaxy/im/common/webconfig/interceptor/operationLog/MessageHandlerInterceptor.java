@@ -148,7 +148,7 @@ public class MessageHandlerInterceptor extends HandlerInterceptorAdapter {
 			RecordType recordType) {
 		List<OperationLogs> list = new ArrayList<OperationLogs>();
 		
-		if(recordType.equals("4")){
+		if(recordType.equals(RecordType.TASK)){
 			//代办任务批量记录操作日志
 			@SuppressWarnings("unchecked")
 			List<Map<String, Object>> mapList = (List<Map<String, Object>>) map.get(PlatformConst.REQUEST_SCOPE_MESSAGE_BATCH);
