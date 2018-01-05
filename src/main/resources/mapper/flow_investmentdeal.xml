@@ -17,7 +17,7 @@
 	<select id="projectResult"  parameterType="hashmap" resultType="java.lang.String">
 		SELECT business_type_code businessTypeCode 
 		FROM sop_project 
-		WHERE is_delete=1 and id=#{projectId};
+		WHERE is_delete=0 and id=#{projectId};
 	</select>
 
 

@@ -22,7 +22,7 @@
 		select count(1)  from sop_project p 
 		<where>
 			<trim prefixOverrides="and">
-				and p.is_delete=1
+				and p.is_delete=0
 				<if test="createUid != null"> and p.create_uid = #{createUid}</if>
 				<if test="projectType != null"> and p.project_type = #{projectType}</if>
 				<if test="projectStatus != null"> and p.project_status = #{projectStatus}</if>
@@ -36,7 +36,7 @@
 		SELECT p.project_departId  as careerLineId,d.name careerLineName,
 		             COUNT(1) AS totalProjects 
 					FROM sop_project p, v_department d WHERE p.project_departId = d.id AND d.is_careerline = 1 
-					and p.is_delete=1
+					and p.is_delete=0
 					GROUP BY p.project_departId 
 					ORDER BY totalProjects DESC  
 			<if test="offset != null and limit != null">
@@ -48,7 +48,7 @@
 	<select id="selectCountCurrentMonthProjectNumber"  resultType="java.lang.Long"  parameterType="java.util.Map">
           <![CDATA[
 			    select count(1)  from sop_project p
-			     where  p.is_delete=1 and ( p.created_time between #{startTime}  and #{endTime}  )
+			     where  p.is_delete=0 and ( p.created_time between #{startTime}  and #{endTime}  )
 			      ]]>
 			     <include refid="Base_Where_sql" />			     
     </select>
@@ -58,7 +58,7 @@
 		select meeting_type,count(meeting_type) as number
 		from sop_meeting_scheduling 
 		where project_id in(
-			select id from sop_project where is_delete=1 and create_uid =  #{uid}
+			select id from sop_project where is_delete=0 and create_uid =  #{uid}
 			)  
 		and schedule_status = 1 and date(reserve_time_start)= date(now())
 		group by meeting_type;
@@ -69,7 +69,7 @@
 		select meeting_type,count(meeting_type) as number 
 		from sop_meeting_scheduling 
 		where project_id in(
-			select id from sop_project where and is_delete=1 and create_uid in (
+			select id from sop_project where and is_delete=0 and create_uid in (
 				select id from platform_user where department_id = (
 					select department_id from platform_user where id=#{uid}  
 				)
@@ -90,7 +90,7 @@
 	<select id="selectStageSummary" resultType="hashMap" parameterType="java.util.Map">
 		select count(1)as count,project_progress projectProgress from sop_project
 		<where>
-			  is_delete=1 and project_status NOT IN('projectStatus:2','projectStatus:3')	
+			  is_delete=0 and project_status NOT IN('projectStatus:2','projectStatus:3')	
               <if test="startTime != null"> <![CDATA[  and created_time >= #{startTime} ]]> </if>
 		      <if test="endTime != null"> <![CDATA[ and created_time <= #{endTime} ]]> </if>
 			  <if test="projectDepartid != null" >and project_departId = #{projectDepartid} </if>

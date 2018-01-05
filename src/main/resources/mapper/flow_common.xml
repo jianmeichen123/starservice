@@ -12,7 +12,7 @@
 		    d1.dict_code dictCode
 		from sop_project p
 		left join dict d1 on p.project_status=d1.dict_code
-		where p.is_delete=1 and p.id=#{projectId};
+		where p.is_delete=0 and p.id=#{projectId};
 	</select>
 	
 	<!-- 否决项目 -->
@@ -285,7 +285,7 @@
 				d.`name` projectProgressName
 		FROM sop_project p
 		LEFT JOIN dict d ON p.project_progress=d.dict_code
-		WHERE p.is_delete=1 and p.id=#{projectId};
+		WHERE p.is_delete=0 and p.id=#{projectId};
 	</select>
 	<resultMap type="com.galaxy.im.bean.project.SopProjectBean" id="infoMap">
 		<result column="id" property="id"/>

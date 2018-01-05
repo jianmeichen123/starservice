@@ -499,7 +499,7 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 		//代办任务修改
 		SopTask task = new SopTask();
 		task.setProjectId(bean.getId());
-		task.setIsDelete(0);
+		task.setIsDelete(1);
 		taskDao.applyTask(task);
 	}
 	

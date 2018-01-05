@@ -332,7 +332,7 @@ public class ProjectController {
 						bean.setProjectStatus(StaticConst.PROJECT_STATUS_0);
 						bean.setUpdatedTime(new Date().getTime());
 						bean.setProjectTime(new Date().getTime());
-						bean.setIsDelete(1);
+						bean.setIsDelete(0);
 						bean.setCreatedTime(DateUtil.convertStringToDate(bean.getCreateDate().trim(), "yyyy-MM-dd").getTime());
 						long id = service.saveProject(bean);
 						//新建项目存入全息报告中的信息
@@ -841,7 +841,7 @@ public class ProjectController {
 			RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
 			Map<String, Object> user = BeanUtils.toMap(cache.get(sessionBean.getSessionid()));
 			//删除项目
-			bean.setIsDelete(0);
+			bean.setIsDelete(1);
 			int result = service.updateProject(bean);
 			if(result>0){
 				//同时删除

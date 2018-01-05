@@ -216,7 +216,7 @@ public class SopTaskController {
 			sopTask.setAssignUid(CUtils.get().object2Long(user.get("id")));
 			sopTask.setUpdatedTime(new Date().getTime());
 			//把任务状态变为待完成
-			sopTask.setIsDelete(1);
+			sopTask.setIsDelete(0);
 			sopTask.setTaskStatus("taskStatus:2");
 			int count = service.applyTask(sopTask);
 			if (count>0) {
