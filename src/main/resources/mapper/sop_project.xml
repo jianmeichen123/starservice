@@ -207,7 +207,7 @@
 		from sop_project
 		<where>
 		 	is_delete=1
-			<if test="projectName != null" >  project_name = #{projectName}</if>
+			<if test="projectName != null" >and  project_name = #{projectName}</if>
 		</where>
 	</select>
 	
