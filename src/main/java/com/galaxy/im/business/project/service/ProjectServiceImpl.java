@@ -19,6 +19,7 @@ import com.galaxy.im.bean.project.ProjectBo;
 import com.galaxy.im.bean.project.ProjectTransfer;
 import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.report.InformationFile;
+import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.bean.talk.ProjectTalkBean;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.common.dict.dao.IDictDao;
@@ -27,6 +28,7 @@ import com.galaxy.im.business.meeting.dao.IMeetingRecordDao;
 import com.galaxy.im.business.project.dao.IProjectDao;
 import com.galaxy.im.business.project.dao.ISopProjectDao;
 import com.galaxy.im.business.sopfile.dao.ISopFileDao;
+import com.galaxy.im.business.soptask.dao.ISopTaskDao;
 import com.galaxy.im.business.talk.dao.IProjectTalkDao;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.StaticConst;
@@ -54,6 +56,8 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 	ISopFileDao fileDao;
 	@Autowired
 	IProjectTalkDao talkDao;
+	@Autowired
+	ISopTaskDao taskDao;
 
 	@Override
 	protected IBaseDao<ProjectBean, Long> getBaseDao() {
@@ -489,9 +493,14 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 		//文件修改
 		SopFileBean file = new SopFileBean();
 		file.setProjectId(bean.getId());
-		file.setFileValid(0);
+		file.setFileValid(3);
 		fileDao.delPostMeetingFile(file);
 		
+		//代办任务修改
+		SopTask task = new SopTask();
+		task.setProjectId(bean.getId());
+		task.setIsDelete(0);
+		taskDao.applyTask(task);
 	}
 	
 }

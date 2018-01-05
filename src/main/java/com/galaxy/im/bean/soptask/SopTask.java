@@ -25,6 +25,7 @@ public class SopTask extends PagableEntity{
 	private String userName;     				//用户名
 	private String projectName;     			//项目名称
 	private int flag;     						//1代表移交 2 代表指派
+	private int isDelete;						//删除标识
 	
 	private List<Map<String, Object>> projects;	//项目名称，项目创建人，创建人名称
 	private List<Map<String, Object>> users;    //部门下所有人，名称
@@ -128,6 +129,12 @@ public class SopTask extends PagableEntity{
 	}
 	public void setProjects(List<Map<String, Object>> projects) {
 		this.projects = projects;
+	}
+	public int getIsDelete() {
+		return isDelete;
+	}
+	public void setIsDelete(int isDelete) {
+		this.isDelete = isDelete;
 	}
     
 }

@@ -840,12 +840,12 @@ public class ProjectController {
 			@SuppressWarnings("unchecked")
 			RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
 			Map<String, Object> user = BeanUtils.toMap(cache.get(sessionBean.getSessionid()));
-			//同时删除
-			service.receiveProjectDel(bean);
 			//删除项目
 			bean.setIsDelete(0);
 			int result = service.updateProject(bean);
 			if(result>0){
+				//同时删除
+				service.receiveProjectDel(bean);
 				resultBean.setStatus("OK");
 				resultBean.setMessage("删除项目成功");
 			}

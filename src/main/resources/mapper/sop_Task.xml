@@ -77,7 +77,8 @@
 		<set>
 			<if test="assignUid != null">  assign_uid =#{assignUid},</if>
 			<if test="taskStatus != null">  task_status =#{taskStatus},</if>
-			<if test="updatedTime != null">  updated_time =#{updatedTime}</if>
+			<if test="updatedTime != null">  updated_time =#{updatedTime},</if>
+			<if test="isDelete != null">  is_delete =#{isDelete}</if>
 		</set>
 		<where>
 			<trim prefixOverrides="and">
