@@ -19,12 +19,12 @@ public class TimeTask {
     //每30秒执行一次
     @Scheduled(fixedRate = 30000)
     public void timerRate() {
-    	task.executeInteral();
+    	task.execute();
     }
 
     //每天00点01分00秒时执行
     @Scheduled(cron = "00 01 00 * * ?")
     public void timerCron() {
-    	initTask.executeInteral();
+    	initTask.execute();
     }
 }
