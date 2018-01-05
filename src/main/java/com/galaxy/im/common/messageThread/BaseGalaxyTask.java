@@ -1,27 +1,39 @@
 package com.galaxy.im.common.messageThread;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.galaxy.im.common.exception.BusinessException;
+import com.galaxy.im.common.messageThread.zk.LeaderSelector;
 
+@Component
 public abstract class BaseGalaxyTask implements GalaxyTask {
-
 	private static final Logger logger = Logger.getLogger(BaseGalaxyTask.class);
 	protected boolean disabled = false;
+	
+	@Autowired
+	private LeaderSelector leaderSelector;
 
 	@Override
 	public void execute() throws BusinessException {
-		if(isDisabled())
-		{
+		if(isDisabled()){
 			return;
 		}
+		
+		if(leaderSelector != null && !leaderSelector.isLeader()){
+			logger.info(String.format("当前节点[ID=%s]不是Leader节点[LeaderId=%s]", leaderSelector.getId(),leaderSelector.getLeaderId()));
+			return;
+		}
+		
+		
 		String jobName = this.getClass().getName();
 		try {
-			logger.debug("======================"+jobName+" Start========================");
+			logger.info("======================"+jobName+" Start========================");
 			executeInteral();
-			logger.debug("======================"+jobName+" Success========================");
+			logger.info("======================"+jobName+" Success========================");
 		} catch (Exception e) {
-			logger.debug("======================"+jobName+" Error========================");
+			logger.info("======================"+jobName+" Error========================");
 			throw e;
 		}
 

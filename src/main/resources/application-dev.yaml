@@ -55,6 +55,11 @@ stars:
 
 power:
   server: http://fx.dev.galaxyinternet.com/authority_service/
+  
+cluster: 
+  zk:
+    address: 10.9.210.22:12181
+    product: app_schedule
 
 
 
