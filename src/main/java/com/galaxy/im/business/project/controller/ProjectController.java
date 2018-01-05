@@ -894,36 +894,40 @@ public class ProjectController {
 					//移交
 					for(Map<String, Object> map : projects){
 						SopProjectBean sopBean = fcService.getSopProjectInfo(map);
-						if (sessionBean.getGuserid() == CUtils.get().object2Long(bean.getAfterUid()))
-						{
-							resultBean.setMessage("不能移交给本人");
-							return resultBean;
+						if(sopBean!=null){
+							if (sessionBean.getGuserid() == CUtils.get().object2Long(bean.getAfterUid()))
+							{
+								resultBean.setMessage("不能移交给本人");
+								return resultBean;
+							}
+							bean.setProjectId(CUtils.get().object2Long(map.get("projectId")));
+							bean.setBeforeUid(sopBean.getCreateUid());
+							bean.setBeforeDepartmentId(sopBean.getProjectDepartId());
+							bean.setRecordStatus(2);
+							bean.setCreatedTime(new Date().getTime());
+							@SuppressWarnings("unused")
+							int result = service.saveProjectTransfer(bean);
+							service.receiveProjectTransfer(bean);
 						}
-						bean.setProjectId(CUtils.get().object2Long(map.get("projectId")));
-						bean.setBeforeUid(sopBean.getCreateUid());
-						bean.setBeforeDepartmentId(sopBean.getProjectDepartId());
-						bean.setRecordStatus(2);
-						bean.setCreatedTime(new Date().getTime());
-						@SuppressWarnings("unused")
-						int result = service.saveProjectTransfer(bean);
-						service.receiveProjectTransfer(bean);
 					}
 					operateMethod(bean,1,user,sessionBean,request);
 				}else if(bean.getFlag()==2){
 					//指派
 					for(Map<String, Object> map : projects){
 						SopProjectBean sopBean = fcService.getSopProjectInfo(map);
-						if(sopBean.getCreateUid() == CUtils.get().object2Long(bean.getAfterUid())){
-							resultBean.setMessage("不能指派给项目负责人");
-							return resultBean;
+						if(sopBean!=null){
+							if(sopBean.getCreateUid() == CUtils.get().object2Long(bean.getAfterUid())){
+								resultBean.setMessage("不能指派给项目负责人");
+								return resultBean;
+							}
+							bean.setProjectId(CUtils.get().object2Long(map.get("projectId")));
+							bean.setBeforeUid(sopBean.getCreateUid());
+							bean.setBeforeDepartmentId(sopBean.getProjectDepartId());
+							bean.setRecordStatus(2);
+							bean.setCreatedTime(new Date().getTime());
+							//int result = service.saveProjectTransfer(bean);
+							service.receiveProjectTransfer(bean);
 						}
-						bean.setProjectId(CUtils.get().object2Long(map.get("projectId")));
-						bean.setBeforeUid(sopBean.getCreateUid());
-						bean.setBeforeDepartmentId(sopBean.getProjectDepartId());
-						bean.setRecordStatus(2);
-						bean.setCreatedTime(new Date().getTime());
-						//int result = service.saveProjectTransfer(bean);
-						service.receiveProjectTransfer(bean);
 					}
 					operateMethod(bean,2,user,sessionBean,request);
 				}
