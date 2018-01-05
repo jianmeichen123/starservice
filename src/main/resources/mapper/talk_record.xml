@@ -40,7 +40,7 @@
 					r.reason_other
 				FROM sop_interview_record r
 				LEFT JOIN schedule_contacts con on r.view_target=con.id 
-				LEFT JOIN sop_project p ON p.id = r.project_id
+				LEFT JOIN sop_project p ON p.id = r.project_id and p.is_delete=1
 				WHERE 1=1 and r.interview_valid = 0
 			<choose>
 				<when test="proId!=0">

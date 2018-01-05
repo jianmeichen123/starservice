@@ -126,7 +126,7 @@
 					mr.meeting_notes meetingNotes
 				from schedule_info info
 				left join schedule_contacts con on info.callon_person=con.id
-				left join sop_project project on info.project_type=1 and info.project_id=project.id
+				left join sop_project project on info.project_type=1 and info.project_id=project.id and project.is_delete=1
 				left join dict dct1 on dct1.parent_code='industryOwn' and dct1.dict_code=project.industry_own
 				left join dict dct3 on dct3.parent_code='significance' and dct3.dict_value=info.significance
 				left join schedule_dict sd on sd.id = info.wakeup_id

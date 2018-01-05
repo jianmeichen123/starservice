@@ -11,7 +11,7 @@
 		sp.create_uname projectCreatedName,sp.project_name projectName,sp.id projectId,
 		p.user_name assignUserName,st.assign_uid assignUid,sp.create_uid projectCreatedId
 		FROM sop_task st 
-		LEFT JOIN sop_project sp ON st.project_id = sp.id
+		LEFT JOIN sop_project sp ON st.project_id = sp.id and sp.is_delete=1
 		LEFT JOIN dict d on st.task_type = d.dict_code
 		LEFT JOIN power.user p ON st.assign_uid = p.id
 		WHERE  
@@ -36,7 +36,7 @@
 		select
 		count(1)
 		FROM sop_task st 
-		LEFT JOIN sop_project sp ON st.project_id = sp.id
+		LEFT JOIN sop_project sp ON st.project_id = sp.id and sp.is_delete=1
 		WHERE  
 		st.department_id=#{depId}
 		<if test="taskStatus != null" > and st.task_status = #{taskStatus}</if>
@@ -68,7 +68,7 @@
         LEFT JOIN power.user u2 ON d.dep_manager = u2.id 
 		LEFT JOIN dict dd ON dd.dict_code =p1.project_type
 		LEFT JOIN information_result r on r.project_id=p1.id and r.title_id=1814
-		WHERE p1.id =#{projectId} and st.id=#{id}
+		WHERE and p1.is_delete=1 and p1.id =#{projectId} and st.id=#{id}
 	</select>
 	
 	<!-- 修改项目状态 为认领-->

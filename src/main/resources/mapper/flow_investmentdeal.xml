@@ -15,10 +15,9 @@
 	
 	<!-- 获取项目在“会后商务谈判”阶段的结论 -->
 	<select id="projectResult"  parameterType="hashmap" resultType="java.lang.String">
-		<!-- SELECT p.id, p.project_name projectName, sr.meeting_result meetingResult  FROM sop_project p 
-		LEFT JOIN sop_meeting_record sr on sr.project_id=p.id 
-		WHERE p.business_type_code=#{businessTypeCode} and p.id=#{projectId} ; -->
-		SELECT business_type_code businessTypeCode FROM sop_project WHERE id=#{projectId};
+		SELECT business_type_code businessTypeCode 
+		FROM sop_project 
+		WHERE is_delete=1 and id=#{projectId};
 	</select>
 
 

@@ -89,7 +89,7 @@
 		from schedule_info info
 		left join schedule_contacts con on info.callon_person=con.id
 		left join dict dct1 on dct1.parent_code='significance' and dct1.dict_value=info.significance
-		left join sop_project project on info.project_type=1 and info.project_id=project.id
+		left join sop_project project on info.project_type=1 and info.project_id=project.id and project.is_delete=1
 		left join sop_interview_record sir on sir.schedule_id=info.id and sir.interview_valid =0
 		left join sop_meeting_record smr on smr.schedule_id=info.id and smr.meet_valid =0
 		where info.type=2
