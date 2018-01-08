@@ -47,15 +47,17 @@ public class SopProjectScheduleHandler implements SopTaskScheduleMessageHandler
 	
 		if(model.getMessageType().equals(sop_project_1)){
 			//项目删除
-			StringBuffer content = new StringBuffer();
-			ScheduleMessageBean message =getScheduleMessageInfo(model,null);
-			content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
-			content.append("删除了您的项目");
-			content.append("\"").append("<pname>").append(model.getProjectName()).append("</pname>\"");
-			content.append(",删除原因：\"").append("<msg>").append(model.getDeleteReason()).append("</msg>\"");
-			message.setSendTime(sendTime);
-			message.setContent(content.toString());
-			list.add(message);
+			for(Map<String, Object> map:model.getProjects()){
+				StringBuffer content = new StringBuffer();
+				ScheduleMessageBean message =getScheduleMessageInfo(model,map);
+				content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
+				content.append("删除了您的项目");
+				content.append("\"").append("<pname>").append(CUtils.get().object2String(map.get("projectName"))).append("</pname>\"");
+				content.append(",删除原因：\"").append("<msg>").append(model.getDeleteReason()).append("</msg>\"");
+				message.setSendTime(sendTime);
+				message.setContent(content.toString());
+				list.add(message);
+			}
 		}else if(model.getMessageType().equals(sop_project_2)){
 			//项目移交
 			for(Map<String, Object> map:model.getProjects()){
@@ -92,12 +94,12 @@ public class SopProjectScheduleHandler implements SopTaskScheduleMessageHandler
 	//初始化消息公用部分 model
 	private ScheduleMessageBean getScheduleMessageInfo(SopProjectBean model, Map<String, Object> map) {
 		ScheduleMessageBean message = new ScheduleMessageBean();
-		if(map!=null){
+		//if(map!=null){
 			message.setRemarkId(CUtils.get().object2Long(map.get("projectId")));
-		}else{
-			Long info_id = model.getId();
-			message.setRemarkId(info_id);
-		}
+		//}else{
+		//	Long info_id = model.getId();
+		//	message.setRemarkId(info_id);
+		//}
 		
 		message.setStatus((byte) 1);    // 0:可用 1:禁用  2:删除
 		//0:操作消息  1:系统消息
