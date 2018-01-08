@@ -281,6 +281,7 @@
 				p.create_uid createUid,
 				p.create_uname createUname,
 				p.is_delete isDelete,
+				p.delete_reason deleteReason,
 				p.progress_history progressHistory,
 				p.business_type_code businessTypeCode,
 				d.`name` projectProgressName
@@ -296,9 +297,12 @@
 		<result column="projectStatus" property="projectStatus"/>
 		<result column="projectDepartId" property="projectDepartId"/>
 		<result column="createUid" property="createUid"/>
+		<result column="createUname" property="createUname"/>
 		<result column="progressHistory" property="progressHistory"/>
 		<result column="businessTypeCode" property="businessTypeCode"/>
 		<result column="projectProgressName" property="projectProgressName"/>
+		<result column="isDelete" property="isDelete"/>
+		<result column="deleteReason" property="deleteReason"/>
 	</resultMap>
 	
 	<!-- 获取人事，法务，财务任务认领状态信息-->

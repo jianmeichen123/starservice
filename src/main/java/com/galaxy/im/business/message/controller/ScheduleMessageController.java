@@ -173,7 +173,6 @@ public class ScheduleMessageController {
 					paramMap.put("projectId",ids.get(i));
 					
 				    sopBean = fcService.getSopProjectInfo(paramMap);
-					sopBean.setDeleteReason(sopBean.getDeleteReason());
 					sopBean.setMessageType(messageVo.getMessageType());
 					sopBean.setUserId(sessionBean.getGuserid());
 					sopBean.setUserName(CUtils.get().object2String(user.get("realName")));

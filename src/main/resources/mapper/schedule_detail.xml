@@ -130,8 +130,8 @@
 				left join dict dct1 on dct1.parent_code='industryOwn' and dct1.dict_code=project.industry_own
 				left join dict dct3 on dct3.parent_code='significance' and dct3.dict_value=info.significance
 				left join schedule_dict sd on sd.id = info.wakeup_id
-				left join sop_interview_record inre on inre.schedule_id=info.id and inre.interview_valid =0
-				LEFT JOIN sop_meeting_record mr on mr.schedule_id=info.id and mr.meet_valid = 0
+				left join sop_interview_record inre on inre.schedule_id=info.id 
+				LEFT JOIN sop_meeting_record mr on mr.schedule_id=info.id 
 				left join sop_file sf on sf.id=inre.file_id and sf.file_valid=1
 				LEFT JOIN information_result r on r.project_id=info.project_id and r.title_id=1108
 				LEFT JOIN information_dictionary di on r.content_choose=di.id
