@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.message.MessageVo;
 import com.galaxy.im.bean.project.SopProjectBean;
+import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.message.service.IScheduleMessageService;
 import com.galaxy.im.common.BeanUtils;
@@ -162,6 +163,7 @@ public class ScheduleMessageController {
 			
 			List<String> ids= messageVo.getIds();
 			SopProjectBean sopBean=null;
+			SopTask sopTask=null;
 			List<Map<String, Object>> projects=new ArrayList<Map<String, Object>>();
 			
 			if(messageVo.getMessageType().startsWith("1.1")){
@@ -182,10 +184,22 @@ public class ScheduleMessageController {
 				sopBean.setProjects(projects);
 				messageService.operateMessageSopTaskInfo(sopBean,sopBean.getMessageType());
 			}else if(messageVo.getMessageType().startsWith("1.2")){
-				
+				//发消息
+				for(int i=0;i<ids.size();i++){
+					Map<String,Object> paramMap = new HashMap<String,Object>();
+					paramMap.put("projectId",ids.get(i));
+					sopBean = fcService.getSopProjectInfo(paramMap);
+					sopTask= new SopTask();
+					sopTask.setMessageType(messageVo.getMessageType());
+					sopTask.setAssignUname(CUtils.get().object2String(user.get("userName")));
+					sopTask.setCreatedId(sessionBean.getGuserid());
+					sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
+					paramMap.put("projectName", sopBean.getProjectName());
+					projects.add(paramMap);
+				}
+				sopTask.setProjects(projects);
+				messageService.operateMessageSopTaskInfo(sopTask,sopTask.getMessageType());
 			}
-			
-			//service.operateMessageSopTaskInfo(model);
 			resultBean.setStatus("OK");
 		} catch (Exception e) {
 			log.error(ScheduleMessageController.class.getName() + "saveSchedule",e);

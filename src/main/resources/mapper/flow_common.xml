@@ -280,6 +280,7 @@
 				p.project_departId projectDepartId,
 				p.create_uid createUid,
 				p.create_uname createUname,
+				p.is_delete isDelete,
 				p.progress_history progressHistory,
 				p.business_type_code businessTypeCode,
 				d.`name` projectProgressName

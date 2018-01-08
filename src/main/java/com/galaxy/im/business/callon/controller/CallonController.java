@@ -334,6 +334,7 @@ public class CallonController {
 					if(projectService.projectIsYJZ(bean.getProjectId())==1){
 						bean.setTransferFlag(1);
 					}
+					//项目关联情况
 					if(bean.getInterviewFalg()==0){
 						bean.setCallonFlag(1);
 					}else if(bean.getInterviewFalg()==1){
@@ -342,6 +343,12 @@ public class CallonController {
 						}else{
 							bean.setCallonFlag(3);
 						}
+					}
+					//项目是否删除
+					if(p.getIsDelete()==1){
+						bean.setProjectDel(1);
+					}else{
+						bean.setProjectDel(0);
 					}
 				}else if(!"".equals(bean.getContactName()) && bean.getContactName()!=null){
 					//访谈对象不为空，取访谈对象的历史访谈记录
