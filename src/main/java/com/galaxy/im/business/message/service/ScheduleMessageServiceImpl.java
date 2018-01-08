@@ -499,9 +499,9 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 	 * ScheduleMessage    ScheduleMessageUser
      */
 	@Override
-	public void operateMessageSopTaskInfo(Object sopTask) {
+	public void operateMessageSopTaskInfo(Object sopTask,String type) {
 		final Object info = sopTask;
-		
+		final String mType = type;
 		GalaxyThreadPool.getExecutorService().execute(new Runnable() {
 			@Override
 			public void run() {
@@ -514,7 +514,7 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 				
 				long edate = calendar.getTimeInMillis();
 				
-				List<ScheduleMessageBean> list = messageGenerator.processTask(info);
+				List<ScheduleMessageBean> list = messageGenerator.processTask(info,mType);
 				for(ScheduleMessageBean message:list){
 					message.setCreatedTime(new Date().getTime());
 					if(message.getSendTime()==null){

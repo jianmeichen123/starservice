@@ -359,7 +359,7 @@ public class InvestmentdealController {
 							sopTask.setAssignUname(CUtils.get().object2String(user.get("userName")));
 							sopTask.setCreatedId(b.getGuserid());
 							sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
-							messageService.operateMessageSopTaskInfo(sopTask);
+							messageService.operateMessageSopTaskInfo(sopTask,sopTask.getMessageType());
 						}else{
 							resultBean.setMessage("项目当前状态或进度已被修改，请刷新");
 						}

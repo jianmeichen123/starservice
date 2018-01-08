@@ -57,11 +57,11 @@ public class ScheduleMessageGenerator implements InitializingBean,ApplicationCon
 		return null;
 	}
 	//多条信息
-	public List<ScheduleMessageBean> processTask(Object info)
+	public List<ScheduleMessageBean> processTask(Object info,String type)
 	{
 		if(handler != null) {
 			for(SopTaskScheduleMessageHandler handler : handler) {
-				if(handler.support(info)) {
+				if(handler.support(info,type)) {
 					List<ScheduleMessageBean> list= new ArrayList<ScheduleMessageBean>();
 					handler.handle(list,info);
 					return list;

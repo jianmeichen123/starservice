@@ -34,9 +34,9 @@ public class SopProjectScheduleHandler implements SopTaskScheduleMessageHandler
 	}
 	
 
-	public boolean support(Object info) {
-		SopProjectBean message = (SopProjectBean) info;
-		return  message != null && (map.containsKey(message.getMessageType()) || message.getMessageType().startsWith("1.1"));
+	public boolean support(Object info,String type) {
+		//SopProjectBean message = (SopProjectBean) info;
+		return  type != null && (map.containsKey(type) || type.startsWith("1.1"));
 	}
 	
 	public void handle(List<ScheduleMessageBean> list,Object info) {

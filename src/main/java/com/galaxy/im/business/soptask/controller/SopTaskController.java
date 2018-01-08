@@ -230,7 +230,7 @@ public class SopTaskController {
 			sopTask.setAssignUname(CUtils.get().object2String(user.get("userName")));
 			sopTask.setCreatedId(bean.getGuserid());
 			sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
-			messageService.operateMessageSopTaskInfo(sopTask);
+			messageService.operateMessageSopTaskInfo(sopTask,sopTask.getMessageType());
 			//记录操作日志，项目名称，项目id，项目阶段，任务id，原因
 			List<Map<String, Object>> mapList= new ArrayList<Map<String, Object>>();
 			Map<String, Object> map = new HashMap<String, Object>();
@@ -396,7 +396,7 @@ public class SopTaskController {
 		sopTask.setAssignUid(sopTaskRecord.getAfterUid());
 		sopTask.setCreatedId(bean.getGuserid());
 		sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
-		messageService.operateMessageSopTaskInfo(sopTask);
+		messageService.operateMessageSopTaskInfo(sopTask,sopTask.getMessageType());
 		
 		//记录操作日志，项目名称，项目id，项目阶段，任务id，原因
 		List<Map<String, Object>> mapList= new ArrayList<Map<String, Object>>();
@@ -536,7 +536,7 @@ public class SopTaskController {
 			sopTask.setAssignUname(CUtils.get().object2String(user.get("userName")));
 			sopTask.setCreatedId(bean.getGuserid());
 			sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
-			messageService.operateMessageSopTaskInfo(sopTask);
+			messageService.operateMessageSopTaskInfo(sopTask,sopTask.getMessageType());
 			
 			//记录操作日志，项目名称，项目id，项目阶段，任务id，原因
 			List<Map<String, Object>> mapList= new ArrayList<Map<String, Object>>();

@@ -138,7 +138,7 @@ public class ScheduleMessageController {
 		
 		ResultBean<Object> resultBean = new ResultBean<>();
 		try {
-			service.operateMessageSopTaskInfo(model);
+			//service.operateMessageSopTaskInfo(model);
 			resultBean.setStatus("OK");
 		} catch (Exception e) {
 			log.error(ScheduleMessageController.class.getName() + "saveSchedule",e);

@@ -8,5 +8,5 @@ import com.galaxy.im.bean.message.ScheduleMessageBean;
 public interface SopTaskScheduleMessageHandler extends Serializable{
 	public void handle(List<ScheduleMessageBean> list, Object info);
 
-	public boolean support(Object info);
+	public boolean support(Object info,String type);
 }

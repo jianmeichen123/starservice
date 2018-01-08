@@ -858,7 +858,7 @@ public class ProjectController {
 			sopBean.setUserId(sessionBean.getGuserid());
 			sopBean.setUserName(CUtils.get().object2String(user.get("realName")));
 			sopBean.setUserDeptName(CUtils.get().object2String(user.get("departmentName")));
-			messageService.operateMessageSopTaskInfo(sopBean);
+			messageService.operateMessageSopTaskInfo(sopBean,sopBean.getMessageType());
 			
 			//记录操作日志
 			ControllerUtils.setRequestParamsForMessageTip(request, null, sopBean,"",null);
@@ -958,7 +958,7 @@ public class ProjectController {
 		sop.setUserId(sessionBean.getGuserid());
 		sop.setUserName(CUtils.get().object2String(user.get("realName")));
 		sop.setUserDeptName(CUtils.get().object2String(user.get("departmentName")));
-		messageService.operateMessageSopTaskInfo(sop);
+		messageService.operateMessageSopTaskInfo(sop,sop.getMessageType());
 		
 		
 		//记录操作日志，项目名称，项目id，项目阶段
