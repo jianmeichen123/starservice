@@ -28,16 +28,15 @@ public class InvestServiceImpl extends BaseServiceImpl<InvestBean> implements II
 		try{
 			return dao.selectInvestList(paramMap);
 		}catch(Exception e){
-			log.error(InvestServiceImpl.class.getName() + "_getInvestList",e);
+			log.error(InvestServiceImpl.class.getName() + "getInvestList",e);
 			throw new ServiceException(e);
 		}
 	}
 	
 	@Override
 	public int deleteByIdAndPid(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		try{
-		return dao.deleteByIdAndPid(paramMap);
+			return dao.deleteByIdAndPid(paramMap);
 		}catch(Exception e){
 			log.error(InvestServiceImpl.class.getName() + "deleteByIdAndPid",e);
 			throw new ServiceException(e);
