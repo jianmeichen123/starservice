@@ -34,9 +34,6 @@ spring:
     min-idle: 0
     timeout: 0
    
-stars:
-  server: http://fxmobnew.galaxyinternet.com/mobileSop/
-
 power:
   server: http://fxnew.galaxyinternet.com/authority_service/
   

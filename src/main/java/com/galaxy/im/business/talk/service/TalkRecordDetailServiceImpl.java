@@ -10,7 +10,6 @@ import com.galaxy.im.common.db.service.BaseServiceImpl;
 
 @Service
 public class TalkRecordDetailServiceImpl extends BaseServiceImpl<TalkRecordDetailBean> implements ITalkRecordDetailService{
-	//private Logger log = LoggerFactory.getLogger(TalkRecordDetailServiceImpl.class);
 	
 	@Autowired
 	private ITalkRecordDetailDao dao;

@@ -94,7 +94,6 @@ public class SopTaskController {
 			//部门待完工
 			if (paramMap.get("flag").equals("4")) {
 				paramMap.put("taskStatus", "taskStatus:2");
-				//paramMap.put("assignUid", user.get("id"));
 			}
 		}
 			QPage page = service.taskListByRole(paramMap);
