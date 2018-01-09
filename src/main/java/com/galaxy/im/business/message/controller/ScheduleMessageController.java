@@ -189,8 +189,8 @@ public class ScheduleMessageController {
 			List<Map<String, Object>> projects=new ArrayList<Map<String, Object>>();
 			
 			if(messageVo.getMessageType().startsWith("1.1")){
+				//项目
 				for(int i=0;i<ids.size();i++){
-					//发消息
 					Map<String,Object> paramMap = new HashMap<String,Object>();
 					paramMap.put("projectId",ids.get(i));
 					
@@ -206,7 +206,7 @@ public class ScheduleMessageController {
 				messageService.operateMessageSopTaskInfo(sopBean,sopBean.getMessageType());
 			}else if(messageVo.getMessageType().startsWith("1.2")){
 				if(messageVo.getMessageType().equals("1.2.5")){
-					//消息
+					//尽职调查
 					int lawDeptId = fcService.getDeptIdByDeptName(StaticConst.DEPT_NAME_LAW,request,response);
 					int fdDeptId = fcService.getDeptIdByDeptName(StaticConst.DEPT_NAME_FD,request,response);
 					int hrDeptId = fcService.getDeptIdByDeptName(StaticConst.DEPT_NAME_HR,request,response);
@@ -232,6 +232,7 @@ public class ScheduleMessageController {
 						sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
 					}
 				}else if(messageVo.getMessageType().equals("1.2.6")){
+					//股权交割
 					int lawDeptId = fcService.getDeptIdByDeptName(StaticConst.DEPT_NAME_LAW,request,response);
 					int fdDeptId = fcService.getDeptIdByDeptName(StaticConst.DEPT_NAME_FD,request,response);
 					List<Map<String, Object>> lawDeptIdList = fcService.getUserListByDeptId(lawDeptId);
@@ -254,6 +255,7 @@ public class ScheduleMessageController {
 						sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
 					}
 				}else{
+					//代办任务的认领，移交，指派，放弃
 					//用户列表
 					Map<String,Object> vmap = new HashMap<String,Object>();
 					vmap.put("depId", deptId);
