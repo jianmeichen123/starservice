@@ -167,5 +167,16 @@ public class SopTaskServiceImpl extends BaseServiceImpl<SopTask> implements ISop
 			throw new ServiceException(e);
 		}
 	}
+
+	//通过代办任务获取代办信息
+	@Override
+	public SopTask getTaskInfoById(Long taskId) {
+		try{
+			return dao.getTaskInfoById(taskId);
+		}catch(Exception e){
+			log.error(SopTaskServiceImpl.class.getName() + "getTaskInfoById",e);
+			throw new ServiceException(e);
+		}
+	}
 	
 }

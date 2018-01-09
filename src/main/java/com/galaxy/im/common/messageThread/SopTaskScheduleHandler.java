@@ -76,7 +76,7 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 				ScheduleMessageBean message =getScheduleMessageInfo(model,1,map);
 				content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
 				content.append("认领了");
-				content.append("\"").append("<pname>").append(model.getProjectName()).append("</pname>\"");
+				content.append("\"").append("<pname>").append(CUtils.get().object2String(map.get("projectName"))).append("</pname>\"");
 				content.append("的").append(CUtils.get().object2String(map.get("taskName")));
 				message.setSendTime(sendTime);
 				message.setContent(content.toString());
@@ -148,7 +148,7 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 				list.add(message2);
 			}
 		}else if(model.getMessageType().equals(sop_task_5)){
-			//放弃
+			//尽职调查阶段
 			StringBuffer content = new StringBuffer();
 			content.append("\"<pname>").append(model.getProjectName()).append("</pname>\"");
 			content.append("进入了尽调阶段，请您关注");
@@ -159,7 +159,7 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 			list.add(message);
 		}
 		else if(model.getMessageType().equals(sop_task_6)){
-			//放弃
+			//股权交割阶段
 			StringBuffer content = new StringBuffer();
 			content.append("\"<pname>").append(model.getProjectName()).append("</pname>\"");
 			content.append("进入了股权交割阶段，请您关注");

@@ -7,27 +7,34 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.message.MessageVo;
 import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.soptask.SopTask;
+import com.galaxy.im.business.flow.common.service.FlowCommonServiceImpl;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.message.service.IScheduleMessageService;
+import com.galaxy.im.business.soptask.service.ISopTaskService;
 import com.galaxy.im.common.BeanUtils;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
 import com.galaxy.im.common.cache.redis.RedisCacheImpl;
 import com.galaxy.im.common.db.QPage;
+import com.galaxy.im.common.html.QHtmlClient;
 /**
  * 日程消息
  */
@@ -42,6 +49,10 @@ public class ScheduleMessageController {
 	private IFlowCommonService fcService;
 	@Autowired
 	IScheduleMessageService messageService;
+	@Autowired
+	private Environment env;
+	@Autowired
+	private ISopTaskService taskService;
 	
 	
 	/**
@@ -148,7 +159,7 @@ public class ScheduleMessageController {
      */
 	@ResponseBody
 	@RequestMapping("/saveSchedule")
-	public Object saveSchedule(HttpServletRequest request,@RequestBody MessageVo messageVo){
+	public Object saveSchedule(HttpServletRequest request,HttpServletResponse response,@RequestBody MessageVo messageVo){
 		
 		ResultBean<Object> resultBean = new ResultBean<>();
 		try {
@@ -157,6 +168,17 @@ public class ScheduleMessageController {
 			if (sessionBean==null) {
 				resultBean.setMessage("获取用户信息失败");
 			}
+			long deptId=0l;
+			//获取用户所属部门id
+			List<Map<String, Object>> list = fcService.getDeptId(sessionBean.getGuserid(),request,response);
+			if(list!=null){
+				for(Map<String, Object> vMap:list){
+					deptId= CUtils.get().object2Long( vMap.get("deptId"));
+				}
+			}
+			
+			List<Map<String, Object>> userList=new ArrayList<Map<String, Object>>();
+			
 			@SuppressWarnings("unchecked")
 			RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
 			Map<String, Object> user = BeanUtils.toMap(cache.get(sessionBean.getSessionid()));
@@ -183,20 +205,103 @@ public class ScheduleMessageController {
 				sopBean.setProjects(projects);
 				messageService.operateMessageSopTaskInfo(sopBean,sopBean.getMessageType());
 			}else if(messageVo.getMessageType().startsWith("1.2")){
-				//发消息
-				for(int i=0;i<ids.size();i++){
-					Map<String,Object> paramMap = new HashMap<String,Object>();
-					paramMap.put("projectId",ids.get(i));
-					sopBean = fcService.getSopProjectInfo(paramMap);
-					sopTask= new SopTask();
-					sopTask.setMessageType(messageVo.getMessageType());
-					sopTask.setAssignUname(CUtils.get().object2String(user.get("userName")));
-					sopTask.setCreatedId(sessionBean.getGuserid());
-					sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
-					paramMap.put("projectName", sopBean.getProjectName());
-					projects.add(paramMap);
+				if(messageVo.getMessageType().equals("1.2.5")){
+					//消息
+					int lawDeptId = fcService.getDeptIdByDeptName(StaticConst.DEPT_NAME_LAW,request,response);
+					int fdDeptId = fcService.getDeptIdByDeptName(StaticConst.DEPT_NAME_FD,request,response);
+					int hrDeptId = fcService.getDeptIdByDeptName(StaticConst.DEPT_NAME_HR,request,response);
+					List<Map<String, Object>> lawDeptIdList = fcService.getUserListByDeptId(lawDeptId);
+					List<Map<String, Object>> fdDeptIdList = fcService.getUserListByDeptId(fdDeptId);
+					List<Map<String, Object>> hrDeptIdList = fcService.getUserListByDeptId(hrDeptId);
+					userList.addAll(lawDeptIdList);
+					userList.addAll(fdDeptIdList);
+					userList.addAll(hrDeptIdList);
+					
+					for(int i=0;i<ids.size();i++){
+						Map<String,Object> paramMap = new HashMap<String,Object>();
+						paramMap.put("projectId",ids.get(i));
+						
+					    sopBean = fcService.getSopProjectInfo(paramMap);
+						sopTask =new SopTask();
+						sopTask.setId(sopBean.getId());
+						sopTask.setProjectName(sopBean.getProjectName());
+						sopTask.setUsers(userList);
+						sopTask.setMessageType("1.2.5");
+						sopTask.setAssignUname(CUtils.get().object2String(user.get("userName")));
+						sopTask.setCreatedId(sessionBean.getGuserid());
+						sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
+					}
+				}else if(messageVo.getMessageType().equals("1.2.6")){
+					int lawDeptId = fcService.getDeptIdByDeptName(StaticConst.DEPT_NAME_LAW,request,response);
+					int fdDeptId = fcService.getDeptIdByDeptName(StaticConst.DEPT_NAME_FD,request,response);
+					List<Map<String, Object>> lawDeptIdList = fcService.getUserListByDeptId(lawDeptId);
+					List<Map<String, Object>> fdDeptIdList = fcService.getUserListByDeptId(fdDeptId);
+					userList.addAll(lawDeptIdList);
+					userList.addAll(fdDeptIdList);
+					
+					for(int i=0;i<ids.size();i++){
+						Map<String,Object> paramMap = new HashMap<String,Object>();
+						paramMap.put("projectId",ids.get(i));
+						
+					    sopBean = fcService.getSopProjectInfo(paramMap);
+						sopTask =new SopTask();
+						sopTask.setId(sopBean.getId());
+						sopTask.setProjectName(sopBean.getProjectName());
+						sopTask.setUsers(userList);
+						sopTask.setMessageType("1.2.6");
+						sopTask.setAssignUname(CUtils.get().object2String(user.get("userName")));
+						sopTask.setCreatedId(sessionBean.getGuserid());
+						sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
+					}
+				}else{
+					//用户列表
+					Map<String,Object> vmap = new HashMap<String,Object>();
+					vmap.put("depId", deptId);
+					Map<String,Object> headerMap = QHtmlClient.get().getHeaderMap(request);
+					//事业部下的所有用户
+					String urlU = env.getProperty("power.server") + StaticConst.getUsersByDepId;
+					JSONArray rr=null;
+					List<Map<String, Object>> mList=new ArrayList<Map<String, Object>>();
+					String res = QHtmlClient.get().post(urlU, headerMap, vmap);
+					if("error".equals(res)){
+						log.error(FlowCommonServiceImpl.class.getName() + "获取信息时出错","此时服务器返回状态码非200");
+					}else{
+						JSONObject json = JSONObject.parseObject(res);
+						if(json!=null && json.containsKey("value")){
+							rr = json.getJSONArray("value");
+							if(json.containsKey("success") && "true".equals(json.getString("success"))){
+								//操作
+								mList =CUtils.get().jsonString2list(rr);
+								for(Map<String, Object> map:mList){
+									if(!CUtils.get().object2String(map.get("userId")).equals(CUtils.get().object2String(sessionBean.getGuserid()))){
+										userList.add(map);
+									}
+								}
+							}
+						}
+					}	
+					//发消息
+					for(int i=0;i<ids.size();i++){
+						Map<String,Object> paramMap = new HashMap<String,Object>();
+						
+						sopTask= taskService.getTaskInfoById(CUtils.get().object2Long(ids.get(i)));
+						
+						paramMap.put("projectId",sopTask.getProjectId());
+						sopBean = fcService.getSopProjectInfo(paramMap);
+						
+						sopTask.setMessageType(messageVo.getMessageType());
+						sopTask.setCreatedId(sessionBean.getGuserid());
+						sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
+						paramMap.put("projectName", sopBean.getProjectName());
+						paramMap.put("projectCreatedId", sopBean.getCreateUid());
+						paramMap.put("projectCreatedName", sopBean.getCreateUname());
+						paramMap.put("taskName", sopTask.getTaskName());
+						paramMap.put("taskId", sopTask.getId());
+						projects.add(paramMap);
+					}
+					sopTask.setUsers(userList);
+					sopTask.setProjects(projects);
 				}
-				sopTask.setProjects(projects);
 				messageService.operateMessageSopTaskInfo(sopTask,sopTask.getMessageType());
 			}
 			resultBean.setStatus("OK");

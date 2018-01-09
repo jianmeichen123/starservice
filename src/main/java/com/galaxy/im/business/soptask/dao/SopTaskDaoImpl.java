@@ -147,4 +147,15 @@ public class SopTaskDaoImpl extends BaseDaoImpl<SopTask, Long> implements ISopTa
 		}
 	}
 
+	//代办任务id，获取代办信息
+	@Override
+	public SopTask getTaskInfoById(Long id) {
+		try {
+			return sqlSessionTemplate.selectOne(getSqlName("getTaskInfoById"),id);
+		} catch (Exception e) {
+			log.error(getSqlName("getTaskInfoById"),e);
+			throw new DaoException(e);
+		}
+	}
+
 }

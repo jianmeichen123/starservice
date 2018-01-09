@@ -44,6 +44,9 @@ public interface ISopTaskService extends IBaseService<SopTask>{
 	
 	//不限制条件的更新
 	int updateSopFile(SopFileBean bean2);
+	
+	//代办任务id获取代办任务信息
+	SopTask getTaskInfoById(Long object2Long);
 
 
 }

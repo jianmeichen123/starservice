@@ -39,5 +39,8 @@ public interface ISopTaskDao extends IBaseDao<SopTask, Long>{
 	//人法财代办任务个数
 	long getCountByTaskStatus(Map<String, Object> paramMap);
 
+	//代办任务id，获取代办任务信息
+	SopTask getTaskInfoById(Long taskId);
+
 
 }

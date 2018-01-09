@@ -173,4 +173,26 @@
 		</if>;
 	</select>
 	
+	<!-- 根据ID查询 -->
+	<select id="getTaskInfoById" resultType="com.galaxy.im.bean.soptask.SopTask" parameterType="java.lang.Long">
+		SELECT
+			t.id,
+			t.project_id projectId,
+			t.task_name taskName,
+			t.task_type taskType,
+			t.task_flag taskFlag,
+			t.task_order taskOrder,
+			t.task_deadline taskDeadline,
+			t.department_id departmentId,
+			t.assign_uid assignUid,
+			u.user_name assignUname,
+			t.task_status taskStatus,
+			t.remark remark,
+			t.updated_time updatedTime,
+			t.created_time createdTime
+		FROM sop_task t
+		LEFT JOIN v_user u on t.assign_uid=u.id
+		WHERE t.id = #{id};
+	</select>
+	
 </mapper>
