@@ -29,7 +29,6 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 	private String sop_task_5  = "1.2.5";
 	private String sop_task_6  = "1.2.6";
 	private String sop_task_7  = "1.2.7";
-	private String sop_task_8  = "1.2.8";
 	
 	private Map<String,String> map = new HashMap<String,String>();
 	public SopTaskScheduleHandler(){
@@ -39,8 +38,7 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 		map.put(sop_task_4,  "指派   代办任务 ");
 		map.put(sop_task_5,  "尽职调查   代办任务 ");
 		map.put(sop_task_6,  "股权交割   代办任务 ");
-		map.put(sop_task_7,  "提交完成 股权交割   代办任务 ");
-		map.put(sop_task_8,  "提交完成 股权交割   代办任务 ");
+		map.put(sop_task_7,  "提交完成   代办任务 ");
 	}
 	
 
@@ -172,25 +170,11 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 			message.setContent(content.toString());
 			list.add(message);
 		}else if(model.getMessageType().equals(sop_task_7)){
-			//提交完成尽职调查阶段
-			for(Map<String, Object> map:model.getProjects()){
-				StringBuffer content = new StringBuffer();
-				content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
-				content.append("上传完成");
-				content.append("\"<pname>").append(CUtils.get().object2String(map.get("projectName"))).append("</pname>\"");
-				content.append("的尽调文件，请您关注");
-				//该项目的投资经理
-				ScheduleMessageBean message =getScheduleMessageInfo(model,1,map);
-				message.setSendTime(sendTime);
-				message.setContent(content.toString());
-				list.add(message);
-			}
-		}else if(model.getMessageType().equals(sop_task_8)){
 			//提交完成股权交割
 			for(Map<String, Object> map:model.getProjects()){
 				StringBuffer content = new StringBuffer();
 				content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
-				content.append("上传完成");
+				content.append("完成了");
 				content.append("\"<pname>").append(CUtils.get().object2String(map.get("projectName"))).append("</pname>\"");
 				content.append("的").append(CUtils.get().object2String(map.get("taskName"))).append("，请您关注");
 				//该项目的投资经理
