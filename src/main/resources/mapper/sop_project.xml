@@ -417,7 +417,9 @@
 	      undo_reason,
 	      refuse_reason,
 	      updated_time,
-	      created_time
+	      created_time,
+	      operate_id,
+	      operate_type
 	      )
 	    values(
 	      #{projectId},
@@ -430,7 +432,9 @@
           #{undoReason}, 
 	      #{refuseReason}, 
 	      #{updatedTime},
-	      #{createdTime}
+	      #{createdTime},
+	      #{operateId},
+	      #{operateType}
 	      )
 	    <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
 			SELECT LAST_INSERT_ID() AS id

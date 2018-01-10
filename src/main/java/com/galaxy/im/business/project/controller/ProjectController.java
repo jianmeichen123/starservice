@@ -911,6 +911,8 @@ public class ProjectController {
 							bean.setBeforeDepartmentId(sopBean.getProjectDepartId());
 							bean.setRecordStatus(2);
 							bean.setCreatedTime(new Date().getTime());
+							bean.setOperateType("0");
+							bean.setOperateId(sessionBean.getGuserid());
 							@SuppressWarnings("unused")
 							int result = service.saveProjectTransfer(bean);
 							service.receiveProjectTransfer(bean);
@@ -931,7 +933,10 @@ public class ProjectController {
 							bean.setBeforeDepartmentId(sopBean.getProjectDepartId());
 							bean.setRecordStatus(2);
 							bean.setCreatedTime(new Date().getTime());
-							//int result = service.saveProjectTransfer(bean);
+							bean.setOperateType("1");
+							bean.setOperateId(sessionBean.getGuserid());
+							@SuppressWarnings("unused")
+							int result = service.saveProjectTransfer(bean);
 							service.receiveProjectTransfer(bean);
 						}
 					}

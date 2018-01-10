@@ -22,6 +22,8 @@ public class ProjectTransfer extends PagableEntity {
     private String refuseReason;//决绝原因
    	private String createDate;//创建时间
    	private String updateDate;//修改时间
+   	private String operateType;	//操作类型：0：移交 1,：指派
+   	private Long operateId;			//操作人
    	
    	private String afrerUName;					//项目接收人名称
    	private int flag;     						//1代表移交 2 代表指派
@@ -159,6 +161,22 @@ public class ProjectTransfer extends PagableEntity {
 
 	public void setAfrerUName(String afrerUName) {
 		this.afrerUName = afrerUName;
+	}
+
+	public String getOperateType() {
+		return operateType;
+	}
+
+	public void setOperateType(String operateType) {
+		this.operateType = operateType;
+	}
+
+	public Long getOperateId() {
+		return operateId;
+	}
+
+	public void setOperateId(Long operateId) {
+		this.operateId = operateId;
 	}
    	
   
