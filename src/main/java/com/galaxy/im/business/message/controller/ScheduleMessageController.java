@@ -292,8 +292,8 @@ public class ScheduleMessageController {
 						sopBean = fcService.getSopProjectInfo(paramMap);
 						
 						sopTask.setMessageType(messageVo.getMessageType());
-						sopTask.setCreatedId(sessionBean.getGuserid());
-						sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
+						sopTask.setCreatedId(sopTask.getAssignUid());
+						sopTask.setUserName(sopTask.getAssignUname());
 						paramMap.put("projectName", sopBean.getProjectName());
 						paramMap.put("projectCreatedId", sopBean.getCreateUid());
 						paramMap.put("projectCreatedName", sopBean.getCreateUname());
