@@ -27,6 +27,7 @@ import com.galaxy.im.bean.soptask.SopTask;
 import com.galaxy.im.business.flow.common.service.FlowCommonServiceImpl;
 import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.message.service.IScheduleMessageService;
+import com.galaxy.im.business.rili.service.IScheduleService;
 import com.galaxy.im.business.soptask.service.ISopTaskService;
 import com.galaxy.im.common.BeanUtils;
 import com.galaxy.im.common.CUtils;
@@ -53,6 +54,9 @@ public class ScheduleMessageController {
 	private Environment env;
 	@Autowired
 	private ISopTaskService taskService;
+	
+	@Autowired
+	IScheduleService schService;
 	
 	
 	/**
@@ -82,6 +86,8 @@ public class ScheduleMessageController {
 		}
 		return resultBean;
 	}
+	
+	
 	
 	/**
 	 * 消息 已读
@@ -177,12 +183,12 @@ public class ScheduleMessageController {
 				}
 			}
 			
-			List<Map<String, Object>> userList=new ArrayList<Map<String, Object>>();
 			
 			@SuppressWarnings("unchecked")
 			RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
 			Map<String, Object> user = BeanUtils.toMap(cache.get(sessionBean.getSessionid()));
 			
+			List<Map<String, Object>> userList=new ArrayList<Map<String, Object>>();
 			List<String> ids= messageVo.getIds();
 			SopProjectBean sopBean=null;
 			SopTask sopTask=null;
@@ -292,8 +298,8 @@ public class ScheduleMessageController {
 						sopBean = fcService.getSopProjectInfo(paramMap);
 						
 						sopTask.setMessageType(messageVo.getMessageType());
-						sopTask.setCreatedId(sopTask.getAssignUid());
-						sopTask.setUserName(sopTask.getAssignUname());
+						sopTask.setCreatedId(sessionBean.getGuserid());
+						sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
 						paramMap.put("projectName", sopBean.getProjectName());
 						paramMap.put("projectCreatedId", sopBean.getCreateUid());
 						paramMap.put("projectCreatedName", sopBean.getCreateUname());
@@ -309,6 +315,52 @@ public class ScheduleMessageController {
 			resultBean.setStatus("OK");
 		} catch (Exception e) {
 			log.error(ScheduleMessageController.class.getName() + "saveSchedule",e);
+		}
+		return resultBean;
+	}
+	
+	/**
+	 * 未读个数
+	 */
+	@ResponseBody
+	@RequestMapping("/getUnReadCount")
+	public Object getUnReadCount(@RequestBody String paramString){
+		ResultBean<Object> resultBean = new ResultBean<>();
+		Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
+		try {
+			if(paramMap.containsKey("uid")){
+				//日程消息未读个数
+				Long count = schService.queryProjectScheduleCount(CUtils.get().object2Long(paramMap.get("uid")));
+				resultBean.setStatus("OK");
+				Map<String,Object> map = new HashMap<String,Object>();
+				map.put("count", count);
+				resultBean.setMap(map);
+			}
+		} catch (Exception e) {
+			log.error(ScheduleMessageController.class.getName() + "getUnReadCount",e);
+		}
+		return resultBean;
+	}
+	
+	/**
+	 * 消息 已读按时间
+	 */
+	@ResponseBody
+	@RequestMapping("/toReadByTime")
+	public Object toReadByTime(@RequestBody String paramString){
+		ResultBean<Object> resultBean = new ResultBean<>();
+		Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
+		try {
+			if(paramMap.containsKey("time")){
+				paramMap.put("isRead", 1);
+				paramMap.put("updatedTime", new Date().getTime());
+				long count = service.updateToRead(paramMap);
+				if (count>0) {
+					resultBean.setStatus("OK");
+				}
+			}
+		} catch (Exception e) {
+			log.error(ScheduleMessageController.class.getName() + "toReadByTime",e);
 		}
 		return resultBean;
 	}

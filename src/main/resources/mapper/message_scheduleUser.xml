@@ -104,10 +104,15 @@
 	<update id="updateToRead" parameterType="hashmap">
 		update schedule_message_user 
 		<set>
-		<if test="isRead != null" >is_read = #{isRead},</if>
-		<if test="updatedTime != null" >updated_time = #{updatedTime}</if>
+			<if test="isRead != null" >is_read = #{isRead},</if>
+			<if test="updatedTime != null" >updated_time = #{updatedTime}</if>
 		</set>
-		where id=#{id};
+		<where>
+			<trim prefixOverrides="and">
+				<if test="id != null" > and id = #{id}  </if>
+				<if test="time != null" > and created_time &lt;= #{time}  </if>
+			</trim>
+		</where>
 	</update>
 	
 	

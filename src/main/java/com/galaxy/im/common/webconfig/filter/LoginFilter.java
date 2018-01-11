@@ -22,6 +22,8 @@ import com.galaxy.im.common.configuration.DataSourceContextHolder;
 import com.galaxy.im.common.configuration.DataSourceEnum;
 
 public class LoginFilter implements Filter{
+	
+	private static String[] excludes;
 
 	public void destroy() {
 	}
@@ -40,6 +42,19 @@ public class LoginFilter implements Filter{
 		if (userObj == null) {
 			cache.remove(sessionId);
 		}*/
+		
+		String uri = request.getRequestURI();
+		if(uri != null && excludes != null && excludes.length > 0)
+		{
+			for(String exclude : excludes)
+			{
+				if(uri.indexOf(exclude)>-1)
+				{
+					filterChain.doFilter(req, resp);
+					return;
+				}
+			}
+		}
 		
 		boolean flag = false;
 		ServletRequest requestWrapper = null;  
@@ -80,6 +95,11 @@ public class LoginFilter implements Filter{
 		}
 	}
 
-	public void init(FilterConfig arg0) throws ServletException {
+	public void init(FilterConfig config) throws ServletException {
+		String excludeStr = config.getInitParameter("excludes");
+		if(excludeStr != null)
+		{
+			excludes = excludeStr.split(",");
+		}
 	}
 }

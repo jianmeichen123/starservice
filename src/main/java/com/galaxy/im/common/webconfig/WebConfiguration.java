@@ -3,10 +3,12 @@ package com.galaxy.im.common.webconfig;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.galaxy.im.common.webconfig.filter.LoginFilter;
@@ -14,6 +16,9 @@ import com.galaxy.im.common.webconfig.servlet.OneServlet;
 
 @Configuration
 public class WebConfiguration extends WebMvcConfigurerAdapter{
+	@Autowired
+	private Environment env;
+	
 	/**
 	 * 设置servlet，如果设置多个请重复如下代码即可,filter及listener同样
 	 * @return
@@ -43,6 +48,7 @@ public class WebConfiguration extends WebMvcConfigurerAdapter{
 		urlPatterns.add("/*");//拦截路径，可以添加多个
 		registrationBean.setUrlPatterns(urlPatterns);
 		registrationBean.setOrder(1);
+		registrationBean.addInitParameter("excludes", env.getProperty("web.loginFilter.excludes"));
 		return registrationBean;
 	}
 	

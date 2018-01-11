@@ -6,3 +6,7 @@ spring:
 mybatis: 
   typeAliasesPackage: com.bobycloud.im.bean
   mapperLocations: classpath:mapper/*.xml
+  
+web:
+  loginFilter:
+    excludes: /galaxy/schedule/message/saveSchedule,/galaxy/schedule/message/getUnReadCount,/galaxy/schedule/message/toReadByTime
