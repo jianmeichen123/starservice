@@ -351,7 +351,7 @@ public class ScheduleMessageController {
 		ResultBean<Object> resultBean = new ResultBean<>();
 		Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 		try {
-			if(paramMap.containsKey("time")){
+			if(paramMap.containsKey("time") && paramMap.containsKey("uid")){
 				paramMap.put("isRead", 1);
 				paramMap.put("updatedTime", new Date().getTime());
 				long count = service.updateToRead(paramMap);

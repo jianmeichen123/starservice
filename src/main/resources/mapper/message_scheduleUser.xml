@@ -111,6 +111,7 @@
 			<trim prefixOverrides="and">
 				<if test="id != null" > and id = #{id}  </if>
 				<if test="time != null" > and created_time &lt;= #{time}  </if>
+				<if test="uid != null" > and uid = #{uid}  </if>
 			</trim>
 		</where>
 	</update>
