@@ -10,6 +10,7 @@ public class MessageVo extends PagableEntity{
 	
 	private String messageType;		//消息类型
 	private List<String> ids;		//ids:项目id，代办任务id等
+	private Long userId;			//当前操作人id
 	
 	public String getMessageType() {
 		return messageType;
@@ -25,6 +26,14 @@ public class MessageVo extends PagableEntity{
 
 	public void setIds(List<String> ids) {
 		this.ids = ids;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 	
 }

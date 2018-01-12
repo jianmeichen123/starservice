@@ -29,11 +29,9 @@ import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.message.service.IScheduleMessageService;
 import com.galaxy.im.business.rili.service.IScheduleService;
 import com.galaxy.im.business.soptask.service.ISopTaskService;
-import com.galaxy.im.common.BeanUtils;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
-import com.galaxy.im.common.cache.redis.RedisCacheImpl;
 import com.galaxy.im.common.db.QPage;
 import com.galaxy.im.common.html.QHtmlClient;
 /**
@@ -170,23 +168,27 @@ public class ScheduleMessageController {
 		ResultBean<Object> resultBean = new ResultBean<>();
 		try {
 			//获取登录用户信息
-			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
+			/*SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 			if (sessionBean==null) {
 				resultBean.setMessage("获取用户信息失败");
-			}
+			}*/
 			long deptId=0l;
+			String userName="";
+			String userDeptName="";
 			//获取用户所属部门id
-			List<Map<String, Object>> list = fcService.getDeptId(sessionBean.getGuserid(),request,response);
+			List<Map<String, Object>> list = fcService.getDeptId(messageVo.getUserId(),request,response);
 			if(list!=null){
 				for(Map<String, Object> vMap:list){
 					deptId= CUtils.get().object2Long( vMap.get("deptId"));
+					userName=CUtils.get().object2String(vMap.get("userName"));
+					userDeptName=CUtils.get().object2String(vMap.get("deptName"));
 				}
 			}
 			
 			
-			@SuppressWarnings("unchecked")
+			/*@SuppressWarnings("unchecked")
 			RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
-			Map<String, Object> user = BeanUtils.toMap(cache.get(sessionBean.getSessionid()));
+			Map<String, Object> user = BeanUtils.toMap(cache.get("realName"));*/
 			
 			List<Map<String, Object>> userList=new ArrayList<Map<String, Object>>();
 			List<String> ids= messageVo.getIds();
@@ -202,9 +204,9 @@ public class ScheduleMessageController {
 					
 				    sopBean = fcService.getSopProjectInfo(paramMap);
 					sopBean.setMessageType(messageVo.getMessageType());
-					sopBean.setUserId(sessionBean.getGuserid());
-					sopBean.setUserName(CUtils.get().object2String(user.get("realName")));
-					sopBean.setUserDeptName(CUtils.get().object2String(user.get("departmentName")));
+					sopBean.setUserId(messageVo.getUserId());
+					sopBean.setUserName(userName);
+					sopBean.setUserDeptName(userDeptName);
 					paramMap.put("projectName", sopBean.getProjectName());
 					projects.add(paramMap);
 				}
@@ -233,9 +235,8 @@ public class ScheduleMessageController {
 						sopTask.setProjectName(sopBean.getProjectName());
 						sopTask.setUsers(userList);
 						sopTask.setMessageType("1.2.5");
-						sopTask.setAssignUname(CUtils.get().object2String(user.get("userName")));
-						sopTask.setCreatedId(sessionBean.getGuserid());
-						sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
+						sopTask.setCreatedId(messageVo.getUserId());
+						sopTask.setUserName(userName);
 					}
 				}else if(messageVo.getMessageType().equals("1.2.6")){
 					//股权交割
@@ -256,9 +257,8 @@ public class ScheduleMessageController {
 						sopTask.setProjectName(sopBean.getProjectName());
 						sopTask.setUsers(userList);
 						sopTask.setMessageType("1.2.6");
-						sopTask.setAssignUname(CUtils.get().object2String(user.get("userName")));
-						sopTask.setCreatedId(sessionBean.getGuserid());
-						sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
+						sopTask.setCreatedId(messageVo.getUserId());
+						sopTask.setUserName(userName);
 					}
 				}else{
 					//代办任务的认领，移交，指派，放弃
@@ -281,7 +281,7 @@ public class ScheduleMessageController {
 								//操作
 								mList =CUtils.get().jsonString2list(rr);
 								for(Map<String, Object> map:mList){
-									if(!CUtils.get().object2String(map.get("userId")).equals(CUtils.get().object2String(sessionBean.getGuserid()))){
+									if(!CUtils.get().object2String(map.get("userId")).equals(CUtils.get().object2String(messageVo.getUserId()))){
 										userList.add(map);
 									}
 								}
@@ -298,8 +298,8 @@ public class ScheduleMessageController {
 						sopBean = fcService.getSopProjectInfo(paramMap);
 						
 						sopTask.setMessageType(messageVo.getMessageType());
-						sopTask.setCreatedId(sessionBean.getGuserid());
-						sopTask.setUserName(CUtils.get().object2String(user.get("realName")));
+						sopTask.setCreatedId(messageVo.getUserId());
+						sopTask.setUserName(userName);
 						paramMap.put("projectName", sopBean.getProjectName());
 						paramMap.put("projectCreatedId", sopBean.getCreateUid());
 						paramMap.put("projectCreatedName", sopBean.getCreateUname());
