@@ -437,7 +437,7 @@
 		LEFT JOIN dict d4 on f.file_status=d4.dict_code
 		LEFT JOIN v_user u on u.id=f.file_uid
 		LEFT JOIN v_department d on f.career_line=d.id
-		WHERE f.project_id=#{projectId} and f.file_worktype=#{fileWorkType} and f.file_valid=1
+		WHERE f.project_id=#{projectId} and f.file_worktype=#{fileWorkType}
 		ORDER BY f.created_time DESC LIMIT 1;
 	</select>
 	
