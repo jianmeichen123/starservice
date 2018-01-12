@@ -165,9 +165,14 @@ public class ProjectController {
 			if(nullMap!=null && !nullMap.isEmpty()){
 				resultMap.put("nullMap", nullMap);
 			}
-			
-			result.setEntity(resultMap);
-			result.setStatus("OK");
+			if(resultMap!=null &&!resultMap.isEmpty()){
+				result.setEntity(resultMap);
+				result.setStatus("OK");
+				result.setFlag(0);
+			}else{
+				result.setStatus("OK");
+				result.setFlag(1);
+			}
 			
 		}catch(Exception e){
 			log.error(ProjectController.class.getName() + "getBaseProjectInfo",e);
