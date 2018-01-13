@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.galaxy.im.bean.Test;
 import com.galaxy.im.bean.meeting.MeetingSchedulingBo;
+import com.galaxy.im.bean.project.MeetingScheduling;
 import com.galaxy.im.common.BeanUtils;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.db.BaseDaoImpl;
@@ -150,6 +151,21 @@ public class MeetingSchedulingDaoImpl extends BaseDaoImpl<Test, Long> implements
 			return sqlSessionTemplate.selectList(sqlName,params);
 		} catch (Exception e) {
 			log.error(MeetingSchedulingDaoImpl.class.getName() + "selectDayScheduling",e);
+			throw new DaoException(e);
+		}
+	}
+
+	/**
+	 * 更新
+	 */
+	@Override
+	public int updateMeetingScheduling(MeetingScheduling sch) {
+		try {
+			Map<String, Object> params = BeanUtils.toMap(sch);
+			String sqlName = "com.galaxy.im.business.meeting.dao.IMeetingSchedulingDao.updateMeetingScheduling";
+			return sqlSessionTemplate.update(sqlName,params);
+		} catch (Exception e) {
+			log.error(MeetingSchedulingDaoImpl.class.getName() + "updateMeetingScheduling",e);
 			throw new DaoException(e);
 		}
 	}

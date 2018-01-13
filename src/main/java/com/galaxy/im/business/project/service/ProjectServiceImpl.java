@@ -14,6 +14,7 @@ import com.galaxy.im.bean.meeting.MeetingRecordBean;
 import com.galaxy.im.bean.project.GeneralProjecttVO;
 import com.galaxy.im.bean.project.InformationListdata;
 import com.galaxy.im.bean.project.InformationResult;
+import com.galaxy.im.bean.project.MeetingScheduling;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.ProjectBo;
 import com.galaxy.im.bean.project.ProjectTransfer;
@@ -25,6 +26,7 @@ import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.business.common.dict.dao.IDictDao;
 import com.galaxy.im.business.flow.common.dao.IFlowCommonDao;
 import com.galaxy.im.business.meeting.dao.IMeetingRecordDao;
+import com.galaxy.im.business.meeting.dao.IMeetingSchedulingDao;
 import com.galaxy.im.business.project.dao.IProjectDao;
 import com.galaxy.im.business.project.dao.ISopProjectDao;
 import com.galaxy.im.business.sopfile.dao.ISopFileDao;
@@ -58,6 +60,8 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 	IProjectTalkDao talkDao;
 	@Autowired
 	ISopTaskDao taskDao;
+	@Autowired
+	IMeetingSchedulingDao schDao;
 
 	@Override
 	protected IBaseDao<ProjectBean, Long> getBaseDao() {
@@ -501,6 +505,12 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 		task.setProjectId(bean.getId());
 		task.setIsDelete(1);
 		taskDao.applyTask(task);
+		
+		//会议排期修改
+		MeetingScheduling sch = new MeetingScheduling();
+		sch.setProjectId(bean.getId());
+		sch.setIsDelete(1);
+		schDao.updateMeetingScheduling(sch);
 	}
 	
 }

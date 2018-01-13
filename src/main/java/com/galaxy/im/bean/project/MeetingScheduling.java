@@ -20,6 +20,7 @@ public class MeetingScheduling extends PagableEntity {
 	private Timestamp lastTime;					//上次过会时间
 	private Timestamp reserveTimeStart;			//排期预约开始时间
 	private Timestamp reserveTimeEnd;			//排期预约结束时间
+	private Integer isDelete;					//删除标识： 0：正常；1：删除
 	
 	public Long getProjectId() {
 		return projectId;
@@ -86,6 +87,12 @@ public class MeetingScheduling extends PagableEntity {
 	}
 	public void setReserveTimeEnd(Timestamp reserveTimeEnd) {
 		this.reserveTimeEnd = reserveTimeEnd;
+	}
+	public Integer getIsDelete() {
+		return isDelete;
+	}
+	public void setIsDelete(Integer isDelete) {
+		this.isDelete = isDelete;
 	}
 	
 	
