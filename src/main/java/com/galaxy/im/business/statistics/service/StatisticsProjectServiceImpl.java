@@ -174,6 +174,7 @@ public class StatisticsProjectServiceImpl extends BaseServiceImpl<Test> implemen
 			Double  rateChange =  (monthSum-lastMonthSum) /  lastMonthTotal$D * 100 ;	 
 			String rc = new java.text.DecimalFormat("0.00").format(rateChange);
 			rateChange = Double.valueOf(rc);
+			mpView.setNpSpecialValue(true); 
 			if(lastMonthSum==monthSum){
 				mpView.setNpUnchanged(true);
 				mpView.setNpResult("环比持平");
@@ -187,6 +188,7 @@ public class StatisticsProjectServiceImpl extends BaseServiceImpl<Test> implemen
 		}else{
 			mpView.setNewProjectSum(monthSum);  	      
 		    mpView.setNpSpecialValue(true); 
+		    mpView.setNpResult("");
 		}
 	     
 		queryMap.put("projectType", StaticConst.PROJECT_TYPE_2);
@@ -200,7 +202,7 @@ public class StatisticsProjectServiceImpl extends BaseServiceImpl<Test> implemen
 		    Double  insRateChange =  (insMonthSum-insLastMonthSum)  /  insLastMonthTotal$D * 100 ;
 		    String irc = new java.text.DecimalFormat("0.00").format(insRateChange);
 		    insRateChange = Double.valueOf(irc);
-		      
+		    mpView.setInpSpecialValue(true);
 		    if(insLastMonthSum==insMonthSum){
 		    	mpView.setiNpUnchanged(true);
 		    	mpView.setiNpResult("环比持平");
@@ -214,6 +216,7 @@ public class StatisticsProjectServiceImpl extends BaseServiceImpl<Test> implemen
 		}else{
 			mpView.setInsideNewProjectSum(insMonthSum);
 			mpView.setInpSpecialValue(true);
+			mpView.setiNpResult("");
 		}
 		     		    
 		  queryMap.remove("projectType");
@@ -228,7 +231,7 @@ public class StatisticsProjectServiceImpl extends BaseServiceImpl<Test> implemen
 			      Double  extRateChange =  (extMonthSum-extLastMonthSum)  /  extLastMonthTotal$D * 100 ;			      
 			      String erc = new java.text.DecimalFormat("0.00").format(extRateChange);
 			      extRateChange = Double.valueOf(erc);
-			      
+			      mpView.setEnpSpecialValue(true);
 			      if(extLastMonthSum==extMonthSum){
 			    	  mpView.seteNpUnchanged(true);
 			    	  mpView.seteNpResult("环比持平");
@@ -242,6 +245,7 @@ public class StatisticsProjectServiceImpl extends BaseServiceImpl<Test> implemen
 			}else{
 				mpView.setExternalNewProjectSum(extMonthSum);
 				mpView.setEnpSpecialValue(true);
+				mpView.seteNpResult("");
 			}		      
 	    return BeanUtils.toMap(mpView);
 	}
