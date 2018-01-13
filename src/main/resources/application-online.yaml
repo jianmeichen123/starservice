@@ -33,9 +33,9 @@ spring:
     max-idle: 8
     min-idle: 0
     timeout: 0
-   
+
 power:
-  server: http://fxnew.galaxyinternet.com/authority_service/
+  server: http://fx.galaxyinternet.com/authority_service/
   
 cluster: 
   zk:
