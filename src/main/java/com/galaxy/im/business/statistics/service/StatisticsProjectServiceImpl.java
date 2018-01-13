@@ -174,7 +174,7 @@ public class StatisticsProjectServiceImpl extends BaseServiceImpl<Test> implemen
 			Double  rateChange =  (monthSum-lastMonthSum) /  lastMonthTotal$D * 100 ;	 
 			String rc = new java.text.DecimalFormat("0.00").format(rateChange);
 			rateChange = Double.valueOf(rc);
-			if(lastMonthSum==monthSum){
+			if(lastMonthSum.longValue()==monthSum.longValue()){
 				mpView.setNpUnchanged(true);
 				mpView.setNpResult("环比持平");
 			}else if(lastMonthSum>monthSum){
@@ -201,7 +201,7 @@ public class StatisticsProjectServiceImpl extends BaseServiceImpl<Test> implemen
 		    Double  insRateChange =  (insMonthSum-insLastMonthSum)  /  insLastMonthTotal$D * 100 ;
 		    String irc = new java.text.DecimalFormat("0.00").format(insRateChange);
 		    insRateChange = Double.valueOf(irc);
-		    if(insLastMonthSum==insMonthSum){
+		    if(insLastMonthSum.longValue()==insMonthSum.longValue()){
 		    	mpView.setiNpUnchanged(true);
 		    	mpView.setiNpResult("环比持平");
 		    }else if(insLastMonthSum>insMonthSum){
@@ -229,7 +229,7 @@ public class StatisticsProjectServiceImpl extends BaseServiceImpl<Test> implemen
 			      Double  extRateChange =  (extMonthSum-extLastMonthSum)  /  extLastMonthTotal$D * 100 ;			      
 			      String erc = new java.text.DecimalFormat("0.00").format(extRateChange);
 			      extRateChange = Double.valueOf(erc);
-			      if(extLastMonthSum==extMonthSum){
+			      if(extLastMonthSum.longValue()==extMonthSum.longValue()){
 			    	  mpView.seteNpUnchanged(true);
 			    	  mpView.seteNpResult("环比持平");
 			      }else if(extLastMonthSum>extMonthSum){
