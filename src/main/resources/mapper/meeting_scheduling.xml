@@ -29,7 +29,7 @@
 		from sop_meeting_scheduling s
 		LEFT JOIN sop_project p on s.project_id=p.id and p.is_delete=0
 		LEFT JOIN dict d on s.meeting_type=d.dict_code
-		WHERE s.project_id in
+		WHERE s.is_delete=0 and s.project_id in
 			( SELECT id 
 			  FROM sop_project 
 			  <where>
@@ -74,7 +74,7 @@
 		select count(1)
 		from sop_meeting_scheduling s
 		LEFT JOIN sop_project p on s.project_id=p.id and p.is_delete=0
-		WHERE s.project_id in
+		WHERE s.is_delete=0 and s.project_id in
 			( SELECT id 
 			  FROM sop_project 
 			  <where>
@@ -113,7 +113,7 @@
 	 <select id="selectpdCount" resultType="java.lang.Long" parameterType="java.util.Map">		
 		 SELECT COUNT(id) 
 		 FROM sop_meeting_scheduling sms 
-		 WHERE 
+		 WHERE sms.is_delete=0 and 
 		  sms.meeting_type='meetingType:2' 
 		 AND
 		 sms.schedule_status='0'
@@ -126,7 +126,7 @@
 	<select id="selectltpdCount" resultType="java.lang.Long" parameterType="java.util.Map">		
 		 SELECT COUNT(id) 
 		 FROM sop_meeting_scheduling sms 
-		 WHERE 
+		 WHERE sms.is_delete=0 and 
 		  sms.meeting_type &lt;&gt; 'meetingType:2' 
 		 AND
 		 sms.schedule_status='0'
@@ -147,7 +147,7 @@
 	<select id="selectMonthScheduling" resultMap="PageResultMap" parameterType="java.util.Map">
 		select p.project_name,sm.id,sm.reserve_time_start,sm.meeting_type,sm.reserve_time_end,sm.project_id
 			FROM sop_meeting_scheduling sm , sop_project p
-			WHERE sm.project_id = p.id and p.is_delete=0
+			WHERE sm.project_id = p.id and p.is_delete=0 and sm.is_delete=0
 			AND sm.schedule_status=1 
 			<if test="uid != null"> and p.create_uid = #{uid} </if>
 			<if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
@@ -159,7 +159,7 @@
 	  select count(id) from (
 	  	select p.project_name,sm.id,sm.reserve_time_start,sm.meeting_type,sm.reserve_time_end,sm.project_id
 			FROM sop_meeting_scheduling sm , sop_project p
-			WHERE sm.project_id = p.id and p.is_delete=0
+			WHERE sm.project_id = p.id and p.is_delete=0 and sm.is_delete=0
 			AND sm.schedule_status=1 
 			<if test="uid != null"> and p.create_uid = #{uid} </if>
 			<if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
@@ -178,7 +178,7 @@
 		sm.meeting_type ,sm.reserve_time_end ,sm.project_id ,d.name  
 		FROM sop_meeting_scheduling sm , sop_project p, dict d
 		WHERE sm.project_id = p.id and sm.meeting_type = d.dict_code
-		AND sm.schedule_status=1 and p.is_delete=0
+		AND sm.schedule_status=1 and p.is_delete=0 and sm.is_delete=0
 		<if test="uid != null"> and p.create_uid = #{uid} </if>
 		<if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
 		AND sm.reserve_time_start BETWEEN STR_TO_DATE(CONCAT(#{dateTime} , ' 00:00:00') ,'%Y-%m-%d %H:%i:%s' )
@@ -186,18 +186,14 @@
 	</select>
 	
 	<!-- 更新 -->
-	<update id="delPostMeetingFile" parameterType="hashmap">
-		update sop_file
+	<update id="updateMeetingScheduling" parameterType="hashmap">
+		update sop_meeting_scheduling
 		<set>
-			<if test="fileValid != null" >file_valid = #{fileValid}, </if>
-		 	<if test="updatedTime != null" >updated_time = #{updatedTime}, </if>
-		 	<if test="careerLine != null" >career_line = #{careerLine} </if>
+			<if test="isDelete != null" >is_delete = #{isDelete}, </if>
+		 	<if test="updatedTime != null" >updated_time = #{updatedTime} </if>
 		</set>
 		<where>
 			<trim prefixOverrides="and">
-				<if test="interviewRecordId != 0">and interview_record_id=#{interviewRecordId}</if>
-				<if test="meetingId != null"> and meeting_id =#{meetingId} </if>
-				<if test="fileKey != null" >and file_key = #{fileKey} </if>
 				<if test="projectId != null" >and project_id = #{projectId} </if>
 			</trim>
 		</where>

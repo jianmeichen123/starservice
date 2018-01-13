@@ -510,6 +510,7 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 		MeetingScheduling sch = new MeetingScheduling();
 		sch.setProjectId(bean.getId());
 		sch.setIsDelete(1);
+		sch.setUpdatedTime(new Date().getTime());
 		schDao.updateMeetingScheduling(sch);
 	}
 	

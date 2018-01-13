@@ -57,7 +57,7 @@
 	<select id="selectTZJLScheduleCount" resultMap="countResultMap" parameterType="java.lang.Long">
 		select meeting_type,count(meeting_type) as number
 		from sop_meeting_scheduling 
-		where project_id in(
+		where is_delete=0 and project_id in(
 			select id from sop_project where is_delete=0 and create_uid =  #{uid}
 			)  
 		and schedule_status = 1 and date(reserve_time_start)= date(now())
@@ -68,7 +68,7 @@
 	<select id="selectHHRScheduleCount" resultMap="countResultMap" parameterType="java.lang.Long">
 		select meeting_type,count(meeting_type) as number 
 		from sop_meeting_scheduling 
-		where project_id in(
+		where is_delete=0 and project_id in(
 			select id from sop_project where and is_delete=0 and create_uid in (
 				select id from platform_user where department_id = (
 					select department_id from platform_user where id=#{uid}  
@@ -83,7 +83,7 @@
 	<select id="selectCEOScheduleCount" resultMap="countResultMap" parameterType="java.lang.Long">
 		select meeting_type ,count(meeting_type) as number
 		from sop_meeting_scheduling  
-		where schedule_status = 1 and date(reserve_time_start)= date(now())
+		where is_delete=0 and schedule_status = 1 and date(reserve_time_start)= date(now())
 		group by meeting_type;
 	</select>
 	
