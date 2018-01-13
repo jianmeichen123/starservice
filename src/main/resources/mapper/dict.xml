@@ -96,8 +96,11 @@
 	
 	<!-- 融资状态 -->
 	<select id="getFinanceStatusList" parameterType="hashmap" resultType="hashmap">
-		SELECT d.id,d.name name ,d.code code FROM information_title_relate r
+		SELECT d.id,d.name name ,d.code code,dept.`name` deptName
+		FROM information_title_relate r
 		LEFT JOIN information_dictionary d on r.title_id=d.title_id
+		LEFT JOIN v_rel_dep_user du on d.code=du.user_id
+		LEFT JOIN v_department dept on dept.id=du.dep_id
 		WHERE r.code=#{parentCode} 
 		<if test="uName !=null and uName !='null' and uName !=''">
 			and d.name like concat(concat('%','${uName}'),'%')
