@@ -97,6 +97,7 @@ public class SopProjectBean extends PagableEntity {
     private String userDeptName;		//用户事业线
     
     private List<Map<String, Object>> projects;	//项目名称，项目id
+    private List<Map<String, Object>> users;    //部门下所有人，名称
     
 	public Long getIdeaId() {
 		return ideaId;
@@ -556,6 +557,12 @@ public class SopProjectBean extends PagableEntity {
 	}
 	public void setUserDeptName(String userDeptName) {
 		this.userDeptName = userDeptName;
+	}
+	public List<Map<String, Object>> getUsers() {
+		return users;
+	}
+	public void setUsers(List<Map<String, Object>> users) {
+		this.users = users;
 	}
 	
 }

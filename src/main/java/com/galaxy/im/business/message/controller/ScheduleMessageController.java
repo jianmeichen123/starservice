@@ -29,9 +29,11 @@ import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.message.service.IScheduleMessageService;
 import com.galaxy.im.business.rili.service.IScheduleService;
 import com.galaxy.im.business.soptask.service.ISopTaskService;
+import com.galaxy.im.common.BeanUtils;
 import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
+import com.galaxy.im.common.cache.redis.RedisCacheImpl;
 import com.galaxy.im.common.db.QPage;
 import com.galaxy.im.common.html.QHtmlClient;
 /**
@@ -361,6 +363,37 @@ public class ScheduleMessageController {
 			}
 		} catch (Exception e) {
 			log.error(ScheduleMessageController.class.getName() + "toReadByTime",e);
+		}
+		return resultBean;
+	}
+	
+	/**
+	 * 分享项目，消息推送
+     */
+	@ResponseBody
+	@RequestMapping("/toMessageShareProject")
+	public Object toMessageShareProject(HttpServletRequest request,HttpServletResponse response,@RequestBody SopProjectBean sopBean){
+		
+		ResultBean<Object> resultBean = new ResultBean<>();
+		try {
+			//获取登录用户信息
+			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
+			if (sessionBean==null) {
+				resultBean.setMessage("获取用户信息失败");
+			}
+			
+			@SuppressWarnings("unchecked")
+			RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
+			Map<String, Object> user = BeanUtils.toMap(cache.get(sessionBean.getSessionid()));
+			
+			//项目
+			sopBean.setMessageType("1.1.4");
+			sopBean.setUserId(sessionBean.getGuserid());
+			sopBean.setUserName(CUtils.get().object2String(user.get("realName")));
+			messageService.operateMessageSopTaskInfo(sopBean,sopBean.getMessageType());
+			resultBean.setStatus("OK");
+		} catch (Exception e) {
+			log.error(ScheduleMessageController.class.getName() + "toMessageShareProject",e);
 		}
 		return resultBean;
 	}
