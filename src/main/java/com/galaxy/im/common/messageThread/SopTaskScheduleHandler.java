@@ -191,14 +191,14 @@ public class SopTaskScheduleHandler implements SopTaskScheduleMessageHandler
 	//初始化消息公用部分 model:代办任务。flag：区分是接收人，项目创建人，部门所有人，map：多选择
 	private ScheduleMessageBean getScheduleMessageInfo(SopTask model,int flag, Map<String, Object> map) {
 		ScheduleMessageBean message = new ScheduleMessageBean();
-		Long info_id = model.getId();
+		//Long info_id = model.getId();
 		
 		message.setStatus((byte) 1);    // 0:可用 1:禁用  2:删除
 		//0:操作消息  1:系统消息
 		message.setCategory((byte) 1);  
 		//消息类型
 		message.setType(model.getMessageType());         
-		message.setRemarkId(info_id);
+		message.setRemarkId(CUtils.get().object2String(model.getId()));
 		message.setCreatedUid(model.getCreatedId());
 		message.setCreatedUname(model.getUserName());
 		

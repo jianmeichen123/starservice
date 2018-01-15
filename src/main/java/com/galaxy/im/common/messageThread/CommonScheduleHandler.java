@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.galaxy.im.bean.message.ScheduleMessageBean;
 import com.galaxy.im.bean.message.ScheduleMessageUserBean;
 import com.galaxy.im.bean.schedule.ScheduleInfo;
+import com.galaxy.im.common.CUtils;
 
 
 @Component
@@ -51,12 +52,12 @@ public class CommonScheduleHandler implements ScheduleMessageHandler
 		}
 		byte isAllday = model.getIsAllday(); //是否全天 0:否 1:是
 		Long dictId = model.getWakeupId();
-		Long info_id = model.getId();
+		//Long info_id = model.getId();
 		
 		//消息内容
 		message.setCategory((byte) 0);  				 // 0:操作消息  1:系统消息
 		message.setType(model.getMessageType());         // 消息类型  日程(1.1:会议  1.2:拜访  1.3:其它)
-		message.setRemarkId(info_id);
+		message.setRemarkId(CUtils.get().object2String(model.getId()));
 		message.setCreatedUid(model.getCreatedId());
 		message.setCreatedUname(model.getUserName());
 		

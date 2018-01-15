@@ -11,7 +11,7 @@ public class ScheduleMessageBean extends PagableEntity{
 	private byte category; //0:操作消息 1:系统消息
 
 	private String type;   //消息类型  日程(1.1:会议  1.2:拜访  1.3:其它)
-	private Long remarkId;//存的是日程的id
+	private String remarkId;//存的是日程的id
 	
 	private String content; // 消息内容
 
@@ -50,14 +50,6 @@ public class ScheduleMessageBean extends PagableEntity{
 
 	public void setType(String type) {
 		this.type = type;
-	}
-
-	public Long getRemarkId() {
-		return remarkId;
-	}
-
-	public void setRemarkId(Long remarkId) {
-		this.remarkId = remarkId;
 	}
 	
 	public String getContent() {
@@ -147,6 +139,14 @@ public class ScheduleMessageBean extends PagableEntity{
 
 	public void setSendTimeNotNull(Boolean sendTimeNotNull) {
 		this.sendTimeNotNull = sendTimeNotNull;
+	}
+
+	public String getRemarkId() {
+		return remarkId;
+	}
+
+	public void setRemarkId(String remarkId) {
+		this.remarkId = remarkId;
 	}
 
 /*	@Override

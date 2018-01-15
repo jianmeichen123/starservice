@@ -18,6 +18,7 @@ import com.galaxy.im.bean.message.ScheduleMessageUserBean;
 import com.galaxy.im.bean.schedule.ScheduleInfo;
 import com.galaxy.im.business.message.dao.IScheduleMessageDao;
 import com.galaxy.im.business.message.dao.IScheduleMessageUserDao;
+import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.db.IBaseDao;
 import com.galaxy.im.common.db.QPage;
@@ -241,7 +242,7 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 					ScheduleMessageBean mq = new ScheduleMessageBean();
 					mq.setStatus((byte) 1);
 					mq.setType(mType);
-					mq.setRemarkId(info_model.getId());
+					mq.setRemarkId(CUtils.get().object2String(info_model.getId()));
 					List<ScheduleMessageBean> list =iScheduleMessageDao.selectMessageList(mq);
 					if(list.size()>0){
 						ScheduleMessageBean message = list.get(0);
@@ -321,7 +322,7 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 					ScheduleMessageBean mq = new ScheduleMessageBean();
 					mq.setStatus((byte) 1);
 					mq.setType(mType);
-					mq.setRemarkId(info_model.getId());
+					mq.setRemarkId(CUtils.get().object2String(info_model.getId()));
 					
 					List<ScheduleMessageBean> messagelist =iScheduleMessageDao.selectMessageList(mq);
 					

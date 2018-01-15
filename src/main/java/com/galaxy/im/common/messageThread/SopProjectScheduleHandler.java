@@ -110,7 +110,7 @@ public class SopProjectScheduleHandler implements SopTaskScheduleMessageHandler
 	private ScheduleMessageBean getScheduleMessageInfo(SopProjectBean model, Map<String, Object> map,int flag) {
 		ScheduleMessageBean message = new ScheduleMessageBean();
 			
-		message.setRemarkId(CUtils.get().object2Long(map.get("projectId")));
+		message.setRemarkId(CUtils.get().object2String(map.get("projectId")));
 		
 		message.setStatus((byte) 1);    // 0:可用 1:禁用  2:删除
 		//0:操作消息  1:系统消息
