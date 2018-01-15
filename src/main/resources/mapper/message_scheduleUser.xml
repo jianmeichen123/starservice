@@ -15,7 +15,7 @@
 		<result column="created_time" 	property="createdTime" jdbcType="BIGINT" />
 		<result column="updated_time" 	property="updatedTime" jdbcType="BIGINT" />
 		<result column="type" 			property="type" 		jdbcType="VARCHAR" />
-		<result column="remrk_id" 		property="remarkId" 	jdbcType="BIGINT" />
+		<result column="remrk_id" 		property="remarkId" 	jdbcType="VARCHAR" />
 		<result column="content" 		property="content" 		jdbcType="VARCHAR" />
 		<result column="send_time" 		property="sendTime" 	jdbcType="BIGINT" />
 	</resultMap>
