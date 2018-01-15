@@ -65,7 +65,7 @@ public class SopProjectScheduleHandler implements SopTaskScheduleMessageHandler
 				StringBuffer content = new StringBuffer();
 				ScheduleMessageBean message1 =getScheduleMessageInfo(model,map);
 				content.append("\"<uname>").append(model.getUserName()).append("</uname>\"(");
-				content.append("\"<dname>").append(model.getUserDeptName()).append("</dname>\")");
+				content.append("<dname>").append(model.getUserDeptName()).append("</dname>)");
 				content.append("将项目\"");
 				content.append("<pname>").append(CUtils.get().object2String(map.get("projectName"))).append("</pname>\"");
 				content.append("移交给你");
