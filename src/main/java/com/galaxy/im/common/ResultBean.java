@@ -11,6 +11,8 @@ public class ResultBean<T> {
 	private List<T> entityList;
 	private Object flag;
 	
+	private Long id;
+	
 	public ResultBean(){
 		this.status = "ERROR";
 		this.errorCode = -1;
@@ -67,6 +69,12 @@ public class ResultBean<T> {
 	}
 	public void setFlag(Object flag) {
 		this.flag = flag;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 }
