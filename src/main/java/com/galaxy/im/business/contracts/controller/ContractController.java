@@ -1,7 +1,9 @@
 package com.galaxy.im.business.contracts.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -79,6 +81,7 @@ public class ContractController {
 		try {
 			Long uid=0L;
 			Long id=0L;
+			Map<String,Object> map = new HashMap<String,Object>();
 			
 			if(bean.getName()!=null){
 				String pn = PingYinUtil.getPingYin(bean.getName());
@@ -94,6 +97,8 @@ public class ContractController {
 				uid = service.updatePerson(bean);	
 				if(uid>0){
 					resultBean.setStatus("OK");
+					map.put("id", uid);
+					resultBean.setMap(map);
 					resultBean.setId(uid);
 				}
 			}else{
@@ -104,6 +109,8 @@ public class ContractController {
 				id = service.savePerson(bean);	
 				if(id>0){
 					resultBean.setStatus("OK");
+					map.put("id", id);
+					resultBean.setMap(map);
 					resultBean.setId(id);
 				}
 			}
