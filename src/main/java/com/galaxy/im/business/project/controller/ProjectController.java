@@ -143,28 +143,32 @@ public class ProjectController {
 			paramMap.put("titleId9", 1120);
 			paramMap.put("titleId10", 1118);
 			paramMap.put("projectId", projectId);
-			//基础信息(数据来源 全息报告)
-			Map<String,Object> QXinfoMap = service.selectBaseProjectInfo(paramMap);
 			//基础信息(数据来源项目表)
 			Map<String,Object> infoMap = service.getBaseProjectInfo(projectId);
-			if( QXinfoMap!=null && !QXinfoMap.isEmpty()){
-				infoMap.putAll(QXinfoMap);
-			}
-			infoMap.put("projectYjz", service.projectIsYJZ(projectId));		//判断该项目是否处于移交中
-			resultMap.put("infoMap", infoMap);
+			
+			if(infoMap!=null && !infoMap.isEmpty()){
+				//基础信息(数据来源 全息报告)
+				Map<String,Object> QXinfoMap = service.selectBaseProjectInfo(paramMap);
+				if( QXinfoMap!=null && !QXinfoMap.isEmpty()){
+					infoMap.putAll(QXinfoMap);
+				}
+				infoMap.put("projectYjz", service.projectIsYJZ(projectId));		//判断该项目是否处于移交中
+				resultMap.put("infoMap", infoMap);
+					
+				//融资历史-最新一条
+				paramMap.put("isOne", "true");
+				List<Map<String,Object>> historyMap = fsService.getFinanceHistory(paramMap);
+				if(historyMap!=null && historyMap.size()>0){
+					resultMap.put("historyMap", historyMap.get(0));
+				}
 				
-			//融资历史-最新一条
-			paramMap.put("isOne", "true");
-			List<Map<String,Object>> historyMap = fsService.getFinanceHistory(paramMap);
-			if(historyMap!=null && historyMap.size()>0){
-				resultMap.put("historyMap", historyMap.get(0));
+				//用户画像等理否为空
+				Map<String,Object> nullMap = service.getProjectInoIsNull(projectId);
+				if(nullMap!=null && !nullMap.isEmpty()){
+					resultMap.put("nullMap", nullMap);
+				}
 			}
 			
-			//用户画像等理否为空
-			Map<String,Object> nullMap = service.getProjectInoIsNull(projectId);
-			if(nullMap!=null && !nullMap.isEmpty()){
-				resultMap.put("nullMap", nullMap);
-			}
 			if(resultMap!=null &&!resultMap.isEmpty()){
 				result.setEntity(resultMap);
 				result.setStatus("OK");
