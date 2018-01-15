@@ -99,6 +99,7 @@ public class ContractController {
 					resultBean.setStatus("OK");
 					map.put("id", uid);
 					resultBean.setMap(map);
+					resultBean.setId(uid);
 				}
 			}else{
 				//添加
@@ -110,6 +111,7 @@ public class ContractController {
 					resultBean.setStatus("OK");
 					map.put("id", id);
 					resultBean.setMap(map);
+					resultBean.setId(id);
 				}
 			}
 		}catch (Exception e) {
