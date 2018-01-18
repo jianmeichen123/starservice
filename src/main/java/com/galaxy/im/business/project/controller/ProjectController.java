@@ -676,7 +676,7 @@ public class ProjectController {
 				if(projectBo.getKeyword()!=null){
 					projectBo.setCeeword(projectBo.getKeyword().toUpperCase());
 				}
-				projectBo.setCreateUid(null);
+				//projectBo.setCreateUid(null);
 			}
 			
 			//查询列表
