@@ -27,18 +27,32 @@ public class UtilOper {
 				String beginTimeStr = timeMark.substring(timeMark.indexOf("<time>")+"<time>".length(), timeMark.indexOf("</time>"));
 				String timeFormat = DateUtil.convertTimeForSuchDay(beginTimeStr);
 				content = content.replace(timeMark, timeFormat).replace(nameMark, nameStr);
-			}else{
+			}else if(content.contains("msg")){
 				String uNameMark = content.substring(content.indexOf("<uname>"), content.indexOf("</uname>")+"</uname>".length());
 				String pNameMark = content.substring(content.indexOf("<pname>"), content.indexOf("</pname>")+"</pname>".length());
-				String dNameMark = content.substring(content.indexOf("<dname>"), content.indexOf("</dname>")+"</dname>".length());
 				String msgMark = content.substring(content.indexOf("<msg>"), content.indexOf("</msg>")+"</msg>".length());
 				
 				String msgStr = msgMark.substring(msgMark.indexOf("<msg>")+"<msg>".length(), msgMark.indexOf("</msg>"));
+				String uNameStr = uNameMark.substring(uNameMark.indexOf("<uname>")+"<uname>".length(), uNameMark.indexOf("</uname>"));
+				String pNameStr = pNameMark.substring(pNameMark.indexOf("<pname>")+"<pname>".length(), pNameMark.indexOf("</pname>"));
+				content = content.replace(uNameMark, uNameStr).replace(pNameMark, pNameStr).replace(msgMark, msgStr);
+			}else if(content.contains("dname")){
+				String uNameMark = content.substring(content.indexOf("<uname>"), content.indexOf("</uname>")+"</uname>".length());
+				String pNameMark = content.substring(content.indexOf("<pname>"), content.indexOf("</pname>")+"</pname>".length());
+				String dNameMark = content.substring(content.indexOf("<dname>"), content.indexOf("</dname>")+"</dname>".length());
+				
 				String dNameStr = dNameMark.substring(dNameMark.indexOf("<dname>")+"<dname>".length(), dNameMark.indexOf("</dname>"));
 				String uNameStr = uNameMark.substring(uNameMark.indexOf("<uname>")+"<uname>".length(), uNameMark.indexOf("</uname>"));
 				String pNameStr = pNameMark.substring(pNameMark.indexOf("<pname>")+"<pname>".length(), pNameMark.indexOf("</pname>"));
 				content = content.replace(uNameMark, uNameStr).replace(pNameMark, pNameStr)
-						.replace(dNameMark, dNameStr).replace(msgMark, msgStr);
+						.replace(dNameMark, dNameStr);
+			}else{
+				String uNameMark = content.substring(content.indexOf("<uname>"), content.indexOf("</uname>")+"</uname>".length());
+				String pNameMark = content.substring(content.indexOf("<pname>"), content.indexOf("</pname>")+"</pname>".length());
+				
+				String uNameStr = uNameMark.substring(uNameMark.indexOf("<uname>")+"<uname>".length(), uNameMark.indexOf("</uname>"));
+				String pNameStr = pNameMark.substring(pNameMark.indexOf("<pname>")+"<pname>".length(), pNameMark.indexOf("</pname>"));
+				content = content.replace(uNameMark, uNameStr).replace(pNameMark, pNameStr);
 			}
 		} catch (Exception e) {
 			return mess.getContent();
