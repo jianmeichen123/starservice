@@ -1,6 +1,7 @@
 package com.galaxy.im.business.message.controller;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,6 +50,21 @@ public class ScheduleMessageController {
 			paramMap.put("direction", "desc");
 			QPage page = service.queryPerMessAndConvertPage(paramMap);
 			if ( page!=null) {
+
+				List<Map<String,Object>> list =page.getDataList();
+				for(Map<String,Object> map :list){
+					if(map.containsKey("content")&&map.get("content")!=null){
+						String content=CUtils.get().object2String(map.get("content"));
+						if(content.contains("time")){
+							if(!content.contains(":")){
+								String strs[] = content.split("<time>");
+								String timsStrs[] = strs[1].split("</time>");
+								String newStr=strs[0]+"<time>"+timsStrs[0]+" 00:00"+"</time>"+timsStrs[1];
+								map.put("content", newStr);
+							}
+						}
+					}
+				}
 				resultBean.setStatus("OK");
 				resultBean.setEntity(page);
 			}
