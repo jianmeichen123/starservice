@@ -59,7 +59,7 @@ public class ScheduleMessageController {
 							if(!content.contains(":")){
 								String strs[] = content.split("<time>");
 								String timsStrs[] = strs[1].split("</time>");
-								String newStr=strs[0]+"<time>"+timsStrs[0]+" 00:00"+"</time>"+timsStrs[1];
+								String newStr=strs[0]+"<time>"+timsStrs[0]+" 09:00"+"</time>"+timsStrs[1];
 								map.put("content", newStr);
 							}
 						}
