@@ -63,4 +63,13 @@ public class RedisCacheImpl<K,V> implements IRedisCache<K,V>{
 			throw new RedisException(e);
 		}
 	}
+	
+	public void expire(K key,final long timeout, final TimeUnit unit) {
+		try{
+			redisTemplate.expire(key, timeout, unit);
+		}catch(Exception e){
+			log.error(RedisCacheImpl.class.getName() + "_expire",e);
+			throw new RedisException(e);
+		}
+	}
 }

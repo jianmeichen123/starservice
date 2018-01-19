@@ -2,6 +2,7 @@ package com.galaxy.im.common.webconfig.filter;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -75,6 +76,7 @@ public class LoginFilter implements Filter{
 			if(sessionId!=null && cache.hasKey(sessionId)){
 				if(CUtils.get().stringIsNotEmpty(cache.get(sessionId))){
 					flag = true;
+					cache.expire(sessionId,StaticConst.SESSIONID_IN_REDIS_TIMEOUT_SECONDS,TimeUnit.SECONDS);
 				}
 			}
 			

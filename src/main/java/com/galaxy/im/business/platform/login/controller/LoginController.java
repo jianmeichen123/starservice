@@ -84,7 +84,7 @@ public class LoginController {
 						user.setDepartmentName(CUtils.get().object2String(map.get("departmentName")));
 						user.setRole(CUtils.get().object2String(map.get("roleName")));
 						user.setSessionId(sessionId);
-						cache.put(sessionId, user); 
+						cache.put(sessionId, user,StaticConst.SESSIONID_IN_REDIS_TIMEOUT_SECONDS,TimeUnit.SECONDS); 
 
 						//request.getSession().setAttribute(StaticConst.SESSION_USER_KEY, user);
 						

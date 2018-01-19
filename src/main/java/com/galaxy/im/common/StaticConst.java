@@ -46,6 +46,7 @@ public class StaticConst {
 	
 	
 	public final static Long TOKEN_IN_REDIS_TIMEOUT_SECONDS = 60 * 60L;		//Token（防止重复提交）	的Redis过期时间
+	public final static Long SESSIONID_IN_REDIS_TIMEOUT_SECONDS = 2 * 60 * 60L;	//sessionId（防止重复提交）	的Redis过期时间
 	public final static String TOKEN_REMOVE_KEY = "token_remove";
 	
 	
