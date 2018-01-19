@@ -21,10 +21,10 @@ public abstract class BaseGalaxyTask implements GalaxyTask {
 			return;
 		}
 		
-		/*if(leaderSelector != null && !leaderSelector.isLeader()){
+		if(leaderSelector != null && !leaderSelector.isLeader()){
 			logger.info(String.format("当前节点[ID=%s]不是Leader节点[LeaderId=%s]", leaderSelector.getId(),leaderSelector.getLeaderId()));
 			return;
-		}*/
+		}
 		
 		
 		String jobName = this.getClass().getName();
