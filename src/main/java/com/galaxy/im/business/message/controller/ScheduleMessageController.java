@@ -78,8 +78,7 @@ public class ScheduleMessageController {
 			paramMap.put("direction", "desc");
 			QPage page = service.queryPerMessAndConvertPage(paramMap);
 			if ( page!=null) {
-
-				List<Map<String,Object>> list =page.getDataList();
+				/*List<Map<String,Object>> list =page.getDataList();
 				for(Map<String,Object> map :list){
 					if(map.containsKey("content")&&map.get("content")!=null){
 						String content=CUtils.get().object2String(map.get("content"));
@@ -92,7 +91,7 @@ public class ScheduleMessageController {
 							}
 						}
 					}
-				}
+				}*/
 				resultBean.setStatus("OK");
 				resultBean.setEntity(page);
 			}
