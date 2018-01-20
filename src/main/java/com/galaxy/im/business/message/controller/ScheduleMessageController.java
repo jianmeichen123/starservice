@@ -369,6 +369,7 @@ public class ScheduleMessageController {
 		try {
 			if(paramMap.containsKey("time") && paramMap.containsKey("uid")){
 				paramMap.put("isRead", 1);
+				paramMap.put("isSend", 1);
 				paramMap.put("updatedTime", new Date().getTime());
 				long count = service.updateToRead(paramMap);
 				if (count>0) {
