@@ -18,8 +18,8 @@ public class MeetingScheduling extends PagableEntity {
 	private Integer scheduleStatus;				//排期结果
 	private Timestamp applyTime;				//排期申请时间
 	private Timestamp lastTime;					//上次过会时间
-	private String reserveTimeStart;			//排期预约开始时间
-	private String reserveTimeEnd;				//排期预约结束时间
+	private Timestamp reserveTimeStart;			//排期预约开始时间
+	private Timestamp reserveTimeEnd;			//排期预约结束时间
 	private Integer isDelete;					//删除标识： 0：正常；1：删除
 	
 	public Long getProjectId() {
@@ -76,23 +76,23 @@ public class MeetingScheduling extends PagableEntity {
 	public void setLastTime(Timestamp lastTime) {
 		this.lastTime = lastTime;
 	}
+	public Timestamp getReserveTimeStart() {
+		return reserveTimeStart;
+	}
+	public void setReserveTimeStart(Timestamp reserveTimeStart) {
+		this.reserveTimeStart = reserveTimeStart;
+	}
+	public Timestamp getReserveTimeEnd() {
+		return reserveTimeEnd;
+	}
+	public void setReserveTimeEnd(Timestamp reserveTimeEnd) {
+		this.reserveTimeEnd = reserveTimeEnd;
+	}
 	public Integer getIsDelete() {
 		return isDelete;
 	}
 	public void setIsDelete(Integer isDelete) {
 		this.isDelete = isDelete;
-	}
-	public String getReserveTimeStart() {
-		return reserveTimeStart;
-	}
-	public void setReserveTimeStart(String reserveTimeStart) {
-		this.reserveTimeStart = reserveTimeStart;
-	}
-	public String getReserveTimeEnd() {
-		return reserveTimeEnd;
-	}
-	public void setReserveTimeEnd(String reserveTimeEnd) {
-		this.reserveTimeEnd = reserveTimeEnd;
 	}
 	
 	
