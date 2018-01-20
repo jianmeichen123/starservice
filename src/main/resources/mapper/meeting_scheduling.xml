@@ -159,7 +159,7 @@
 	  select count(id) from (
 	  	select p.project_name,sm.id,sm.reserve_time_start,sm.meeting_type,sm.reserve_time_end,sm.project_id
 			FROM sop_meeting_scheduling sm , sop_project p
-			WHERE sm.project_id = p.id
+			WHERE sm.project_id = p.id and p.is_delete=0 and sm.is_delete=0
 			AND sm.schedule_status=1 
 			<if test="uid != null"> and p.create_uid = #{uid} </if>
 			<if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
