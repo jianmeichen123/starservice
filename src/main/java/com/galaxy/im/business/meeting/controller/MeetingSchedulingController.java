@@ -159,7 +159,7 @@ public class MeetingSchedulingController {
 				MeetingSchedulingBo mBo = new MeetingSchedulingBo();
 				mBo.setScheduleStatus(0);
 				Long iu = service.selectdpqCount(mBo);
-				depmap.put("id", iu);//当是秘书登录时产生的待排期会议的总个数
+				resultBean.setId(iu);//当是秘书登录时产生的待排期会议的总个数
 			}
 			
 			
