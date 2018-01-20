@@ -1,8 +1,12 @@
 package com.galaxy.im.bean.project;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.db.PagableEntity;
 
 public class MeetingScheduling extends PagableEntity {
@@ -21,6 +25,9 @@ public class MeetingScheduling extends PagableEntity {
 	private Timestamp reserveTimeStart;			//排期预约开始时间
 	private Timestamp reserveTimeEnd;			//排期预约结束时间
 	private Integer isDelete;					//删除标识： 0：正常；1：删除
+	
+	private String reserveTimeStartStr;
+	private String reserveTimeEndStr;
 	
 	public Long getProjectId() {
 		return projectId;
@@ -76,23 +83,62 @@ public class MeetingScheduling extends PagableEntity {
 	public void setLastTime(Timestamp lastTime) {
 		this.lastTime = lastTime;
 	}
-	public Timestamp getReserveTimeStart() {
-		return reserveTimeStart;
-	}
-	public void setReserveTimeStart(Timestamp reserveTimeStart) {
-		this.reserveTimeStart = reserveTimeStart;
-	}
-	public Timestamp getReserveTimeEnd() {
-		return reserveTimeEnd;
-	}
-	public void setReserveTimeEnd(Timestamp reserveTimeEnd) {
-		this.reserveTimeEnd = reserveTimeEnd;
-	}
 	public Integer getIsDelete() {
 		return isDelete;
 	}
 	public void setIsDelete(Integer isDelete) {
 		this.isDelete = isDelete;
+	}
+	
+	public Timestamp getReserveTimeStart() {
+		if (StringUtils.isNotBlank(this.reserveTimeStartStr)) {
+			Date tmp = null;
+			Timestamp timestmp = null;
+			try {
+				tmp = DateUtil
+						.convertStringToDateTimeForChina(this.reserveTimeStartStr);
+				timestmp = new Timestamp(tmp.getTime());
+				this.setReserveTimeStart(timestmp);
+				return timestmp;
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		return reserveTimeStart;
+	}
+
+	public void setReserveTimeStart(Timestamp reserveStartTime) {
+		this.reserveTimeStart = reserveStartTime;
+		if (reserveStartTime != null) {
+			reserveTimeStartStr = DateUtil
+					.convertDateToStringForChina(reserveTimeStart);
+		}
+	}
+	
+	
+	public Timestamp getReserveTimeEnd() {
+		if (StringUtils.isNotBlank(this.reserveTimeEndStr)) {
+			Date tmp = null;
+			Timestamp timestmp = null;
+			try {
+				tmp = DateUtil
+						.convertStringToDateTimeForChina(this.reserveTimeEndStr);
+				timestmp = new Timestamp(tmp.getTime());
+				this.setReserveTimeEnd(timestmp);
+				return timestmp;
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		return reserveTimeEnd;
+	}
+
+	public void setReserveTimeEnd(Timestamp reserveTimeEnd) {
+		this.reserveTimeEnd = reserveTimeEnd;
+		if (reserveTimeEnd != null) {
+			reserveTimeEndStr = DateUtil
+					.convertDateToStringForChina(reserveTimeEnd);
+		}
 	}
 	
 	
