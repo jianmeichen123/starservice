@@ -56,7 +56,6 @@ public class MeetingSchedulingController {
 				    String dateString = formatter.format(new Date());  
 				    query.setStartTime(dateString); 
 			}
-			query.setCreatedId(sessionBean.getGuserid());
 			QPage page = service.queryMescheduling(query);
 			map=page.getDataList();
 			if(!map.isEmpty() && map.size()>0){

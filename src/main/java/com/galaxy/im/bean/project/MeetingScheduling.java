@@ -22,9 +22,9 @@ public class MeetingScheduling extends PagableEntity {
 	private Integer scheduleStatus;				//排期结果
 	private Timestamp applyTime;				//排期申请时间
 	private Timestamp lastTime;					//上次过会时间
+	private Integer isDelete;					//删除标识： 0：正常；1：删除
 	private Timestamp reserveTimeStart;			//排期预约开始时间
 	private Timestamp reserveTimeEnd;			//排期预约结束时间
-	private Integer isDelete;					//删除标识： 0：正常；1：删除
 	
 	private String reserveTimeStartStr;
 	private String reserveTimeEndStr;
@@ -139,6 +139,19 @@ public class MeetingScheduling extends PagableEntity {
 			reserveTimeEndStr = DateUtil
 					.convertDateToStringForChina(reserveTimeEnd);
 		}
+	}
+	
+	public String getReserveTimeStartStr() {
+		return reserveTimeStartStr;
+	}
+	public void setReserveTimeStartStr(String reserveTimeStartStr) {
+		this.reserveTimeStartStr = reserveTimeStartStr;
+	}
+	public String getReserveTimeEndStr() {
+		return reserveTimeEndStr;
+	}
+	public void setReserveTimeEndStr(String reserveTimeEndStr) {
+		this.reserveTimeEndStr = reserveTimeEndStr;
 	}
 	
 	
