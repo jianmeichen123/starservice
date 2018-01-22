@@ -78,20 +78,6 @@ public class ScheduleMessageController {
 			paramMap.put("direction", "desc");
 			QPage page = service.queryPerMessAndConvertPage(paramMap);
 			if ( page!=null) {
-				/*List<Map<String,Object>> list =page.getDataList();
-				for(Map<String,Object> map :list){
-					if(map.containsKey("content")&&map.get("content")!=null){
-						String content=CUtils.get().object2String(map.get("content"));
-						if(content.contains("time")){
-							if(!content.contains(":")){
-								String strs[] = content.split("<time>");
-								String timsStrs[] = strs[1].split("</time>");
-								String newStr=strs[0]+"<time>"+timsStrs[0]+" 09:00"+"</time>"+timsStrs[1];
-								map.put("content", newStr);
-							}
-						}
-					}
-				}*/
 				resultBean.setStatus("OK");
 				resultBean.setEntity(page);
 			}
@@ -184,10 +170,6 @@ public class ScheduleMessageController {
 		ResultBean<Object> resultBean = new ResultBean<>();
 		try {
 			//获取登录用户信息
-			/*SessionBean sessionBean = CUtils.get().getBeanBySession(request);
-			if (sessionBean==null) {
-				resultBean.setMessage("获取用户信息失败");
-			}*/
 			long deptId=0l;
 			String userName="";
 			String userDeptName="";
@@ -201,11 +183,6 @@ public class ScheduleMessageController {
 				}
 			}
 			
-			
-			/*@SuppressWarnings("unchecked")
-			RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
-			Map<String, Object> user = BeanUtils.toMap(cache.get("realName"));*/
-			
 			List<Map<String, Object>> userList=new ArrayList<Map<String, Object>>();
 			List<String> ids= messageVo.getIds();
 			SopProjectBean sopBean=null;
@@ -213,21 +190,42 @@ public class ScheduleMessageController {
 			List<Map<String, Object>> projects=new ArrayList<Map<String, Object>>();
 			
 			if(messageVo.getMessageType().startsWith("1.1")){
-				//项目
-				for(int i=0;i<ids.size();i++){
-					Map<String,Object> paramMap = new HashMap<String,Object>();
-					paramMap.put("projectId",ids.get(i));
-					
-				    sopBean = fcService.getSopProjectInfo(paramMap);
-					sopBean.setMessageType(messageVo.getMessageType());
-					sopBean.setUserId(messageVo.getUserId());
-					sopBean.setUserName(userName);
-					sopBean.setUserDeptName(userDeptName);
-					paramMap.put("projectName", sopBean.getProjectName());
-					projects.add(paramMap);
+				//项目删除
+				if(messageVo.getMessageType().equals("1.1.1")){
+					//项目
+					for(int i=0;i<ids.size();i++){
+						Map<String,Object> paramMap = new HashMap<String,Object>();
+						paramMap.put("projectId",ids.get(i));
+						
+					    sopBean = fcService.getSopProjectInfo(paramMap);
+						sopBean.setMessageType(messageVo.getMessageType());
+						sopBean.setUserId(messageVo.getUserId());
+						sopBean.setUserName(userName);
+						sopBean.setUserDeptName(userDeptName);
+						paramMap.put("projectName", sopBean.getProjectName());
+						projects.add(paramMap);
+					}
+					sopBean.setProjects(projects);
+					if(!(messageVo.getUserId().longValue()==sopBean.getCreateUid().longValue())){
+						messageService.operateMessageSopTaskInfo(sopBean,sopBean.getMessageType());
+					}
+				}else{
+					//项目
+					for(int i=0;i<ids.size();i++){
+						Map<String,Object> paramMap = new HashMap<String,Object>();
+						paramMap.put("projectId",ids.get(i));
+						
+						sopBean = fcService.getSopProjectInfo(paramMap);
+						sopBean.setMessageType(messageVo.getMessageType());
+						sopBean.setUserId(messageVo.getUserId());
+						sopBean.setUserName(userName);
+						sopBean.setUserDeptName(userDeptName);
+						paramMap.put("projectName", sopBean.getProjectName());
+						projects.add(paramMap);
+					}
+					sopBean.setProjects(projects);
+					messageService.operateMessageSopTaskInfo(sopBean,sopBean.getMessageType());
 				}
-				sopBean.setProjects(projects);
-				messageService.operateMessageSopTaskInfo(sopBean,sopBean.getMessageType());
 			}else if(messageVo.getMessageType().startsWith("1.2")){
 				if(messageVo.getMessageType().equals("1.2.5")){
 					//尽职调查

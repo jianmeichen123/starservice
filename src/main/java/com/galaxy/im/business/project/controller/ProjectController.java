@@ -863,17 +863,19 @@ public class ProjectController {
 				resultBean.setStatus("OK");
 				resultBean.setMessage("删除项目成功");
 			}
-			//发消息
-			List<Map<String, Object>> projects=new ArrayList<Map<String, Object>>();
-			paramMap.put("projectName", sopBean.getProjectName());
-			projects.add(paramMap);
-			sopBean.setProjects(projects);
-			sopBean.setDeleteReason(bean.getDeleteReason());
-			sopBean.setMessageType("1.1.1");
-			sopBean.setUserId(sessionBean.getGuserid());
-			sopBean.setUserName(CUtils.get().object2String(user.get("realName")));
-			sopBean.setUserDeptName(CUtils.get().object2String(user.get("departmentName")));
-			messageService.operateMessageSopTaskInfo(sopBean,sopBean.getMessageType());
+			if(!(sessionBean.getGuserid().longValue()==sopBean.getCreateUid().longValue())){
+				//发消息
+				List<Map<String, Object>> projects=new ArrayList<Map<String, Object>>();
+				paramMap.put("projectName", sopBean.getProjectName());
+				projects.add(paramMap);
+				sopBean.setProjects(projects);
+				sopBean.setDeleteReason(bean.getDeleteReason());
+				sopBean.setMessageType("1.1.1");
+				sopBean.setUserId(sessionBean.getGuserid());
+				sopBean.setUserName(CUtils.get().object2String(user.get("realName")));
+				sopBean.setUserDeptName(CUtils.get().object2String(user.get("departmentName")));
+				messageService.operateMessageSopTaskInfo(sopBean,sopBean.getMessageType());
+			}
 			
 			//记录操作日志
 			ControllerUtils.setRequestParamsForMessageTip(request, null, sopBean,"",null);
