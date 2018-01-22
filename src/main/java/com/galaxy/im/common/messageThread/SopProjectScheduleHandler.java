@@ -45,7 +45,7 @@ public class SopProjectScheduleHandler implements SopTaskScheduleMessageHandler
 		
 		SopProjectBean model = (SopProjectBean) info;
 		
-		long sendTime = new Date().getTime()+ (long) 5 * 60 * 1000;
+		long sendTime = new Date().getTime()+ (long) 2 * 60 * 1000;
 	
 		if(model.getMessageType().equals(sop_project_1)){
 			//项目删除
