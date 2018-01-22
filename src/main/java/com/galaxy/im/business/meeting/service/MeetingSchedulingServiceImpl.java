@@ -1,7 +1,5 @@
 package com.galaxy.im.business.meeting.service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -72,16 +70,6 @@ public class MeetingSchedulingServiceImpl extends BaseServiceImpl<Test> implemen
 
 	@Override
 	public Long queryCountscheduleStatusd(MeetingSchedulingBo query) {
-		query.setScheduleStatus(0);
-		return dao.queryCount(query);
-	}
-
-	@Override
-	public Long queryCountscheduleStatusy(MeetingSchedulingBo query) {
-		query.setScheduleStatus(1);
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
-	    String dateString = formatter.format(new Date());  
-	    query.setStartTime(dateString);
 		return dao.queryCount(query);
 	}
 

@@ -86,26 +86,31 @@ public class MeetingSchedulingController {
 						ms.put("paiQCount", s);
 					}
 				}
-				MeetingSchedulingBo mebo = new MeetingSchedulingBo();
 				Map<String, Object> m = new HashMap<String, Object>();
 				m.put("total", page.getTotal());
-				//个数
-				Long statusd = service.queryCountscheduleStatusd(query);
-				Long statusy = service.queryCountscheduleStatusy(query);
-				mebo.setCountscheduleStatusd(statusd);
-				mebo.setCountscheduleStatusy(statusy);
 				resultBean.setMap(m);
 				resultBean.setMapList(map);
-				resultBean.setStatus("OK");
-				resultBean.setEntity(mebo);
-			}else{
-				MeetingSchedulingBo mebo = new MeetingSchedulingBo();
-				mebo.setCountscheduleStatusd(0L);
-				mebo.setCountscheduleStatusy(0L);
-				resultBean.setStatus("OK");
-				resultBean.setEntity(mebo);
-				return resultBean;
+				
 			}
+			
+			MeetingSchedulingBo mebo = new MeetingSchedulingBo();
+			
+			query.setScheduleStatus(0);
+			if(query.getScheduleStatus()==0){
+				query.setStartTime(null);
+				Long statusd = service.queryCountscheduleStatusd(query);
+				mebo.setCountscheduleStatusd(statusd);
+			}
+			query.setScheduleStatus(1);
+			if(query.getScheduleStatus()==1){
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
+			    String dateString = formatter.format(new Date());  
+			    query.setStartTime(dateString); 
+			    Long statusd = service.queryCountscheduleStatusd(query);
+				mebo.setCountscheduleStatusy(statusd);
+			}
+			resultBean.setEntity(mebo);
+			resultBean.setStatus("OK");
 		}catch(Exception e){
 			log.error(MeetingSchedulingController.class.getName() + "queryMescheduling",e);
 		}
