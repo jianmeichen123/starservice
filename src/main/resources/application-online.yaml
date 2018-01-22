@@ -5,9 +5,9 @@ server:
 
 datasource: 
   type: com.alibaba.druid.pool.DruidDataSource  
-  url: jdbc:mysql://10.9.11.234:3306/fx_db?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf-8
-  username: fxuser
-  password: fxdb_Fp9EPkG2
+  url: jdbc:mysql://10.8.232.205:3306/fx_db?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf-8
+  username: root
+  password: Qiao19810817
   driver-class-name: com.mysql.jdbc.Driver
   minIdle: 1  
   maxActive: 2  
@@ -17,30 +17,15 @@ datasource:
   validationQuery: SELECT 'ZTM' FROM DUAL  
   testWhileIdle: true  
   testOnBorrow: false  
-  testOnReturn: false 
-
-second-datasource:
-  type: com.alibaba.druid.pool.DruidDataSource  
-  url: jdbc:mysql://10.9.11.234:3306/fx_db?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf-8
-  username: fxuser
-  password: fxdb_Fp9EPkG2
-  driver-class-name: com.mysql.jdbc.Driver
-  minIdle: 1  
-  maxActive: 2  
-  initialSize: 1  
-  timeBetweenEvictionRunsMillis: 3000  
-  minEvictableIdleTimeMillis: 300000  
-  validationQuery: SELECT 'ZTM' FROM DUAL  
-  testWhileIdle: true  
-  testOnBorrow: false  
-  testOnReturn: false
+  testOnReturn: false    
+  
 
 # REDIS (RedisProperties)
 spring: 
   redis: 
     database: 0
     host: 10.9.210.22
-    port: 26379
+    port: 16379
     password: xhhl-redis
   pool: 
     max-active: 8
@@ -48,9 +33,9 @@ spring:
     max-idle: 8
     min-idle: 0
     timeout: 0
-    
+
 power:
-  server: http://fx.qa.galaxyinternet.com/authority_service/
+  server: http://fxnew.galaxyinternet.com/authority_service/
   
 cluster: 
   zk:
