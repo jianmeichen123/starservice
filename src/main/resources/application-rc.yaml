@@ -40,7 +40,7 @@ power:
 cluster: 
   zk:
     address: 10.9.210.22:12183
-    product: app_schedule
+    product: app_schedule_rc
   
   
   
