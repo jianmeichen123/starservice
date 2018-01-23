@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.galaxy.im.common.DateUtil;
 import com.galaxy.im.common.db.PagableEntity;
 
-public class Idea extends PagableEntity{
+public class IdeaBean extends PagableEntity{
 
 	private static final long serialVersionUID = 1L;
 	
