@@ -30,7 +30,7 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 	/**
 	 * 定义跳出 runForMess . for 的超时时间， 默认0秒
 	 */
-	private static final long TO_BREAK_SENDFOR_TIME = (long)  0 * 1000;
+	//private static final long TO_BREAK_SENDFOR_TIME = (long)  0 * 1000;
 	
 	/**
 	 * 定义消息 可以延后发送的时间， 00:1分钟发送 + 延后 5分钟
@@ -175,7 +175,7 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 				}
 			} catch (Exception e) {}
 			
-			long current = System.currentTimeMillis();
+			//long current = System.currentTimeMillis();
 			
 			if(SchedulePushMessTask.messForCache != null && !SchedulePushMessTask.messForCache.isEmpty()){
 				
@@ -184,12 +184,12 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 					
 					ScheduleMessageBean mess = SchedulePushMessTask.messForCache.get(i);
 					
-					if(mess.getSendTime().longValue() - current <= SchedulePushMessTask.TO_BREAK_SENDFOR_TIME){
+					//if(mess.getSendTime().longValue() - current <= SchedulePushMessTask.TO_BREAK_SENDFOR_TIME){
 						thisTimeToSend.add(mess);
 						SchedulePushMessTask.messForCache.remove(i);
-					}else{
-						break;
-					}
+					//}else{
+					//	break;
+					//}
 				}
 				
 				if(!thisTimeToSend.isEmpty()){
