@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,7 @@ import com.tencent.xinge.XGPush;
  */
 @Service
 public class SchedulePushMessTask extends BaseGalaxyTask {
-	//private final static Logger logger = LoggerFactory.getLogger(SchedulePushMessTask.class);
+	private final static Logger logger = LoggerFactory.getLogger(SchedulePushMessTask.class);
 	
 	public static List<ScheduleMessageBean> messForCache = new ArrayList<ScheduleMessageBean>();
 	
@@ -153,6 +155,7 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 		
 		final List<ScheduleMessageBean> initList = scheduleMessageService.queryTodayMessToSend();
 			
+			logger.error(initList.size()+"===============");
 			if(initList!=null && !initList.isEmpty()){
 				GalaxyThreadPool.getExecutorService().execute(new Runnable() {
 				public void run() {
