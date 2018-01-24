@@ -535,10 +535,11 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 					iScheduleMessageUserDao.saveMessageUser(toInserts);
 					
 					//通知消息 ：  已经添加新的消息
-					if(message.getSendTime().longValue() <= edate){
+					//if(message.getSendTime().longValue() <= edate){
 						message.setToUsers(toInserts);
-						schedulePushMessTask.setHasSaved(message);
-					}
+						SchedulePushMessTask.messForCache.add(message);
+						//schedulePushMessTask.setHasSaved(message);
+					//}
 				}
 			}
 		});
