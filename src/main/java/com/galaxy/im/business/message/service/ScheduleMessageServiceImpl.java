@@ -513,7 +513,7 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 				calendar.set(Calendar.SECOND, 59);
 				calendar.set(Calendar.MILLISECOND, 0);
 				
-				long edate = calendar.getTimeInMillis();
+				//long edate = calendar.getTimeInMillis();
 				
 				List<ScheduleMessageBean> list = messageGenerator.processTask(info,mType);
 				for(ScheduleMessageBean message:list){
@@ -536,8 +536,8 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 					
 					//通知消息 ：  已经添加新的消息
 					//if(message.getSendTime().longValue() <= edate){
-						message.setToUsers(toInserts);
-						SchedulePushMessTask.messForCache.add(message);
+					//	message.setToUsers(toInserts);
+					//	SchedulePushMessTask.messForCache.add(message);
 						//schedulePushMessTask.setHasSaved(message);
 					//}
 				}

@@ -6,8 +6,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +23,7 @@ import com.tencent.xinge.XGPush;
  */
 @Service
 public class SchedulePushMessTask extends BaseGalaxyTask {
-	private final static Logger logger = LoggerFactory.getLogger(SchedulePushMessTask.class);
+	//private final static Logger logger = LoggerFactory.getLogger(SchedulePushMessTask.class);
 	
 	public static List<ScheduleMessageBean> messForCache = new ArrayList<ScheduleMessageBean>();
 	
@@ -74,27 +72,27 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 	 * 是否有新增处理 外部调用， 赋值
 	 */
 	public synchronized void setHasSaved(ScheduleMessageBean addMess) {
-		/*while (SchedulePushMessTask.hasRunedToCheck) { // 服务是否正在处理
+		while (SchedulePushMessTask.hasRunedToCheck) { // 服务是否正在处理
 			try {
 				Thread.sleep(SchedulePushMessTask.waitServerTime);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-		SchedulePushMessTask.hasRunedToCheck = true;*/
+		SchedulePushMessTask.hasRunedToCheck = true;
 		try {
 			
-			//if(SchedulePushMessTask.messForCache != null && !SchedulePushMessTask.messForCache.isEmpty()){
+			if(SchedulePushMessTask.messForCache != null && !SchedulePushMessTask.messForCache.isEmpty()){
 				
 				SchedulePushMessTask.messForCache.add(addMess);
-				/*Collections.sort(SchedulePushMessTask.messForCache, new Comparator<ScheduleMessageBean>() {
+				Collections.sort(SchedulePushMessTask.messForCache, new Comparator<ScheduleMessageBean>() {
 					public int compare(ScheduleMessageBean arg0, ScheduleMessageBean arg1) {
 						return (int) (arg0.getSendTime().longValue() - arg1.getSendTime().longValue());
 					}
-				});*/
-			/*}else{
+				});
+			}else{
 				SchedulePushMessTask.messForCache.add(addMess);
-			}*/
+			}
 		}finally{
 			SchedulePushMessTask.hasRunedToCheck = false;
 		}
@@ -152,27 +150,25 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 	 */
 	@Override
 	protected void executeInteral() throws BusinessException {
-		/*while (SchedulePushMessTask.hasRunedToCheck) { // 服务是否正在处理
+		
+		final List<ScheduleMessageBean> initList = scheduleMessageService.queryTodayMessToSend();
+			
+			if(initList!=null && !initList.isEmpty()){
+				GalaxyThreadPool.getExecutorService().execute(new Runnable() {
+				public void run() {
+					runForMess(initList);
+				}
+				});
+			}
+		
+		/*
+		while (SchedulePushMessTask.hasRunedToCheck) { // 服务是否正在处理
 			try {
 				Thread.sleep(SchedulePushMessTask.waitServerTime);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		}*/
-		
-		logger.error("tdjgamtam==========================");
-		
-		/*final List<ScheduleMessageBean> initList = scheduleMessageService.queryTodayMessToSend();
-		
-		if(initList!=null && !initList.isEmpty()){
-			GalaxyThreadPool.getExecutorService().execute(new Runnable() {
-			public void run() {
-				runForMess(initList);
-			}
-			});
 		}
-		*/
-		
 		
 		SchedulePushMessTask.hasRunedToCheck = true;
 		
@@ -196,7 +192,6 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 			if(SchedulePushMessTask.messForCache != null && !SchedulePushMessTask.messForCache.isEmpty()){
 				
 				List<ScheduleMessageBean> thisTimeToSend = new ArrayList<ScheduleMessageBean>();
-				logger.error(SchedulePushMessTask.messForCache.size()+"===========");
 				for (int i = 0; i < SchedulePushMessTask.messForCache.size();) {
 					
 					ScheduleMessageBean mess = SchedulePushMessTask.messForCache.get(i);
@@ -224,7 +219,7 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 			SchedulePushMessTask.hasRunedToCheck = false;
 		}
 		
-	}
+	*/}
 	
 	//发送消息
 	public void runForMess(List<ScheduleMessageBean> thisTimeToSend) {
