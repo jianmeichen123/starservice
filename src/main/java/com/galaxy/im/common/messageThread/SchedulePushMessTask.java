@@ -182,6 +182,7 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 			if(SchedulePushMessTask.messForCache != null && !SchedulePushMessTask.messForCache.isEmpty()){
 				
 				List<ScheduleMessageBean> thisTimeToSend = new ArrayList<ScheduleMessageBean>();
+				logger.error(SchedulePushMessTask.messForCache.size()+"===========");
 				for (int i = 0; i < SchedulePushMessTask.messForCache.size();) {
 					
 					ScheduleMessageBean mess = SchedulePushMessTask.messForCache.get(i);
