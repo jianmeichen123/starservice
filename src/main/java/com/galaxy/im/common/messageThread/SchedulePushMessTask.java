@@ -186,6 +186,7 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 					
 					//if(mess.getSendTime().longValue() - current <= SchedulePushMessTask.TO_BREAK_SENDFOR_TIME){
 						thisTimeToSend.add(mess);
+						System.out.println(mess.getContent());
 						SchedulePushMessTask.messForCache.remove(i);
 					//}else{
 					//	break;
