@@ -12,7 +12,7 @@ public class ZKUtils
 	public static ZooKeeper connect(String address) throws Exception
 	{
 		final CountDownLatch latch = new CountDownLatch(1);
-		ZooKeeper zk = new ZooKeeper(address, 5000, new Watcher(){
+		ZooKeeper zk = new ZooKeeper(address, 30000, new Watcher(){
 			@Override
 			public void process(WatchedEvent event)
 			{
