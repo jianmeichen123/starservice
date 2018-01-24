@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,24 +25,28 @@ import com.tencent.xinge.XGPush;
  */
 @Service
 public class SchedulePushMessTask extends BaseGalaxyTask {
-	//private final static Logger logger = LoggerFactory.getLogger(SchedulePushMessTask.class);
+	private final static Logger logger = LoggerFactory.getLogger(SchedulePushMessTask.class);
 	
 	public static List<ScheduleMessageBean> messForCache = new ArrayList<ScheduleMessageBean>();
 	
 	/**
 	 * 定义跳出 runForMess . for 的超时时间， 默认0秒
 	 */
-	private static final long TO_BREAK_SENDFOR_TIME = (long)  0 * 1000;
+	//private static final long TO_BREAK_SENDFOR_TIME = (long)  0 * 1000;
 	
 	/**
 	 * 定义消息 可以延后发送的时间， 00:1分钟发送 + 延后 5分钟
 	 */
-	private static final long TO_LAZY_TIME_BY_MESSAGE = (long) 95 * 60 * 1000;
+	//private static final long TO_LAZY_TIME_BY_MESSAGE = (long) 95 * 60 * 1000;
 	
 	/**
 	 * 服务 是否正在在检测   
 	 */
 	private static boolean hasRunedToCheck = false;
+	/**
+	 * 服务器重新启动获取一次
+	 */
+	public static boolean startRuned = false;
 	/**
 	 * 等待服务 运行时间 5毫秒
 	 */
@@ -146,6 +152,19 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 	 */
 	@Override
 	protected void executeInteral() throws BusinessException {
+		
+		final List<ScheduleMessageBean> initList = scheduleMessageService.queryTodayMessToSend();
+			
+			logger.error(initList.size()+"===============");
+			if(initList!=null && !initList.isEmpty()){
+				GalaxyThreadPool.getExecutorService().execute(new Runnable() {
+				public void run() {
+					runForMess(initList);
+				}
+				});
+			}
+		
+		/*
 		while (SchedulePushMessTask.hasRunedToCheck) { // 服务是否正在处理
 			try {
 				Thread.sleep(SchedulePushMessTask.waitServerTime);
@@ -160,10 +179,10 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 			
 			//初始化补充
 			try {
-				if(!SchedulePushInitTask.initTaskHasRuned){
+				if(!SchedulePushMessTask.startRuned){
 					List<ScheduleMessageBean> initList = scheduleMessageService.queryTodayMessToSend();
 					
-					SchedulePushInitTask.initTaskHasRuned = true;
+					SchedulePushMessTask.startRuned = true;
 					
 					if(initList!=null){
 						SchedulePushMessTask.messForCache = initList;
@@ -171,7 +190,7 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 				}
 			} catch (Exception e) {}
 			
-			long current = System.currentTimeMillis();
+			//long current = System.currentTimeMillis();
 			
 			if(SchedulePushMessTask.messForCache != null && !SchedulePushMessTask.messForCache.isEmpty()){
 				
@@ -180,12 +199,13 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 					
 					ScheduleMessageBean mess = SchedulePushMessTask.messForCache.get(i);
 					
-					if(mess.getSendTime().longValue() - current <= SchedulePushMessTask.TO_BREAK_SENDFOR_TIME){
+					//if(mess.getSendTime().longValue() - current <= SchedulePushMessTask.TO_BREAK_SENDFOR_TIME){
 						thisTimeToSend.add(mess);
+						logger.error(mess.getContent());
 						SchedulePushMessTask.messForCache.remove(i);
-					}else{
-						break;
-					}
+					//}else{
+					//	break;
+					//}
 				}
 				
 				if(!thisTimeToSend.isEmpty()){
@@ -202,7 +222,7 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 			SchedulePushMessTask.hasRunedToCheck = false;
 		}
 		
-	}
+	*/}
 	
 	//发送消息
 	public void runForMess(List<ScheduleMessageBean> thisTimeToSend) {
@@ -215,14 +235,14 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 			final ScheduleMessageBean mess = tempMess;
 			
 			// 发送时间  《  当前时间+lazy tm  跳过不发
-			boolean toContinue = false;
-			if (mess.getSendTime().longValue() < (System.currentTimeMillis() - SchedulePushMessTask.TO_LAZY_TIME_BY_MESSAGE)) {
-				toContinue = true;
-			}
+			//boolean toContinue = false;
+			//if (mess.getSendTime().longValue() < (System.currentTimeMillis() - SchedulePushMessTask.TO_LAZY_TIME_BY_MESSAGE)) {
+			//	toContinue = true;
+			//}
 			
 			// 统一修改 消息内容可用
 			
-			if (toContinue || mess.getToUsers()==null || mess.getToUsers().isEmpty()) {
+			if (mess.getToUsers()==null || mess.getToUsers().isEmpty()) {
 				continue;
 			}
 			mess.setStatus((byte) 0);

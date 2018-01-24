@@ -452,7 +452,7 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 		// 消息内容查询
 		ScheduleMessageBean mQ = new ScheduleMessageBean();
 		//mQ.setBtime(bdate);
-		mQ.setEtime(edate);
+		//mQ.setEtime(edate);
 		//mQ.setSendTimeNotNull(true);
 		mQ.setStatus((byte) 1);
 		mQ.setProperty("send_time");
@@ -513,7 +513,7 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 				calendar.set(Calendar.SECOND, 59);
 				calendar.set(Calendar.MILLISECOND, 0);
 				
-				long edate = calendar.getTimeInMillis();
+				//long edate = calendar.getTimeInMillis();
 				
 				List<ScheduleMessageBean> list = messageGenerator.processTask(info,mType);
 				for(ScheduleMessageBean message:list){
@@ -535,10 +535,11 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 					iScheduleMessageUserDao.saveMessageUser(toInserts);
 					
 					//通知消息 ：  已经添加新的消息
-					if(message.getSendTime().longValue() <= edate){
-						message.setToUsers(toInserts);
-						schedulePushMessTask.setHasSaved(message);
-					}
+					//if(message.getSendTime().longValue() <= edate){
+					//	message.setToUsers(toInserts);
+					//	SchedulePushMessTask.messForCache.add(message);
+						//schedulePushMessTask.setHasSaved(message);
+					//}
 				}
 			}
 		});

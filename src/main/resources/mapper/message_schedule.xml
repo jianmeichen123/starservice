@@ -27,7 +27,6 @@
 						#{item}
 					</foreach>
 				</if> 
-				<if test="category != null" > and category = #{category}  </if>
 				<if test="type != null" > and type = #{type}  </if>
 				<if test="remarkId != null" > and remrk_id = #{remarkId}  </if>
 				<if test="content != null" > and content = #{content}  </if>
