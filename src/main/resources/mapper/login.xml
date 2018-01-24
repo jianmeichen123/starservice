@@ -57,6 +57,7 @@
 		         <if test="loginDate != null" > and login_date = #{loginDate} </if>
           	</trim>
 		</where>
+		LIMIT 0,1;
 	</select>
 	
 	<!-- 更新 -->
