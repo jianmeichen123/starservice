@@ -163,6 +163,9 @@ public class StaticConst {
 	public static final String CWZJ = "CWZJ";
 	public static final String CWJL = "CWJL";
 	
+	
+	public static final String CONFIG_KEY_IDEA_CODE = "idea_code";
+	
 	/**创意阶段 - 待认领**/
 	public static final String IDEA_PROGRESS_DRL 			= "ideaProgress:1";
 	/**创意阶段 - 调研**/
