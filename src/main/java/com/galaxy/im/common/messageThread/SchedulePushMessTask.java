@@ -105,13 +105,13 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 	 * 外部调用， 赋值
 	 */
 	public synchronized void setHasDeled(Map<String, List<Long>> delMap) {
-		while (SchedulePushMessTask.hasRunedToCheck) { // 服务是否正在处理
+		/*while (SchedulePushMessTask.hasRunedToCheck) { // 服务是否正在处理
 			try {
 				Thread.sleep(SchedulePushMessTask.waitServerTime);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 		SchedulePushMessTask.hasRunedToCheck = true;
 		
 		try {
