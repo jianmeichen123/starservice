@@ -162,6 +162,17 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 		
 		logger.error("tdjgamtam==========================");
 		
+		final List<ScheduleMessageBean> initList = scheduleMessageService.queryTodayMessToSend();
+		
+		if(initList!=null && !initList.isEmpty()){
+			GalaxyThreadPool.getExecutorService().execute(new Runnable() {
+			public void run() {
+				runForMess(initList);
+			}
+			});
+		}
+		
+		
 //		
 //		SchedulePushMessTask.hasRunedToCheck = true;
 //		
