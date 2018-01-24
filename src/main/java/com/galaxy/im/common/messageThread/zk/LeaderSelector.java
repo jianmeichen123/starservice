@@ -41,8 +41,9 @@ public class LeaderSelector implements Watcher, InitializingBean{
 			zk = ZKUtils.connect(address);
 			try{
 				zk.create(path, id.getBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
+				zk.setData(path, id.getBytes(), 1);
 			} catch (KeeperException e){
-				logger.debug(String.format("节点[%s]已经存在", path));
+				logger.error(String.format("节点[%s]已经存在", path));
 			}
 			byte[] value = zk.getData(path, this, null);
 			leaderId = new String(value);
