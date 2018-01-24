@@ -105,13 +105,13 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 	 * 外部调用， 赋值
 	 */
 	public synchronized void setHasDeled(Map<String, List<Long>> delMap) {
-		/*while (SchedulePushMessTask.hasRunedToCheck) { // 服务是否正在处理
+		while (SchedulePushMessTask.hasRunedToCheck) { // 服务是否正在处理
 			try {
 				Thread.sleep(SchedulePushMessTask.waitServerTime);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		}*/
+		}
 		SchedulePushMessTask.hasRunedToCheck = true;
 		
 		try {
@@ -152,63 +152,66 @@ public class SchedulePushMessTask extends BaseGalaxyTask {
 	 */
 	@Override
 	protected void executeInteral() throws BusinessException {
-		while (SchedulePushMessTask.hasRunedToCheck) { // 服务是否正在处理
+		/*while (SchedulePushMessTask.hasRunedToCheck) { // 服务是否正在处理
 			try {
 				Thread.sleep(SchedulePushMessTask.waitServerTime);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 		
-		SchedulePushMessTask.hasRunedToCheck = true;
+		logger.error("tdjgamtam==========================");
 		
-		try {
-			
-			//初始化补充
-			try {
-				if(!SchedulePushMessTask.startRuned){
-					List<ScheduleMessageBean> initList = scheduleMessageService.queryTodayMessToSend();
-					
-					SchedulePushMessTask.startRuned = true;
-					
-					if(initList!=null){
-						SchedulePushMessTask.messForCache = initList;
-					}
-				}
-			} catch (Exception e) {}
-			
-			//long current = System.currentTimeMillis();
-			
-			if(SchedulePushMessTask.messForCache != null && !SchedulePushMessTask.messForCache.isEmpty()){
-				
-				List<ScheduleMessageBean> thisTimeToSend = new ArrayList<ScheduleMessageBean>();
-				logger.error(SchedulePushMessTask.messForCache.size()+"===========");
-				for (int i = 0; i < SchedulePushMessTask.messForCache.size();) {
-					
-					ScheduleMessageBean mess = SchedulePushMessTask.messForCache.get(i);
-					
-					//if(mess.getSendTime().longValue() - current <= SchedulePushMessTask.TO_BREAK_SENDFOR_TIME){
-						thisTimeToSend.add(mess);
-						logger.error(mess.getContent());
-						SchedulePushMessTask.messForCache.remove(i);
-					//}else{
-					//	break;
-					//}
-				}
-				
-				if(!thisTimeToSend.isEmpty()){
-					final List<ScheduleMessageBean> toSend = thisTimeToSend;
-					
-					GalaxyThreadPool.getExecutorService().execute(new Runnable() {
-						public void run() {
-							runForMess(toSend);
-						}
-					});
-				}
-			}
-		}finally{
-			SchedulePushMessTask.hasRunedToCheck = false;
-		}
+//		
+//		SchedulePushMessTask.hasRunedToCheck = true;
+//		
+//		try {
+//			
+//			//初始化补充
+//			try {
+//				if(!SchedulePushMessTask.startRuned){
+//					List<ScheduleMessageBean> initList = scheduleMessageService.queryTodayMessToSend();
+//					
+//					SchedulePushMessTask.startRuned = true;
+//					
+//					if(initList!=null){
+//						SchedulePushMessTask.messForCache = initList;
+//					}
+//				}
+//			} catch (Exception e) {}
+//			
+//			//long current = System.currentTimeMillis();
+//			
+//			if(SchedulePushMessTask.messForCache != null && !SchedulePushMessTask.messForCache.isEmpty()){
+//				
+//				List<ScheduleMessageBean> thisTimeToSend = new ArrayList<ScheduleMessageBean>();
+//				logger.error(SchedulePushMessTask.messForCache.size()+"===========");
+//				for (int i = 0; i < SchedulePushMessTask.messForCache.size();) {
+//					
+//					ScheduleMessageBean mess = SchedulePushMessTask.messForCache.get(i);
+//					
+//					//if(mess.getSendTime().longValue() - current <= SchedulePushMessTask.TO_BREAK_SENDFOR_TIME){
+//						thisTimeToSend.add(mess);
+//						logger.error(mess.getContent());
+//						SchedulePushMessTask.messForCache.remove(i);
+//					//}else{
+//					//	break;
+//					//}
+//				}
+//				
+//				if(!thisTimeToSend.isEmpty()){
+//					final List<ScheduleMessageBean> toSend = thisTimeToSend;
+//					
+//					GalaxyThreadPool.getExecutorService().execute(new Runnable() {
+//						public void run() {
+//							runForMess(toSend);
+//						}
+//					});
+//				}
+//			}
+//		}finally{
+//			SchedulePushMessTask.hasRunedToCheck = false;
+//		}
 		
 	}
 	
