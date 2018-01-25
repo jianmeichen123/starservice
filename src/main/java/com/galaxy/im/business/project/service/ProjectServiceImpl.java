@@ -436,7 +436,7 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 		po.setId(projectId);
 		po.setCreateUid(bean.getAfterUid());
 		po.setCreateUname(bean.getAfrerUName());
-		po.setProjectDepartid(bean.getAfterDepartmentId());
+		po.setProjectDepartId(bean.getAfterDepartmentId());
 		dao.updateProject(po);
 		
 		//会议修改
