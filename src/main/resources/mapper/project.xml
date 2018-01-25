@@ -58,7 +58,7 @@
 				<if test="keyword != null">
 					<choose>
 						<when test="flagkeyword=='concatcode'" >
-							and (upper(project_name) like CONCAT("%",upper(#{keyword}),"%")
+							and (project_name like CONCAT("%",#{keyword},"%")
 							<if test="escapeChar ">
 								escape '/'
 							</if>
@@ -69,18 +69,18 @@
 							)
 						</when>
 						<when test="flagkeyword==null">
-							and (upper(project_name) like CONCAT("%",upper(#{keyword}),"%")
+							and (project_name like CONCAT("%",#{keyword},"%")
 							<if test="escapeChar ">
 								escape '/'
 							</if>
-							or upper(project_code) like CONCAT("%",upper(#{keyword}),"%")
+							or project_code like CONCAT("%",#{keyword},"%")
 							<if test="escapeChar ">
 								escape '/'
 							</if>
 							)
 						</when>
 						<when test="flagkeyword=='onlyName'">
-							and upper(project_name) like CONCAT("%",upper(#{keyword}),"%")
+							and project_name like CONCAT("%",#{keyword},"%")
 							<if test="escapeChar ">
 								escape '/'
 							</if>
