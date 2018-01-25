@@ -22,6 +22,7 @@ import com.galaxy.im.common.CUtils;
 import com.galaxy.im.common.ResultBean;
 import com.galaxy.im.common.StaticConst;
 import com.galaxy.im.common.cache.redis.RedisCacheImpl;
+import com.galaxy.im.common.webconfig.interceptor.operationLog.UrlNumber;
 
 @Controller
 @RequestMapping("/idea")
@@ -69,6 +70,7 @@ public class IdeaController {
 			SessionBean bean = CUtils.get().getBeanBySession(request);
 			if (bean==null) {
 				resultBean.setMessage("未登录!");
+				return resultBean;
 			}
 			Map<String, Object> user = BeanUtils.toMap(cache.get(bean.getSessionid()));
 			IdeaBean idea = new IdeaBean();
@@ -89,7 +91,7 @@ public class IdeaController {
 				idea.setDepartmentEditable("false");
 			}else{
 				//为高管时所属事业线可编辑
-				idea.setDepartmentEditable("true");;
+				idea.setDepartmentEditable("true");
 			}
 			resultBean.setEntity(idea);
 			resultBean.setStatus("OK");
@@ -118,10 +120,55 @@ public class IdeaController {
 			}
 			Map<String, Object> user = BeanUtils.toMap(cache.get(bean.getSessionid()));
 			
+			if(paramMap.get("departmentId") == null || CUtils.get().object2String(paramMap.get("departmentId")).equals("")){
+				if(paramMap.get("isCEOORDSZ").equals(0)){
+					resultBean.setMessage("请选择所属事业线");
+					return resultBean;
+				}else{
+					paramMap.put("departmentId", CUtils.get().object2Long(user.get("departmentId")));
+				}
+			}
+			
+
+			@SuppressWarnings("unused")
+			String operatorStr = "";
+			@SuppressWarnings("unused")
+			UrlNumber uNum = null;
+			@SuppressWarnings("unused")
+			String content = "";
+			
+			if(CUtils.get().object2Long(paramMap.get("id"))!=0){
+				IdeaBean tempIdea = service.queryIdeaById(CUtils.get().object2Long(paramMap.get("id")));
+				service.updateIdeaById(paramMap);
+				if(StaticConst.IDEA_PROGRESS_DRL.equals(tempIdea.getIdeaProgress())){
+					uNum = UrlNumber.two;
+				}else if(StaticConst.IDEA_PROGRESS_DY.equals(tempIdea.getIdeaProgress())){
+					uNum = UrlNumber.three;
+				}else if(StaticConst.IDEA_PROGRESS_CJLXH.equals(tempIdea.getIdeaProgress())){
+					uNum = UrlNumber.four;
+				}else if(StaticConst.IDEA_PROGRESS_GZ.equals(tempIdea.getIdeaProgress())){
+					uNum = UrlNumber.five;
+				}
+				operatorStr = "修改";
+				content = "修改创意";
+				
+			}else{
+				paramMap.put("id", CUtils.get().object2Long(paramMap.get("id")));
+				paramMap.put("createdTime", CUtils.get().object2Long(paramMap.get("createdTime")));
+				paramMap.put("ideaProgress", StaticConst.IDEA_PROGRESS_DRL);
+				service.insertIdea(paramMap);
+				operatorStr = "添加";
+				uNum = UrlNumber.one;
+				content = "添加创意";
+			}
+			
+			//ControllerUtils.setRequestIdeaParamsForMessageTip(request, user, idea.getIdeaName(), idea.getId(), content + idea.getIdeaName(), uNum);
 			
 		} catch (Exception e) {
 			log.error(IdeaController.class.getName() + "addIdea",e);
 		}
+		resultBean.setId(CUtils.get().object2Long(paramMap.get("id")));
+		resultBean.setStatus("OK");
 		return resultBean;
 	}
 	

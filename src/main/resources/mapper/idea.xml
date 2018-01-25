@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.galaxy.im.bean.idea.IdeaBean">
+	<resultMap id="BaseResultMap" type="com.galaxy.im.bean.idea.IdeaBean">
+		<id column="id" 					property="id"				/>
+		<result column="idea_name" 			property="ideaName" 		/>
+		<result column="idea_code" 			property="ideaCode" 		/>
+		<result column="department_id" 		property="departmentId"  	/>
+		<result column="created_uid" 		property="createdUid" 		/>
+		<result column="created_time" 		property="createdTime" 		/>
+		<result column="updated_uid" 		property="updatedUid" 		/>
+		<result column="updated_time" 		property="updatedTime" 		/>
+		<result column="idea_progress"  	property="ideaProgress" 	/>
+		<result column="idea_desc" 			property="ideaDesc" 		/>
+		<result column="idea_desc_html" 	property="ideaDescHtml" 	/>
+		<result column="idea_source" 		property="ideaSource" 		/>
+		<result column="project_id" 		property="projectId" 		/>
+		<result column="claimant_uid" 		property="claimantUid" 		/>
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id,
+		idea_name,
+		idea_code,
+		department_id,
+		created_uid,
+		created_time,
+		updated_uid,
+		updated_time,
+		idea_progress,
+		idea_desc,
+		idea_desc_html,
+		idea_source,
+		project_id,
+		claimant_uid
+	</sql>
+	
+	<sql id="Base_Where_Clause">
+		<where>
+			<trim prefixOverrides="and">
+				<if test="id != null"> and id =#{id}</if>
+				<if test="departmentId != null" > and department_id = #{departmentId,jdbcType=BIGINT} </if>
+				<if test="ideaProgress != null" > and idea_progress = #{ideaProgress,jdbcType=VARCHAR} </if>
+				<if test="createdUid != null" > and created_uid = #{createdUid,jdbcType=BIGINT} </if>
+				<if test="claimantUid != null" > and claimant_uid = #{claimantUid,jdbcType=BIGINT} </if>
+				<if test="createdUids != null">
+					and created_uid in 
+					<foreach collection="createdUids" index="item" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="createdTimeFrom != null"> and created_time <![CDATA[>=]]> #{createdTimeFrom,jdbcType=BIGINT}</if>
+				<if test="createdTimeThrough != null"> and created_time <![CDATA[<=]]> #{createdTimeThrough,jdbcType=BIGINT}</if>
+				<if test="ids != null">
+					and id in 
+					<foreach collection="ids" index="item" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="keyword != null">
+					and (
+			 			idea_name  LIKE replace('%${keyword}%',' ','') 
+			 		<if test="escapeChar ">
+			 		  	escape '/' 
+			 		</if>
+			 		or idea_code LIKE replace('%${keyword}%',' ','') 
+			 		<if test="escapeChar ">
+			 		  	escape '/' 
+			 		</if>
+			 		)
+				</if>
+				<if test="ideaProgressStr != null">
+					and idea_progress in 
+					<foreach collection='@com.galaxyinternet.utils.CollectionUtils@string2List(ideaProgressStr,",")' index="item" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="relatedUid != null" > and (created_uid = #{relatedUid,jdbcType=BIGINT} or claimant_uid = #{relatedUid,jdbcType=BIGINT}) </if>
+			</trim>
+		</where>
+		<if test="sorting != null">order by ${sorting}</if>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</sql>
+	<!-- 根据ID查询-->
+	<select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sop_idea
+		where id = #{id}
+	</select>
+	
+	<!-- 查询 -->
+	<select id="select" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from sop_idea 
+		<include refid="Base_Where_Clause" />
+	</select>
+	
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from sop_idea
+		<include refid="Base_Where_Clause" />
+	</select>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from sop_idea
+		<include refid="Base_Where_Clause" />
+	</delete>
+	
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from sop_idea
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	
+ 	<insert id="insertIdea" useGeneratedKeys="true" keyProperty="id" parameterType="com.galaxy.im.bean.idea.IdeaBean">
+ 		insert into sop_idea 
+ 		(
+ 			id,
+			idea_name,
+			idea_code,
+			department_id,
+			created_uid,
+			created_time,
+			updated_uid,
+			updated_time,
+			idea_progress,
+			idea_desc,
+			idea_desc_html,
+			idea_source,
+			project_id,
+			claimant_uid
+ 		)
+ 		values 
+ 		(
+ 			#{id}, 
+ 			#{ideaName},
+ 			#{ideaCode},
+ 			#{departmentId},
+ 			#{createdUid},
+ 			#{createdTime},
+ 			#{updatedUid},
+ 			#{updatedTime},
+ 			#{ideaProgress},
+ 			#{ideaDesc},
+ 			#{ideaDescHtml},
+ 			#{ideaSource},
+ 			#{projectId},
+ 			#{claimantUid}
+ 		)
+ 	</insert>
+	
+	
+	<update id="updateIdeaById" parameterType="hashmap">
+		update sop_idea
+		<set>
+			<if test="ideaName != null"> idea_name = #{ideaName}, </if>
+			<if test="ideaCode != null"> idea_code = #{ideaCode}, </if>
+			<if test="departmentId != null"> department_id = #{departmentId}, </if>
+			<if test="updatedUid != null"> updated_uid = #{updatedUid}, </if>
+			<if test="updatedTime != null"> updated_time = #{updatedTime}, </if>
+			<if test="ideaProgress != null"> idea_progress = #{ideaProgress}, </if>
+			<if test="ideaDesc != null"> idea_desc = #{ideaDesc}, </if>
+			<if test="ideaDescHtml != null"> idea_desc_html = #{ideaDescHtml}, </if>
+			<if test="ideaSource != null"> idea_source = #{ideaSource}, </if>
+			<if test="projectId != null"> project_id = #{projectId}, </if>
+			<if test="claimantUid != null"> claimant_uid = #{claimantUid}</if>
+		</set>
+			where id = #{id}
+	</update>
+	
+	
+	
+</mapper>
