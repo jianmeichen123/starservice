@@ -2,11 +2,10 @@ package com.galaxy.im.business.idea.dao;
 
 import java.util.Map;
 
-import com.galaxy.im.bean.Test;
 import com.galaxy.im.bean.idea.IdeaBean;
 import com.galaxy.im.common.db.IBaseDao;
 
-public interface IIdeaDao extends IBaseDao<Test, Long>{
+public interface IIdeaDao extends IBaseDao<IdeaBean, Long>{
 
 	/*
 	 * 根据id查询

@@ -6,13 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import com.galaxy.im.bean.Test;
 import com.galaxy.im.bean.idea.IdeaBean;
 import com.galaxy.im.common.db.BaseDaoImpl;
 import com.galaxy.im.common.exception.DaoException;
 
 @Repository
-public class IdeaDaoImpl extends BaseDaoImpl<Test, Long> implements IIdeaDao{
+public class IdeaDaoImpl extends BaseDaoImpl<IdeaBean, Long> implements IIdeaDao{
 	private Logger log = LoggerFactory.getLogger(IdeaDaoImpl.class);
 	
 	public IdeaDaoImpl(){

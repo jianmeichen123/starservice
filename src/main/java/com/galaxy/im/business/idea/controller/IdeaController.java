@@ -110,6 +110,8 @@ public class IdeaController {
 	public Object addIdea(HttpServletRequest request,@RequestBody String paramString){
 		ResultBean<Object> resultBean = new ResultBean<>();
 		Map<String, Object > paramMap = CUtils.get().jsonString2map(paramString);
+		int updateCount=0;
+		int insertCount=0;
 		try {
 			@SuppressWarnings("unchecked")
 			RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
@@ -139,7 +141,7 @@ public class IdeaController {
 			
 			if(CUtils.get().object2Long(paramMap.get("id"))!=0){
 				IdeaBean tempIdea = service.queryIdeaById(CUtils.get().object2Long(paramMap.get("id")));
-				service.updateIdeaById(paramMap);
+				updateCount = service.updateIdeaById(paramMap);
 				if(StaticConst.IDEA_PROGRESS_DRL.equals(tempIdea.getIdeaProgress())){
 					uNum = UrlNumber.two;
 				}else if(StaticConst.IDEA_PROGRESS_DY.equals(tempIdea.getIdeaProgress())){
@@ -154,9 +156,9 @@ public class IdeaController {
 				
 			}else{
 				paramMap.put("id", CUtils.get().object2Long(paramMap.get("id")));
-				paramMap.put("createdTime", CUtils.get().object2Long(paramMap.get("createdTime")));
+				paramMap.put("createdTime", System.currentTimeMillis());
 				paramMap.put("ideaProgress", StaticConst.IDEA_PROGRESS_DRL);
-				service.insertIdea(paramMap);
+				insertCount = service.insertIdea(paramMap);
 				operatorStr = "添加";
 				uNum = UrlNumber.one;
 				content = "添加创意";
@@ -168,7 +170,9 @@ public class IdeaController {
 			log.error(IdeaController.class.getName() + "addIdea",e);
 		}
 		resultBean.setId(CUtils.get().object2Long(paramMap.get("id")));
-		resultBean.setStatus("OK");
+		if (insertCount >0 || updateCount >0) {
+			resultBean.setStatus("OK");
+		}
 		return resultBean;
 	}
 	

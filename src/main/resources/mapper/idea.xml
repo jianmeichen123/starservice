@@ -118,7 +118,7 @@
 		where id = #{id,jdbcType=BIGINT}
 	</delete>
 	
- 	<insert id="insertIdea" useGeneratedKeys="true" keyProperty="id" parameterType="com.galaxy.im.bean.idea.IdeaBean">
+ 	<insert id="insertIdea" useGeneratedKeys="true" keyProperty="id" parameterType="hashmap">
  		insert into sop_idea 
  		(
  			id,

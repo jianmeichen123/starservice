@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.galaxy.im.bean.Test;
 import com.galaxy.im.bean.idea.IdeaBean;
 import com.galaxy.im.business.idea.dao.IIdeaDao;
 import com.galaxy.im.common.db.IBaseDao;
@@ -15,13 +14,13 @@ import com.galaxy.im.common.db.service.BaseServiceImpl;
 import com.galaxy.im.common.exception.ServiceException;
 
 @Service
-public class IdeaServiceImpl extends BaseServiceImpl<Test> implements IIdeaService{
+public class IdeaServiceImpl extends BaseServiceImpl<IdeaBean> implements IIdeaService{
 	private Logger log = LoggerFactory.getLogger(IdeaServiceImpl.class);
 	@Autowired
 	IIdeaDao dao;
 	
 	@Override
-	protected IBaseDao<Test, Long> getBaseDao() {
+	protected IBaseDao<IdeaBean, Long> getBaseDao() {
 		return dao;
 	}
 
