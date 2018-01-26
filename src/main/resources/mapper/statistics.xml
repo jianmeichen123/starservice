@@ -69,7 +69,7 @@
 		select meeting_type,count(meeting_type) as number 
 		from sop_meeting_scheduling 
 		where is_delete=0 and project_id in(
-			select id from sop_project where and is_delete=0 and create_uid in (
+			select id from sop_project where  is_delete=0 and create_uid in (
 				select id from platform_user where department_id = (
 					select department_id from platform_user where id=#{uid}  
 				)
