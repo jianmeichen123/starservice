@@ -70,9 +70,11 @@
 		from sop_meeting_scheduling 
 		where is_delete=0 and project_id in(
 			select id from sop_project where  is_delete=0 and create_uid in (
-				select id from platform_user where department_id = (
-					select department_id from platform_user where id=#{uid}  
-				)
+				SELECT u.id FROM v_user u 
+				LEFT JOIN v_rel_dep_user du on u.id=du.user_id 
+				WHERE du.dep_id=( SELECT du.dep_id FROM v_user u
+								  LEFT JOIN v_rel_dep_user du on u.id=du.user_id
+								  WHERE u.id=#{uid} )
 			)
 		)  
 		and  schedule_status = 1 and date(reserve_time_start)= date(now()) 
