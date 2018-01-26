@@ -55,7 +55,7 @@ public class SopProjectScheduleHandler implements SopTaskScheduleMessageHandler
 				content.append("\"<uname>").append(model.getUserName()).append("</uname>\"");
 				content.append("删除了您的项目");
 				content.append("\"").append("<pname>").append(CUtils.get().object2String(map.get("projectName"))).append("</pname>\"");
-				content.append(",删除原因：\"").append("<msg>").append(model.getDeleteReason()).append("</msg>\"");
+				content.append("，删除原因：\"").append("<msg>").append(model.getDeleteReason()).append("</msg>\"");
 				message.setSendTime(sendTime);
 				message.setContent(content.toString());
 				list.add(message);
