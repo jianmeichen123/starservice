@@ -176,4 +176,34 @@ public class IdeaController {
 		return resultBean;
 	}
 	
+	/**
+	 * 创意认领
+	 * 
+	 */
+	@ResponseBody
+	@RequestMapping("updateIdea")
+	public Object updateIdea(@RequestBody String paramString,HttpServletRequest request){
+		ResultBean<Object> resultBean = new ResultBean<>();
+		Map<String, Object > paramMap = CUtils.get().jsonString2map(paramString);
+		if(!paramMap.containsKey("id") || paramMap.get("id")==null){
+			resultBean.setMessage("缺少必要的参数");
+			return resultBean;
+		}
+		try {
+			//UrlNumber urlNum=null;
+			//@SuppressWarnings("unchecked")
+			//RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
+			//获取登录用户信息
+			//SessionBean bean = CUtils.get().getBeanBySession(request);
+			//Map<String, Object> user = BeanUtils.toMap(cache.get(bean.getSessionid()));
+			
+			
+			
+		} catch (Exception e) {
+			log.error(IdeaController.class.getName() + "updateIdea",e);
+		}
+		return resultBean;
+		
+	}
+	
 }
