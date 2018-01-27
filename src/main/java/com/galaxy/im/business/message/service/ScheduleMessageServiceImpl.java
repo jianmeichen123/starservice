@@ -43,6 +43,8 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 	@Autowired
 	SchedulePushMessTask schedulePushMessTask;
 	
+	private static final long TO_LAZY_TIME_BY_MESSAGE = (long) 95 * 60 * 1000;
+	
 	@Override
 	protected IBaseDao<ScheduleMessageBean, Long> getBaseDao() {
 		return iScheduleMessageDao;
@@ -452,9 +454,10 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 		// 消息内容查询
 		ScheduleMessageBean mQ = new ScheduleMessageBean();
 		//mQ.setBtime(bdate);
-		//mQ.setEtime(edate);
+		mQ.setEtime(edate);
 		//mQ.setSendTimeNotNull(true);
 		mQ.setStatus((byte) 1);
+		mQ.setLazyTime(System.currentTimeMillis() - ScheduleMessageServiceImpl.TO_LAZY_TIME_BY_MESSAGE);
 		mQ.setProperty("send_time");
 		mQ.setDirection("asc");
 		List<ScheduleMessageBean> mess = iScheduleMessageDao.selectMessageList(mQ);

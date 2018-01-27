@@ -22,7 +22,7 @@ public class ScheduleMessageBean extends PagableEntity{
 	private Byte status;   // 0:可用 1:禁用
 	
 	private Long createdUid;
-
+	private Long lazyTime;	//延迟加载时间设置
 	private String createdUname;
 
 	
@@ -147,6 +147,14 @@ public class ScheduleMessageBean extends PagableEntity{
 
 	public void setRemarkId(String remarkId) {
 		this.remarkId = remarkId;
+	}
+
+	public Long getLazyTime() {
+		return lazyTime;
+	}
+
+	public void setLazyTime(Long lazyTime) {
+		this.lazyTime = lazyTime;
 	}
 
 /*	@Override

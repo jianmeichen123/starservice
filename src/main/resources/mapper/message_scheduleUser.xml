@@ -135,6 +135,7 @@
 		<if test="isRead != null" >and mu.is_read = #{isRead}</if>
 		<if test="isSend != null" >and mu.is_send = #{isSend}</if>
 		<if test="status != null" >and me.status = #{status}</if>
+		<if test="lazyTime != null" >and me.send_time>#{lazyTime}</if>
 		</where>
 	</select>
 	
