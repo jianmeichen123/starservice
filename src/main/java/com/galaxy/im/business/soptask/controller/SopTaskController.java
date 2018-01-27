@@ -221,8 +221,12 @@ public class SopTaskController {
 			if (count>0) {
 				resultBean.setStatus("OK");
 			}
+			long projectId=0L;
+			for(Map<String, Object> map:sopTask.getProjects()){
+				projectId =CUtils.get().object2Long(map.get("projectId"));
+			}
 			//发消息
-			paramMap.put("projectId", sopTask.getProjectId());
+			paramMap.put("projectId", projectId);
 			SopProjectBean sopBean = fcService.getSopProjectInfo(paramMap);
 			
 			sopTask.setMessageType("1.2.1");
@@ -233,7 +237,7 @@ public class SopTaskController {
 			//记录操作日志，项目名称，项目id，项目阶段，任务id，原因
 			List<Map<String, Object>> mapList= new ArrayList<Map<String, Object>>();
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("projectId", sopTask.getProjectId());
+			map.put("projectId", sopBean.getId());
 			map.put("projectName", sopBean.getProjectName());
 			map.put("projectProgressName", sopBean.getProjectProgressName());
 			map.put("recordId", sopTask.getId());
