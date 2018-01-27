@@ -912,7 +912,7 @@ public class ProjectController {
 					for(Map<String, Object> map : projects){
 						SopProjectBean sopBean = fcService.getSopProjectInfo(map);
 						if(sopBean!=null){
-							if (sessionBean.getGuserid() == CUtils.get().object2Long(bean.getAfterUid()))
+							if (CUtils.get().object2String(sessionBean.getGuserid()).equals(CUtils.get().object2String(bean.getAfterUid())))
 							{
 								resultBean.setMessage("不能移交给本人");
 								return resultBean;
@@ -935,7 +935,7 @@ public class ProjectController {
 					for(Map<String, Object> map : projects){
 						SopProjectBean sopBean = fcService.getSopProjectInfo(map);
 						if(sopBean!=null){
-							if(sopBean.getCreateUid() == CUtils.get().object2Long(bean.getAfterUid())){
+							if(CUtils.get().object2String(sopBean.getCreateUid()).equals(CUtils.get().object2String(bean.getAfterUid()))){
 								resultBean.setMessage("不能指派给项目负责人");
 								return resultBean;
 							}
