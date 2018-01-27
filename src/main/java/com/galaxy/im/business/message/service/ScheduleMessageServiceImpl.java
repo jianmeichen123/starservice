@@ -452,7 +452,7 @@ public class ScheduleMessageServiceImpl extends BaseServiceImpl<ScheduleMessageB
 		// 消息内容查询
 		ScheduleMessageBean mQ = new ScheduleMessageBean();
 		//mQ.setBtime(bdate);
-		//mQ.setEtime(edate);
+		mQ.setEtime(edate);
 		//mQ.setSendTimeNotNull(true);
 		mQ.setStatus((byte) 1);
 		mQ.setProperty("send_time");
