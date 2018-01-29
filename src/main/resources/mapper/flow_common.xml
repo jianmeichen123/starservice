@@ -287,7 +287,8 @@
 				d.`name` projectProgressName
 		FROM sop_project p
 		LEFT JOIN dict d ON p.project_progress=d.dict_code
-		WHERE p.id=#{projectId};
+		WHERE p.id=#{projectId}
+		<if test="isDelete != null"> and p.is_delete = #{isDelete} </if>;
 	</select>
 	<resultMap type="com.galaxy.im.bean.project.SopProjectBean" id="infoMap">
 		<result column="id" property="id"/>

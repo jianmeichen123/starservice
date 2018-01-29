@@ -910,6 +910,7 @@ public class ProjectController {
 				if(bean.getFlag()==1){
 					//移交
 					for(Map<String, Object> map : projects){
+						map.put("isDelete", 0);
 						SopProjectBean sopBean = fcService.getSopProjectInfo(map);
 						if(sopBean!=null){
 							if (CUtils.get().object2String(sessionBean.getGuserid()).equals(CUtils.get().object2String(bean.getAfterUid())))
@@ -917,6 +918,9 @@ public class ProjectController {
 								resultBean.setMessage("不能移交给本人");
 								return resultBean;
 							}
+						}else{
+							resultBean.setMessage("项目已被删除");
+							return resultBean;
 						}
 					}
 					for(Map<String, Object> map : projects){
@@ -938,12 +942,16 @@ public class ProjectController {
 				}else if(bean.getFlag()==2){
 					//指派
 					for(Map<String, Object> map : projects){
+						map.put("isDelete", 0);
 						SopProjectBean sopBean = fcService.getSopProjectInfo(map);
 						if(sopBean!=null){
 							if(CUtils.get().object2String(sopBean.getCreateUid()).equals(CUtils.get().object2String(bean.getAfterUid()))){
 								resultBean.setMessage("不能指派给项目负责人");
 								return resultBean;
 							}
+						}else{
+							resultBean.setMessage("项目已被删除");
+							return resultBean;
 						}
 					}
 					for(Map<String, Object> map : projects){
