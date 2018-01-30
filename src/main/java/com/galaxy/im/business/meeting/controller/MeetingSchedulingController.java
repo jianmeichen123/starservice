@@ -56,6 +56,11 @@ public class MeetingSchedulingController {
 				    String dateString = formatter.format(new Date());  
 				    query.setStartTime(dateString); 
 			}
+			if(query.getKeyword()!=null){
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
+			    String dateString = formatter.format(new Date());  
+			    query.setDateTime(dateString);
+			}
 			QPage page = service.queryMescheduling(query);
 			map=page.getDataList();
 			if(!map.isEmpty() && map.size()>0){

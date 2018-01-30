@@ -122,9 +122,9 @@ public enum OperationLogType {
 	pos_meeting_update("/posmeeting/addPosMeetingRecord/"+UrlNumber.two, OperType.UPDATE.getOperationType(), "投后运营会议记录",SopStage.EQUITY_DELIVERY_END.getStageName()),
 	
 	//项目删除
-	project_del("/project/delProject", OperType.DELETE.getOperationType(),"项目删除",null),
-	project_apply("/project/projectTransfer/"+UrlNumber.one, OperType.APPLY.getOperationType(),"项目移交",null),
-	project_assigned("/project/projectTransfer/"+UrlNumber.two, OperType.ASSIGNED.getOperationType(),"项目指派",null),
+	project_del("/project/delProject", OperType.DELETE.getOperationType(),"删除项目",null),
+	project_apply("/project/projectTransfer/"+UrlNumber.one, OperType.APPLY.getOperationType(),"移交项目",null),
+	project_assigned("/project/projectTransfer/"+UrlNumber.two, OperType.ASSIGNED.getOperationType(),"指派项目",null),
    	;
 	
 	
