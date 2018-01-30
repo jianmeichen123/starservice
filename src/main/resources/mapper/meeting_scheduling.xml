@@ -57,6 +57,10 @@
 		<if test="startTime != null ">				
 		 	and s.reserve_time_start >= STR_TO_DATE(CONCAT(#{startTime} , ' 00:00:00') ,'%Y-%m-%d %H:%i:%s')	 
 		</if> 
+		<if test="keyword != null">
+			AND (s.schedule_status = 0 OR (s.schedule_status=1  and 				 	
+			s.reserve_time_start >= STR_TO_DATE(CONCAT(#{dateTime} , ' 00:00:00') ,'%Y-%m-%d %H:%i:%s' )) )
+		</if>
 		<if test="sorting != null">order by ${sorting}</if> 
 		<if test="sorting == null">order by meeting_count DESC,meeting_date DESC</if> 
 		<if test="offset != null and limit != null">
@@ -79,19 +83,14 @@
 				    <if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
 				    <!-- 模糊查询 -->
 					<if test="keyword != null">
-						
-						and (upper(project_name) like CONCAT("%",upper(#{keyword}),"%")
-						<if test="escapeChar ">
-							escape '/'
-						</if>
-						or upper(project_code) like CONCAT("%",upper(#{keyword}),"%")
-						<if test="escapeChar ">
-							escape '/'
-						</if>
-						or project_name like CONCAT("%",#{ceeword},"%")
-						<if test="escapeChar ">
-							escape '/'
-						</if>
+						and ( project_name like CONCAT("%",#{keyword},"%")
+							<if test="escapeChar ">
+								escape '/'
+							</if>
+							or project_code like CONCAT("%",#{keyword},"%")
+							<if test="escapeChar ">
+								escape '/'
+							</if>
 						)
 					</if>
 				</trim>
@@ -102,6 +101,10 @@
 		<if test="startTime != null ">				
 		 	and s.reserve_time_start >= STR_TO_DATE(CONCAT(#{startTime} , ' 00:00:00') ,'%Y-%m-%d %H:%i:%s')	 
 		</if> 
+		<if test="keyword != null">
+			AND (s.schedule_status = 0 OR (s.schedule_status=1  and 				 	
+			s.reserve_time_start >= STR_TO_DATE(CONCAT(#{dateTime} , ' 00:00:00') ,'%Y-%m-%d %H:%i:%s' )) )
+		</if>
 	</select>
 	
 	<!-- 查询排队数量 -->
