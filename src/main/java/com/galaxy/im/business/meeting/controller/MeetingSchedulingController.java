@@ -51,7 +51,7 @@ public class MeetingSchedulingController {
 				resultBean.setMessage("User用户信息在Session中不存在，无法执行项目列表查询！");
 				return resultBean;
 			}
-			if(query.getScheduleStatus()==1){
+			if(query.getScheduleStatus()!=null && query.getScheduleStatus()==1){
 				 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
 				    String dateString = formatter.format(new Date());  
 				    query.setStartTime(dateString); 
