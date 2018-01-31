@@ -68,7 +68,7 @@
         LEFT JOIN power.user u2 ON d.dep_manager = u2.id 
 		LEFT JOIN dict dd ON dd.dict_code =p1.project_type
 		LEFT JOIN information_result r on r.project_id=p1.id and r.title_id=1814
-		WHERE p1.is_delete=0 and p1.id =#{projectId} and st.id=#{id}
+		WHERE p1.is_delete=0 and p1.id =#{projectId} and st.id=#{id} LIMIT 0,1
 	</select>
 	
 	<!-- 修改项目状态 为认领-->
