@@ -1,4 +1,4 @@
-package com.galaxy.im.business.common.dict.Controller;
+package com.galaxy.im.business.common.dict.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
