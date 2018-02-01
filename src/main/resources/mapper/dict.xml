@@ -167,13 +167,16 @@
 	
 	<!-- 项目承揽人 -->
 	<select id="getProjectToUserList" parameterType="hashmap" resultType="hashmap">
-		select a.id userId, user_name userName, b.id deptId, b.name deptName
+		select a.id userId, a.user_name userName, b.id deptId, b.name deptName
 		from 
 			v_user a, 
 			v_department b, 
 			v_rel_dep_user c
 		where a.id = c.user_id and b.id = c.dep_id and a.is_show = 0 
 		and  a.is_del = 0 and a.is_outtage = 0 and b.is_careerline = 1
+		<if test="userName !=null and userName !='null' and userName !=''">
+			and a.user_name like concat(concat('%','${userName}'),'%')
+		</if>
 	</select>
 	
 </mapper>
