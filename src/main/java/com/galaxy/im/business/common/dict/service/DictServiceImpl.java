@@ -189,7 +189,11 @@ public class DictServiceImpl extends BaseServiceImpl<Dict> implements IDictServi
 					}
 				}else if(CUtils.get().object2String(paramMap.get("parentCode")).equals("FNO1_11")){
 					//项目承揽人
-					list = dictDao.getFinanceStatusList(paramMap);
+					list = dictDao.getProjectToUserList(paramMap);
+					Map<String,Object> map =new HashMap<String,Object>();
+					map.put("userName", "非投资线员工");
+					map.put("userId", "10072");
+					list.add(map);
 				}else if(CUtils.get().object2String(paramMap.get("parentCode")).equals("FNO1_4")){
 					//团队成员职位
 					paramMap.put("code", "team-members");
