@@ -67,6 +67,65 @@ public class ProjectEquitiesController {
 	}
 	
 	/**
+	 * 添加/编辑法人信息
+	 */
+	@ResponseBody
+	@RequestMapping("addFRInfo")
+	public Object addFRInfo(@RequestBody String paramString,HttpServletRequest request){
+		ResultBean<Object> resultBean = new ResultBean<>();
+		Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
+			if(paramMap.get("projectId")==null){
+				resultBean.setMessage("必要的参数丢失");
+				return resultBean;
+			}
+			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
+			SopProjectBean p = iProjectService.getProjectInfoById(CUtils.get().object2Long(paramMap.get("projectId")));
+			//项目创建者用户ID与当前登录人ID是否一样
+			if(p != null && sessionBean.getGuserid().doubleValue() != p.getCreateUid().doubleValue()){
+				resultBean.setMessage("没有权限修改该项目的法人信息!");
+				return resultBean;
+			}
+			try {
+				//添加
+				if (paramMap.get("pid")==null && paramMap.get("cid")==null && paramMap.get("fid")==null) {
+					paramMap.put("createId", sessionBean.getGuserid());
+					paramMap.put("createdTime",new Date().getTime());
+					int count = service.addFRInfo(paramMap);
+					if (count>0) {
+						resultBean.setStatus("OK");
+					}else {
+						resultBean.setStatus("ERROR");
+					}
+				}else {
+					paramMap.put("tid1", 1814);
+					paramMap.put("tid2", 1815);
+					paramMap.put("tid3", 1816);
+					List<Object> list = service.selectFRInfo(paramMap);
+					//验证内容是否存在
+					if (list==null || list.size()<=0) {
+						resultBean.setMessage("当前信息不存在或已被删除,请重新操作!");
+						return resultBean;
+					}else{
+						//更新
+						paramMap.put("updateId", sessionBean.getGuserid());
+						paramMap.put("updateTime",new Date().getTime());
+						int count = service.updateFRInfo(paramMap);
+						if (count>0) {
+							resultBean.setStatus("OK");
+						}else {
+							resultBean.setStatus("ERROR");
+							resultBean.setMessage("当前信息不存在或已被删除,请重新操作!");
+						}
+					}
+				}
+		} catch (Exception e) {
+			log.error(ProjectEquitiesController.class.getName() + "：addProjectShares",e);
+		}
+		return resultBean;
+		
+	}
+	
+	/**
 	 * 股权结构列表
 	 */
 	@ResponseBody

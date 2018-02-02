@@ -86,6 +86,80 @@ public class ProjectEquitiesServiceImpl extends BaseServiceImpl<InformationListd
 			throw new ServiceException(e);
 		}
 	}
+
+	/**
+	 * 添加法人信息
+	 */
+	@Override
+	public int addFRInfo(Map<String, Object> paramMap) {
+		try {
+			int result =0;
+			if (paramMap.containsKey("projectCompany")) {
+				paramMap.put("contentDescribe1", paramMap.get("projectCompany"));
+				paramMap.put("titleId", 1814);
+				result = dao.addFRInfo(paramMap);
+			} if (paramMap.containsKey("companyLegal")) {
+				paramMap.remove("id");
+				paramMap.put("contentDescribe1", paramMap.get("companyLegal"));
+				paramMap.put("titleId", 1815);
+				result = dao.addFRInfo(paramMap);
+			} if (paramMap.containsKey("formationDate")) {
+				paramMap.remove("id");
+				paramMap.put("contentDescribe1", paramMap.get("formationDate"));
+				paramMap.put("titleId", 1816);
+				result = dao.addFRInfo(paramMap);
+			}
+			return result;
+		} catch (Exception e) {
+			log.error(ProjectEquitiesServiceImpl.class.getName() + "addFRInfo",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	/**
+	 * 更新法人信息
+	 */
+	@Override
+	public int updateFRInfo(Map<String, Object> paramMap) {
+		try {
+			int result =0;
+			//当三条信息有一条存在
+			if (paramMap.get("pid")!=null) {
+				paramMap.put("contentDescribe1", paramMap.get("projectCompany"));
+				paramMap.put("id", paramMap.get("pid"));
+				result = dao.updateFRInfo(paramMap);
+			}else if (paramMap.containsKey("projectCompany")) {
+					paramMap.put("contentDescribe1", paramMap.get("projectCompany"));
+					paramMap.put("titleId", 1814);
+					result = dao.addFRInfo(paramMap);
+				} 
+			
+			if (paramMap.get("cid")!=null) {
+				paramMap.put("contentDescribe1", paramMap.get("companyLegal"));
+				paramMap.put("id", paramMap.get("cid"));
+				result = dao.updateFRInfo(paramMap);
+			}else if (paramMap.containsKey("companyLegal")) {
+				paramMap.remove("id");
+				paramMap.put("contentDescribe1", paramMap.get("companyLegal"));
+				paramMap.put("titleId", 1815);
+				result = dao.addFRInfo(paramMap);
+			}
+			if (paramMap.get("fid")!=null) {
+				paramMap.put("contentDescribe1", paramMap.get("formationDate"));
+				paramMap.put("id", paramMap.get("fid"));
+				result = dao.updateFRInfo(paramMap);
+			}else if (paramMap.containsKey("formationDate")) {
+				paramMap.remove("id");
+				paramMap.put("contentDescribe1", paramMap.get("formationDate"));
+				paramMap.put("titleId", 1816);
+				result = dao.addFRInfo(paramMap);
+			}
+			return result;
+		} catch (Exception e) {
+			log.error(ProjectEquitiesServiceImpl.class.getName() + "updateFRInfo",e);
+			throw new ServiceException(e);
+		}
+	}
 	
 	
 }

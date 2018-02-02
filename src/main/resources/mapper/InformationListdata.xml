@@ -4,11 +4,58 @@
 
 	<!-- 股权结构法人信息 -->
 	<select id="selectFRInfo" resultType="hashmap" parameterType="hashmap">
-	SELECT group_concat(case when t.tid=#{tid1} then t.result else null end) as ProjectCompany,
-	group_concat(case when t.tid=#{tid2} then t.result else null end) as CompanyLegal,
-	group_concat(case when t.tid=#{tid3} then t.result else null end) as FormationDate
-	FROM (select title_id tid,content_describe1 result from information_result WHERE project_id =#{projectId} and  title_id IN(#{tid1},#{tid2},#{tid3}) ) t
+	SELECT 
+	group_concat(case when t.tid=#{tid1} then t.id else null end) as pid,
+	group_concat(case when t.tid=#{tid2} then t.id else null end) as cid,
+	group_concat(case when t.tid=#{tid3} then t.id else null end) as fid,
+	group_concat(case when t.tid=#{tid1} then t.result else null end) as projectCompany,
+	group_concat(case when t.tid=#{tid2} then t.result else null end) as companyLegal,
+	group_concat(case when t.tid=#{tid3} then t.result else null end) as formationDate
+	FROM (select id,title_id tid,content_describe1 result from information_result WHERE project_id =#{projectId} and  title_id IN(#{tid1},#{tid2},#{tid3}) ) t
 	</select>
+	
+	<!-- 添加股权法人信息-->
+	<insert id="addFRInfo" useGeneratedKeys="true" keyProperty="id" parameterType="hashmap">
+	    <![CDATA[
+	     insert into information_result (
+	     	id,
+	     	project_id,
+			title_id,
+			content_describe1, 
+			is_valid, 
+			created_time, 
+			create_id, 
+			updated_time, 
+			update_id
+		)
+		values (
+			#{id},
+			#{projectId},
+			#{titleId},
+			#{contentDescribe1}, 
+			0,
+			#{createdTime}, 
+			#{createId}, 
+			#{updateTime}, 
+			#{updateId}
+		)
+	    ]]>
+	</insert>
+	
+	<!-- 更新股权法人信息-->
+	<update id="updateFRInfo" parameterType="hashmap">
+		update information_result
+		<set>
+			<if test="contentDescribe1 != null"> content_describe1 = #{contentDescribe1}, </if>
+			<if test="isValid != null"> is_valid = #{isValid }, </if>
+			<if test="createdTime != null"> created_time = #{createdTime }, </if>
+			<if test="createId != null"> create_id = #{createId }, </if>
+			<if test="updateTime != null"> updated_time = #{updateTime }, </if>
+			<if test="updateId != null"> update_id = #{updateId } </if>
+		</set>
+		where id = #{id} and project_id =#{projectId}
+	</update>
+	
 
 	<!-- 股权结构列表 -->
 	<select id="selectProjectShares" resultType="hashmap" parameterType="hashmap">

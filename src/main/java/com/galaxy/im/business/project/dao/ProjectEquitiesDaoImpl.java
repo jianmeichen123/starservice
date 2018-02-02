@@ -88,6 +88,26 @@ public class ProjectEquitiesDaoImpl extends BaseDaoImpl<InformationListdata, Lon
 			throw new DaoException(e);
 		}
 	}
+
+	@Override
+	public int addFRInfo(Map<String, Object> paramMap) {
+		try{
+			return sqlSessionTemplate.insert(getSqlName("addFRInfo"),paramMap);
+		}catch(Exception e){
+			log.error(ProjectEquitiesDaoImpl.class.getName() + "addFRInfo",e);
+			throw new DaoException(e);
+		}
+	}
+
+	@Override
+	public int updateFRInfo(Map<String, Object> paramMap) {
+		try{
+			return sqlSessionTemplate.update(getSqlName("updateFRInfo"),paramMap);
+		}catch(Exception e){
+			log.error(ProjectEquitiesDaoImpl.class.getName() + "updateFRInfo",e);
+			throw new DaoException(e);
+		}
+	}
 	
 	
 	

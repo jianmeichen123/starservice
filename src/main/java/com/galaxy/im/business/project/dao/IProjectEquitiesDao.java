@@ -21,4 +21,8 @@ public interface IProjectEquitiesDao extends IBaseDao<InformationListdata, Long>
 
 	int deleteProjectSharesById(Map<String, Object> paramMap);
 
+	int addFRInfo(Map<String, Object> paramMap);
+
+	int updateFRInfo(Map<String, Object> paramMap);
+
 }
