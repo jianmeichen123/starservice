@@ -4,4 +4,46 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
 <mapper namespace="com.galaxy.im.business.common.sysUpgrade.dao.ISysUpgradeDao">
 
+	<!-- 系统消息 -->
+	<select id="getSysUpgradeMessage" parameterType="hashmap" resultType="hashmap">
+		SELECT m.id messageId,m.message_content messageContent,m.send_status sendStatus,
+		d.`name`,m.upgrade_time upgradeTime,
+		case (SELECT COUNT(#{userId}) FROM system_message_user)
+		when 1 then 1
+		else 0
+		end isClose
+		FROM system_message m
+		LEFT JOIN dict d on m.send_status=d.dict_code
+		WHERE m.os_type=#{OsType} and m.is_del=0 and
+		(DATE_FORMAT(NOW(),'%Y-%m-%d') = FROM_UNIXTIME(m.send_time/1000,'%Y-%m-%d'))
+	</select>
+	
+	<!-- 手动关闭系统消息  插入一条消息到system_message_user -->
+	<insert id="closeSysUpgradeMessage" parameterType="com.galaxy.im.bean.message.SystemMessageUserBean">
+		insert into system_message_user(
+			message_id,
+			message_os,
+			user_id,
+			is_read,
+			is_del,
+			create_id,
+			create_time,
+			update_id,
+			update_time
+		)values (
+        	#{messageId},
+			#{messageOs},
+			#{userId},
+			#{isRead},
+			#{isDel},
+			#{createId},
+			#{createTime},
+			#{updateId},
+			#{updateTime}
+   		)
+		<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+				SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+	</insert>
+
 </mapper>
