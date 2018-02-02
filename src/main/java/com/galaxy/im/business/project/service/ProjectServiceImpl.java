@@ -315,16 +315,6 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 						StringBuilder sb = new StringBuilder();
 						for(Map<String,Object> maps : map3){
 							if(maps!=null && !maps.isEmpty()){
-								/*if (maps.get("projectUserName")!=null && maps.get("projectUser")!=null) {
-									projectMap.put("otherProjectUser", CUtils.get().object2String(maps.get("projectUserName")));
-								}
-								if (maps.get("projectUser")!=null) {
-									if (maps.get("projectUser")!=null && maps.get("projectUserId").equals("10072")) {
-										sBuilder.append(projectMap.get("otherProjectUser") + "、");
-									}else {
-										sBuilder.append(maps.get("projectUser") + "、");
-									}
-								}*/
 								if(maps.get("projectUserId").equals("10072") && maps.get("projectUserName")!=null){
 									projectMap.put("otherProjectUser", CUtils.get().object2String(maps.get("projectUserName")));
 								}
@@ -336,7 +326,6 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 								if (maps.get("projectUser")==null && maps.get("projectUserName")!=null) {
 									sBuilder.append(maps.get("projectUserName") + "、");
 								}
-								
 								
 								if(maps.get("projectUserId")!=null){
 									sb.append(maps.get("projectUserId") + "、");

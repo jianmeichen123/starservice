@@ -34,6 +34,8 @@ public class SysUpgradeController {
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if(!paramMap.isEmpty() && paramMap!=null){
 				Map<String,Object> map = service.getSysUpgradeMessage(paramMap);
+				resultBean.setStatus("OK");
+				resultBean.setMap(map);
 			}
 		}catch(Exception e){
 			log.error(SysUpgradeController.class.getName() + "getSysUpgradeMessage",e);
