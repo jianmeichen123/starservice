@@ -13,7 +13,7 @@
 		FROM sop_task st 
 		LEFT JOIN sop_project sp ON st.project_id = sp.id and sp.is_delete=0
 		LEFT JOIN dict d on st.task_type = d.dict_code
-		LEFT JOIN power.user p ON st.assign_uid = p.id
+		LEFT JOIN v_user p ON st.assign_uid = p.id
 		WHERE  
 		st.department_id=#{depId}
 		<if test="taskStatus != null" > and st.task_status = #{taskStatus}</if>
@@ -49,7 +49,7 @@
 	<!-- 部门id -->
 	<select id="selectDeptId" parameterType="hashmap"
 		resultType="long">
-		SELECT dep_id depID from power.rel_dep_user WHERE user_id = #{id}
+		SELECT dep_id depID from v_rel_dep_user WHERE user_id = #{id}
 	</select>
 	
 	<!-- 待办任务详情 -->
@@ -57,15 +57,15 @@
 		resultType="hashmap">
 		SELECT p1.id projectId,u.user_name projectCreatedName,p1.create_uid projectCreatedId,p1.project_name projectName,dd.name 
 		projectType, p1.project_code projectCode,p1.created_time createdTime, 
-		r.content_describe1 projectCompany,d.dep_name projectCareerline,d.dep_manager depManager,u2.user_name partner,u1.user_name assignUserName ,
+		r.content_describe1 projectCompany,d.name projectCareerline,d.dep_manager depManager,u2.user_name partner,u1.user_name assignUserName ,
 		st.task_name taskName,st.assign_uid assignUid,st.id taskId
 		FROM sop_project p1 
 	    LEFT JOIN  sop_task st ON st.project_id = p1.id 
-		LEFT JOIN power.user u ON p1.create_uid = u.id
-		LEFT JOIN power.user u1 ON st.assign_uid = u1.id 
-		LEFT JOIN power.rel_dep_user du on u.id= du.user_id
-		LEFT JOIN power.department d on d.id= du.dep_id
-        LEFT JOIN power.user u2 ON d.dep_manager = u2.id 
+		LEFT JOIN v_user u ON p1.create_uid = u.id
+		LEFT JOIN v_user u1 ON st.assign_uid = u1.id 
+		LEFT JOIN v_rel_dep_user du on u.id= du.user_id
+		LEFT JOIN v_department d on d.id= du.dep_id
+        LEFT JOIN v_user u2 ON d.dep_manager = u2.id 
 		LEFT JOIN dict dd ON dd.dict_code =p1.project_type
 		LEFT JOIN information_result r on r.project_id=p1.id and r.title_id=1814
 		WHERE p1.is_delete=0 and p1.id =#{projectId} and st.id=#{id} LIMIT 0,1
