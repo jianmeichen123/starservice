@@ -134,12 +134,12 @@
 	<select id="selectProjectUserInfo" parameterType="hashmap" resultType="hashmap">
 		SELECT 
 		case when t.tid=#{titleId10} then t.choose    end as projectUserId,
-		case when t.tid=#{titleId10} then id.name   end as projectUser,
+		case when t.tid=#{titleId10} then id.user_name   end as projectUser,
 		case when t.tid=#{titleId10} then t.result   end as projectUserName
 		 FROM 
 		(SELECT title_id tid, content_describe1 result, content_choose choose FROM information_result 
 		WHERE  project_id=#{projectId} AND title_id in(#{titleId10})) t
-		LEFT JOIN information_dictionary id ON t.choose=id.id 
+		LEFT JOIN v_user id ON t.choose=id.id  
 	</select>
 
 	<!-- 判断用户画像等是否为空 -->
