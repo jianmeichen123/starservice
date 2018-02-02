@@ -4,7 +4,7 @@
 
 	<!-- 团队成员列表 -->
 	<select id="queryProjectPerson" resultType="hashmap" parameterType="hashmap">
-		SELECT il.id,il.field_1 personName,idd.name personSex,il.field_3 personSexId,il.field_4 personTelephone, id.name personDuties,il.field_2 personDutiesId
+		SELECT il.id,il.field_1 personName,idd.name personSex,il.field_3 personSexId,il.field_4 personTelephone, id.name personDuties,il.field_2 personDutiesId,il.field_8 weChat
 		FROM information_listdata il 
 		LEFT JOIN information_dictionary id ON il.field_2=id.id 
 		LEFT JOIN information_dictionary idd on il.field_3=idd.id
@@ -23,7 +23,7 @@
 	<!-- 个人信息-->
 	<select id="queryPersonInfo" parameterType="hashmap" resultType="hashmap">
 		SELECT il.id,il.field_1 personName,idd.name personSex,il.field_3 personSexId,il.field_4 personTelephone, id.name personDuties,il.field_2 personDutiesId,
-		ids.name education
+		ids.name education,il.field_8 weChat
 		FROM information_listdata il 
 		LEFT JOIN information_dictionary id ON il.field_2=id.id 
 		LEFT JOIN information_dictionary ids ON il.field_5=ids.id 
@@ -98,7 +98,7 @@
 			#{education},
 			#{field6},
 			#{field7},
-			#{field8},
+			#{weChat},
 			#{field9},
 			#{field10},
 			#{isValid}, 
@@ -124,7 +124,7 @@
 			<if test="education != null"> field_5 = #{education }, </if>
 			<if test="field6 != null"> field_6 = #{field6 }, </if>
 			<if test="field7 != null"> field_7 = #{field7 }, </if>
-			<if test="field8 != null"> field_8 = #{field8 }, </if>
+			<if test="weChat != null"> field_8 = #{weChat }, </if>
 			<if test="field9 != null"> field_9 = #{field9 }, </if>
 			<if test="field10 != null"> field_10 = #{field10 }, </if>
 			<if test="isValid != null"> is_valid = #{isValid }, </if>
