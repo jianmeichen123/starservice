@@ -7,7 +7,7 @@
 	<!-- 系统消息 -->
 	<select id="getSysUpgradeMessage" parameterType="hashmap" resultType="hashmap">
 		SELECT m.id messageId,m.message_content messageContent,m.send_status sendStatus,
-		d.`name`,m.upgrade_time upgradeTime,
+		d.`name` sendStatusName,m.upgrade_time upgradeTime,
 		case (SELECT COUNT(#{userId}) FROM system_message_user)
 		when 1 then 1
 		else 0
