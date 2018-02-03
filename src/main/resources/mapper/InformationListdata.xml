@@ -11,7 +11,7 @@
 	group_concat(case when t.tid=#{tid1} then t.result else null end) as projectCompany,
 	group_concat(case when t.tid=#{tid2} then t.result else null end) as companyLegal,
 	group_concat(case when t.tid=#{tid3} then t.result else null end) as formationDate
-	FROM (select id,title_id tid,content_describe1 result from information_result WHERE project_id =#{projectId} and  title_id IN(#{tid1},#{tid2},#{tid3}) ) t
+	FROM (select id,title_id tid,content_describe1 result from information_result WHERE project_id =#{projectId} and  title_id IN(#{tid1},#{tid2},#{tid3}) GROUP BY title_id) t
 	</select>
 	
 	<!-- 添加股权法人信息-->
