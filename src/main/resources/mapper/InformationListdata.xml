@@ -46,12 +46,9 @@
 	<update id="updateFRInfo" parameterType="hashmap">
 		update information_result
 		<set>
-			<if test="contentDescribe1 != null"> content_describe1 = #{contentDescribe1}, </if>
-			<if test="isValid != null"> is_valid = #{isValid }, </if>
-			<if test="createdTime != null"> created_time = #{createdTime }, </if>
-			<if test="createId != null"> create_id = #{createId }, </if>
-			<if test="updateTime != null"> updated_time = #{updateTime }, </if>
-			<if test="updateId != null"> update_id = #{updateId } </if>
+		 content_describe1 = #{contentDescribe1}, 
+		 updated_time = #{updateTime }, 
+		 update_id = #{updateId } 
 		</set>
 		where id = #{id} and project_id =#{projectId}
 	</update>
