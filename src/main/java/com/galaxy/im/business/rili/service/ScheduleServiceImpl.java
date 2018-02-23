@@ -448,20 +448,21 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 		}
 	}
 
+	/**
+	 * 星河投日历同步
+	* @Title: selectList  
+	* @author xiaochuang 
+	* @throws
+	 */
 	@Override
 	public List<ScheduleUtil> selectList(ScheduleInfo query) throws ParseException{
 		List<ScheduleUtil> resultList = new ArrayList<ScheduleUtil>();
-	
 		//结果查询  封装
 		List<ScheduleInfo> qList = null;
-		
 		//有隔日的日程list
 		List<ScheduleInfo> scheduleInfoList = new ArrayList<ScheduleInfo>();
-		
 		//有隔日的日程重新封装list按年月查询
-			
 			ScheduleInfo toQ = new ScheduleInfo();
-			
 			toQ.setStartTime(query.getStartTime());
 			toQ.setEndTime(query.getEndTime());
 			toQ.setCreatedId(query.getCreatedId());
@@ -487,7 +488,6 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 							}
 						}
 						for(String ss:s1){
-							
 								sinfo = new ScheduleInfo();
 								if(temp.getStartTime().substring(0, 10).equals(ss)){
 									sinfo.setStartTime(temp.getStartTime());
@@ -528,13 +528,9 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 									sinfo.setUpdatedTime(temp.getUpdatedTime());
 								}
 								scheduleInfoList.add(sinfo);
-								
-							
 						}
 					}
-					
 				}
-				
 			}		
 			qList.addAll(scheduleInfoList);
 			Iterator<ScheduleInfo> it = qList.iterator();
@@ -544,15 +540,12 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 			        it.remove();
 			    }		    
 			}
-
 		//获取拜访对象得名称重新封装数据
-		
 		//结果封装
 		if(qList!=null && !qList.isEmpty()){
 			
 			Map<String,List<ScheduleInfo>> dateKey_infos = new HashMap<String,List<ScheduleInfo>>();
 			String format = "yyyy-MM-dd";
-			
 			for(ScheduleInfo temp : qList){
 				if (temp.getStartTime()!=null && temp.getStartTime().length()>19) {
 					temp.setStartTime(temp.getStartTime().substring(0, 19));;
@@ -581,7 +574,6 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 					dateKey_infos.put(dateKey, tempInfos);
 				}
 			}
-			
 			for(Map.Entry<String, List<ScheduleInfo>> tempE : dateKey_infos.entrySet()){
 				ScheduleUtil au = new ScheduleUtil();
 				au.setDateKey(tempE.getKey());
@@ -593,10 +585,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 				resultList.add(au);
 			}
 		}
-	
-
 		return resultList;
 	}
-	
 
 }
