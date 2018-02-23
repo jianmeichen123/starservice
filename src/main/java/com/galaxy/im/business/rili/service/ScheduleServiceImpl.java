@@ -544,8 +544,6 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 			        it.remove();
 			    }		    
 			}
-	
-		
 
 		//获取拜访对象得名称重新封装数据
 		
@@ -553,13 +551,15 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 		if(qList!=null && !qList.isEmpty()){
 			
 			Map<String,List<ScheduleInfo>> dateKey_infos = new HashMap<String,List<ScheduleInfo>>();
-			
-				
-				
-				
 			String format = "yyyy-MM-dd";
 			
 			for(ScheduleInfo temp : qList){
+				if (temp.getStartTime()!=null && temp.getStartTime().length()>19) {
+					temp.setStartTime(temp.getStartTime().substring(0, 19));;
+				}
+				if (temp.getEndTime()!=null && temp.getEndTime().length()>19) {
+					temp.setEndTime(temp.getEndTime().substring(0, 19));
+				}
 				//2017/5/11为了 获取访谈对象得名称
 				if(temp.getType()==2){
 					
