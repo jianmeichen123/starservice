@@ -477,8 +477,8 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 					if(temp.getStartTime()!=null && temp.getEndTime()!=null && !AccountDate.get(temp.getStartTime(),temp.getEndTime())){														
 						//跨日日程的操作
 						List<String> sss = AccountDate.getXiuEveryday(temp.getStartTime().substring(0, 10),temp.getEndTime().substring(0, 10), query.getLastMouthDay());
-						Date d1 =DateUtil.convertStringtoD(query.getStartTime());
-						Date d2 = DateUtil.convertStringtoD(query.getEndTime());
+						Date d1 =DateUtil.convertStringtoD(query.getStartTime()+" 00:00:00");
+						Date d2 = DateUtil.convertStringtoD(query.getEndTime()+" 00:00:00");
 						List<String> s1 = new ArrayList<>();
 						for(int i =0;i<sss.size();i++){
 							Date d3 = DateUtil.convertStringtoD(sss.get(i)+" 00:00:00");

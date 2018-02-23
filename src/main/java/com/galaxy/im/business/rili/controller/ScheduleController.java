@@ -385,11 +385,11 @@ public class ScheduleController {
 			Long startDay = CUtils.get().object2Long(query.getStartTime());//前多少天
 			Long endDay = CUtils.get().object2Long(query.getEndTime());//后多少天
 			
-			long startTime = DateUtil.stringToLong(time,"yyyy-MM-dd HH:mm:ss")-(startDay*24*60*60*1000L);
-			long endTime = DateUtil.stringToLong(time,"yyyy-MM-dd HH:mm:ss")+(endDay*24*60*60*1000L);
+			long startTime = DateUtil.stringToLong(time,"yyyy-MM-dd")-(startDay*24*60*60*1000L);
+			long endTime = DateUtil.stringToLong(time,"yyyy-MM-dd")+(endDay*24*60*60*1000L);
 			
-			query.setStartTime(DateUtil.longToString(startTime, "yyyy-MM-dd HH:mm:ss"));
-			query.setEndTime(DateUtil.longToString(endTime, "yyyy-MM-dd HH:mm:ss"));
+			query.setStartTime(DateUtil.longToString(startTime, "yyyy-MM-dd"));
+			query.setEndTime(DateUtil.longToString(endTime, "yyyy-MM-dd"));
 			
 			//结果查询  封装
 			List<ScheduleUtil> qList = service.selectList(query);
