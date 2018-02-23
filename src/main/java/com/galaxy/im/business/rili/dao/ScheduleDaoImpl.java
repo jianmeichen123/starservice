@@ -131,6 +131,17 @@ public class ScheduleDaoImpl extends BaseDaoImpl<ScheduleInfo, Long> implements 
 		}
 		return total;
 	}
+
+	@Override
+	public List<ScheduleInfo> selectListss(ScheduleInfo toQ) {
+		try{
+			Map<String, Object> params = BeanUtils.toMap(toQ);
+			return sqlSessionTemplate.selectList(getSqlName("selectListss"),params);
+		}catch(Exception e){
+			log.error(getSqlName("selectListss"),e);
+			throw new DaoException(e);
+		}
+	}
 	
 
 

@@ -24,5 +24,6 @@ public interface IScheduleService  extends IBaseService<ScheduleInfo>{
 	List<ScheduleInfo> getList(Map<String, Object> map);
 	//日程消息未读个数
 	Long queryProjectScheduleCount(Long getuId);
+	List<ScheduleUtil> selectList(ScheduleInfo query) throws ParseException;
 
 }

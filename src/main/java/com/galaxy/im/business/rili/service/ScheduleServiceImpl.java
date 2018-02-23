@@ -3,6 +3,7 @@ package com.galaxy.im.business.rili.service;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -445,6 +446,156 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 			log.error(ScheduleServiceImpl.class.getName() + "queryProjectScheduleCount",e);
 			throw new ServiceException(e);
 		}
+	}
+
+	@Override
+	public List<ScheduleUtil> selectList(ScheduleInfo query) throws ParseException{
+		List<ScheduleUtil> resultList = new ArrayList<ScheduleUtil>();
+	
+		//结果查询  封装
+		List<ScheduleInfo> qList = null;
+		
+		//有隔日的日程list
+		List<ScheduleInfo> scheduleInfoList = new ArrayList<ScheduleInfo>();
+		
+		//有隔日的日程重新封装list按年月查询
+			
+			ScheduleInfo toQ = new ScheduleInfo();
+			
+			toQ.setStartTime(query.getStartTime());
+			toQ.setEndTime(query.getEndTime());
+			toQ.setCreatedId(query.getCreatedId());
+			toQ.setProperty(query.getProperty());
+			toQ.setDirection(query.getDirection());
+			//增加判断是否删除
+			toQ.setIsDel(0);
+			
+			qList = dao.selectListss(toQ);//--------------------------------------------------------------
+			if(qList!=null && !qList.isEmpty()){
+				ScheduleInfo sinfo ;
+				for(ScheduleInfo temp : qList){	
+					if(temp.getStartTime()!=null && temp.getEndTime()!=null && !AccountDate.get(temp.getStartTime(),temp.getEndTime())){														
+						//跨日日程的操作
+						List<String> sss = AccountDate.getXiuEveryday(temp.getStartTime().substring(0, 10),temp.getEndTime().substring(0, 10), query.getLastMouthDay());
+						Date d1 =DateUtil.convertStringtoD(query.getStartTime());
+						Date d2 = DateUtil.convertStringtoD(query.getEndTime());
+						List<String> s1 = new ArrayList<>();
+						for(int i =0;i<sss.size();i++){
+							Date d3 = DateUtil.convertStringtoD(sss.get(i)+" 00:00:00");
+							if (d3.compareTo(d1)>0 && d3.compareTo(d2)<0) {
+								s1.add(sss.get(i));
+							}
+						}
+						for(String ss:s1){
+							
+								sinfo = new ScheduleInfo();
+								if(temp.getStartTime().substring(0, 10).equals(ss)){
+									sinfo.setStartTime(temp.getStartTime());
+									sinfo.setEndTime(ss+" 23:59:00");
+									sinfo.setName(temp.getName());
+									sinfo.setId(temp.getId());
+									sinfo.setType(temp.getType());
+									sinfo.setCreatedId(temp.getCreatedId());
+									sinfo.setUpdatedId(temp.getUpdatedId());
+									sinfo.setIsAllday(temp.getIsAllday());
+									sinfo.setRemark(temp.getRemark());
+									sinfo.setCreatedTime(temp.getCreatedTime());
+									sinfo.setUpdatedTime(temp.getUpdatedTime());
+								}
+								else if(temp.getEndTime().substring(0, 10).equals(ss)){
+									sinfo.setStartTime(ss+" 00:00:00");
+									sinfo.setEndTime(temp.getEndTime());
+									sinfo.setName(temp.getName());
+									sinfo.setId(temp.getId());	
+									sinfo.setType(temp.getType());
+									sinfo.setCreatedId(temp.getCreatedId());
+									sinfo.setUpdatedId(temp.getUpdatedId());
+									sinfo.setIsAllday(temp.getIsAllday());
+									sinfo.setRemark(temp.getRemark());
+									sinfo.setCreatedTime(temp.getCreatedTime());
+									sinfo.setUpdatedTime(temp.getUpdatedTime());
+								}else{				
+									sinfo.setStartTime(ss+" 00:00:00");
+									sinfo.setEndTime(ss+" 23:59:00");
+									sinfo.setName(temp.getName());
+									sinfo.setId(temp.getId());
+									sinfo.setType(temp.getType());
+									sinfo.setCreatedId(temp.getCreatedId());
+									sinfo.setUpdatedId(temp.getUpdatedId());
+									sinfo.setIsAllday(temp.getIsAllday());
+									sinfo.setRemark(temp.getRemark());
+									sinfo.setCreatedTime(temp.getCreatedTime());
+									sinfo.setUpdatedTime(temp.getUpdatedTime());
+								}
+								scheduleInfoList.add(sinfo);
+								
+							
+						}
+					}
+					
+				}
+				
+			}		
+			qList.addAll(scheduleInfoList);
+			Iterator<ScheduleInfo> it = qList.iterator();
+			while(it.hasNext()){
+				ScheduleInfo x = it.next();
+			    if(x.getStartTime()!=null && x.getEndTime()!=null && !AccountDate.get(x.getStartTime(),x.getEndTime())){
+			        it.remove();
+			    }		    
+			}
+	
+		
+
+		//获取拜访对象得名称重新封装数据
+		
+		//结果封装
+		if(qList!=null && !qList.isEmpty()){
+			
+			Map<String,List<ScheduleInfo>> dateKey_infos = new HashMap<String,List<ScheduleInfo>>();
+			
+				
+				
+				
+			String format = "yyyy-MM-dd";
+			
+			for(ScheduleInfo temp : qList){
+				//2017/5/11为了 获取访谈对象得名称
+				if(temp.getType()==2){
+					
+					ScheduleInfo ss =dao.selectVisitNameById(temp.getId());
+					
+					if(ss!=null && ss.getSchedulePerson()!=null){
+						temp.setSchedulePerson(ss.getSchedulePerson());
+					}
+				}
+				//2017/4/17号修改 报空指针
+				String stime= temp.getStartTime().substring(0,format.length());
+				//String dateKey = DateUtil.dateFormat(temp.getStartTime(), format);
+				String dateKey = DateUtil.dateFormat(stime, format);
+				if(dateKey_infos.containsKey(dateKey)){
+					dateKey_infos.get(dateKey).add(temp);
+				}else{
+					List<ScheduleInfo> tempInfos = new ArrayList<ScheduleInfo>();
+					tempInfos.add(temp);
+					dateKey_infos.put(dateKey, tempInfos);
+				}
+			}
+			
+			for(Map.Entry<String, List<ScheduleInfo>> tempE : dateKey_infos.entrySet()){
+				ScheduleUtil au = new ScheduleUtil();
+				au.setDateKey(tempE.getKey());
+				
+				ComparatorDate ss = new ComparatorDate();
+				Collections.sort(tempE.getValue(),ss);
+				
+				au.setSchedules(tempE.getValue());
+				resultList.add(au);
+			}
+		}
+	
+
+		return resultList;
 	}
 	
 

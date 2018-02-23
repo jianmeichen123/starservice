@@ -365,6 +365,38 @@
 		WHERE u.uid=#{uid} and u.is_read=0 and u.is_send=1 and u.is_del=0;
 	</select>
 	
+		<!-- 查询同步苹果日历列表-->
+	<select id="selectListss" resultType="com.galaxy.im.bean.schedule.ScheduleInfo" parameterType="hashmap">
+		select
+		id id, type type, name_id nameId, name name, parent_id parentId, project_type projectType,project_id projectId, start_time startTime,
+		end_time endTime, is_allday isAllDay, wakeup_id wakeupId, remark, created_id createdId, 
+    	updated_id updatedId, created_time createdTime, updated_time updatedTime, is_del isDel, callon_person callonPerson
+		from schedule_info
+		<where>
+			<trim prefixOverrides="and">
+				<if test="isDel != null" > and is_del = #{isDel}  </if>
+				<if test="createdId != null" > and created_id = #{createdId} </if>
+				<!-- and 
+				((date_format(#{date},'%y-%m') &gt;= date_format(start_time,'%y-%m')
+				 AND date_format(end_time,'%y-%m') &gt;= date_format(#{date},'%y-%m' ) and is_allday=0)
+				 or(date_format(#{date},'%y-%m') = date_format(start_time,'%y-%m')
+				 AND date_format(start_time,'%y-%m') = date_format(#{date},'%y-%m' ) and is_allday=1 ))
+				  -->
+				 and ((date_format(#{startTime},'%y-%m-%d') &lt;= date_format(start_time,'%y-%m-%d')
+				 AND date_format(start_time,'%y-%m-%d') &lt;= date_format(#{endTime},'%y-%m-%d' ) )
+				or  (date_format(#{startTime},'%y-%m-%d') &lt;= date_format(end_time,'%y-%m-%d')
+				 AND date_format(end_time,'%y-%m-%d') &lt;= date_format(#{endTime},'%y-%m-%d' ))
+				 or (date_format(#{startTime},'%y-%m-%d') >= date_format(start_time,'%y-%m-%d')
+				 AND date_format(end_time,'%y-%m-%d') >= date_format(#{endTime},'%y-%m-%d' ))
+				and is_allday=0)
+				 or(date_format(#{startTime},'%y-%m-%d') &lt;= date_format(start_time,'%y-%m-%d')
+				 AND date_format(start_time,'%y-%m-%d') &lt;= date_format(#{endTime},'%y-%m-%d' ) and is_allday=1 )
+				 
+			</trim>
+				<if test="property != null">order by ${property} ${direction}</if>
+		</where>
+	</select>
+	
 	
 
 	

@@ -24,5 +24,6 @@ public interface IScheduleDao extends IBaseDao<ScheduleInfo, Long>{
 	List<ScheduleInfo> getList(Map<String, Object> map);
 	//日程消息未读个数
 	Long queryProjectScheduleCount(Long uid);
+	List<ScheduleInfo> selectListss(ScheduleInfo toQ);
 
 }

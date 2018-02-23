@@ -361,4 +361,44 @@ public class ScheduleController {
 		
 		return dateStrs;
 	}
+	
+	/**
+	 * 返回日程/拜访计划的列表用于-同步日历（同步苹果日历）
+	 */
+	@ResponseBody
+	@RequestMapping("syncSchedule")
+	public Object syncSchedule(HttpServletRequest request,@RequestBody ScheduleInfo query){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		@SuppressWarnings("unchecked")
+		RedisCacheImpl<String,Object> cache = (RedisCacheImpl<String,Object>)StaticConst.ctx.getBean("cache");
+		//获取登录用户信息
+		SessionBean bean = CUtils.get().getBeanBySession(request);
+		Map<String, Object> user = BeanUtils.toMap(cache.get(bean.getSessionid()));
+		try {
+			
+			if(query.getProperty()==null)  query.setProperty("start_time,created_time"); 
+			if(query.getDirection()==null) query.setDirection("asc");
+			if(query.getCreatedId()==null) query.setCreatedId(CUtils.get().object2Long(user.get("id")));
+			
+			String time = query.getDateTime();//特定哪天
+			
+			Long startDay = CUtils.get().object2Long(query.getStartTime());//前多少天
+			Long endDay = CUtils.get().object2Long(query.getEndTime());//后多少天
+			
+			long startTime = DateUtil.stringToLong(time,"yyyy-MM-dd HH:mm:ss")-(startDay*24*60*60*1000L);
+			long endTime = DateUtil.stringToLong(time,"yyyy-MM-dd HH:mm:ss")+(endDay*24*60*60*1000L);
+			
+			query.setStartTime(DateUtil.longToString(startTime, "yyyy-MM-dd HH:mm:ss"));
+			query.setEndTime(DateUtil.longToString(endTime, "yyyy-MM-dd HH:mm:ss"));
+			
+			//结果查询  封装
+			List<ScheduleUtil> qList = service.selectList(query);
+			resultBean.setEntity(qList);
+			resultBean.setStatus("OK");
+		} catch (Exception e) {
+			log.error(ScheduleController.class.getName() + "syncSchedule",e);
+		}
+		return resultBean;
+		
+	}
 }

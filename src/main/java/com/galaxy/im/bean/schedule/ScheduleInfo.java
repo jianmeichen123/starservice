@@ -44,6 +44,8 @@ public class ScheduleInfo extends PagableEntity{
     private String seTimeForAllday;    // 日程开始  结束时间     startTime  <   seTimeForAllday
     private String queryForMounth;    //xml 查询月视图 特标识
     private String lastMouthDay;//当月最后一天
+    
+    private String dateTime;//用于-同步日历（同步苹果日历） 当下时间
 
 	public Long getParentId() {
 		return parentId;
@@ -231,6 +233,12 @@ public class ScheduleInfo extends PagableEntity{
 	}
 	public void setDate(Date date) {
 		this.date = date;
+	}
+	public String getDateTime() {
+		return dateTime;
+	}
+	public void setDateTime(String dateTime) {
+		this.dateTime = dateTime;
 	}
 	
 }
