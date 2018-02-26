@@ -83,4 +83,25 @@ public class SysUpgradeController {
 		}
 		return resultBean;
 	}
+	
+	/**
+	 * 获取提示消息
+	 * @return
+	 */
+	@RequestMapping("getSysMessage")
+	@ResponseBody
+	public Object getSysMessage(HttpServletRequest request,@RequestBody String paramString){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		try{
+			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
+			if(!paramMap.isEmpty() && paramMap!=null){
+				Map<String,Object> map = service.getSysMessage(paramMap);
+				resultBean.setStatus("OK");
+				resultBean.setMap(map);
+			}
+		}catch(Exception e){
+			log.error(SysUpgradeController.class.getName() + "getSysMessage",e);
+		}
+		return resultBean;
+	}
 }

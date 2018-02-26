@@ -45,5 +45,12 @@
 				SELECT LAST_INSERT_ID() AS id
 		</selectKey>
 	</insert>
+	
+	<!-- 系统提示消息 -->
+	<select id="getSysMessage" parameterType="hashmap" resultType="hashmap">
+		SELECT id,module_code moduleCode,module_name moduleName,standard_details standardDetails 
+		FROM project_standard 
+		WHERE status=0 and is_valid=0 and module_code=#{moduleCode}; 
+	</select>
 
 </mapper>

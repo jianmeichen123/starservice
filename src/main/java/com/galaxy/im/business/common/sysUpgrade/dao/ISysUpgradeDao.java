@@ -12,4 +12,6 @@ public interface ISysUpgradeDao extends IBaseDao<Test, Long>{
 
 	Map<String, Object> getSysUpgradeMessage(Map<String, Object> paramMap);
 
+	Map<String, Object> getSysMessage(Map<String, Object> paramMap);
+
 }

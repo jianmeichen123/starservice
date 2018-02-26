@@ -44,4 +44,18 @@ public class SysUpgradeDaoImpl extends BaseDaoImpl<Test, Long> implements ISysUp
 		}
 	}
 
+	/**
+	 * 获取提示信息
+	 */
+	@Override
+	public Map<String, Object> getSysMessage(Map<String, Object> paramMap) {
+		try{
+			String sqlName = "com.galaxy.im.business.common.sysUpgrade.dao.ISysUpgradeDao.getSysMessage";
+			return sqlSessionTemplate.selectOne(sqlName,paramMap);
+		}catch(Exception e){
+			log.error(SysUpgradeDaoImpl.class.getName() + "getSysMessage",e);
+			throw new DaoException(e);
+		}
+	}
+
 }

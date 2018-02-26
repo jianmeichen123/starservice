@@ -12,4 +12,6 @@ public interface ISysUpgradeService extends IBaseService<Test>{
 
 	int closeSysUpgradeMessage(SystemMessageUserBean bean);
 
+	Map<String, Object> getSysMessage(Map<String, Object> paramMap);
+
 }

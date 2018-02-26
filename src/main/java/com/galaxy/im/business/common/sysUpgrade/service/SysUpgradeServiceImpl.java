@@ -52,4 +52,17 @@ public class SysUpgradeServiceImpl extends BaseServiceImpl<Test> implements ISys
 		}
 	}
 
+	/**
+	 * 获取提示消息
+	 */
+	@Override
+	public Map<String, Object> getSysMessage(Map<String, Object> paramMap) {
+		try{
+			return dao.getSysMessage(paramMap);
+		}catch(Exception e){
+			log.error(SysUpgradeServiceImpl.class.getName() + "getSysMessage",e);
+			throw new ServiceException(e);
+		}
+	}
+
 }
