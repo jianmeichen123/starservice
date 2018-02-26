@@ -50,7 +50,7 @@
 	<select id="getSysMessage" parameterType="hashmap" resultType="hashmap">
 		SELECT id,module_code moduleCode,module_name moduleName,standard_details standardDetails 
 		FROM project_standard 
-		WHERE status=0 and is_valid=0 and module_code=#{moduleCode}; 
+		WHERE status=1 and is_valid=0 and module_code=#{moduleCode}; 
 	</select>
 
 </mapper>
