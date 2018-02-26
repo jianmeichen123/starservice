@@ -190,7 +190,7 @@ public class DictServiceImpl extends BaseServiceImpl<Dict> implements IDictServi
 				}else if(CUtils.get().object2String(paramMap.get("parentCode")).equals("FNO1_11")){
 					//项目承揽人
 					list = dictDao.getProjectToUserList(paramMap);
-					if(!paramMap.containsKey("userName")){
+					if(!paramMap.containsKey("uName")){
 						Map<String,Object> map =new HashMap<String,Object>();
 						map.put("userName", "非投资线员工");
 						map.put("userId", "10072");
