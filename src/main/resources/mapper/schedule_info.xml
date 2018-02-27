@@ -368,7 +368,7 @@
 		<!-- 查询同步苹果日历列表-->
 	<select id="selectListss" resultType="com.galaxy.im.bean.schedule.ScheduleInfo" parameterType="hashmap">
 		select
-		id id, type type, name_id nameId, name name, parent_id parentId, project_type projectType,project_id projectId, start_time startTime,
+		id eventId, type type, name_id nameId, name name, parent_id parentId, project_type projectType,project_id projectId, start_time startTime,
 		end_time endTime, is_allday isAllDay, wakeup_id wakeupId, remark, created_id createdId, 
     	updated_id updatedId, created_time createdTime, updated_time updatedTime, is_del isDel, callon_person callonPerson
 		from schedule_info
