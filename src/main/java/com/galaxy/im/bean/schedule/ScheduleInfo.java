@@ -9,6 +9,7 @@ import com.galaxy.im.common.db.PagableEntity;
 @JsonInclude(value=JsonInclude.Include.NON_NULL) 
 public class ScheduleInfo extends PagableEntity{
 	private static final long serialVersionUID = -6443062953917242468L;
+	private Long eventId;
 	private Long parentId;
 	private int type;
 	private Long nameId;
@@ -239,6 +240,12 @@ public class ScheduleInfo extends PagableEntity{
 	}
 	public void setDateTime(String dateTime) {
 		this.dateTime = dateTime;
+	}
+	public Long getEventId() {
+		return eventId;
+	}
+	public void setEventId(Long eventId) {
+		this.eventId = eventId;
 	}
 	
 }
