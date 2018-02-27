@@ -2,6 +2,8 @@ package com.galaxy.im.business.common.sysUpgrade.controller;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -96,6 +98,12 @@ public class SysUpgradeController {
 			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);
 			if(!paramMap.isEmpty() && paramMap!=null){
 				Map<String,Object> map = service.getSysMessage(paramMap);
+					String str=CUtils.get().object2String(map.get("standardDetails"));
+					str = str.replaceAll("\n","");
+					Pattern p = Pattern.compile("\\s+");
+					Matcher m = p.matcher(str);
+					map.put("standardDetails", m.replaceAll(" "));
+					
 				resultBean.setStatus("OK");
 				resultBean.setMap(map);
 			}
