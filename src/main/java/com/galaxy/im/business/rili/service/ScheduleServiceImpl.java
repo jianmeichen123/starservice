@@ -493,7 +493,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 									sinfo.setStartTime(temp.getStartTime());
 									sinfo.setEndTime(ss+" 23:59:00");
 									sinfo.setName(temp.getName());
-									sinfo.setId(temp.getId());
+									sinfo.setEventId(temp.getEventId());
 									sinfo.setType(temp.getType());
 									sinfo.setCreatedId(temp.getCreatedId());
 									sinfo.setUpdatedId(temp.getUpdatedId());
@@ -506,7 +506,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 									sinfo.setStartTime(ss+" 00:00:00");
 									sinfo.setEndTime(temp.getEndTime());
 									sinfo.setName(temp.getName());
-									sinfo.setId(temp.getId());	
+									sinfo.setEventId(temp.getEventId());	
 									sinfo.setType(temp.getType());
 									sinfo.setCreatedId(temp.getCreatedId());
 									sinfo.setUpdatedId(temp.getUpdatedId());
@@ -518,7 +518,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 									sinfo.setStartTime(ss+" 00:00:00");
 									sinfo.setEndTime(ss+" 23:59:00");
 									sinfo.setName(temp.getName());
-									sinfo.setId(temp.getId());
+									sinfo.setEventId(temp.getEventId());
 									sinfo.setType(temp.getType());
 									sinfo.setCreatedId(temp.getCreatedId());
 									sinfo.setUpdatedId(temp.getUpdatedId());
