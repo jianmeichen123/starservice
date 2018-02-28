@@ -327,6 +327,10 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 									sBuilder.append(maps.get("projectUserName") + "、");
 								}
 								
+								if (maps.get("projectUser")!=null && maps.get("projectUserName")!=null) {
+									sBuilder.append(maps.get("projectUser") + "、");
+								}
+								
 								if(maps.get("projectUserId")!=null){
 									sb.append(maps.get("projectUserId") + "、");
 								}
