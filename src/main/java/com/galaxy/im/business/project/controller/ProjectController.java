@@ -589,7 +589,7 @@ public class ProjectController {
 					r.setCreatedTime(new Date().getTime());
 					r.setProjectId(CUtils.get().object2String(bean.getId()));
 					r.setContentChoose(CUtils.get().object2String(ids.get(i)));
-					if(CUtils.get().object2String(ids.get(i)).equals("10072") && bean.getProjectUserName()!=null && !bean.getProjectUserName().equals("")){
+					if(CUtils.get().object2String(ids.get(i)).equals("非投资线员工") && bean.getProjectUserName()!=null && !bean.getProjectUserName().equals("")){
 						r.setContentDescribe1(bean.getProjectUserName());
 					}
 					list.add(r);

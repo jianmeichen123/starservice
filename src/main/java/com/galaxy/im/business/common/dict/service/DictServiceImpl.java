@@ -193,7 +193,7 @@ public class DictServiceImpl extends BaseServiceImpl<Dict> implements IDictServi
 					if(!paramMap.containsKey("uName")){
 						Map<String,Object> map =new HashMap<String,Object>();
 						map.put("userName", "非投资线员工");
-						map.put("userId", "10072");
+						map.put("userId", "非投资线员工");
 						list.add(map);
 					}
 				}else if(CUtils.get().object2String(paramMap.get("parentCode")).equals("FNO1_4")){
