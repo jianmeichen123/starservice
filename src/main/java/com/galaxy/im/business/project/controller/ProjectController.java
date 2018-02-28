@@ -478,7 +478,7 @@ public class ProjectController {
 			}
 		}
 		//加速服务费占比
-		if (bean.getServiceCharge()!=null && !CUtils.get().object2String(bean.getServiceCharge()).equals("")) {
+		if (bean.getServiceCharge()!=null && !CUtils.get().object2String(bean.getServiceCharge()).equals("0.0")) {
 			hashmap.put("titleId", 3011);
 			result = service.findResultInfoById(hashmap);
 			if (result!=null) {
