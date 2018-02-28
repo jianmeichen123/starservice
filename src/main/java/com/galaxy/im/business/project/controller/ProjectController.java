@@ -581,7 +581,7 @@ public class ProjectController {
 			int del = service.delProjectUserIds(map);
 			if(bean.getProjectUserIds()!=null && bean.getProjectUserIds().size()>0){
 				//项目承揽人
-				List<Long> ids = bean.getProjectUserIds();
+				List<String> ids = bean.getProjectUserIds();
 				for(int i=0;i<ids.size();i++){
 					InformationResult r = new InformationResult();
 					r.setTitleId("1118");
