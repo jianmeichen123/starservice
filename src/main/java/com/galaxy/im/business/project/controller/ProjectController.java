@@ -603,8 +603,11 @@ public class ProjectController {
 					r.setCreatedTime(new Date().getTime());
 					r.setProjectId(CUtils.get().object2String(bean.getId()));
 					
+					r.setContentChoose(CUtils.get().object2String(userId));
+					r.setContentDescribe1(userName);
+					
 					//登陆用户和承揽人进行匹配
-					Map<String, Object> m = new HashMap<>();
+					/*Map<String, Object> m = new HashMap<>();
 					m.put("parentCode", "FNO1_11");
 					m.put("userName", userName);
 					List<Map<String,Object>> mp = service.getMatchingInfo(m);
@@ -615,7 +618,7 @@ public class ProjectController {
 					}else{
 						r.setContentChoose("10072");
 						r.setContentDescribe1(userName);
-					}
+					}*/
 					
 					list.add(r);
 				}
