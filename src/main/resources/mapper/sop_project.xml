@@ -447,7 +447,8 @@
 			ld.id,
 			ld.field_1 ArePeople,
 			ld.field_3 deptName,
-			ld.field_2 proportion  
+			ld.field_2 proportion,
+			ld.field_5 areFlag  
 		FROM information_listdata ld
 		LEFT JOIN information_listdata_remark lr 
 		ON ld.title_id=lr.title_id
