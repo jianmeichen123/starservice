@@ -119,6 +119,7 @@ public class DictController {
 	 * 10.运营会议纪要会议类型                 postMeetingType
 	 * 11.项目来源                FNO1_10
 	 * 12.项目承揽人            FNO1_11
+	 * 13.项目状态           projectStatus
 	 * @return
 	 * @author liuli
 	 */
