@@ -445,7 +445,7 @@
 	<select id="getProjectArePeople" parameterType="hashmap" resultType="hashmap">
 		SELECT 
 			ld.id,
-			ld.field_1 ArePeople,
+			ld.field_1 arePeople,
 			ld.field_3 deptName,
 			ld.field_2 proportion,
 			ld.field_5 areFlag  
