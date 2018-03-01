@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.galaxy.im.bean.common.Config;
 import com.galaxy.im.bean.common.SessionBean;
 import com.galaxy.im.bean.project.GeneralProjecttVO;
+import com.galaxy.im.bean.project.InformationListdata;
 import com.galaxy.im.bean.project.InformationResult;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.ProjectBeanVo;
@@ -37,6 +38,7 @@ import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.message.service.IScheduleMessageService;
 import com.galaxy.im.business.operationLog.controller.ControllerUtils;
 import com.galaxy.im.business.project.service.IFinanceHistoryService;
+import com.galaxy.im.business.project.service.IProjectEquitiesService;
 import com.galaxy.im.business.project.service.IProjectService;
 import com.galaxy.im.business.rili.service.IScheduleService;
 import com.galaxy.im.common.BeanUtils;
@@ -73,6 +75,9 @@ public class ProjectController {
 	
 	@Autowired
 	IScheduleMessageService messageService;
+	
+	@Autowired 
+	private IProjectEquitiesService equitilesService;
 	
 	
 	/**
@@ -222,6 +227,8 @@ public class ProjectController {
 		try{
 			long deptId=0l;
 			String userName="";
+			String userDeptName="";
+			String depManagerUser="";
 			Map<String,Object> map =new HashMap<String,Object>();
 			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 			Long userId = sessionBean.getGuserid();
@@ -231,6 +238,8 @@ public class ProjectController {
 			if(list!=null){
 				for(Map<String, Object> vMap:list){
 					deptId= CUtils.get().object2Long( vMap.get("deptId"));
+					userDeptName= CUtils.get().object2String( vMap.get("deptName"));
+					depManagerUser= CUtils.get().object2String( vMap.get("depManagerUser"));
 					userName=CUtils.get().object2String(vMap.get("userName"));
 				}
 			}
@@ -350,7 +359,20 @@ public class ProjectController {
 							map.put("id", id);
 							resultBean.setStatus("OK");
 							resultBean.setMessage("项目添加成功!");
-							resultBean.setMap(map);									
+							resultBean.setMap(map);	
+							//生成主承做人
+							InformationListdata data = new InformationListdata();
+							data.setProjectId(id);
+							data.setTitleId(1103L);
+							data.setField1(userName);
+							data.setField2("100");
+							data.setField3(userDeptName);
+							data.setField4(depManagerUser);
+							data.setField5("0");
+							data.setIsValid(0);
+							data.setCreatedId(userId);
+							data.setCreatedTime(new Date().getTime());
+							equitilesService.saveInfomationListData(data);
 						}
 					}
 				}

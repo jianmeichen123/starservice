@@ -160,6 +160,19 @@ public class ProjectEquitiesServiceImpl extends BaseServiceImpl<InformationListd
 			throw new ServiceException(e);
 		}
 	}
+
+	/**
+	 * 保存
+	 */
+	@Override
+	public int saveInfomationListData(InformationListdata data) {
+		try {
+			return dao.saveInfomationListData(data);
+		} catch (Exception e) {
+			log.error(ProjectEquitiesServiceImpl.class.getName() + "saveInfomationListData",e);
+			throw new ServiceException(e);
+		}
+	}
 	
 	
 }

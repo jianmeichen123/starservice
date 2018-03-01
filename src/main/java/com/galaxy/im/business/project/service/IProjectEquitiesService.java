@@ -25,4 +25,6 @@ public interface IProjectEquitiesService extends IBaseService<InformationListdat
 
 	int updateFRInfo(Map<String, Object> paramMap);
 
+	int saveInfomationListData(InformationListdata data);
+
 }

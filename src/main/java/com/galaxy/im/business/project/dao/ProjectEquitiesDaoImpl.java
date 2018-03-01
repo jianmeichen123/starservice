@@ -108,7 +108,18 @@ public class ProjectEquitiesDaoImpl extends BaseDaoImpl<InformationListdata, Lon
 			throw new DaoException(e);
 		}
 	}
-	
-	
+
+	/**
+	 * 保存
+	 */
+	@Override
+	public int saveInfomationListData(InformationListdata data) {
+		try{
+			return sqlSessionTemplate.insert(getSqlName("save"),data);
+		}catch(Exception e){
+			log.error(ProjectEquitiesDaoImpl.class.getName() + "saveInfomationListData",e);
+			throw new DaoException(e);
+		}
+	}
 	
 }

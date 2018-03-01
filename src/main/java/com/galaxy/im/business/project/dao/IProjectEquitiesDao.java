@@ -25,4 +25,6 @@ public interface IProjectEquitiesDao extends IBaseDao<InformationListdata, Long>
 
 	int updateFRInfo(Map<String, Object> paramMap);
 
+	int saveInfomationListData(InformationListdata data);
+
 }
