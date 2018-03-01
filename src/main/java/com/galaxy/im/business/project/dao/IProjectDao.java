@@ -43,4 +43,6 @@ public interface IProjectDao extends IBaseDao<ProjectBean,Long>{
 	List<Map<String, Object>> selectProjectUserInfo(Map<String, Object> paramMap);
 	//保存移交，指派记录信息
 	int saveProjectTransfer(ProjectTransfer bean);
+	//获取项目承做人
+	List<Map<String, Object>> getProjectArePeople(Map<String, Object> paramMap);
 }

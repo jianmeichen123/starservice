@@ -64,5 +64,7 @@ public interface IProjectService extends IBaseService<ProjectBean>{
 	void receiveProjectTransfer(ProjectTransfer bean);
 	//项目删除，同时修改的内容
 	void receiveProjectDel(SopProjectBean bean);
+	//获取项目承做人
+	List<Map<String, Object>> getProjectArePeople(Map<String, Object> paramMap);
 	
 }

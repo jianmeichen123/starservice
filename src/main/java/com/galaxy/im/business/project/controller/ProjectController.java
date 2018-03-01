@@ -1021,5 +1021,28 @@ public class ProjectController {
 		ControllerUtils.setRequestProjectBatchForMessageTip(request,mapList);
 	}
 	
+	/**
+	 * 获取项目承做人
+	 * @param request
+	 * @param bean
+	 * @return
+	 */
+	@RequestMapping("getProjectArePeople")
+	@ResponseBody
+	public Object getProjectArePeople(HttpServletRequest request,@RequestBody String paramString){
+		ResultBean<Object> resultBean = new ResultBean<Object>();
+		resultBean.setFlag(0);
+		try{
+			Map<String,Object> paramMap = CUtils.get().jsonString2map(paramString);	
+			if(!paramMap.isEmpty() && paramMap.containsKey("projectId")){
+				List<Map<String,Object>> list = service.getProjectArePeople(paramMap);
+				resultBean.setStatus("OK");
+				resultBean.setMapList(list);
+			}
+		}catch(Exception e){
+			log.error(ProjectController.class.getName() + "getProjectArePeople",e);
+		}
+		return resultBean;
+	}
 
 }

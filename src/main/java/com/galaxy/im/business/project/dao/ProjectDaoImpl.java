@@ -248,4 +248,17 @@ public class ProjectDaoImpl extends BaseDaoImpl<ProjectBean,Long> implements IPr
 		}
 	}
 
+	/**
+	 * 获取项目承做人
+	 */
+	@Override
+	public List<Map<String, Object>> getProjectArePeople(Map<String, Object> paramMap) {
+		try{
+			return sqlSessionTemplate.selectList(getSqlName("getProjectArePeople"),paramMap);
+		}catch(Exception e){
+			log.error(ProjectDaoImpl.class.getName() + "getProjectArePeople",e);
+			throw new DaoException(e);
+		}
+	}
+
 }

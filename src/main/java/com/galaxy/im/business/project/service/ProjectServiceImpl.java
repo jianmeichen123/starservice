@@ -516,5 +516,18 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 		sch.setUpdatedTime(new Date().getTime());
 		schDao.updateMeetingScheduling(sch);
 	}
+
+	/**
+	 * 获取项目承做人
+	 */
+	@Override
+	public List<Map<String, Object>> getProjectArePeople(Map<String, Object> paramMap) {
+		try{
+			return dao.getProjectArePeople(paramMap);
+		}catch(Exception e){
+			log.error(ProjectServiceImpl.class.getName() + "getProjectArePeople",e);
+			throw new ServiceException(e);
+		}
+	}
 	
 }
