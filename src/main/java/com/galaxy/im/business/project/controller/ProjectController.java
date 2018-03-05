@@ -227,8 +227,8 @@ public class ProjectController {
 		try{
 			long deptId=0l;
 			String userName="";
-			String userDeptName="";
-			String depManagerUser="";
+			//String userDeptName="";
+			//tring depManagerUser="";
 			Map<String,Object> map =new HashMap<String,Object>();
 			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 			Long userId = sessionBean.getGuserid();
@@ -238,8 +238,8 @@ public class ProjectController {
 			if(list!=null){
 				for(Map<String, Object> vMap:list){
 					deptId= CUtils.get().object2Long( vMap.get("deptId"));
-					userDeptName= CUtils.get().object2String( vMap.get("deptName"));
-					depManagerUser= CUtils.get().object2String( vMap.get("depManagerUser"));
+					//userDeptName= CUtils.get().object2String( vMap.get("deptName"));
+					//depManagerUser= CUtils.get().object2String( vMap.get("depManagerUser"));
 					userName=CUtils.get().object2String(vMap.get("userName"));
 				}
 			}
@@ -364,10 +364,10 @@ public class ProjectController {
 							InformationListdata data = new InformationListdata();
 							data.setProjectId(id);
 							data.setTitleId(1103L);
-							data.setField1(userName);
+							data.setField1(CUtils.get().object2String(userId));
 							data.setField2("100");
-							data.setField3(userDeptName);
-							data.setField4(depManagerUser);
+							//data.setField3(userDeptName);
+							//data.setField4(depManagerUser);
 							data.setField5("0");
 							data.setIsValid(0);
 							data.setCreatedId(userId);

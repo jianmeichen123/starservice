@@ -445,14 +445,16 @@
 	<select id="getProjectArePeople" parameterType="hashmap" resultType="hashmap">
 		SELECT 
 			ld.id,
-			ld.field_1 arePeople,
-			ld.field_3 deptName,
+			u.user_name arePeople,
+			d.name deptName,
 			ld.field_2 proportion,
 			ld.field_5 areFlag  
 		FROM information_listdata ld
-		LEFT JOIN information_listdata_remark lr 
-		ON ld.title_id=lr.title_id
-		WHERE ld.project_id=#{projectId} and lr.code='team-person';
+		LEFT JOIN information_listdata_remark lr ON ld.title_id=lr.title_id
+		LEFT JOIN v_user u ON ld.field_1=u.id
+		LEFT JOIN v_rel_dep_user du ON u.id=du.user_id
+		LEFT JOIN v_department d ON du.dep_id=d.id
+		WHERE ld.project_id=#{projectId} AND lr.code='team-person';
 	</select>
 
 </mapper>
