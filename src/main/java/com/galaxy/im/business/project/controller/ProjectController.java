@@ -227,8 +227,6 @@ public class ProjectController {
 		try{
 			long deptId=0l;
 			String userName="";
-			//String userDeptName="";
-			//tring depManagerUser="";
 			Map<String,Object> map =new HashMap<String,Object>();
 			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 			Long userId = sessionBean.getGuserid();
@@ -238,8 +236,6 @@ public class ProjectController {
 			if(list!=null){
 				for(Map<String, Object> vMap:list){
 					deptId= CUtils.get().object2Long( vMap.get("deptId"));
-					//userDeptName= CUtils.get().object2String( vMap.get("deptName"));
-					//depManagerUser= CUtils.get().object2String( vMap.get("depManagerUser"));
 					userName=CUtils.get().object2String(vMap.get("userName"));
 				}
 			}
@@ -366,8 +362,6 @@ public class ProjectController {
 							data.setTitleId(1103L);
 							data.setField1(CUtils.get().object2String(userId));
 							data.setField2("100");
-							//data.setField3(userDeptName);
-							//data.setField4(depManagerUser);
 							data.setField5("0");
 							data.setIsValid(0);
 							data.setCreatedId(userId);
@@ -539,7 +533,6 @@ public class ProjectController {
 		if (bean.getProjectSource()!=null && !bean.getProjectSource().equals("")) {
 			hashmap.put("titleId", 1120);
 			String tempId="";
-			//String oldId ="";
 			result = service.findResultInfoById(hashmap);
 			//新选择的项目来源获取关联名称的titleId
 			if(bean.getProjectSource()!=null){
@@ -628,20 +621,6 @@ public class ProjectController {
 					r.setContentChoose(CUtils.get().object2String(userId));
 					r.setContentDescribe1(userName);
 					
-					//登陆用户和承揽人进行匹配
-					/*Map<String, Object> m = new HashMap<>();
-					m.put("parentCode", "FNO1_11");
-					m.put("userName", userName);
-					List<Map<String,Object>> mp = service.getMatchingInfo(m);
-					if(!mp.isEmpty()&&mp.size()>0){
-						for(Map<String,Object> mm:mp){
-							r.setContentChoose(CUtils.get().object2String(mm.get("id")));
-						}
-					}else{
-						r.setContentChoose("10072");
-						r.setContentDescribe1(userName);
-					}*/
-					
 					list.add(r);
 				}
 			}
@@ -663,13 +642,12 @@ public class ProjectController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		GeneralProjecttVO genProjectBean = new GeneralProjecttVO();
 		try {
-			String deptName="";
 			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 			if(sessionBean==null){
 				resultBean.setMessage("User用户信息在Session中不存在，无法执行项目列表查询！");
 				return resultBean;
 			}
-			//获取用户角色code
+			/*//获取用户角色code
 			List<String> roleCodeList = fcService.selectRoleCodeByUserId(sessionBean.getGuserid(), request, response);
 			if(roleCodeList==null || roleCodeList.size()==0){
 				resultBean.setMessage("当前用户未配置任何角色，将不执行项目统计功能！");
@@ -678,14 +656,14 @@ public class ProjectController {
 			//投资经理
 			if(roleCodeList.contains(StaticConst.TZJL)&&(projectBo.getProjectDepartid()==null)&&(projectBo.getCreateUid()==null)&&(projectBo.getQuanbu()==null)&&(projectBo.getDeptIdList()==null)){//投资经理
 				projectBo.setCreateUid(sessionBean.getGuserid()); //项目创建者
-			}
+			}*/
 			//排序字段
 			List<Order> orderList = new ArrayList<Order>();
 			orderList.add(new Order(Direction.DESC, "updated_time"));
 			orderList.add(new Order(Direction.DESC, "created_time"));			
 			Sort sort = new Sort(orderList);
 			
-			if(projectBo.getSflag()==1){
+			/*if(projectBo.getSflag()==1){
 				//跟进中
 				projectBo.setProjectStatus("projectStatus:0");
 			}
@@ -702,10 +680,10 @@ public class ProjectController {
 					projectBo.setCeeword(projectBo.getKeyword().toUpperCase());
 				}
 				projectBo.setCreateUid(null);
-			}
+			}*/
 			
 			//查询列表
-			if(projectBo.getFinanceStatus()!=null){
+			/*if(projectBo.getFinanceStatus()!=null){
 				if(!projectBo.getFinanceStatus().equals("尚未获投") || projectBo.getFinanceStatus().equals("不明确")){
 					Map<String,Object> paramMap = new HashMap<String,Object>();
 					paramMap.put("parentCode", "FNO1_1");
@@ -716,86 +694,98 @@ public class ProjectController {
 						}
 					}
 				}
-			}
-			genProjectBean = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
+			}*/
 			
-			Page<SopProjectBean> page = genProjectBean.getPvPage();
-			List<SopProjectBean> dataList = page.getContent();
-			//内容处理
-			for(int i=0;i<dataList.size();i++){
-				@SuppressWarnings("unchecked")
-				Map<String,Object> map =(Map<String, Object>) dataList.get(i);
-				//项目事业线
-				if(StringUtils.isNotBlank(CUtils.get().object2String(map.get("projectDepartId")))){
-					//通过部门id获取部门名称
-					List<Map<String, Object>> list = fcService.getDeptNameByDeptId(CUtils.get().object2Long(map.get("projectDepartId")),request,response);
-					if(list!=null){
-						for(Map<String, Object> vMap:list){
-							deptName=CUtils.get().object2String(vMap.get("deptName"));
-						}
-					}
-					map.put("projectCareerline", deptName);
-				}
-				
-				// 标识 项目不处于移交中
-				if(StringUtils.isNotBlank(CUtils.get().object2String(map.get("id")))){
-					map.put("projectYjz", service.projectIsYJZ(CUtils.get().object2Long(map.get("id"))));
-				}
-				// 行业归属
-				if(map.containsKey("industryOwn")){
-					if(StringUtils.isNotBlank(CUtils.get().object2String(map.containsKey("industryOwn")))){
-						Map<String,Object> paramMap = new HashMap<String,Object>();
-						paramMap.put("parentCode", "industryOwn");
-						List<Map<String, Object>> entityMap = dictService.getDictionaryList(paramMap);
-						for(Map<String, Object> mapL : entityMap){
-							if(mapL.containsKey("code") && mapL.get("code").equals(CUtils.get().object2Long(map.get("industryOwn")))){
-								//行业归属名称
-								map.put("industry", CUtils.get().object2String(mapL.get("name")));
-							}else{
-								map.put("industry", "");
-							}
-						}
-					}
-				}else{
-					map.put("industry", "");
-				}
-				//项目类型名称
-				if(StringUtils.isNotBlank(CUtils.get().object2String(map.get("projectType")))){
-					map.put("projectTypeName", getNameByCode(CUtils.get().object2String(map.get("projectType")),"projectType"));
-				}
-				//项目进度名称
-				if(StringUtils.isNotBlank(CUtils.get().object2String(map.get("projectProgress")))){
-					map.put("projectProgressName", getNameByCode(CUtils.get().object2String(map.get("projectProgress")),"projectProgress"));
-				}
-				//融资状态名称
-				if(StringUtils.isNotBlank(CUtils.get().object2String(map.get("financeStatus")))){
-					map.put("financeStatusName", CUtils.get().object2String(map.get("financeStatus")));
-				}
-				//项目状态编码
-				if(StringUtils.isNotBlank(CUtils.get().object2String(map.get("projectStatus")))){
-					map.put("projectStatusName", getNameByCode(CUtils.get().object2String(map.get("projectStatus")),"projectStatus"));
-				}
-			 }
-			 page.setContent(dataList);
-			 genProjectBean.setPvPage(page);
+			//负责项目
+			Page<SopProjectBean> my = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
+			Page<SopProjectBean> myPage = contentDeal(my,request,response);
+			genProjectBean.setMyPage(myPage);
+			//协作项目
+			List<String> projectIdList = service.getProjectIdArePeople(projectBo);
+			if(projectIdList!=null && projectIdList.size()>0){
+				projectBo.setProjectIdList(projectIdList);
+				Page<SopProjectBean> coop = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
+				Page<SopProjectBean> coopPage = contentDeal(coop,request,response);
+				genProjectBean.setCoopPage(coopPage);
+			}
 			 //个数
-			 Long gjzNum = service.queryProjectgjzCount(projectBo);
+			 /*Long gjzNum = service.queryProjectgjzCount(projectBo);
 			 Long thyyNum = service.queryProjectthyyCount(projectBo);
 			 Long yfjNum = service.queryProjectfjCount(projectBo);
 			
 			 genProjectBean.setGjzCount(gjzNum);
 			 genProjectBean.setThyyCount(thyyNum);
-			 genProjectBean.setYfjCount(yfjNum);
-			if(page!=null){
-				resultBean.setStatus("OK");
-				resultBean.setMap(BeanUtils.toMap(genProjectBean));
-			}
+			 genProjectBean.setYfjCount(yfjNum);*/
+			resultBean.setStatus("OK");
+			resultBean.setMap(BeanUtils.toMap(genProjectBean));
 		} catch (Exception e) {
 			log.error(ProjectController.class.getName() + "selectProjectList",e);
 		}
 		return resultBean;
 	}
 	
+	//内容处理
+	private Page<SopProjectBean> contentDeal(Page<SopProjectBean> page, HttpServletRequest request, HttpServletResponse response) {
+		String deptName="";
+		List<SopProjectBean> dataList = page.getContent();
+		for(int i=0;i<dataList.size();i++){
+			@SuppressWarnings("unchecked")
+			Map<String,Object> map =(Map<String, Object>) dataList.get(i);
+			//项目事业线
+			if(StringUtils.isNotBlank(CUtils.get().object2String(map.get("projectDepartId")))){
+				//通过部门id获取部门名称
+				List<Map<String, Object>> list = fcService.getDeptNameByDeptId(CUtils.get().object2Long(map.get("projectDepartId")),request,response);
+				if(list!=null){
+					for(Map<String, Object> vMap:list){
+						deptName=CUtils.get().object2String(vMap.get("deptName"));
+					}
+				}
+				map.put("projectCareerline", deptName);
+			}
+			
+			// 标识 项目不处于移交中
+			if(StringUtils.isNotBlank(CUtils.get().object2String(map.get("id")))){
+				map.put("projectYjz", service.projectIsYJZ(CUtils.get().object2Long(map.get("id"))));
+			}
+			// 行业归属
+			if(map.containsKey("industryOwn")){
+				if(StringUtils.isNotBlank(CUtils.get().object2String(map.containsKey("industryOwn")))){
+					Map<String,Object> paramMap = new HashMap<String,Object>();
+					paramMap.put("parentCode", "industryOwn");
+					List<Map<String, Object>> entityMap = dictService.getDictionaryList(paramMap);
+					for(Map<String, Object> mapL : entityMap){
+						if(mapL.containsKey("code") && mapL.get("code").equals(CUtils.get().object2Long(map.get("industryOwn")))){
+							//行业归属名称
+							map.put("industry", CUtils.get().object2String(mapL.get("name")));
+						}else{
+							map.put("industry", "");
+						}
+					}
+				}
+			}else{
+				map.put("industry", "");
+			}
+			//项目类型名称
+			if(StringUtils.isNotBlank(CUtils.get().object2String(map.get("projectType")))){
+				map.put("projectTypeName", getNameByCode(CUtils.get().object2String(map.get("projectType")),"projectType"));
+			}
+			//项目进度名称
+			if(StringUtils.isNotBlank(CUtils.get().object2String(map.get("projectProgress")))){
+				map.put("projectProgressName", getNameByCode(CUtils.get().object2String(map.get("projectProgress")),"projectProgress"));
+			}
+			//融资状态名称
+			if(StringUtils.isNotBlank(CUtils.get().object2String(map.get("financeStatus")))){
+				map.put("financeStatusName", CUtils.get().object2String(map.get("financeStatus")));
+			}
+			//项目状态编码
+			if(StringUtils.isNotBlank(CUtils.get().object2String(map.get("projectStatus")))){
+				map.put("projectStatusName", getNameByCode(CUtils.get().object2String(map.get("projectStatus")),"projectStatus"));
+			}
+		 }
+		 page.setContent(dataList);
+		return page;
+	}
+
 	//根据code获取name
 	private String getNameByCode(String type,String parentCode) {
 		String code="";

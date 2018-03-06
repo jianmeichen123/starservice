@@ -8,10 +8,23 @@
 		<where>
 			<trim prefixOverrides="and">
 				is_delete=0
-			    <if test="id != null"> and id =#{id}</if>
+			    <!-- <if test="id != null"> and id =#{id}</if>
 				<if test="createUid != null" > and create_uid = #{createUid} </if>
+				<if test="projectStatus != null" > and project_status = #{projectStatus} </if> -->
 				<if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
-				<if test="projectStatus != null" > and project_status = #{projectStatus} </if>
+				<!-- 筛选条件 -->
+				<if test="projectStatusList != null">
+					and project_status in 
+					<foreach collection="projectStatusList" item="projectStatus" index="index" open="(" close=")" separator=",">
+						#{projectStatus}
+					</foreach>
+				</if>
+				<if test="projectIdList != null">
+					and id in 
+					<foreach collection="projectIdList" item="id" index="index" open="(" close=")" separator=",">
+						#{id}
+					</foreach>
+				</if>
 				<if test="createUidList != null">
 					and create_uid in 
 					<foreach collection="createUidList" item="tzjl" index="index" open="(" close=")" separator=",">
@@ -56,36 +69,15 @@
 				
 				<!-- 模糊查询 -->
 				<if test="keyword != null">
-					<choose>
-						<when test="flagkeyword=='concatcode'" >
-							and (project_name like CONCAT("%",#{keyword},"%")
-							<if test="escapeChar ">
-								escape '/'
-							</if>
-							or create_uname like CONCAT("%",#{keyword},"%")
-							<if test="escapeChar ">
-								escape '/'
-							</if>
-							)
-						</when>
-						<when test="flagkeyword==null">
-							and (project_name like CONCAT("%",#{keyword},"%")
-							<if test="escapeChar ">
-								escape '/'
-							</if>
-							or project_code like CONCAT("%",#{keyword},"%")
-							<if test="escapeChar ">
-								escape '/'
-							</if>
-							)
-						</when>
-						<when test="flagkeyword=='onlyName'">
-							and project_name like CONCAT("%",#{keyword},"%")
-							<if test="escapeChar ">
-								escape '/'
-							</if>
-						</when>
-					</choose>
+					and (project_name like CONCAT("%",#{keyword},"%")
+					<if test="escapeChar ">
+						escape '/'
+					</if>
+					or project_code like CONCAT("%",#{keyword},"%")
+					<if test="escapeChar ">
+						escape '/'
+					</if>
+					)
 				</if>
 			</trim>
 		</where>
@@ -165,6 +157,24 @@
 		<include refid="Base_Column_List" />
 		FROM sop_project 
 		<include refid="Base_Where_Clause" />
+	</select>
+	
+	<!-- 用户协作的项目id-->
+	<select id="getProjectIdArePeople" parameterType="hashmap" resultType="String">
+		SELECT 
+			ld.project_id projectId
+		FROM information_listdata ld
+		LEFT JOIN information_listdata_remark lr ON ld.title_id=lr.title_id
+		LEFT JOIN v_user u ON ld.field_1=u.id
+		LEFT JOIN v_rel_dep_user du ON u.id=du.user_id
+		LEFT JOIN v_department d ON du.dep_id=d.id
+		WHERE ld.field_5=1 AND lr.code='team-person'
+		<if test="createUidList != null">
+			and u.id in 
+			<foreach collection="createUidList" item="userId" index="index" open="(" close=")" separator=",">
+				#{userId}
+			</foreach>
+		</if>
 	</select>
 	
 </mapper>

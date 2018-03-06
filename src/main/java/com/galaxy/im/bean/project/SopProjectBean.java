@@ -89,6 +89,7 @@ public class SopProjectBean extends PagableEntity {
     private List<String> projectProgressList;			//项目的当前所处阶段
     private List<String> projectSourceList;			    //项目来源
     private List<String> createUidList;					//投资经理
+    private List<String> projectStatusList;				//项目状态list
     
     private Integer isDelete;			//是否删除标识
     private String deleteReason;		//删除原因
@@ -563,6 +564,12 @@ public class SopProjectBean extends PagableEntity {
 	}
 	public void setProjectUserIds(List<String> projectUserIds) {
 		this.projectUserIds = projectUserIds;
+	}
+	public List<String> getProjectStatusList() {
+		return projectStatusList;
+	}
+	public void setProjectStatusList(List<String> projectStatusList) {
+		this.projectStatusList = projectStatusList;
 	}
 	
 }

@@ -50,12 +50,12 @@ public class ProjectBo extends SopProjectBean {
 	 */
 	private String quanbu;
 	
-	
 	/**
 	 * 模糊查询关键字
 	 */
 	protected String ceeword;
 	
+	private List<String> projectIdList;			//项目id集合
 	
 	
 	
@@ -233,6 +233,14 @@ public class ProjectBo extends SopProjectBean {
 
 	public void setuId(Long uId) {
 		this.uId = uId;
+	}
+
+	public List<String> getProjectIdList() {
+		return projectIdList;
+	}
+
+	public void setProjectIdList(List<String> projectIdList) {
+		this.projectIdList = projectIdList;
 	}
 	
 	

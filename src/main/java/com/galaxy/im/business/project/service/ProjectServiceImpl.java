@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.galaxy.im.bean.meeting.MeetingRecordBean;
-import com.galaxy.im.bean.project.GeneralProjecttVO;
 import com.galaxy.im.bean.project.InformationListdata;
 import com.galaxy.im.bean.project.InformationResult;
 import com.galaxy.im.bean.project.MeetingScheduling;
@@ -246,12 +245,10 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 	 * 项目列表
 	 */
 	@Override
-	public GeneralProjecttVO queryPageList(ProjectBo query, PageRequest pageable) {
+	public Page<SopProjectBean> queryPageList(ProjectBo query, PageRequest pageable) {
 		Page<SopProjectBean> pageBean =  sopdao.queryPageList(query, pageable);
-		GeneralProjecttVO gpbean = new GeneralProjecttVO();
 		pageBean.setPageable(null);
-		gpbean.setPvPage(pageBean);
-		return gpbean;
+		return pageBean;
 	}
 
 	//跟进中查询数目
@@ -546,6 +543,19 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 	public List<Map<String, Object>> getProjectArePeople(Map<String, Object> paramMap) {
 		try{
 			return dao.getProjectArePeople(paramMap);
+		}catch(Exception e){
+			log.error(ProjectServiceImpl.class.getName() + "getProjectArePeople",e);
+			throw new ServiceException(e);
+		}
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public List<String> getProjectIdArePeople(ProjectBo projectBo) {
+		try{
+			return sopdao.getProjectIdArePeople(projectBo);
 		}catch(Exception e){
 			log.error(ProjectServiceImpl.class.getName() + "getProjectArePeople",e);
 			throw new ServiceException(e);

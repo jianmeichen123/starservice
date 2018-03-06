@@ -3,12 +3,12 @@ package com.galaxy.im.business.project.service;
 import java.util.List;
 import java.util.Map;
 
-import com.galaxy.im.bean.project.GeneralProjecttVO;
 import com.galaxy.im.bean.project.InformationResult;
 import com.galaxy.im.bean.project.ProjectBean;
 import com.galaxy.im.bean.project.ProjectBo;
 import com.galaxy.im.bean.project.ProjectTransfer;
 import com.galaxy.im.bean.project.SopProjectBean;
+import com.galaxy.im.common.db.Page;
 import com.galaxy.im.common.db.PageRequest;
 import com.galaxy.im.common.db.service.IBaseService;
 
@@ -35,7 +35,7 @@ public interface IProjectService extends IBaseService<ProjectBean>{
 	int projectIsInterview(Long id);
 	
 	//全部
-	GeneralProjecttVO queryPageList(ProjectBo projectBo, PageRequest pageable);
+	Page<SopProjectBean> queryPageList(ProjectBo projectBo, PageRequest pageable);
 	//跟进中个数
 	Long queryProjectgjzCount(ProjectBo projectBo);
 	//投后运营个数
@@ -66,5 +66,7 @@ public interface IProjectService extends IBaseService<ProjectBean>{
 	void receiveProjectDel(SopProjectBean bean);
 	//获取项目承做人
 	List<Map<String, Object>> getProjectArePeople(Map<String, Object> paramMap);
+	//获取协作项目id
+	List<String> getProjectIdArePeople(ProjectBo projectBo);
 	
 }
