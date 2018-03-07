@@ -468,6 +468,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 			toQ.setCreatedId(query.getCreatedId());
 			toQ.setProperty(query.getProperty());
 			toQ.setDirection(query.getDirection());
+			toQ.setType(query.getType());
 			//增加判断是否删除
 			toQ.setIsDel(0);
 			

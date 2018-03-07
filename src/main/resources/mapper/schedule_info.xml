@@ -376,7 +376,7 @@
 			<trim prefixOverrides="and">
 				<if test="isDel != null" > and is_del = #{isDel}  </if>
 				<if test="createdId != null" > and created_id = #{createdId} </if>
-				<if test="type != null" > and type = #{type} </if>
+				<if test="type != null and type!=0" > and type = #{type} </if>
 				<!-- and 
 				((date_format(#{date},'%y-%m') &gt;= date_format(start_time,'%y-%m')
 				 AND date_format(end_time,'%y-%m') &gt;= date_format(#{date},'%y-%m' ) and is_allday=0)
