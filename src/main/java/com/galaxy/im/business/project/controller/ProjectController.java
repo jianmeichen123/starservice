@@ -658,75 +658,32 @@ public class ProjectController {
 				resultBean.setMessage("User用户信息在Session中不存在，无法执行项目列表查询！");
 				return resultBean;
 			}
-			/*//获取用户角色code
-			List<String> roleCodeList = fcService.selectRoleCodeByUserId(sessionBean.getGuserid(), request, response);
-			if(roleCodeList==null || roleCodeList.size()==0){
-				resultBean.setMessage("当前用户未配置任何角色，将不执行项目统计功能！");
-				return resultBean;
-			}
-			//投资经理
-			if(roleCodeList.contains(StaticConst.TZJL)&&(projectBo.getProjectDepartid()==null)&&(projectBo.getCreateUid()==null)&&(projectBo.getQuanbu()==null)&&(projectBo.getDeptIdList()==null)){//投资经理
-				projectBo.setCreateUid(sessionBean.getGuserid()); //项目创建者
-			}*/
+			
 			//排序字段
 			List<Order> orderList = new ArrayList<Order>();
 			orderList.add(new Order(Direction.DESC, "updated_time"));
 			orderList.add(new Order(Direction.DESC, "created_time"));			
 			Sort sort = new Sort(orderList);
 			
-			/*if(projectBo.getSflag()==1){
-				//跟进中
-				projectBo.setProjectStatus("projectStatus:0");
-			}
-			if(projectBo.getSflag()==2){
-				//投后运营
-				projectBo.setProjectStatus("projectStatus:1");
-			}
-			if(projectBo.getSflag()==3){
-				//否决
-				projectBo.setProjectStatus("projectStatus:2");
-			}
-			if(projectBo.getSflag()==4){
-				if(projectBo.getKeyword()!=null){
-					projectBo.setCeeword(projectBo.getKeyword().toUpperCase());
+			if(projectBo.getKeyword()!=null){
+				Page<SopProjectBean> my = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
+				Page<SopProjectBean> myPage = contentDeal(my,request,response);
+				genProjectBean.setAllPage(myPage);
+			}else{
+				//负责项目
+				Page<SopProjectBean> my = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
+				Page<SopProjectBean> myPage = contentDeal(my,request,response);
+				genProjectBean.setMyPage(myPage);
+				//协作项目
+				List<String> projectIdList = service.getProjectIdArePeople(projectBo);
+				if(projectIdList!=null && projectIdList.size()>0){
+					projectBo.setProjectIdList(projectIdList);
+					Page<SopProjectBean> coop = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
+					Page<SopProjectBean> coopPage = contentDeal(coop,request,response);
+					genProjectBean.setCoopPage(coopPage);
 				}
-				projectBo.setCreateUid(null);
-			}*/
-			
-			//查询列表
-			/*if(projectBo.getFinanceStatus()!=null){
-				if(!projectBo.getFinanceStatus().equals("尚未获投") || projectBo.getFinanceStatus().equals("不明确")){
-					Map<String,Object> paramMap = new HashMap<String,Object>();
-					paramMap.put("parentCode", "FNO1_1");
-					List<Map<String, Object>> entityMap = dictService.getDictionaryList(paramMap);
-					for(Map<String, Object> map : entityMap){
-						if(map.containsKey("code") && map.get("code").equals(projectBo.getFinanceStatus())){
-							projectBo.setFinanceStatus(CUtils.get().object2String(map.get("id")));
-						}
-					}
-				}
-			}*/
-			
-			//负责项目
-			Page<SopProjectBean> my = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
-			Page<SopProjectBean> myPage = contentDeal(my,request,response);
-			genProjectBean.setMyPage(myPage);
-			//协作项目
-			List<String> projectIdList = service.getProjectIdArePeople(projectBo);
-			if(projectIdList!=null && projectIdList.size()>0){
-				projectBo.setProjectIdList(projectIdList);
-				Page<SopProjectBean> coop = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
-				Page<SopProjectBean> coopPage = contentDeal(coop,request,response);
-				genProjectBean.setCoopPage(coopPage);
 			}
-			 //个数
-			 /*Long gjzNum = service.queryProjectgjzCount(projectBo);
-			 Long thyyNum = service.queryProjectthyyCount(projectBo);
-			 Long yfjNum = service.queryProjectfjCount(projectBo);
-			
-			 genProjectBean.setGjzCount(gjzNum);
-			 genProjectBean.setThyyCount(thyyNum);
-			 genProjectBean.setYfjCount(yfjNum);*/
+			 
 			resultBean.setStatus("OK");
 			resultBean.setMap(BeanUtils.toMap(genProjectBean));
 		} catch (Exception e) {

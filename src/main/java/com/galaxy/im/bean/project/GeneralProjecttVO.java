@@ -10,6 +10,8 @@ private static final long serialVersionUID = 5111689293108636485L;
 	private Page<SopProjectBean> myPage;	//负责项目列表
 	private Page<SopProjectBean> coopPage;	//协作项目列表
 	
+	private Page<SopProjectBean> allPage;	//搜索后的项目列表
+	
 	public Page<SopProjectBean> getMyPage() {
 		return myPage;
 	}
@@ -21,5 +23,11 @@ private static final long serialVersionUID = 5111689293108636485L;
 	}
 	public void setCoopPage(Page<SopProjectBean> coopPage) {
 		this.coopPage = coopPage;
+	}
+	public Page<SopProjectBean> getAllPage() {
+		return allPage;
+	}
+	public void setAllPage(Page<SopProjectBean> allPage) {
+		this.allPage = allPage;
 	}
 }
