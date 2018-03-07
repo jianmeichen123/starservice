@@ -574,5 +574,10 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 			throw new ServiceException(e);
 		}
 	}
+
+	@Override
+	public Long queryProjectCount(ProjectBo projectBo) {
+		return sopdao.queryCount(projectBo);
+	}
 	
 }

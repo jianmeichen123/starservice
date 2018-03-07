@@ -665,24 +665,27 @@ public class ProjectController {
 			orderList.add(new Order(Direction.DESC, "created_time"));			
 			Sort sort = new Sort(orderList);
 			
-			if(projectBo.getKeyword()!=null){
-				Page<SopProjectBean> my = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
-				Page<SopProjectBean> myPage = contentDeal(my,request,response);
-				genProjectBean.setAllPage(myPage);
-			}else{
-				//负责项目
-				Page<SopProjectBean> my = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
-				Page<SopProjectBean> myPage = contentDeal(my,request,response);
-				genProjectBean.setMyPage(myPage);
-				//协作项目
+			if(projectBo.getSflag()!=null && projectBo.getSflag()==1){
 				List<String> projectIdList = service.getProjectIdArePeople(projectBo);
 				if(projectIdList!=null && projectIdList.size()>0){
 					projectBo.setProjectIdList(projectIdList);
-					Page<SopProjectBean> coop = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
-					Page<SopProjectBean> coopPage = contentDeal(coop,request,response);
-					genProjectBean.setCoopPage(coopPage);
 				}
 			}
+			Page<SopProjectBean> page = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
+			Page<SopProjectBean> pvPage = contentDeal(page,request,response);
+			genProjectBean.setPvPage(pvPage);
+			
+			//个数
+			projectBo.setProjectIdList(null);
+			Long myCount = service.queryProjectCount(projectBo);
+			List<String> projectIdList = service.getProjectIdArePeople(projectBo);
+			if(projectIdList!=null && projectIdList.size()>0){
+				projectBo.setProjectIdList(projectIdList);
+			}
+			Long coopCount = service.queryProjectCount(projectBo);
+			
+			genProjectBean.setCoopCount(coopCount);
+			genProjectBean.setMyCount(myCount);
 			 
 			resultBean.setStatus("OK");
 			resultBean.setMap(BeanUtils.toMap(genProjectBean));

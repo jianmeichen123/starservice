@@ -7,27 +7,26 @@ public class GeneralProjecttVO extends BaseEntity{
 	   
 private static final long serialVersionUID = 5111689293108636485L;
 
-	private Page<SopProjectBean> myPage;	//负责项目列表
-	private Page<SopProjectBean> coopPage;	//协作项目列表
+	private Long myCount;	 
+	private Long coopCount;
+	private Page<SopProjectBean> pvPage;
 	
-	private Page<SopProjectBean> allPage;	//搜索后的项目列表
-	
-	public Page<SopProjectBean> getMyPage() {
-		return myPage;
+	public Long getMyCount() {
+		return myCount;
 	}
-	public void setMyPage(Page<SopProjectBean> myPage) {
-		this.myPage = myPage;
+	public void setMyCount(Long myCount) {
+		this.myCount = myCount;
 	}
-	public Page<SopProjectBean> getCoopPage() {
-		return coopPage;
+	public Long getCoopCount() {
+		return coopCount;
 	}
-	public void setCoopPage(Page<SopProjectBean> coopPage) {
-		this.coopPage = coopPage;
+	public void setCoopCount(Long coopCount) {
+		this.coopCount = coopCount;
 	}
-	public Page<SopProjectBean> getAllPage() {
-		return allPage;
+	public Page<SopProjectBean> getPvPage() {
+		return pvPage;
 	}
-	public void setAllPage(Page<SopProjectBean> allPage) {
-		this.allPage = allPage;
+	public void setPvPage(Page<SopProjectBean> pvPage) {
+		this.pvPage = pvPage;
 	}
 }

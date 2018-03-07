@@ -68,5 +68,6 @@ public interface IProjectService extends IBaseService<ProjectBean>{
 	List<Map<String, Object>> getProjectArePeople(Map<String, Object> paramMap);
 	//获取协作项目id
 	List<String> getProjectIdArePeople(ProjectBo projectBo);
+	Long queryProjectCount(ProjectBo projectBo);
 	
 }
