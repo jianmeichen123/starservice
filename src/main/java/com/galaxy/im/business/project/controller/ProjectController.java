@@ -94,7 +94,11 @@ public class ProjectController {
 		resultBean.setStatus("error");
 		try{
 			SessionBean bean = CUtils.get().getBeanBySession(request);
-			project.setCreatedId(bean.getGuserid());
+			if(project.getpName()!=null){
+				project.setCreatedId(null);
+			}else{
+				project.setCreatedId(bean.getGuserid());
+			}
 			
 			//分页查询
 			Page<ProjectBean> pageProject = service.queryPageList(project,
@@ -105,6 +109,11 @@ public class ProjectController {
 			//查询结果放在List<ProjectBean>
 			List<ProjectBean> projectList = new ArrayList<ProjectBean>();
 			for(ProjectBean p : pageProject.getContent()){
+				if(CUtils.get().object2String(p.getCreatedId()).equals(CUtils.get().object2String(bean.getGuserid()))){
+					p.setBelongTo("我的项目");
+				}else{
+					p.setBelongTo("他人项目");
+				}
 				projectList.add(p);
 			}
 			//页面

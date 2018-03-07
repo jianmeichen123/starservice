@@ -15,10 +15,11 @@
   
 	<!-- 获取项目list -->
 	<select id="select" resultType="com.galaxy.im.bean.project.ProjectBean" parameterType="java.util.Map" resultMap="projectMap">
-		SELECT p.id,p.project_name projectName 
+		SELECT p.id,p.project_name projectName,p.create_uid createdId
 		FROM sop_project p 
 		WHERE p.is_delete=0 and p.id not in(SELECT tr.project_id FROM sop_transfer_record tr WHERE tr.record_status is null)
-		and p.create_uid=#{createdId} and p.project_status in ('projectStatus:0','projectStatus:1')
+		 and p.project_status in ('projectStatus:0','projectStatus:1')
+		<if test="createdId != null" >and  p.create_uid = #{createdId}</if>
 		<if test="pName !=null and pName !='null' and pName !=''">
 			and project_name like concat(concat('%','${pName}'),'%')
 		</if>
@@ -28,16 +29,17 @@
 	</select>
 	<resultMap type="com.galaxy.im.bean.project.ProjectBean" id="projectMap">
 		<result column="id" property="id"/>
-		<result column="project_name" property="projectName"/>
+		<result column="projectName" property="projectName"/>
+		<result column="createdId" property="createdId"/>
 	</resultMap>
 	
 	<!-- 项目list总数 -->
-	<select id="selectCount" resultType="java.lang.Long"
-		parameterType="java.util.Map">
+	<select id="selectCount" resultType="java.lang.Long" parameterType="java.util.Map">
 		select count(p.id) 
 		FROM sop_project p 
 		WHERE p.is_delete=0 and p.id not in(SELECT tr.project_id FROM sop_transfer_record tr WHERE tr.record_status is null)
-		and p.create_uid=#{createdId} and p.project_status in ('projectStatus:0','projectStatus:1') 
+		and p.project_status in ('projectStatus:0','projectStatus:1')
+		<if test="createdId != null" >and  p.create_uid = #{createdId}</if> 
 		<if test="pName !=null and pName !='null' and pName !=''">
 			and project_name like concat(concat('%','${pName}'),'%')
 		</if>
