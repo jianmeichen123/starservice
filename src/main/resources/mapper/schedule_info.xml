@@ -376,6 +376,7 @@
 			<trim prefixOverrides="and">
 				<if test="isDel != null" > and is_del = #{isDel}  </if>
 				<if test="createdId != null" > and created_id = #{createdId} </if>
+				<if test="type != null and type!=0" > and type = #{type} </if>
 				<!-- and 
 				((date_format(#{date},'%y-%m') &gt;= date_format(start_time,'%y-%m')
 				 AND date_format(end_time,'%y-%m') &gt;= date_format(#{date},'%y-%m' ) and is_allday=0)
@@ -384,13 +385,15 @@
 				  -->
 				 and ((date_format(#{startTime},'%y-%m-%d') &lt;= date_format(start_time,'%y-%m-%d')
 				 AND date_format(start_time,'%y-%m-%d') &lt;= date_format(#{endTime},'%y-%m-%d' ) )
-				or  (date_format(#{startTime},'%y-%m-%d') &lt;= date_format(end_time,'%y-%m-%d')
+				 or  (date_format(#{startTime},'%y-%m-%d') &lt;= date_format(end_time,'%y-%m-%d')
 				 AND date_format(end_time,'%y-%m-%d') &lt;= date_format(#{endTime},'%y-%m-%d' ))
 				 or (date_format(#{startTime},'%y-%m-%d') >= date_format(start_time,'%y-%m-%d')
 				 AND date_format(end_time,'%y-%m-%d') >= date_format(#{endTime},'%y-%m-%d' ))
-				and is_allday=0)
+				 and is_allday=0
 				 or(date_format(#{startTime},'%y-%m-%d') &lt;= date_format(start_time,'%y-%m-%d')
 				 AND date_format(start_time,'%y-%m-%d') &lt;= date_format(#{endTime},'%y-%m-%d' ) and is_allday=1 )
+				)
+				
 				 
 			</trim>
 				<if test="property != null">order by ${property} ${direction}</if>
