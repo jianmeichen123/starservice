@@ -109,10 +109,12 @@ public class ProjectController {
 			//查询结果放在List<ProjectBean>
 			List<ProjectBean> projectList = new ArrayList<ProjectBean>();
 			for(ProjectBean p : pageProject.getContent()){
-				if(CUtils.get().object2String(p.getCreatedId()).equals(CUtils.get().object2String(bean.getGuserid()))){
-					p.setBelongTo("我的项目");
-				}else{
-					p.setBelongTo("他人项目");
+				if(project.getpName()!=null){
+					if(CUtils.get().object2String(p.getCreatedId()).equals(CUtils.get().object2String(bean.getGuserid()))){
+						p.setBelongTo("我的项目");
+					}else{
+						p.setBelongTo("他人项目");
+					}
 				}
 				projectList.add(p);
 			}
