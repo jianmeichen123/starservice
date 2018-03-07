@@ -121,5 +121,18 @@ public class ProjectEquitiesDaoImpl extends BaseDaoImpl<InformationListdata, Lon
 			throw new DaoException(e);
 		}
 	}
+
+	/**
+	 * 更新
+	 */
+	@Override
+	public int updateInfomationListData(InformationListdata data) {
+		try{
+			return sqlSessionTemplate.update(getSqlName("updateInfomationListData"),data);
+		}catch(Exception e){
+			log.error(ProjectEquitiesDaoImpl.class.getName() + "updateInfomationListData",e);
+			throw new DaoException(e);
+		}
+	}
 	
 }

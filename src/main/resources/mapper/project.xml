@@ -175,6 +175,7 @@
 				#{userId}
 			</foreach>
 		</if>
+		<if test="projectDepartid != null" > and d.id = #{projectDepartid} </if>
 	</select>
 	
 </mapper>

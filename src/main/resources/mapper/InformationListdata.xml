@@ -232,6 +232,24 @@
 		)
 	</insert>
 	
+	<!-- 更新 -->
+	<update id="updateInfomationListData" parameterType="com.galaxy.im.bean.project.InformationListdata">
+		update information_listdata
+		<set>
+			<if test="field1 != null"> field_1 = #{field1}, </if>
+			<if test="isValid != null"> is_valid = #{isValid}, </if>
+			<if test="updatedTime != null"> updated_time = #{updatedTime}, </if>
+			<if test="updatedId != null"> update_id = #{updatedId} </if>
+		</set>
+		<where>
+			<trim prefixOverrides="and">
+			    <if test="projectId != null"> and project_id =#{projectId}</if>
+				<if test="titleId != null" > and title_id = #{titleId} </if>
+				<if test="field5 != null" > and field_5 = #{field5} </if>
+			</trim>
+		</where>
+	</update>
+	
 </mapper>
 	
 

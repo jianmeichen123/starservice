@@ -27,6 +27,7 @@ import com.galaxy.im.business.flow.common.dao.IFlowCommonDao;
 import com.galaxy.im.business.meeting.dao.IMeetingRecordDao;
 import com.galaxy.im.business.meeting.dao.IMeetingSchedulingDao;
 import com.galaxy.im.business.project.dao.IProjectDao;
+import com.galaxy.im.business.project.dao.IProjectEquitiesDao;
 import com.galaxy.im.business.project.dao.ISopProjectDao;
 import com.galaxy.im.business.sopfile.dao.ISopFileDao;
 import com.galaxy.im.business.soptask.dao.ISopTaskDao;
@@ -61,6 +62,9 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 	ISopTaskDao taskDao;
 	@Autowired
 	IMeetingSchedulingDao schDao;
+	
+	@Autowired
+	private IProjectEquitiesDao equDao;
 
 	@Override
 	protected IBaseDao<ProjectBean, Long> getBaseDao() {
@@ -494,6 +498,16 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 		iF.setCreateId(bean.getAfterUid());
 		iF.setTitleId(1810l);
 		flowdao.updateCreateUid(iF);
+		
+		//主承做人修改
+		InformationListdata data = new InformationListdata();
+		data.setProjectId(projectId);
+		data.setTitleId(1103L);
+		data.setField5("0");
+		data.setField1(CUtils.get().object2String(bean.getAfterUid()));
+		data.setUpdatedId(bean.getAfterUid());
+		data.setUpdatedTime(new Date().getTime());
+		equDao.updateInfomationListData(data);
 	}
 
 	/**
@@ -534,6 +548,14 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 		sch.setIsDelete(1);
 		sch.setUpdatedTime(new Date().getTime());
 		schDao.updateMeetingScheduling(sch);
+		
+		//主承做人修改
+		InformationListdata data = new InformationListdata();
+		data.setProjectId(bean.getId());
+		data.setTitleId(1103L);
+		data.setIsValid(1);
+		data.setUpdatedTime(new Date().getTime());
+		equDao.updateInfomationListData(data);
 	}
 
 	/**
