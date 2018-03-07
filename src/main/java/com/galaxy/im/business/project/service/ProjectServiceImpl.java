@@ -548,14 +548,6 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 		sch.setIsDelete(1);
 		sch.setUpdatedTime(new Date().getTime());
 		schDao.updateMeetingScheduling(sch);
-		
-		//主承做人修改
-		InformationListdata data = new InformationListdata();
-		data.setProjectId(bean.getId());
-		data.setTitleId(1103L);
-		data.setIsValid(1);
-		data.setUpdatedTime(new Date().getTime());
-		equDao.updateInfomationListData(data);
 	}
 
 	/**
