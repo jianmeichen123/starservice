@@ -505,7 +505,6 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 		data.setTitleId(1103L);
 		data.setField5("0");
 		data.setField1(CUtils.get().object2String(bean.getAfterUid()));
-		data.setUpdatedId(bean.getAfterUid());
 		data.setUpdatedTime(new Date().getTime());
 		equDao.updateInfomationListData(data);
 	}
