@@ -473,74 +473,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 			toQ.setIsDel(0);
 			
 			qList = dao.selectListss(toQ);//--------------------------------------------------------------
-/*			if(qList!=null && !qList.isEmpty()){
-				ScheduleInfo sinfo ;
-				for(ScheduleInfo temp : qList){	
-					if(temp.getStartTime()!=null && temp.getEndTime()!=null && !AccountDate.get(temp.getStartTime(),temp.getEndTime())){														
-						//跨日日程的操作
-						List<String> sss = AccountDate.getXiuEveryday(temp.getStartTime().substring(0, 10),temp.getEndTime().substring(0, 10), query.getLastMouthDay());
-						Date d1 =DateUtil.convertStringtoD(query.getStartTime()+" 00:00:00");
-						Date d2 = DateUtil.convertStringtoD(query.getEndTime()+" 00:00:00");
-						List<String> s1 = new ArrayList<>();
-						for(int i =0;i<sss.size();i++){
-							Date d3 = DateUtil.convertStringtoD(sss.get(i)+" 00:00:00");
-							if (d3.compareTo(d1)>0 && d3.compareTo(d2)<0) {
-								s1.add(sss.get(i));
-							}
-						}
-						for(String ss:s1){
-								sinfo = new ScheduleInfo();
-								if(temp.getStartTime().substring(0, 10).equals(ss)){
-									sinfo.setStartTime(temp.getStartTime());
-									sinfo.setEndTime(ss+" 23:59:00");
-									sinfo.setName(temp.getName());
-									sinfo.setEventId(temp.getEventId());
-									sinfo.setType(temp.getType());
-									sinfo.setCreatedId(temp.getCreatedId());
-									sinfo.setUpdatedId(temp.getUpdatedId());
-									sinfo.setIsAllday(temp.getIsAllday());
-									sinfo.setRemark(temp.getRemark());
-									sinfo.setCreatedTime(temp.getCreatedTime());
-									sinfo.setUpdatedTime(temp.getUpdatedTime());
-								}
-								else if(temp.getEndTime().substring(0, 10).equals(ss)){
-									sinfo.setStartTime(ss+" 00:00:00");
-									sinfo.setEndTime(temp.getEndTime());
-									sinfo.setName(temp.getName());
-									sinfo.setEventId(temp.getEventId());	
-									sinfo.setType(temp.getType());
-									sinfo.setCreatedId(temp.getCreatedId());
-									sinfo.setUpdatedId(temp.getUpdatedId());
-									sinfo.setIsAllday(temp.getIsAllday());
-									sinfo.setRemark(temp.getRemark());
-									sinfo.setCreatedTime(temp.getCreatedTime());
-									sinfo.setUpdatedTime(temp.getUpdatedTime());
-								}else{				
-									sinfo.setStartTime(ss+" 00:00:00");
-									sinfo.setEndTime(ss+" 23:59:00");
-									sinfo.setName(temp.getName());
-									sinfo.setEventId(temp.getEventId());
-									sinfo.setType(temp.getType());
-									sinfo.setCreatedId(temp.getCreatedId());
-									sinfo.setUpdatedId(temp.getUpdatedId());
-									sinfo.setIsAllday(temp.getIsAllday());
-									sinfo.setRemark(temp.getRemark());
-									sinfo.setCreatedTime(temp.getCreatedTime());
-									sinfo.setUpdatedTime(temp.getUpdatedTime());
-								}
-								scheduleInfoList.add(sinfo);
-						}
-					}
-				}
-			}		
-			qList.addAll(scheduleInfoList);*/
-			Iterator<ScheduleInfo> it = qList.iterator();
-			while(it.hasNext()){
-				ScheduleInfo x = it.next();
-			    if(x.getStartTime()!=null && x.getEndTime()!=null && !AccountDate.get(x.getStartTime(),x.getEndTime())){
-			        it.remove();
-			    }		    
-			}
+
 		//获取拜访对象得名称重新封装数据
 		//结果封装
 		if(qList!=null && !qList.isEmpty()){
