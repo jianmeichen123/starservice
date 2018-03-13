@@ -3,7 +3,6 @@ package com.galaxy.im.business.rili.service;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -460,6 +459,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 		//结果查询  封装
 		List<ScheduleInfo> qList = null;
 		//有隔日的日程list
+		@SuppressWarnings("unused")
 		List<ScheduleInfo> scheduleInfoList = new ArrayList<ScheduleInfo>();
 		//有隔日的日程重新封装list按年月查询
 			ScheduleInfo toQ = new ScheduleInfo();
@@ -473,7 +473,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 			toQ.setIsDel(0);
 			
 			qList = dao.selectListss(toQ);//--------------------------------------------------------------
-			if(qList!=null && !qList.isEmpty()){
+/*			if(qList!=null && !qList.isEmpty()){
 				ScheduleInfo sinfo ;
 				for(ScheduleInfo temp : qList){	
 					if(temp.getStartTime()!=null && temp.getEndTime()!=null && !AccountDate.get(temp.getStartTime(),temp.getEndTime())){														
@@ -533,7 +533,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl<ScheduleInfo> implement
 					}
 				}
 			}		
-			qList.addAll(scheduleInfoList);
+			qList.addAll(scheduleInfoList);*/
 			Iterator<ScheduleInfo> it = qList.iterator();
 			while(it.hasNext()){
 				ScheduleInfo x = it.next();
