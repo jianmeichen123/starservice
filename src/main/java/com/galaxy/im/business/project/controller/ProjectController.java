@@ -377,6 +377,8 @@ public class ProjectController {
 							data.setIsValid(0);
 							data.setCreatedId(userId);
 							data.setCreatedTime(new Date().getTime());
+							data.setUpdatedId(userId);
+							data.setUpdatedTime(new Date().getTime());
 							equitilesService.saveInfomationListData(data);
 						}
 					}
