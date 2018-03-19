@@ -654,6 +654,9 @@ public class ProjectController {
 	public Object selectProjectList(HttpServletRequest request,HttpServletResponse response,@RequestBody ProjectBo projectBo){
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		GeneralProjecttVO genProjectBean = new GeneralProjecttVO();
+		Page<SopProjectBean> page = null;
+		Long coopCount=0L;
+		Long myCount =0L;
 		try {
 			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 			if(sessionBean==null){
@@ -666,30 +669,24 @@ public class ProjectController {
 			orderList.add(new Order(Direction.DESC, "updated_time"));
 			orderList.add(new Order(Direction.DESC, "created_time"));			
 			Sort sort = new Sort(orderList);
-			Page<SopProjectBean> page = null;
+			
 			if(projectBo.getSflag()!=null && projectBo.getSflag()==1){
 				List<String> projectIdList = service.getProjectIdArePeople(projectBo);
 				if(projectIdList!=null && projectIdList.size()>0){
 					projectBo.setProjectIdList(projectIdList);
 					projectBo.setCreateUidList(null);
 					page = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
+					coopCount = service.queryProjectCount(projectBo);
 				}
 			}else{
 				page = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
+				myCount = service.queryProjectCount(projectBo);
 			}
 			
 			Page<SopProjectBean> pvPage = contentDeal(page,request,response);
 			genProjectBean.setPvPage(pvPage);
 			
 			//个数
-			projectBo.setProjectIdList(null);
-			Long myCount = service.queryProjectCount(projectBo);
-			List<String> projectIdList = service.getProjectIdArePeople(projectBo);
-			if(projectIdList!=null && projectIdList.size()>0){
-				projectBo.setProjectIdList(projectIdList);
-			}
-			Long coopCount = service.queryProjectCount(projectBo);
-			
 			genProjectBean.setCoopCount(coopCount);
 			genProjectBean.setMyCount(myCount);
 			 
