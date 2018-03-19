@@ -692,9 +692,9 @@ public class ProjectController {
 			if(projectIdList!=null && projectIdList.size()>0){
 				projectBo.setProjectIdList(projectIdList);
 				projectBo.setCreateUidList(null);
+				Long coopCount = service.queryProjectCount(projectBo);
+				genProjectBean.setCoopCount(coopCount);
 			}
-			Long coopCount = service.queryProjectCount(projectBo);
-			genProjectBean.setCoopCount(coopCount);
 			
 			 
 			resultBean.setStatus("OK");
