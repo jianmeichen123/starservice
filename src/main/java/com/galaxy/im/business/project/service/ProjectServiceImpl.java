@@ -249,8 +249,15 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 	 * 项目列表
 	 */
 	@Override
-	public Page<SopProjectBean> queryPageList(ProjectBo query, PageRequest pageable) {
-		Page<SopProjectBean> pageBean =  sopdao.queryPageList(query, pageable);
+	public Page<SopProjectBean> queryPageList(ProjectBo projectBo, PageRequest pageable) {
+		if(projectBo.getSflag()!=null && projectBo.getSflag()==1){
+			List<String> projectIdList = getProjectIdArePeople(projectBo);
+			if(projectIdList!=null && projectIdList.size()>0){
+				projectBo.setProjectIdList(projectIdList);
+				projectBo.setCreateUidList(null);
+			}
+		}
+		Page<SopProjectBean> pageBean =  sopdao.queryPageList(projectBo, pageable);
 		pageBean.setPageable(null);
 		return pageBean;
 	}
@@ -576,7 +583,18 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 	}
 
 	@Override
-	public Long queryProjectCount(ProjectBo projectBo) {
+	public Long queryCoopProjectCount(ProjectBo projectBo) {
+		List<String> projectIdList = getProjectIdArePeople(projectBo);
+		if(projectIdList!=null && projectIdList.size()>0){
+			projectBo.setProjectIdList(projectIdList);
+			projectBo.setCreateUidList(null);
+			return sopdao.queryCount(projectBo);
+		}
+		return null;
+	}
+
+	@Override
+	public Long queryMyProjectCount(ProjectBo projectBo) {
 		return sopdao.queryCount(projectBo);
 	}
 	
