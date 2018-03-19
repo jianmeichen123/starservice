@@ -655,8 +655,6 @@ public class ProjectController {
 		ResultBean<Object> resultBean = new ResultBean<Object>();
 		GeneralProjecttVO genProjectBean = new GeneralProjecttVO();
 		Page<SopProjectBean> page = null;
-		Long coopCount=0L;
-		Long myCount =0L;
 		try {
 			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 			if(sessionBean==null){
@@ -676,19 +674,28 @@ public class ProjectController {
 					projectBo.setProjectIdList(projectIdList);
 					projectBo.setCreateUidList(null);
 					page = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
-					coopCount = service.queryProjectCount(projectBo);
 				}
 			}else{
 				page = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
-				myCount = service.queryProjectCount(projectBo);
 			}
 			
 			Page<SopProjectBean> pvPage = contentDeal(page,request,response);
 			genProjectBean.setPvPage(pvPage);
 			
 			//个数
-			genProjectBean.setCoopCount(coopCount);
+			//负责
+			projectBo.setProjectIdList(null);
+			Long myCount = service.queryProjectCount(projectBo);
 			genProjectBean.setMyCount(myCount);
+			//协作
+			List<String> projectIdList = service.getProjectIdArePeople(projectBo);
+			if(projectIdList!=null && projectIdList.size()>0){
+				projectBo.setProjectIdList(projectIdList);
+				projectBo.setCreateUidList(null);
+			}
+			Long coopCount = service.queryProjectCount(projectBo);
+			genProjectBean.setCoopCount(coopCount);
+			
 			 
 			resultBean.setStatus("OK");
 			resultBean.setMap(BeanUtils.toMap(genProjectBean));
