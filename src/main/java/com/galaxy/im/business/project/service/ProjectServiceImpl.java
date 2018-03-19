@@ -249,15 +249,8 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 	 * 项目列表
 	 */
 	@Override
-	public Page<SopProjectBean> queryPageList(ProjectBo projectBo, PageRequest pageable) {
-		if(projectBo.getSflag()!=null && projectBo.getSflag()==1){
-			List<String> projectIdList = getProjectIdArePeople(projectBo);
-			if(projectIdList!=null && projectIdList.size()>0){
-				projectBo.setProjectIdList(projectIdList);
-				projectBo.setCreateUidList(null);
-			}
-		}
-		Page<SopProjectBean> pageBean =  sopdao.queryPageList(projectBo, pageable);
+	public Page<SopProjectBean> queryPageList(ProjectBo query, PageRequest pageable) {
+		Page<SopProjectBean> pageBean =  sopdao.queryPageList(query, pageable);
 		pageBean.setPageable(null);
 		return pageBean;
 	}
