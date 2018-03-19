@@ -355,12 +355,12 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 				List<Map<String,Object>> map4 = dao.getProjectArePeople(paramMap);
 				if(map4!=null){
 					if(map4.size()==1 && map4.get(0).get("areFlag").equals("0")){
-						user =map4.get(0).get("ArePeople")+"("+map4.get(0).get("deptName")+")";
+						user =map4.get(0).get("arePeople")+"("+map4.get(0).get("deptName")+")";
 						QXinfoMap.put("arePersion", user);
 					}else if(map4.size()>1){
 						for(Map<String,Object> map : map4){
 							if(map.get("areFlag").equals("0")){
-								user =map4.get(0).get("ArePeople")+"("+map4.get(0).get("deptName")+")";
+								user =map4.get(0).get("arePeople")+"("+map4.get(0).get("deptName")+")";
 								break;
 							}
 						}
