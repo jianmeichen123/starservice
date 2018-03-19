@@ -666,14 +666,18 @@ public class ProjectController {
 			orderList.add(new Order(Direction.DESC, "updated_time"));
 			orderList.add(new Order(Direction.DESC, "created_time"));			
 			Sort sort = new Sort(orderList);
-			
+			Page<SopProjectBean> page = null;
 			if(projectBo.getSflag()!=null && projectBo.getSflag()==1){
 				List<String> projectIdList = service.getProjectIdArePeople(projectBo);
 				if(projectIdList!=null && projectIdList.size()>0){
 					projectBo.setProjectIdList(projectIdList);
+					projectBo.setCreateUidList(null);
+					page = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
 				}
+			}else{
+				page = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
 			}
-			Page<SopProjectBean> page = service.queryPageList(projectBo,  new PageRequest(projectBo.getPageNum(), projectBo.getPageSize(),sort));
+			
 			Page<SopProjectBean> pvPage = contentDeal(page,request,response);
 			genProjectBean.setPvPage(pvPage);
 			
