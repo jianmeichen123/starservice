@@ -7,14 +7,14 @@
 	<!-- 系统消息 -->
 	<select id="getSysUpgradeMessage" parameterType="hashmap" resultType="hashmap">
 		SELECT m.id messageId,m.message_content messageContent,m.send_status sendStatus,
-		d.`name` sendStatusName,m.upgrade_time upgradeTime,
-		case (SELECT COUNT(#{userId}) FROM system_message_user WHERE message_os=#{OsType})>0
-		when 1 then 1
-		else 0
-		end isClose
+			d.`name` sendStatusName,m.upgrade_time upgradeTime,
+			case (SELECT COUNT(#{userId}) FROM system_message_user WHERE message_os=#{OsType})>0
+			when 1 then 1
+			else 0
+			end isClose
 		FROM system_message m
 		LEFT JOIN dict d on m.send_status=d.dict_code
-		WHERE m.os_type=#{OsType} and m.is_del=0 and
+		WHERE m.os_type like CONCAT("%",#{OsType},"%") and m.is_del=0 and
 		(DATE_FORMAT(NOW(),'%Y-%m-%d') = FROM_UNIXTIME(m.send_time/1000,'%Y-%m-%d'))
 	</select>
 	
