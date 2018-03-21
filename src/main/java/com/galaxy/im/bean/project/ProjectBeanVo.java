@@ -11,6 +11,8 @@ public class ProjectBeanVo extends ProjectBean {
 	
 	//模糊查询项目名称
 	private String pName;
+	
+	private long loginUserId;
 
 	public List<Long> getProjectIdList() {
 		return projectIdList;
@@ -26,6 +28,14 @@ public class ProjectBeanVo extends ProjectBean {
 
 	public void setpName(String pName) {
 		this.pName = pName;
+	}
+
+	public long getLoginUserId() {
+		return loginUserId;
+	}
+
+	public void setLoginUserId(long loginUserId) {
+		this.loginUserId = loginUserId;
 	}
 
 

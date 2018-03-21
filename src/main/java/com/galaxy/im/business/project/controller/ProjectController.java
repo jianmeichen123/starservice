@@ -99,7 +99,7 @@ public class ProjectController {
 			}else{
 				project.setCreatedId(bean.getGuserid());
 			}
-			
+			project.setLoginUserId(bean.getGuserid());
 			//分页查询
 			Page<ProjectBean> pageProject = service.queryPageList(project,
 					new PageRequest(project.getPageNum(),
@@ -107,17 +107,8 @@ public class ProjectController {
 							Direction.fromString(project.getDirection()),
 							project.getProperty()));
 			//查询结果放在List<ProjectBean>
-			List<ProjectBean> projectList = new ArrayList<ProjectBean>();
-			for(ProjectBean p : pageProject.getContent()){
-				if(project.getpName()!=null){
-					if(CUtils.get().object2String(p.getCreatedId()).equals(CUtils.get().object2String(bean.getGuserid()))){
-						p.setBelongTo("我的项目");
-					}else{
-						p.setBelongTo("他人项目");
-					}
-				}
-				projectList.add(p);
-			}
+			
+			List<ProjectBean> projectList=pageProject.getContent();
 			//页面
 			Map<String,Object> map = new HashMap<String,Object>();
 			map.put("pageNum", pageProject.getPageable().getPageNumber());

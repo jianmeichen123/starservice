@@ -15,13 +15,15 @@
   
 	<!-- 获取项目list -->
 	<select id="select" resultType="com.galaxy.im.bean.project.ProjectBean" parameterType="java.util.Map" resultMap="projectMap">
-		SELECT p.id,p.project_name projectName,p.create_uid createdId
+		SELECT p.id,p.project_name projectName,p.create_uid createdId,
+			   CASE WHEN p.create_uid =#{loginUserId} THEN '我的项目' else '他人项目'  end belongTo
 		FROM sop_project p 
 		WHERE p.is_delete=0 and p.id not in(SELECT tr.project_id FROM sop_transfer_record tr WHERE tr.record_status is null)
 		 and p.project_status in ('projectStatus:0','projectStatus:1')
 		<if test="createdId != null" >and  p.create_uid = #{createdId}</if>
 		<if test="pName !=null and pName !='null' and pName !=''">
-			and project_name like concat(concat('%','${pName}'),'%')
+			and project_name like concat(concat('%','${pName}'),'%') 
+			ORDER BY belongTo desc,created_time desc
 		</if>
 		<if test="offset != null and limit != null">
 			limit #{offset}, #{limit};
