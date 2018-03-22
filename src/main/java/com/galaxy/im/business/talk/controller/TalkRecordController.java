@@ -21,12 +21,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.galaxy.im.bean.common.SessionBean;
+import com.galaxy.im.bean.project.SopProjectBean;
 import com.galaxy.im.bean.schedule.ScheduleDetailBean;
 import com.galaxy.im.bean.talk.SopFileBean;
 import com.galaxy.im.bean.talk.TalkRecordBean;
 import com.galaxy.im.bean.talk.TalkRecordBeanVo;
 import com.galaxy.im.bean.talk.TalkRecordDetailBean;
 import com.galaxy.im.business.callon.service.ICallonDetailService;
+import com.galaxy.im.business.flow.common.service.IFlowCommonService;
 import com.galaxy.im.business.talk.service.ITalkRecordDetailService;
 import com.galaxy.im.business.talk.service.ITalkRecordService;
 import com.galaxy.im.common.CUtils;
@@ -51,6 +53,9 @@ public class TalkRecordController {
 	private ITalkRecordService service;
 	@Autowired
 	private ITalkRecordDetailService talkDetailService;
+	
+	@Autowired
+	private IFlowCommonService fcService;
 	
 	
 	/**
@@ -226,6 +231,12 @@ public class TalkRecordController {
 					updateCount = service.updateById(talkBean);
 				}else{
 					//保存
+					Map<String,Object> paramMap = new HashMap<String,Object>();
+					paramMap.put("projectId", talkBean.getProjectId());
+					SopProjectBean p = fcService.getSopProjectInfo(paramMap);
+					if(p!=null && p.getCreateUid()!=bean.getGuserid()){
+						talkBean.setProjectId(CUtils.get().object2Long(null));
+					}
 					talkBean.setViewDate(DateUtil.convertStringtoD(talkBean.getViewDateStr()));
 					talkBean.setCreatedId(bean.getGuserid());
 					id = service.insert(talkBean);
