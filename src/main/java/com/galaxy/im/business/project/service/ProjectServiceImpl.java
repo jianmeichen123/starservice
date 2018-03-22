@@ -360,7 +360,7 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 					}else if(map4.size()>1){
 						for(Map<String,Object> map : map4){
 							if(map.get("areFlag").equals("0")){
-								user =map4.get(0).get("arePeople")+"("+map4.get(0).get("deptName")+")";
+								user =map.get("arePeople")+"("+map.get("deptName")+")";
 								break;
 							}
 						}
