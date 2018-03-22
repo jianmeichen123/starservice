@@ -235,7 +235,7 @@ public class TalkRecordController {
 					paramMap.put("projectId", talkBean.getProjectId());
 					SopProjectBean p = fcService.getSopProjectInfo(paramMap);
 					if(p!=null && p.getCreateUid()!=bean.getGuserid()){
-						talkBean.setProjectId(CUtils.get().object2Long(null));
+						talkBean.setProjectId(0);
 					}
 					talkBean.setViewDate(DateUtil.convertStringtoD(talkBean.getViewDateStr()));
 					talkBean.setCreatedId(bean.getGuserid());
