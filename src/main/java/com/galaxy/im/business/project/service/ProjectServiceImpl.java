@@ -455,7 +455,7 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 	@Override
 	public void receiveProjectTransfer(ProjectTransfer bean) {
 		Map<String,Object> paramMap = new HashMap<String,Object>();
-		paramMap.put("projectId",bean.getId());
+		paramMap.put("projectId",bean.getProjectId());
 		//项目修改
 		Long projectId = bean.getProjectId();
 		SopProjectBean po = new SopProjectBean();
@@ -505,7 +505,7 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 		List<Map<String,Object>> list = getProjectArePeople(paramMap);
 		for(Map<String,Object> map :list){
 			if(!CUtils.get().object2String(map.get("areFlag")).equals("0")){
-				if(CUtils.get().object2String(map.get("userId")).equals(bean.getAfterUid())){
+				if(CUtils.get().object2String(map.get("userId")).equals(CUtils.get().object2String(bean.getAfterUid()))){
 					bili+=CUtils.get().object2Integer(map.get("proportion"));
 					id =CUtils.get().object2String(map.get("id"));
 				}
