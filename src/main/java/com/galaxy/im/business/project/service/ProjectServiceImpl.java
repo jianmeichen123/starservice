@@ -500,13 +500,27 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 		flowdao.updateCreateUid(iF);
 		
 		//主承做人修改
+		int bili=0;
+		String id="";
+		List<Map<String,Object>> list = getProjectArePeople(paramMap);
+		for(Map<String,Object> map :list){
+			if(!CUtils.get().object2String(map.get("areFlag")).equals("0")){
+				if(CUtils.get().object2String(map.get("userId")).equals(bean.getAfterUid())){
+					bili+=CUtils.get().object2Integer(map.get("proportion"));
+					id =CUtils.get().object2String(map.get("id"));
+				}
+			}
+		}
 		InformationListdata data = new InformationListdata();
 		data.setProjectId(projectId);
 		data.setTitleId(1103L);
 		data.setField5("0");
 		data.setField1(CUtils.get().object2String(bean.getAfterUid()));
+		data.setField2(CUtils.get().object2String(bili));
 		data.setUpdatedTime(new Date().getTime());
 		equDao.updateInfomationListData(data);
+		paramMap.put("id", id);
+		equDao.deleteProjectSharesById(paramMap);
 	}
 
 	/**

@@ -237,6 +237,7 @@
 		update information_listdata
 		<set>
 			<if test="field1 != null"> field_1 = #{field1}, </if>
+			<if test="field2 != null"> field_2 = field_2+#{field2}, </if>
 			<if test="isValid != null"> is_valid = #{isValid}, </if>
 			<if test="updatedTime != null"> updated_time = #{updatedTime}, </if>
 			<if test="updatedId != null"> update_id = #{updatedId} </if>
