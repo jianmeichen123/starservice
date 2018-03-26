@@ -597,7 +597,7 @@ public class ProjectServiceImpl extends BaseServiceImpl<ProjectBean> implements 
 			projectBo.setCreateUidList(null);
 			return sopdao.queryCount(projectBo);
 		}
-		return null;
+		return 0L;
 	}
 
 	@Override
