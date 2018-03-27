@@ -15,7 +15,7 @@
 		FROM system_message m
 		LEFT JOIN dict d on m.send_status=d.dict_code
 		WHERE m.os_type like CONCAT("%",#{OsType},"%") and m.is_del=0 and m.send_status='messageStatus:2' and 
-		(DATE_FORMAT(NOW(),'%Y-%m-%d') = FROM_UNIXTIME(m.send_time/1000,'%Y-%m-%d'))
+		(DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s') >= FROM_UNIXTIME(m.send_time/1000,'%Y-%m-%d %H:%i:%s'))
 	</select>
 	
 	<!-- 手动关闭系统消息  插入一条消息到system_message_user -->
