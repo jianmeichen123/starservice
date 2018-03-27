@@ -9,8 +9,8 @@
 			<trim prefixOverrides="and">
 				is_delete=0
 			    <!-- <if test="id != null"> and id =#{id}</if>
-				<if test="createUid != null" > and create_uid = #{createUid} </if>
 				 -->
+				<if test="createUid != null" > and create_uid = #{createUid} </if>
 				<if test="projectStatus != null" > and project_status = #{projectStatus} </if>
 				<if test="projectDepartid != null" > and project_departId = #{projectDepartid} </if>
 				<!-- 筛选条件 -->
