@@ -8,7 +8,7 @@
 	<select id="getSysUpgradeMessage" parameterType="hashmap" resultType="hashmap">
 		SELECT m.id messageId,m.message_content messageContent,m.send_status sendStatus,
 			d.`name` sendStatusName,m.upgrade_time upgradeTime,
-			case (SELECT COUNT(#{userId}) FROM system_message_user WHERE message_os=#{OsType})>0
+			case (SELECT COUNT(1) FROM system_message_user WHERE message_os=#{OsType} and user_id=#{userId})>0
 			when 1 then 1
 			else 0
 			end isClose
