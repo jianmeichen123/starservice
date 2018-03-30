@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.galaxy.im.business.report.baseinfo.dao.IBaseInfoDao">
+
+	<resultMap id="TitleMap" type="com.galaxy.im.bean.report.InformationTitle">
+		<id column="id" 			jdbcType="BIGINT" 		property="id" />
+		<result column="parent_id"  jdbcType="VARCHAR" 		property="parentId" />
+		<result column="code" 		jdbcType="VARCHAR" 		property="code" />
+		<result column="name" 		jdbcType="VARCHAR" 		property="name" />
+		<result column="index_no" 	jdbcType="DOUBLE" 		property="indexNo" />
+		<result column="type" 		jdbcType="INTEGER" 		property="type" />
+		<result column="sign" 		jdbcType="INTEGER" 		property="sign" />
+		<result column="content" 	jdbcType="VARCHAR" 		property="content" />
+		<result column="is_show" 	jdbcType="CHAR" 		property="isShow" />
+		<result column="is_valid" 	jdbcType="INTEGER" 		property="isValid" />
+		<result column="placeholder"  jdbcType="VARCHAR" 		property="placeholder" />
+		<result column="created_time" jdbcType="BIGINT" 	property="createdTime" />
+		<result column="create_id" 	jdbcType="BIGINT" 		property="createId" />
+		<result column="updated_time" jdbcType="BIGINT" 	property="updatedTime" />
+		<result column="update_id" 	jdbcType="BIGINT" 		property="updateId" />
+		<result column="is_must" 		jdbcType="INTEGER" 		property="isMust" />
+		<result column="val_rule" 	    jdbcType="VARCHAR" 		property="valRule" />
+		<result column="val_rule_mark" 	jdbcType="VARCHAR" 		property="valRuleMark" />
+	</resultMap>
+	
+	<resultMap id="DictionaryMap" type="com.galaxy.im.bean.report.InformationDictionary">
+		<id column="id" 			jdbcType="BIGINT" 		property="id" />
+		<result column="parent_id" 	jdbcType="BIGINT" 		property="parentId" />
+		<result column="title_id" 	jdbcType="BIGINT" 		property="titleId" />
+		<result column="code" 		jdbcType="VARCHAR" 		property="code" />
+		<result column="name" 		jdbcType="VARCHAR" 		property="name" />
+		<result column="value" 		jdbcType="VARCHAR" 		property="value" />
+		<result column="sort" 		jdbcType="INTEGER" 		property="sort" />
+		<result column="is_valid" 	jdbcType="INTEGER" 		property="isValid" />
+		<result column="created_time" jdbcType="BIGINT" 	property="createdTime" />
+		<result column="create_id" 	jdbcType="BIGINT" 		property="createId" />
+		<result column="updated_time" jdbcType="BIGINT" 	property="updatedTime" />
+		<result column="update_id" 	jdbcType="BIGINT" 		property="updateId" />
+	</resultMap>
+	
+	<resultMap id="ResultMap" type="com.galaxy.im.bean.project.InformationResult">
+		<id column="id" 					jdbcType="BIGINT" 		property="id" />
+		<result column="project_id" 		jdbcType="BIGINT" 		property="projectId" />
+		<result column="title_id" 			jdbcType="BIGINT" 		property="titleId" />
+		<result column="content_choose" 	jdbcType="VARCHAR" 		property="contentChoose" />
+		<result column="content_describe1" 	jdbcType="VARCHAR" 		property="contentDescribe1" />
+		<result column="content_describe2" 	jdbcType="VARCHAR" 		property="contentDescribe2" />
+		<result column="sort" 		        jdbcType="INTEGER" 		property="sort" />
+		<result column="is_valid" 			jdbcType="INTEGER" 		property="isValid" />
+		<result column="created_time" 		jdbcType="BIGINT" 		property="createdTime" />
+		<result column="create_id" 			jdbcType="BIGINT" 		property="createId" />
+		<result column="updated_time" 		jdbcType="BIGINT" 		property="updatedTime" />
+		<result column="update_id" 			jdbcType="BIGINT" 		property="updateId" />
+	</resultMap>
+	
+	<resultMap id="FixedTableMap" type="com.galaxy.im.bean.report.InformationFixedTable">
+		<id column="id" 					jdbcType="BIGINT" 		property="id" />
+		<result column="project_id" 		jdbcType="BIGINT" 		property="projectId" />
+		<result column="title_id" 			jdbcType="BIGINT" 		property="titleId" />
+		<result column="row_no" 			jdbcType="VARCHAR" 		property="rowNo" />
+		<result column="col_no" 			jdbcType="VARCHAR" 		property="colNo" />
+		<result column="type" 				jdbcType="INTEGER" 		property="type" />
+		<result column="content" 			jdbcType="VARCHAR" 		property="content" />
+		<result column="is_valid" 			jdbcType="INTEGER" 		property="isValid" />
+		<result column="created_time" 		jdbcType="BIGINT" 		property="createdTime" />
+		<result column="create_id" 			jdbcType="BIGINT" 		property="createId" />
+		<result column="updated_time" 		jdbcType="BIGINT" 		property="updatedTime" />
+		<result column="update_id" 			jdbcType="BIGINT" 		property="updateId" />
+	</resultMap>
+	
+	<resultMap id="ListdataRemarkMap" type="com.galaxy.im.bean.report.InformationListdataRemark">
+		<id column="id" 			jdbcType="BIGINT" 		property="id" />
+		<result column="title_id" 	jdbcType="BIGINT" 		property="titleId" />
+		<result column="code" 		jdbcType="VARCHAR" 		property="code" />
+		<result column="sub_code" 	jdbcType="VARCHAR" 		property="subCode" />
+		<result column="name" 		jdbcType="VARCHAR" 		property="name" />
+		<result column="field_1" 	jdbcType="VARCHAR" 		property="field1" />
+		<result column="field_2" 	jdbcType="VARCHAR" 		property="field2" />
+		<result column="field_3" 	jdbcType="VARCHAR" 		property="field3" />
+		<result column="field_4" 	jdbcType="VARCHAR" 		property="field4" />
+		<result column="field_5" 	jdbcType="VARCHAR" 		property="field5" />
+		<result column="field_6" 	jdbcType="VARCHAR" 		property="field6" />
+		<result column="field_7" 	jdbcType="VARCHAR" 		property="field7" />
+		<result column="field_8" 	jdbcType="VARCHAR" 		property="field8" />
+		<result column="field_9" 	jdbcType="VARCHAR" 		property="field9" />
+		<result column="field_10" 	jdbcType="VARCHAR" 		property="field10" />
+		<result column="field_11" 	jdbcType="VARCHAR" 		property="field11" />
+		<result column="field_12" 	jdbcType="VARCHAR" 		property="field12" />
+		<result column="field_13" 	jdbcType="VARCHAR" 		property="field13" />
+		<result column="field_14" 	jdbcType="VARCHAR" 		property="field14" />
+		<result column="field_15" 	jdbcType="VARCHAR" 		property="field15" />
+		<result column="field_16" 	jdbcType="VARCHAR" 		property="field16" />
+		<result column="field_17" 	jdbcType="VARCHAR" 		property="field17" />
+		<result column="field_18" 	jdbcType="VARCHAR" 		property="field18" />
+		<result column="field_19" 	jdbcType="VARCHAR" 		property="field19" />
+		<result column="field_20" 	jdbcType="VARCHAR" 		property="field20" />
+		<result column="sub_title_id1" 	jdbcType="VARCHAR" 		property="subTitleId1" />
+		<result column="sub_title_id2" 	jdbcType="VARCHAR" 		property="subTitleId2" />
+		<result column="sub_title_id3" 	jdbcType="VARCHAR" 		property="subTitleId3" />
+		<result column="sub_title_id4" 	jdbcType="VARCHAR" 		property="subTitleId4" />
+		<result column="sub_title_id5" 	jdbcType="VARCHAR" 		property="subTitleId5" />
+		<result column="sub_title_id6" 	jdbcType="VARCHAR" 		property="subTitleId6" />
+		<result column="sub_title_id7" 	jdbcType="VARCHAR" 		property="subTitleId7" />
+		<result column="sub_title_id8" 	jdbcType="VARCHAR" 		property="subTitleId8" />
+		<result column="sub_title_id9" 	jdbcType="VARCHAR" 		property="subTitleId9" />
+		<result column="sub_title_id10" jdbcType="VARCHAR" 		property="subTitleId10" />
+		<result column="sub_title_id11" jdbcType="VARCHAR" 		property="subTitleId11" />
+		<result column="sub_title_id12" jdbcType="VARCHAR" 		property="subTitleId12" />
+		<result column="sub_title_id13" jdbcType="VARCHAR" 		property="subTitleId13" />
+		<result column="sub_title_id14" jdbcType="VARCHAR" 		property="subTitleId14" />
+		<result column="sub_title_id15" jdbcType="VARCHAR" 		property="subTitleId15" />
+		<result column="sub_title_id16" jdbcType="VARCHAR" 		property="subTitleId16" />
+		<result column="sub_title_id17" jdbcType="VARCHAR" 		property="subTitleId17" />
+		<result column="sub_title_id18" jdbcType="VARCHAR" 		property="subTitleId18" />
+		<result column="sub_title_id19" jdbcType="VARCHAR" 		property="subTitleId19" />
+		<result column="sub_title_id20" jdbcType="VARCHAR" 		property="subTitleId20" />
+		<result column="is_valid" 	jdbcType="INTEGER" 		property="isValid" />
+		<result column="created_time" jdbcType="BIGINT" 	property="createdTime" />
+		<result column="create_id" 	jdbcType="BIGINT" 		property="createId" />
+		<result column="updated_time" jdbcType="BIGINT" 	property="updatedTime" />
+		<result column="update_id" 	jdbcType="BIGINT" 		property="updateId" />
+	</resultMap>
+	
+	<resultMap id="ListdataMap" type="com.galaxy.im.bean.report.InformationListdata">
+		<id column="id" 			jdbcType="BIGINT" 		property="id" />
+		<result column="project_id" jdbcType="BIGINT" 		property="projectId" />
+		<result column="title_id" 	jdbcType="BIGINT" 		property="titleId" />
+		<result column="parent_id" 	jdbcType="BIGINT" 		property="parentId" />
+		<result column="code" 		jdbcType="VARCHAR" 		property="code" />
+		<result column="field_1" 	jdbcType="VARCHAR" 		property="field1" />
+		<result column="field_2" 	jdbcType="VARCHAR" 		property="field2" />
+		<result column="field_3" 	jdbcType="VARCHAR" 		property="field3" />
+		<result column="field_4" 	jdbcType="VARCHAR" 		property="field4" />
+		<result column="field_5" 	jdbcType="VARCHAR" 		property="field5" />
+		<result column="field_6" 	jdbcType="VARCHAR" 		property="field6" />
+		<result column="field_7" 	jdbcType="VARCHAR" 		property="field7" />
+		<result column="field_8" 	jdbcType="VARCHAR" 		property="field8" />
+		<result column="field_9" 	jdbcType="VARCHAR" 		property="field9" />
+		<result column="field_10" 	jdbcType="VARCHAR" 		property="field10" />
+		<result column="field_11" 	jdbcType="VARCHAR" 		property="field11" />
+		<result column="field_12" 	jdbcType="VARCHAR" 		property="field12" />
+		<result column="field_13" 	jdbcType="VARCHAR" 		property="field13" />
+		<result column="field_14" 	jdbcType="VARCHAR" 		property="field14" />
+		<result column="field_15" 	jdbcType="VARCHAR" 		property="field15" />
+		<result column="field_16" 	jdbcType="VARCHAR" 		property="field16" />
+		<result column="field_17" 	jdbcType="VARCHAR" 		property="field17" />
+		<result column="field_18" 	jdbcType="VARCHAR" 		property="field18" />
+		<result column="field_19" 	jdbcType="VARCHAR" 		property="field19" />
+		<result column="field_20" 	jdbcType="VARCHAR" 		property="field20" />
+		<result column="is_valid" 	jdbcType="INTEGER" 		property="isValid" />
+		<result column="created_time" jdbcType="BIGINT" 	property="createdTime" />
+		<result column="create_id" 	jdbcType="BIGINT" 		property="createId" />
+		<result column="updated_time" jdbcType="BIGINT" 	property="updatedTime" />
+		<result column="update_id" 	jdbcType="BIGINT" 		property="updateId" />
+	</resultMap>
+	
+	<select id="selectChildsByPid" resultMap="TitleMap" parameterType="java.util.Map">
+		select
+			id, parent_id,
+			code, name,  type,
+			sign, content,is_show,
+			placeholder,is_must,
+			val_rule,val_rule_mark
+		from information_title 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="id != null"> and id = #{id,jdbcType=BIGINT} </if>
+				<if test="parentId != null"> and  parent_id = #{parentId,jdbcType=VARCHAR} </if>
+				<if test="code != null"> and  code = #{code,jdbcType=VARCHAR} </if>
+				<if test="name != null"> and  name = #{name,jdbcType=VARCHAR} </if>
+				<if test="indexNo != null"> and  index_no = #{indexNo,jdbcType=INTEGER} </if>
+				<if test="type != null"> and  type = #{type,jdbcType=INTEGER} </if>
+				<if test="sign != null"> and  sign = #{sign,jdbcType=INTEGER} </if>
+				<if test="isValid != null"> and  is_valid = #{isValid,jdbcType=INTEGER} </if>
+				<if test="isShow != null"> and  is_show = #{isShow,jdbcType=VARCHAR} </if>
+				<if test="createId != null"> and  create_id = #{createId,jdbcType=BIGINT} </if>
+				<if test="updateId != null"> and  update_id = #{updateId,jdbcType=BIGINT} </if>
+			</trim>
+			<if test="sorting != null">order by ${sorting}</if>
+		</where>
+	</select>
+	
+	<!-- 查询 -->
+	<select id="getInformationDictionary" resultMap="DictionaryMap" parameterType="java.util.Map">
+		select
+			id, parent_id, 
+			title_id, code, name, 
+			value, sort, is_valid, 
+			created_time, create_id, 
+			updated_time, update_id
+		from information_dictionary
+		<where>
+			<trim prefixOverrides="and">
+				<if test="id != null"> and id = #{id,jdbcType=BIGINT} </if>
+				<if test="parentId != null"> and parent_id = #{parentId,jdbcType=VARCHAR} </if>
+				<if test="titleId != null"> and title_id = #{titleId,jdbcType=VARCHAR} </if>
+				<if test="code != null"> and code = #{code,jdbcType=VARCHAR} </if>
+				<if test="name != null"> and name = #{name,jdbcType=VARCHAR} </if>
+				<if test="value != null"> and value = #{value,jdbcType=VARCHAR} </if>
+				<if test="sort != null"> and sort = #{sort,jdbcType=VARCHAR} </if>
+				<if test="isValid != null"> and is_valid = #{isValid,jdbcType=VARCHAR} </if>
+				<if test="createdTime != null"> and created_time = #{createdTime,jdbcType=VARCHAR} </if>
+				<if test="createId != null"> and create_id = #{createId,jdbcType=VARCHAR} </if>
+				<if test="updatedTime != null"> and updated_time = #{updatedTime,jdbcType=VARCHAR} </if>
+				<if test="updateId != null"> and update_id = #{updateId,jdbcType=VARCHAR} </if>
+			</trim>
+			<if test="sorting != null">order by ${sorting}</if>
+			<if test="property != null">order by ${property} ${direction}</if>
+			<if test="offset != null and limit != null">
+				limit #{offset}, #{limit}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getInformationResult" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+			id, project_id,
+			title_id, content_choose, 
+			content_describe1, content_describe2, 
+			sort, is_valid, created_time, 
+			create_id, updated_time, update_id
+		from information_result
+		<where>
+			<trim prefixOverrides="and">
+				<if test="id != null"> and id = #{id,jdbcType=BIGINT} </if>
+				<if test="projectId != null"> and project_id = #{projectId,jdbcType=BIGINT} </if>
+				<if test="titleId != null"> and title_id = #{titleId,jdbcType=BIGINT} </if>
+				<if test="titleIds != null">
+					and title_id in 
+					<foreach collection="titleIds" item="item" open="(" separator="," close=")">
+					#{item}
+					</foreach>
+				</if>
+			</trim>
+			<if test="sorting != null">order by ${sorting}</if>
+			<if test="property != null">order by ${property} ${direction}</if>
+			<if test="offset != null and limit != null">
+				limit #{offset}, #{limit}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getInformationFixedTable" resultMap="FixedTableMap" parameterType="java.util.Map">
+		select
+			id, project_id, 
+			title_id, row_no, col_no, 
+			type,content,is_valid, created_time, 
+			create_id, updated_time, update_id
+		from information_fixed_table
+		<where>
+			<trim prefixOverrides="and">
+				<if test="id != null"> and id = #{id,jdbcType=BIGINT} </if>
+				<if test="projectId != null"> and project_id = #{projectId,jdbcType=BIGINT} </if>
+				<if test="titleId != null"> and title_id = #{titleId,jdbcType=BIGINT} </if>
+				<if test="titleIds != null">
+					and title_id in 
+					<foreach collection="titleIds" item="item" open="(" separator="," close=")">
+					#{item}
+					</foreach>
+				</if>
+			</trim>
+			<if test="sorting != null">order by ${sorting}</if>
+			<if test="property != null">order by ${property} ${direction}</if>
+			<if test="offset != null and limit != null">
+				limit #{offset}, #{limit}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getInformationListdataRemark" resultMap="ListdataRemarkMap" parameterType="java.util.Map">
+		select
+			id, title_id,code,sub_code,name,
+			field_1, field_2, field_3, field_4,
+			field_5,field_6,field_7,field_8,field_9,field_10, 
+			field_11, field_12, field_13, field_14, field_15,
+			field_16,field_17,field_18,field_19,field_20, 
+			is_valid, created_time, create_id, updated_time, update_id,
+			sub_title_id1,sub_title_id2,sub_title_id3,sub_title_id4,
+			sub_title_id5,sub_title_id6,sub_title_id7,
+			sub_title_id8,sub_title_id9,sub_title_id10,
+			sub_title_id11,sub_title_id12,sub_title_id13,
+			sub_title_id14,sub_title_id15,sub_title_id16,
+			sub_title_id17,sub_title_id18,sub_title_id19,sub_title_id20
+		from information_listdata_remark
+		<where>
+			<trim prefixOverrides="and">
+				<if test="id != null"> and id = #{id,jdbcType=BIGINT} </if>
+				<if test="titleId != null"> and title_id = #{titleId,jdbcType=BIGINT} </if>
+				<if test="code != null"> and code = #{code,jdbcType=VARCHAR} </if>
+				<if test="subCode != null"> and sub_code = #{subCode,jdbcType=VARCHAR} </if>
+				<if test="name != null"> and name = #{name,jdbcType=VARCHAR} </if>
+				<if test="field1 != null"> and field_1 = #{field1,jdbcType=VARCHAR} </if>
+				<if test="field2 != null"> and field_2 = #{field2,jdbcType=VARCHAR} </if>
+				<if test="field3 != null"> and field_3 = #{field3,jdbcType=VARCHAR} </if>
+				<if test="field4 != null"> and field_4 = #{field4,jdbcType=VARCHAR} </if>
+				<if test="field5 != null"> and field_5 = #{field5,jdbcType=VARCHAR} </if>
+				<if test="field6 != null"> and field_6 = #{field6,jdbcType=VARCHAR} </if>
+				<if test="field7 != null"> and field_7 = #{field7,jdbcType=VARCHAR} </if>
+				<if test="field8 != null"> and field_8 = #{field8,jdbcType=VARCHAR} </if>
+				<if test="field9 != null"> and field_9 = #{field9,jdbcType=VARCHAR} </if>
+				<if test="field10 != null"> and field_10 = #{field10,jdbcType=VARCHAR} </if>
+				<if test="isValid != null"> and is_valid = #{isValid,jdbcType=VARCHAR} </if>
+				<if test="createdTime != null"> and created_time = #{createdTime,jdbcType=VARCHAR} </if>
+				<if test="createId != null"> and create_id = #{createId,jdbcType=VARCHAR} </if>
+				<if test="updatedTime != null"> and updated_time = #{updatedTime,jdbcType=VARCHAR} </if>
+				<if test="updateId != null"> and update_id = #{updateId,jdbcType=VARCHAR} </if>
+				<if test="titleIds != null">
+					and title_id in 
+					<foreach collection="titleIds" item="item" open="(" separator="," close=")">
+					#{item}
+					</foreach>
+				</if>
+			</trim>
+			<if test="sorting != null">order by ${sorting}</if>
+			<if test="property != null">order by ${property} ${direction}</if>
+			<if test="offset != null and limit != null">
+				limit #{offset}, #{limit}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getInformationListdata" resultMap="ListdataMap" parameterType="java.util.Map">
+		select
+			id, project_id, title_id,parent_id, code,
+			field_1, field_2, field_3, field_4, 
+			field_5,field_6,field_7,field_8,field_9,field_10,
+			field_11, field_12, field_13, field_14, 
+			field_15,field_16,field_17,field_18,field_19,field_20,
+			is_valid, created_time, create_id, updated_time, update_id
+		from information_listdata
+		<where>
+			<trim prefixOverrides="and">
+				<if test="id != null"> and id = #{id,jdbcType=BIGINT} </if>
+				<if test="projectId != null"> and project_id = #{projectId,jdbcType=BIGINT} </if>
+				<if test="titleId != null"> and title_id = #{titleId,jdbcType=BIGINT} </if>
+				<if test="parentId != null"> and parent_id = #{parentId,jdbcType=BIGINT} </if>
+				<if test="code != null"> and code = #{code,jdbcType=VARCHAR} </if>
+				<if test="field1 != null"> and field_1 = #{field1,jdbcType=VARCHAR} </if>
+				<if test="field2 != null"> and field_2 = #{field2,jdbcType=VARCHAR} </if>
+				<if test="field3 != null"> and field_3 = #{field3,jdbcType=VARCHAR} </if>
+				<if test="field4 != null"> and field_4 = #{field4,jdbcType=VARCHAR} </if>
+				<if test="field5 != null"> and field_5 = #{field5,jdbcType=VARCHAR} </if>
+				<if test="field6 != null"> and field_6 = #{field6,jdbcType=VARCHAR} </if>
+				<if test="field7 != null"> and field_7 = #{field7,jdbcType=VARCHAR} </if>
+				<if test="field8 != null"> and field_8 = #{field8,jdbcType=VARCHAR} </if>
+				<if test="field9 != null"> and field_9 = #{field9,jdbcType=VARCHAR} </if>
+				<if test="field10 != null"> and field_10 = #{field10,jdbcType=VARCHAR} </if>
+				<if test="isValid != null"> and is_valid = #{isValid,jdbcType=VARCHAR} </if>
+				<if test="createdTime != null"> and created_time = #{createdTime,jdbcType=VARCHAR} </if>
+				<if test="createId != null"> and create_id = #{createId,jdbcType=VARCHAR} </if>
+				<if test="updatedTime != null"> and updated_time = #{updatedTime,jdbcType=VARCHAR} </if>
+				<if test="updateId != null"> and update_id = #{updateId,jdbcType=VARCHAR} </if>
+				<if test="titleIds != null">
+					and title_id in 
+					<foreach collection="titleIds" item="item" open="(" separator="," close=")">
+					#{item}
+					</foreach>
+				</if>
+				<if test="codes != null">
+					and code in
+					<foreach collection="codes" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="ids != null">
+					and id in 
+					<foreach collection="ids" item="item" open="(" separator="," close=")">
+					#{item}
+					</foreach>
+				</if>
+			</trim>
+			<if test="sorting != null">order by ${sorting}</if>
+			<if test="property != null">order by ${property} ${direction}</if>
+			
+			<if test="offset != null and limit != null">
+				limit #{offset}, #{limit}
+			</if>
+		</where>
+	</select>
+	
+</mapper>

@@ -459,7 +459,9 @@
 		LEFT JOIN v_user u ON ld.field_1=u.id
 		LEFT JOIN v_rel_dep_user du ON u.id=du.user_id
 		LEFT JOIN v_department d ON du.dep_id=d.id
-		WHERE ld.project_id=#{projectId} AND lr.code='team-person' ORDER BY ld.created_time asc;;
+		WHERE ld.project_id=#{projectId} 
+		<if test="areflag != null" > and ld.field_5 = #{areflag}</if>
+		AND lr.code='team-person' ORDER BY ld.created_time asc;
 	</select>
 
 </mapper>

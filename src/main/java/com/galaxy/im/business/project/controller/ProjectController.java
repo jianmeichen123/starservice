@@ -229,6 +229,7 @@ public class ProjectController {
 		try{
 			long deptId=0l;
 			String userName="";
+			String arePersion="";
 			Map<String,Object> map =new HashMap<String,Object>();
 			SessionBean sessionBean = CUtils.get().getBeanBySession(request);
 			Long userId = sessionBean.getGuserid();
@@ -244,7 +245,7 @@ public class ProjectController {
 			
 			//验证项目名是否重复
 			List<SopProjectBean> projectList = service.getSopProjectList(bean);
-			
+			Map<String,Object> paramMap = new HashMap<String,Object>();
 			if(bean!=null){
 				//新增和编辑的公用部分
 				if (bean.getProjectValuations() == null) {
@@ -274,7 +275,18 @@ public class ProjectController {
 					bean.getProjectShareRatio();
 					
 					if (null != projectList && projectList.size() > 0) {
-						resultBean.setMessage("项目名重复!");
+						SopProjectBean en = projectList.get(0);
+						arePersion="您输入的项目与【"+en.getProjectName()+"】项目重复，不能保存。&&项目承做人：";
+						paramMap.put("projectId", en.getId());
+						paramMap.put("areflag", 0);
+						List<Map<String,Object>> map4 = service.getProjectArePeople(paramMap);
+						if(map4!=null){
+							if(map4.size()==1 && map4.get(0).get("areFlag").equals("0")){
+								String ss =map4.get(0).get("arePeople")+"|"+map4.get(0).get("deptName");
+								arePersion=arePersion+ss;
+							}
+						}
+						resultBean.setMessage(arePersion);
 						return resultBean;
 					}
 					SopProjectBean p = service.getProjectInfoById(bean.getId());
@@ -325,7 +337,18 @@ public class ProjectController {
 					}
 					//新增
 					if (null != projectList && projectList.size() > 0) {
-						resultBean.setMessage("项目名重复!");
+						SopProjectBean en = projectList.get(0);
+						arePersion="您输入的项目与【"+en.getProjectName()+"】项目重复，不能保存。&&项目承做人：";
+						paramMap.put("projectId", en.getId());
+						paramMap.put("areflag", 0);
+						List<Map<String,Object>> map4 = service.getProjectArePeople(paramMap);
+						if(map4!=null){
+							if(map4.size()==1 && map4.get(0).get("areFlag").equals("0")){
+								String ss =map4.get(0).get("arePeople")+"|"+map4.get(0).get("deptName");
+								arePersion=arePersion+ss;
+							}
+						}
+						resultBean.setMessage(arePersion);
 						return resultBean;
 					}
 					//创建项目编码
