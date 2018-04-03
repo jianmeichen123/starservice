@@ -50,7 +50,7 @@ spring:
     timeout: 0
     
 power:
-  server: http://fx.rc.galaxyinternet.com/authority_service/
+  server: http://fx.qa.galaxyinternet.com/authority_service/
   
 cluster: 
   zk:
