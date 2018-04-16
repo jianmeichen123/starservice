@@ -23,7 +23,7 @@
 	<!-- 个人信息-->
 	<select id="queryPersonInfo" parameterType="hashmap" resultType="hashmap">
 		SELECT il.id,il.field_1 personName,idd.name personSex,il.field_3 personSexId,il.field_4 personTelephone, id.name personDuties,il.field_2 personDutiesId,
-		ids.name education,il.field_6 weChat
+		ids.name education,il.field_5 educationId,il.field_6 weChat
 		FROM information_listdata il 
 		LEFT JOIN information_dictionary id ON il.field_2=id.id 
 		LEFT JOIN information_dictionary ids ON il.field_5=ids.id 
