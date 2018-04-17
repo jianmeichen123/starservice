@@ -86,7 +86,7 @@ public class LoginController {
 						user.setSessionId(sessionId);
 						cache.put(sessionId, user,StaticConst.SESSIONID_IN_REDIS_TIMEOUT_SECONDS,TimeUnit.SECONDS); 
 
-						//request.getSession().setAttribute(StaticConst.SESSION_USER_KEY, user);
+						request.getSession().setAttribute(StaticConst.SESSION_USER_KEY, user);
 						
 						//记录登陆历史信息
 						Date date = new Date();       
