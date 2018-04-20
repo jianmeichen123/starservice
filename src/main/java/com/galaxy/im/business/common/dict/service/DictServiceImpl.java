@@ -246,6 +246,9 @@ public class DictServiceImpl extends BaseServiceImpl<Dict> implements IDictServi
 								}else{
 									map.put("defValue", 0);
 								}
+							}else{
+								map.put("name", dict.getName());
+								map.put("code", dict.getDictCode());
 							}
 							list.add(map);
 						}
