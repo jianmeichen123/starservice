@@ -215,17 +215,31 @@ public class DictServiceImpl extends BaseServiceImpl<Dict> implements IDictServi
 					if(dataList!=null && dataList.size()>0){
 						for(Dict dict : dataList){
 							Map<String,Object> map =new HashMap<String,Object>();
-							map.put("name", dict.getName());
-							map.put("code", dict.getDictCode());
-							
 							if("projectType".equals(dict.getParentCode())){
-								//项目类型：投资
-								if(1==CUtils.get().object2Integer(dict.getDictValue(),0)){
-									map.put("defValue", 1);
+								if(paramMap.containsKey("flag")&& CUtils.get().object2Integer(paramMap.get("flag"))==0){
+									if(!dict.getDictCode().equals("projectType:2")){
+										map.put("name", dict.getName());
+										map.put("code", dict.getDictCode());
+										//项目类型：投资
+										if(1==CUtils.get().object2Integer(dict.getDictValue(),0)){
+											map.put("defValue", 1);
+										}else{
+											map.put("defValue", 0);
+										}
+									}
 								}else{
-									map.put("defValue", 0);
+									map.put("name", dict.getName());
+									map.put("code", dict.getDictCode());
+									//项目类型：投资
+									if(1==CUtils.get().object2Integer(dict.getDictValue(),0)){
+										map.put("defValue", 1);
+									}else{
+										map.put("defValue", 0);
+									}
 								}
 							}else if("currency".equals(dict.getParentCode())){
+								map.put("name", dict.getName());
+								map.put("code", dict.getDictCode());
 								//币种默认值：人民币
 								if(0==CUtils.get().object2Integer(dict.getDictValue(),0)){
 									map.put("defValue", 1);
