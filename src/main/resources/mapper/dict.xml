@@ -51,12 +51,12 @@
 	<!-- 原因 -->
 	<select id="selectReasonFilter" parameterType="hashmap" resultType="hashmap">
 		 SELECT 
-		 	 tt.id,
+		 	 tt.dict_sort,
 			 tt.dict_code dictCode,
 			 tt.name,
 		     tt.dict_value dictValue
 		 FROM(
-			SELECT id,
+			SELECT dict_sort,
 				case 
 				WHEN #{meetingResult} in('meetingResult:3','meeting3Result:6','meeting5Result:2','meeting1Result:4','meeting4Result:3') THEN 'meetingVetoReason'
 				WHEN #{meetingResult} in('meetingResult:2') THEN 'meetingUndeterminedReason'
@@ -68,7 +68,7 @@
 			    name,
 			    dict_value
 			FROM dict) tt
-		WHERE tt.parent_code=tt.resultReason ORDER BY tt.id ASC;
+		WHERE tt.parent_code=tt.resultReason ORDER BY tt.dict_sort ASC;
 	</select>
 	
 	<!-- 根据parentCode查询 根据排序字段正序排序 -->
