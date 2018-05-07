@@ -197,10 +197,11 @@
 	
 	<!-- 健康状况 -->
 	<select id="getSopProjectHealth" parameterType="hashmap" resultType="hashmap">
-		SELECT id, project_id projectId, health_state healthState, user_name userName
-		FROM sop_project_health 
-		WHERE project_id=#{projectId} 
-		ORDER BY created_time desc LIMIT 1;
+		SELECT sp.id, sp.project_id projectId, sp.health_state healthState, sp.user_name userName,
+		,(SELECT COUNT(id) FROM sop_project_health p WHERE p.project_id=sp.project_id) totll
+		FROM sop_project_health sp
+		WHERE sp.project_id=#{projectId} 
+		ORDER BY sp.updated_time desc LIMIT 1;
 	</select>
 	
 	<!-- 运营会议纪要详情 -->
