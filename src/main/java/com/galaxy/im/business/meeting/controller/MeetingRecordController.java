@@ -88,6 +88,7 @@ public class MeetingRecordController {
 			resultBean.setStatus("OK");
 			resultBean.setEntity(page);
 		}catch(Exception e){
+			e.printStackTrace();
 			log.error(MeetingRecordController.class.getName() + "_getMeetingRecordList",e);
 		}
 		return resultBean;
