@@ -51,7 +51,9 @@
 	    <properties>
 	        <activatedProperties>local</activatedProperties>
 	    </properties>
-	   
+	    <activation>
+	        <activeByDefault>true</activeByDefault>
+	   	</activation>
 	</profile>
 	<profile>
 	    <id>rc</id>
@@ -64,9 +66,6 @@
 	    <properties>
 	        <activatedProperties>qa</activatedProperties>
 	    </properties>
-	     <activation>
-	        <activeByDefault>true</activeByDefault>
-	   	</activation>
 	</profile>
 	<profile>
 	    <id>dev</id>
@@ -212,7 +211,7 @@
 	<dependency>
 		<groupId>com.galaxyinternet</groupId>
 		<artifactId>xingePush</artifactId>
-		<version>1.0.4</version>
+		<version>[1.0.0,)</version>
 	</dependency>
 	
 	<!--  拼音 -->
