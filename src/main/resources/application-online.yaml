@@ -34,7 +34,7 @@ spring:
     timeout: 0
 
 power:
-  server: http://fx.galaxyinternet.com/authority_service/
+  server: http://galaxy8/authority_service/
   
 cluster: 
   zk:
