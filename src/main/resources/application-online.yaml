@@ -34,11 +34,11 @@ spring:
     timeout: 0
 
 power:
-  server: http://galaxy8/authority_service/
+  server: http://10.9.21.208/authority_service/
   
 cluster: 
   zk:
-    address: 10.9.21.201:2182,10.9.21.202:2182,10.9.21.203:2182
+    address: 10.9.21.201:2181,10.9.21.202:2181,10.9.21.203:2181
     product: app_schedule_fxnew
     
 #address: 10.9.210.53:2182,10.9.210.54:2182,10.9.210.55:2182
